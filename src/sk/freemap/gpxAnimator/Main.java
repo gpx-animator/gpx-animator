@@ -55,13 +55,14 @@ public class Main {
 	private int width = 800;
 	private final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
 	private final List<String> inputGpxList = new ArrayList<String>();
+	private final List<String> labelList = new ArrayList<String>();
 	private final List<Float> hueList = new ArrayList<Float>();
 	private String frameFilePattern = "frame%08d.png";
 
 	private Font font;
 	private FontMetrics fontMetrics;
 	private int fontSize = 12;
-	private float lineWidth = 2f;
+	private final List<Float> lineWidthList = new ArrayList<Float>();
 	
 	private long minTime = Long.MAX_VALUE;
 	
@@ -95,6 +96,8 @@ public class Main {
 					inputGpxList.add(args[++i]);
 				} else if (arg.equals("--output")) {
 					frameFilePattern = args[++i];
+				} else if (arg.equals("--label")) {
+					labelList.add(args[++i]);
 				} else if (arg.equals("--hue")) {
 					hueList.add(Float.parseFloat(args[++i]) / 360f);
 				} else if (arg.equals("--margin")) {
@@ -102,7 +105,7 @@ public class Main {
 				} else if (arg.equals("--speedup")) {
 					speedup = Double.parseDouble(args[++i]);
 				} else if (arg.equals("--line-width")) {
-					lineWidth = Float.parseFloat(args[++i]);
+					lineWidthList.add(Float.parseFloat(args[++i]));
 				} else if (arg.equals("--tail-duration")) {
 					tailDuration = Long.parseLong(args[++i]);
 				} else if (arg.equals("--fps")) {
@@ -144,10 +147,12 @@ public class Main {
 		System.out.println("\tinput GPX filename; can be provided multiple times for multiple tracks");
 		System.out.println("--output <output>");
 		System.out.println("\toutput filename template for saved frames; default frame%08d.png");
+		System.out.println("--label <label>");
+		System.out.println("\ttext displayed next to marker; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--hue <hue>");
 		System.out.println("\thue in degrees 0.0-360.0; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--line-width <width>");
-		System.out.println("\ttrack line width in pixels; default 2.0");
+		System.out.println("\ttrack line width in pixels; can be specified multiple times if multiple tracks are provided; default 2.0");
 		System.out.println("--tail-duration <time>");
 		System.out.println("\tlatest time of highlighted tail in seconds; default 3600");
 		System.out.println("--margin <margin>");
@@ -204,6 +209,7 @@ public class Main {
 	private void render() throws UserException {
 		validateOptions();
 		normalizeHues();
+		normalizeLineWidths();
 		
 		double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
 		
@@ -258,10 +264,10 @@ public class Main {
 		final int frames = (int) ((maxTime + tailDuration * 1000 - minTime) * fps / (MS * speedup));
 		
 		System.out.println("To encode generated frames you may run this command:");
-		System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 500k -r " + fps + " video.avi");
+		System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 1000k -r " + fps + " video.avi");
 		
 		for (int frame = 1; frame < frames; frame++) {
-			System.out.println("Frame: " + frame + "/" + frames);
+			System.out.println("Frame: " + frame + "/" + (frames - 1));
 			paint(bi, frame, 0);
 			
 			final BufferedImage bi2 = Utils.deepCopy(bi);
@@ -299,16 +305,31 @@ public class Main {
 			}
 		}
 	}
+	
+	
+	private void normalizeLineWidths() {
+		final int size = inputGpxList.size();
+		final int size2 = lineWidthList.size();
+		if (size2 == 0) {
+			for (int i = 0; i < size; i++) {
+				lineWidthList.add(2f);
+			}
+		} else if (size2 < size) {
+			for (int i = size2; i < size; i++) {
+				lineWidthList.add(lineWidthList.get(i - size2));
+			}
+		}
+	}
 
 
-	private void drawTime(final BufferedImage bi2, final int frame) {
-		final Graphics2D g2 = (Graphics2D) bi2.getGraphics();
+	private void drawTime(final BufferedImage bi, final int frame) {
+		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2.setColor(Color.BLACK);
 		g2.setFont(font);
 
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
-		g2.drawString(dateString, width - fontMetrics.stringWidth(dateString) - margin, bi2.getHeight() - margin);
+		g2.drawString(dateString, width - fontMetrics.stringWidth(dateString) - margin, bi.getHeight() - margin);
 	}
 
 
@@ -327,26 +348,35 @@ public class Main {
 				continue;
 			}
 			final Point2D p = floorEntry.getValue();
-			g2.setColor(Color.green);
+			g2.setColor(Color.getHSBColor(hueList.get(i), 0.25f, 1f));
 			final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - 4.0, p.getY() - 4.0, 9.0, 9.0);
 			g2.fill(marker);
-			g2.setColor(Color.getHSBColor(hueList.get(i), 1f, 1f));
+			g2.setColor(Color.black);
 			g2.draw(marker);
+			
+			if (i < labelList.size()) {
+				g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2.setColor(Color.BLACK);
+				g2.setFont(font);
+				
+				g2.drawString(labelList.get(i), (float) p.getX() + 8f, (float) p.getY() + 4f);
+			}
 		}
 	}
 	
 
 	private void paint(final BufferedImage bi, final int frame, final long backTime) {
-		final Graphics2D ga = (Graphics2D) bi.getGraphics();
-		ga.translate(margin, margin);
-		ga.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		ga.setStroke(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
+		g2.translate(margin, margin);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
 		final long time = getTime(frame);
 		
 		int i = -1;
 		for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
 			i++;
+			g2.setStroke(new BasicStroke(lineWidthList.get(i), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+			
 			final Long toTime = timePointMap.floorKey(time);
 			
 			if (toTime == null) {
@@ -363,10 +393,10 @@ public class Main {
 				}
 
 				final NavigableMap<Long, Point2D> subMap = timePointMap.subMap(fromTime, true, toTime, true);
-				ga.setPaint(Color.getHSBColor(hueList.get(i), 0.25f, 1f));
+				g2.setPaint(Color.getHSBColor(hueList.get(i), 0.25f, 1f));
 				for (final Entry<Long, Point2D> entry: subMap.entrySet()) {
 					if (prevPoint != null) {
-						ga.draw(new Line2D.Double(prevPoint, entry.getValue()));
+						g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
 					}
 					prevPoint = entry.getValue();
 				}
@@ -376,8 +406,8 @@ public class Main {
 					if (prevPoint != null) {
 						final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
 						if (ratio > 0) {
-							ga.setPaint(Color.getHSBColor(hueList.get(i), 0.25f + 0.75f * ratio, 1f - ratio));
-							ga.draw(new Line2D.Double(prevPoint, entry.getValue()));
+							g2.setPaint(Color.getHSBColor(hueList.get(i), 0.33f + 0.34f * ratio, 1f - ratio));
+							g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
 						}
 					}
 					prevPoint = entry.getValue();
