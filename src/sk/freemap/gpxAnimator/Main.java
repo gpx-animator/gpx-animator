@@ -53,17 +53,17 @@ public class Main {
 	private boolean debug;
 	private double totalTime = Double.NaN;
 	private int width = 800;
-	
-	private long minTime = Long.MAX_VALUE;
 	private final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
-	
 	private final List<String> inputGpxList = new ArrayList<String>();
+	private final List<Float> hueList = new ArrayList<Float>();
 	private String frameFilePattern = "frame%08d.png";
 
 	private Font font;
 	private FontMetrics fontMetrics;
 	private int fontSize = 12;
+	private float lineWidth = 2f;
 	
+	private long minTime = Long.MAX_VALUE;
 	
 	/**
 	 * @param args
@@ -95,10 +95,14 @@ public class Main {
 					inputGpxList.add(args[++i]);
 				} else if (arg.equals("--output")) {
 					frameFilePattern = args[++i];
+				} else if (arg.equals("--hue")) {
+					hueList.add(Float.parseFloat(args[++i]) / 360f);
 				} else if (arg.equals("--margin")) {
 					margin = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--speedup")) {
 					speedup = Double.parseDouble(args[++i]);
+				} else if (arg.equals("--line-width")) {
+					lineWidth = Float.parseFloat(args[++i]);
 				} else if (arg.equals("--tail-duration")) {
 					tailDuration = Long.parseLong(args[++i]);
 				} else if (arg.equals("--fps")) {
@@ -140,8 +144,12 @@ public class Main {
 		System.out.println("\tinput GPX filename; can be provided multiple times for multiple tracks");
 		System.out.println("--output <output>");
 		System.out.println("\toutput filename template for saved frames; default frame%08d.png");
+		System.out.println("--hue <hue>");
+		System.out.println("\thue in degrees 0.0-360.0; can be specified multiple times if multiple tracks are provided");
+		System.out.println("--line-width <width>");
+		System.out.println("\ttrack line width in pixels; default 2.0");
 		System.out.println("--tail-duration <time>");
-		System.out.println("\tatest time of highlighted tail in seconds; default 3600");
+		System.out.println("\tlatest time of highlighted tail in seconds; default 3600");
 		System.out.println("--margin <margin>");
 		System.out.println("\tmargin in pixels; default 20");
 		System.out.println("--speedup <speedup>");
@@ -195,6 +203,7 @@ public class Main {
 	
 	private void render() throws UserException {
 		validateOptions();
+		normalizeHues();
 		
 		double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
 		
@@ -273,6 +282,25 @@ public class Main {
 	}
 
 
+	private void normalizeHues() {
+		final int size = inputGpxList.size();
+		final int size2 = hueList.size();
+		if (size2 == 0) {
+			if (size == 1) {
+				hueList.add(240f / 360f); // default blue
+			} else {
+				for (int i = 0; i < size; i++) {
+					hueList.add((float) i / size);
+				}
+			}
+		} else if (size2 < size) {
+			for (int i = size2; i < size; i++) {
+				hueList.add(hueList.get(i - size2));
+			}
+		}
+	}
+
+
 	private void drawTime(final BufferedImage bi2, final int frame) {
 		final Graphics2D g2 = (Graphics2D) bi2.getGraphics();
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -290,7 +318,9 @@ public class Main {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		final long t2 = getTime(frame);
 		
+		int i = -1;
 		for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+			i++;
 			final Entry<Long, Point2D> ceilingEntry = timePointMap.ceilingEntry(t2);
 			final Entry<Long, Point2D> floorEntry = timePointMap.floorEntry(t2);
 			if (ceilingEntry == null || floorEntry == null) {
@@ -300,7 +330,7 @@ public class Main {
 			g2.setColor(Color.green);
 			final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - 4.0, p.getY() - 4.0, 9.0, 9.0);
 			g2.fill(marker);
-			g2.setColor(Color.blue);
+			g2.setColor(Color.getHSBColor(hueList.get(i), 1f, 1f));
 			g2.draw(marker);
 		}
 	}
@@ -310,11 +340,13 @@ public class Main {
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 		ga.translate(margin, margin);
 		ga.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		ga.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		ga.setStroke(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         
 		final long time = getTime(frame);
 		
+		int i = -1;
 		for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+			i++;
 			final Long toTime = timePointMap.floorKey(time);
 			
 			if (toTime == null) {
@@ -331,7 +363,7 @@ public class Main {
 				}
 
 				final NavigableMap<Long, Point2D> subMap = timePointMap.subMap(fromTime, true, toTime, true);
-				ga.setPaint(Color.getHSBColor(240f / 360f, 0.25f, 1f));
+				ga.setPaint(Color.getHSBColor(hueList.get(i), 0.25f, 1f));
 				for (final Entry<Long, Point2D> entry: subMap.entrySet()) {
 					if (prevPoint != null) {
 						ga.draw(new Line2D.Double(prevPoint, entry.getValue()));
@@ -344,7 +376,7 @@ public class Main {
 					if (prevPoint != null) {
 						final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
 						if (ratio > 0) {
-							ga.setPaint(Color.getHSBColor(240f / 360f, 0.25f + 0.75f * ratio, 1f - ratio));
+							ga.setPaint(Color.getHSBColor(hueList.get(i), 0.25f + 0.75f * ratio, 1f - ratio));
 							ga.draw(new Line2D.Double(prevPoint, entry.getValue()));
 						}
 					}
