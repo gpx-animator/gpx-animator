@@ -15,6 +15,8 @@
 package sk.freemap.gpxAnimator;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 import org.xml.sax.Attributes;
@@ -23,7 +25,14 @@ import org.xml.sax.helpers.DefaultHandler;
 
 final class GpxContentHandler extends DefaultHandler {
 	
-	private final TreeMap<Long, LatLon> timePointMap = new TreeMap<Long, LatLon>();
+	private static final String ATTR_LON = "lon";
+	private static final String ATTR_LAT = "lat";
+	private static final String ELEM_TRKSEG = "trkseg";
+	private static final String ELEM_TRKPT = "trkpt";
+	private static final String ELEM_TIME = "time";
+	
+	private final List<TreeMap<Long, LatLon>> timePointMapList = new ArrayList<TreeMap<Long,LatLon>>();
+	private TreeMap<Long, LatLon> timePointMap;
 
 	private final StringBuilder timeSb = new StringBuilder();
 	private long time;
@@ -32,11 +41,13 @@ final class GpxContentHandler extends DefaultHandler {
 
 	@Override
 	public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException {
-		if ("trkpt".equals(qName)) {
+		if (ELEM_TRKSEG.equals(qName)) {
+			timePointMap = new TreeMap<Long, LatLon>();
+		} else if (ELEM_TRKPT.equals(qName)) {
 			latLon = new LatLon(
-					Double.parseDouble(attributes.getValue("lat")),
-					Double.parseDouble(attributes.getValue("lon")));
-		} else if ("time".equals(qName)) {
+					Double.parseDouble(attributes.getValue(ATTR_LAT)),
+					Double.parseDouble(attributes.getValue(ATTR_LON)));
+		} else if (ELEM_TIME.equals(qName)) {
 			timeSb.setLength(0);
 		}
 	}
@@ -52,9 +63,12 @@ final class GpxContentHandler extends DefaultHandler {
 
 	@Override
 	public void endElement(final String uri, final String localName, final String qName) throws SAXException {
-		if ("trkpt".equals(qName)) {
+		if (ELEM_TRKSEG.equals(qName)) {
+			timePointMapList.add(timePointMap);
+			timePointMap = null;
+		} else if (ELEM_TRKPT.equals(qName)) {
 			timePointMap.put(time, latLon);
-		} else if ("time".equals(qName)) {
+		} else if (ELEM_TIME.equals(qName)) {
 			try {
 				time = Utils.parseISO8601(timeSb.toString()).getTime();
 			} catch (final ParseException e) {
@@ -65,8 +79,8 @@ final class GpxContentHandler extends DefaultHandler {
 	}
 	
 	
-	public TreeMap<Long, LatLon> getTimePointMap() {
-		return timePointMap;
+	public List<TreeMap<Long, LatLon>> getTimePointMapList() {
+		return timePointMapList;
 	}
 	
 }

@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
@@ -59,7 +58,7 @@ public class Main {
 	private int zoom = 0;
 	private float backgroundMapVisibility = 50f;
 
-	private final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
+	private final List<List<TreeMap<Long, Point2D>>> timePointMapListList = new ArrayList<List<TreeMap<Long,Point2D>>>();
 	private final List<String> inputGpxList = new ArrayList<String>();
 	private final List<String> labelList = new ArrayList<String>();
 	private final List<Color> colorList = new ArrayList<Color>();
@@ -150,7 +149,7 @@ public class Main {
 
 
 	private void printHelp() {
-		System.out.println("GPX Animator 0.3");
+		System.out.println("GPX Animator 0.4");
 		System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
 		System.out.println();
 		System.out.println("Usage:");
@@ -200,7 +199,7 @@ public class Main {
 	}
 	
 	
-	private static TreeMap<Long, LatLon> parseGpx(final String inputGpx) throws UserException {
+	private static List<TreeMap<Long, LatLon>> parseGpx(final String inputGpx) throws UserException {
 		final SAXParser saxParser;
 		try {
 			saxParser = SAXParserFactory.newInstance().newSAXParser();
@@ -221,7 +220,7 @@ public class Main {
 			throw new RuntimeException("internal error when parsing GPX file", e);
 		}
 		
-		return dh.getTimePointMap();
+		return dh.getTimePointMapList();
 	}
 	
 	
@@ -233,21 +232,24 @@ public class Main {
 		double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
 		
 		for (final String inputGpx : inputGpxList) {
-			final TreeMap<Long, LatLon> timeLatLonMap = parseGpx(inputGpx);
-			final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
-			for (final Entry<Long, LatLon> entry : timeLatLonMap.entrySet()) {
-				final LatLon latLon = entry.getValue();
-				final double x = Math.toRadians(latLon.getLon());
-				final double y = Math.log(Math.tan(Math.PI / 4 + Math.toRadians(latLon.getLat()) / 2));
-				
-				minX = Math.min(x, minX);
-				minY = Math.min(y, minY);
-				maxX = Math.max(x, maxX);
-				maxY = Math.max(y, maxY);
-				
-				timePointMap.put(entry.getKey(), new Point2D.Double(x, y));
+			final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
+			for (final TreeMap<Long, LatLon> timeLatLonMap : parseGpx(inputGpx)) {
+				final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
+				for (final Entry<Long, LatLon> entry : timeLatLonMap.entrySet()) {
+					final LatLon latLon = entry.getValue();
+					final double x = Math.toRadians(latLon.getLon());
+					final double y = Math.log(Math.tan(Math.PI / 4 + Math.toRadians(latLon.getLat()) / 2));
+					
+					minX = Math.min(x, minX);
+					minY = Math.min(y, minY);
+					maxX = Math.max(x, maxX);
+					maxY = Math.max(y, maxY);
+					
+					timePointMap.put(entry.getKey(), new Point2D.Double(x, y));
+				}
+				timePointMapList.add(timePointMap);
 			}
-			timePointMapList.add(timePointMap);
+			timePointMapListList.add(timePointMapList);
 		}
 
 		if (tmsUrlTemplate != null && zoom == 0) {
@@ -270,9 +272,11 @@ public class Main {
 		maxY += margin / scale;
 		
 		// translate to 0,0
-		for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
-			for (final Point2D point : timePointMap.values()) {
-				point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
+		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
+			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+				for (final Point2D point : timePointMap.values()) {
+					point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
+				}
 			}
 		}
 		
@@ -297,9 +301,11 @@ public class Main {
 
 		long maxTime = Long.MIN_VALUE;
 		
-		for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
-			maxTime = Math.max(maxTime, timePointMap.lastKey());
-			minTime = Math.min(minTime, timePointMap.firstKey());
+		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
+			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+				maxTime = Math.max(maxTime, timePointMap.lastKey());
+				minTime = Math.min(minTime, timePointMap.firstKey());
+			}
 		}
 		
 		if (!Double.isNaN(totalTime)) {
@@ -309,7 +315,7 @@ public class Main {
 		final int frames = (int) ((maxTime + tailDuration * 1000 - minTime) * fps / (MS * speedup));
 		
 		System.out.println("To encode generated frames you may run this command:");
-		System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 1000k -r " + fps + " video.avi");
+		System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 2000k -r " + fps + " video.avi");
 		
 		for (int frame = 1; frame < frames; frame++) {
 			System.out.println("Frame: " + frame + "/" + (frames - 1));
@@ -449,26 +455,28 @@ public class Main {
 		final long t2 = getTime(frame);
 		
 		int i = -1;
-		for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
 			i++;
-			final Entry<Long, Point2D> ceilingEntry = timePointMap.ceilingEntry(t2);
-			final Entry<Long, Point2D> floorEntry = timePointMap.floorEntry(t2);
-			if (ceilingEntry == null || floorEntry == null) {
-				continue;
-			}
-			final Point2D p = floorEntry.getValue();
-			g2.setColor(colorList.get(i));
-			final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - 4.0, p.getY() - 4.0, 9.0, 9.0);
-			g2.fill(marker);
-			g2.setColor(Color.black);
-			g2.draw(marker);
-			
-			if (i < labelList.size()) {
-				g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-				g2.setColor(Color.BLACK);
-				g2.setFont(font);
+			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+				final Entry<Long, Point2D> ceilingEntry = timePointMap.ceilingEntry(t2);
+				final Entry<Long, Point2D> floorEntry = timePointMap.floorEntry(t2);
+				if (ceilingEntry == null || floorEntry == null) {
+					continue;
+				}
+				final Point2D p = floorEntry.getValue();
+				g2.setColor(colorList.get(i));
+				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - 4.0, p.getY() - 4.0, 9.0, 9.0);
+				g2.fill(marker);
+				g2.setColor(Color.black);
+				g2.draw(marker);
 				
-				g2.drawString(labelList.get(i), (float) p.getX() + 8f, (float) p.getY() + 4f);
+				if (i < labelList.size()) {
+					g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+					g2.setColor(Color.BLACK);
+					g2.setFont(font);
+					
+					g2.drawString(labelList.get(i), (float) p.getX() + 8f, (float) p.getY() + 4f);
+				}
 			}
 		}
 	}
@@ -481,48 +489,52 @@ public class Main {
 		final long time = getTime(frame);
 		
 		int i = -1;
-		for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
 			i++;
-			g2.setStroke(new BasicStroke(lineWidthList.get(i), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-			
-			final Long toTime = timePointMap.floorKey(time);
-			
-			if (toTime == null) {
-				continue;
-			}
-			
-			Point2D prevPoint = null;
-
-			if (backTime == 0) {
-				final long time2 = getTime(frame - 1);
-				final Long fromTime = timePointMap.floorKey(time2);
-				if (fromTime == null) {
+			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+				g2.setStroke(new BasicStroke(lineWidthList.get(i), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				
+				final Long toTime = timePointMap.floorKey(time);
+				
+				if (toTime == null) {
 					continue;
 				}
-
-				final NavigableMap<Long, Point2D> subMap = timePointMap.subMap(fromTime, true, toTime, true);
-				g2.setPaint(colorList.get(i));
-				for (final Entry<Long, Point2D> entry: subMap.entrySet()) {
-					if (prevPoint != null) {
-						g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
+				
+				Point2D prevPoint = null;
+	
+				if (backTime == 0) {
+					final long prevTime =  getTime(frame - 1);
+					Long fromTime = timePointMap.floorKey(prevTime);
+					if (fromTime == null) {
+						// try ceiling because we may be at beginning
+						fromTime = timePointMap.ceilingKey(prevTime);
 					}
-					prevPoint = entry.getValue();
-				}
-			} else {
-				final NavigableMap<Long, Point2D> subMap = timePointMap.subMap(toTime - backTime, true, toTime, true);
-				for (final Entry<Long, Point2D> entry: subMap.entrySet()) {
-					if (prevPoint != null) {
-						final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
-						if (ratio > 0) {
-							final Color color = colorList.get(i);
-							final float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), new float[3]);
-							g2.setPaint(Color.getHSBColor(hsb[0], hsb[1], (1f - ratio) * hsb[2]));
+					if (fromTime == null) {
+						continue;
+					}
+					
+					g2.setPaint(colorList.get(i));
+					for (final Entry<Long, Point2D> entry: timePointMap.subMap(fromTime, true, toTime, true).entrySet()) {
+						if (prevPoint != null) {
 							g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
 						}
+						prevPoint = entry.getValue();
 					}
-					prevPoint = entry.getValue();
+				} else {
+					for (final Entry<Long, Point2D> entry: timePointMap.subMap(toTime - backTime, true, toTime, true).entrySet()) {
+						if (prevPoint != null) {
+							final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
+							if (ratio > 0) {
+								final Color color = colorList.get(i);
+								final float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), new float[3]);
+								g2.setPaint(Color.getHSBColor(hsb[0], hsb[1], (1f - ratio) * hsb[2]));
+								g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
+							}
+						}
+						prevPoint = entry.getValue();
+					}
+					
 				}
-				
 			}
 		}
 	}
