@@ -14,7 +14,6 @@
  */
 package sk.freemap.gpxAnimator;
 
-import java.awt.geom.Point2D;
 import java.text.ParseException;
 import java.util.TreeMap;
 
@@ -24,21 +23,21 @@ import org.xml.sax.helpers.DefaultHandler;
 
 final class GpxContentHandler extends DefaultHandler {
 	
-	private final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
+	private final TreeMap<Long, LatLon> timePointMap = new TreeMap<Long, LatLon>();
 
-	private double x;
-	private double y;
-	private StringBuilder timeSb;
+	private final StringBuilder timeSb = new StringBuilder();
 	private long time;
+	private LatLon latLon;
 	
 
 	@Override
 	public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException {
 		if ("trkpt".equals(qName)) {
-			x = Math.toRadians(Double.parseDouble(attributes.getValue("lon"))) * 6378137.0;
-			y = Math.log(Math.tan(Math.PI / 4 + Math.toRadians(Double.parseDouble(attributes.getValue("lat"))) / 2)) * 6378137.0;
+			latLon = new LatLon(
+					Double.parseDouble(attributes.getValue("lat")),
+					Double.parseDouble(attributes.getValue("lon")));
 		} else if ("time".equals(qName)) {
-			timeSb = new StringBuilder();
+			timeSb.setLength(0);
 		}
 	}
 	
@@ -54,20 +53,19 @@ final class GpxContentHandler extends DefaultHandler {
 	@Override
 	public void endElement(final String uri, final String localName, final String qName) throws SAXException {
 		if ("trkpt".equals(qName)) {
-			// System.out.println(String.format("%f %f %d", x, y, time));
-			timePointMap.put(time, new Point2D.Double(x, y));
+			timePointMap.put(time, latLon);
 		} else if ("time".equals(qName)) {
 			try {
 				time = Utils.parseISO8601(timeSb.toString()).getTime();
 			} catch (final ParseException e) {
 				throw new SAXException(e);
 			}
-			timeSb = null;
+			timeSb.setLength(0);
 		}
 	}
 	
 	
-	public TreeMap<Long, Point2D> getTimePointMap() {
+	public TreeMap<Long, LatLon> getTimePointMap() {
 		return timePointMap;
 	}
 	

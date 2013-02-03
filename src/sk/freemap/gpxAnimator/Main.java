@@ -24,8 +24,11 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
+import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,11 +56,14 @@ public class Main {
 	private boolean debug;
 	private double totalTime = Double.NaN;
 	private int width = 800;
+	private int zoom = 0;
+
 	private final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
 	private final List<String> inputGpxList = new ArrayList<String>();
 	private final List<String> labelList = new ArrayList<String>();
 	private final List<Float> hueList = new ArrayList<Float>();
 	private String frameFilePattern = "frame%08d.png";
+	private String tmsUrlTemplate; // http://tile.openstreetmap.org/{zoom}/{x}/{y}.png, http://aio.freemap.sk/T/{zoom}/{x}/{y}.png
 
 	private Font font;
 	private FontMetrics fontMetrics;
@@ -116,6 +122,8 @@ public class Main {
 					fontSize = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--debug")) {
 					debug = true;
+				} else if (arg.equals("--tms-url-template")) {
+					tmsUrlTemplate = args[++i];
 				} else if (arg.equals("--total-time")) {
 					totalTime = Double.parseDouble(args[++i]);
 				} else if (arg.equals("--help")) {
@@ -164,7 +172,11 @@ public class Main {
 		System.out.println("--fps <fps>");
 		System.out.println("\tframes per second; default 30.0");
 		System.out.println("--width <width>");
-		System.out.println("\tvideo width in pixels; default 800");
+		System.out.println("\tvideo width in pixels; if --tms-url-template option is used then this option specifies max width; default 800");
+		System.out.println("--zoom <zoom>");
+		System.out.println("\tmap zoom typically from 1 to 18, alternative to --width option");
+		System.out.println("--tms-url-template <template>");
+		System.out.println("\tslippymap (TMS) URL template where {x}, {y} and {zoom} placeholrers will be replaced; for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap");
 		System.out.println("--font-size <size>");
 		System.out.println("\tdatetime text font size; default 12; set to 0 for no date text");
 		System.out.println("--debug");
@@ -181,7 +193,7 @@ public class Main {
 	}
 	
 	
-	private static TreeMap<Long, Point2D> parseGpx(final String inputGpx) throws UserException {
+	private static TreeMap<Long, LatLon> parseGpx(final String inputGpx) throws UserException {
 		final SAXParser saxParser;
 		try {
 			saxParser = SAXParserFactory.newInstance().newSAXParser();
@@ -214,22 +226,43 @@ public class Main {
 		double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
 		
 		for (final String inputGpx : inputGpxList) {
-			final TreeMap<Long, Point2D> timePointMap = parseGpx(inputGpx);
-			timePointMapList.add(timePointMap);
-			
-			for (final Point2D point : timePointMap.values()) {
-				final double x = point.getX();
-				final double y = point.getY();
+			final TreeMap<Long, LatLon> timeLatLonMap = parseGpx(inputGpx);
+			final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
+			for (final Entry<Long, LatLon> entry : timeLatLonMap.entrySet()) {
+				final LatLon latLon = entry.getValue();
+				final double x = Math.toRadians(latLon.getLon());
+				final double y = Math.log(Math.tan(Math.PI / 4 + Math.toRadians(latLon.getLat()) / 2));
 				
 				minX = Math.min(x, minX);
 				minY = Math.min(y, minY);
 				maxX = Math.max(x, maxX);
 				maxY = Math.max(y, maxY);
+				
+				timePointMap.put(entry.getKey(), new Point2D.Double(x, y));
+			}
+			timePointMapList.add(timePointMap);
+		}
+
+		if (tmsUrlTemplate != null && zoom == 0) {
+			zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - margin * 2) / (maxX - minX)) / Math.log(2));
+			if (debug) {
+				System.out.println("computed zoom is " + zoom);
 			}
 		}
 		
-		final double scale = (width - margin * 2) / (maxX - minX);
-
+		final double scale = zoom == 0
+				? (width - margin * 2) / (maxX - minX)
+				: (128.0 * (1 << zoom)) / Math.PI;
+		
+				
+		// compute zoom from width
+			
+		minX -= margin / scale;
+		minY -= margin / scale;
+		maxX += margin / scale;
+		maxY += margin / scale;
+		
+		// translate to 0,0
 		for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
 			for (final Point2D point : timePointMap.values()) {
 				point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
@@ -237,13 +270,18 @@ public class Main {
 		}
 		
 		final BufferedImage bi = new BufferedImage(
-				(int) ((maxX - minX) * scale + margin * 2),
-				(int) ((maxY - minY) * scale + margin * 2),
+				(int) ((maxX - minX) * scale),
+				(int) ((maxY - minY) * scale),
 				BufferedImage.TYPE_INT_RGB);
 		
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
-		ga.setColor(Color.white);
-		ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+		
+		if (tmsUrlTemplate == null) {
+			ga.setColor(Color.white);
+			ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+		} else {
+			drawMap(minX, maxX, minY, maxY, bi);
+		}
 		
 		if (fontSize > 0) {
 			font = new Font(Font.MONOSPACED, Font.PLAIN, fontSize);
@@ -288,6 +326,74 @@ public class Main {
 	}
 
 
+	private void drawMap(final double minX, final double maxX, final double minY, final double maxY, final BufferedImage bi) throws UserException {
+		final Graphics2D ga = (Graphics2D) bi.getGraphics();
+
+		final double tileDblX = lonToTileX(xToLon(minX));
+		final int tileX = (int) Math.floor(tileDblX);
+		final int offsetX = (int) Math.floor(256.0 * (tileX - tileDblX));
+
+		final double tileDblY = latToTileY(yToLat(minY));
+		final int tileY = (int) Math.floor(tileDblY);
+		final int offsetY = (int) Math.floor(256.0 * (tileDblY - tileY));
+
+		final int maxXtile = (int) Math.floor(lonToTileX(xToLon(maxX)));
+		final int maxYtile = (int) Math.floor(latToTileY(yToLat(maxY)));
+		for (int x = tileX; x <= maxXtile; x++) {
+			for (int y = tileY; y >= maxYtile; y--) {
+				final String url = tmsUrlTemplate
+						.replace("{zoom}", Integer.toString(zoom))
+						.replace("{x}", Integer.toString(x))
+						.replace("{y}", Integer.toString(y));
+				
+				if (debug) {
+					System.out.println("reading tile " + url);
+				}
+				
+				final BufferedImage tile;
+				try {
+					tile = ImageIO.read(new URL(url));
+				} catch (final IOException e) {
+					throw new UserException("error reading tile " + url);
+				}
+					
+				final BufferedImage tile1;
+				if (tile.getColorModel() instanceof IndexColorModel) {
+					tile1 = new BufferedImage(tile.getWidth(), tile.getHeight(), BufferedImage.TYPE_INT_RGB);
+					tile1.getGraphics().drawImage(tile, 0, 0, null);
+				} else {
+					tile1 = tile;
+				}
+				
+				final RescaleOp op = new RescaleOp(0.5f, 150, null);
+				ga.drawImage(tile1, op,
+						256 * (x - tileX) + offsetX,
+						bi.getHeight() - (256 * (tileY - y) + offsetY));
+			}
+		}
+	}
+
+
+	private double lonToTileX(final double lon) {
+		return (lon + 180.0) / 360.0 * (1 << zoom);
+	}
+
+
+	private double latToTileY(final double lat) {
+		return (1 - Math.log(Math.tan(Math.toRadians(lat)) + 1 / Math.cos(Math.toRadians(lat))) / Math.PI) / 2 * (1 << zoom);
+	}
+
+
+	private static double xToLon(final double x) {
+		return Math.toDegrees(x);
+	}
+
+
+	private static double yToLat(final double y) {
+		return Math.toDegrees(2.0 * (Math.atan(Math.exp(y)) - Math.PI / 4.0));
+	}
+
+
 	private void normalizeHues() {
 		final int size = inputGpxList.size();
 		final int size2 = hueList.size();
@@ -329,13 +435,13 @@ public class Main {
 		g2.setFont(font);
 
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
-		g2.drawString(dateString, width - fontMetrics.stringWidth(dateString) - margin, bi.getHeight() - margin);
+		g2.drawString(dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - margin, bi.getHeight() - margin);
 	}
 
 
 	private void drawMarker(final BufferedImage bi, final int frame) {
 		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
-		g2.translate(margin, margin);
+		// g2.translate(margin, margin);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		final long t2 = getTime(frame);
 		
@@ -367,7 +473,7 @@ public class Main {
 
 	private void paint(final BufferedImage bi, final int frame, final long backTime) {
 		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
-		g2.translate(margin, margin);
+		// g2.translate(margin, margin);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
 		final long time = getTime(frame);
