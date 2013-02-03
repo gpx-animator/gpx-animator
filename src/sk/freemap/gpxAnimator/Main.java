@@ -20,11 +20,14 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
 import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
@@ -150,7 +153,7 @@ public class Main {
 
 
 	private void printHelp() {
-		System.out.println("GPX Animator 0.4");
+		System.out.println("GPX Animator 0.5");
 		System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
 		System.out.println();
 		System.out.println("Usage:");
@@ -265,7 +268,7 @@ public class Main {
 				? (width - margin * 2) / (maxX - minX)
 				: (128.0 * (1 << zoom)) / Math.PI;
 		
-				
+		
 		// compute zoom from width
 			
 		minX -= margin / scale;
@@ -371,17 +374,13 @@ public class Main {
 				} catch (final IOException e) {
 					throw new UserException("error reading tile " + url);
 				}
-					
-				final BufferedImage tile1;
-				if (tile.getColorModel() instanceof IndexColorModel) {
-					tile1 = new BufferedImage(tile.getWidth(), tile.getHeight(), BufferedImage.TYPE_INT_RGB);
-					tile1.getGraphics().drawImage(tile, 0, 0, null);
-				} else {
-					tile1 = tile;
-				}
 				
-				final RescaleOp op = new RescaleOp(backgroundMapVisibility / 100f, (1f - backgroundMapVisibility / 100f) * 255f, null);
-				ga.drawImage(tile1, op,
+				// convert to RGB format
+				final BufferedImage tile1 = new BufferedImage(tile.getWidth(), tile.getHeight(), BufferedImage.TYPE_INT_RGB);
+				tile1.getGraphics().drawImage(tile, 0, 0, null);
+				
+				ga.drawImage(tile1,
+						new RescaleOp(backgroundMapVisibility / 100f, (1f - backgroundMapVisibility / 100f) * 255f, null),
 						256 * (x - tileX) + offsetX,
 						bi.getHeight() - (256 * (tileY - y) + offsetY));
 			}
@@ -442,12 +441,8 @@ public class Main {
 
 	private void drawTime(final BufferedImage bi, final int frame) {
 		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g2.setColor(Color.BLACK);
-		g2.setFont(font);
-
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
-		g2.drawString(dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - margin, bi.getHeight() - margin);
+		printText(g2, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - margin, bi.getHeight() - margin);
 	}
 
 
@@ -469,16 +464,13 @@ public class Main {
 				final Point2D p = floorEntry.getValue();
 				g2.setColor(ceilingEntry == null ? Color.white : colorList.get(i));
 				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - 4.0, p.getY() - 4.0, 9.0, 9.0);
+				g2.setStroke(new BasicStroke(1f));
 				g2.fill(marker);
 				g2.setColor(Color.black);
 				g2.draw(marker);
 				
 				if (i < labelList.size()) {
-					g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-					g2.setColor(Color.BLACK);
-					g2.setFont(font);
-					
-					g2.drawString(labelList.get(i), (float) p.getX() + 8f, (float) p.getY() + 4f);
+					printText(g2, labelList.get(i), (float) p.getX() + 8f, (float) p.getY() + 4f);
 				}
 				
 				continue outer;
@@ -547,6 +539,25 @@ public class Main {
 
 	private long getTime(final int frame) {
 		return (long) Math.floor(minTime + frame / fps * MS * speedup);
+	}
+	
+	
+	private void printText(final Graphics2D g2, final String text, final float x, final float y) {
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+		final FontRenderContext frc = g2.getFontRenderContext();
+		g2.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+		final TextLayout tl = new TextLayout(text, font, frc);
+		final Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(x, y));
+		g2.setColor(Color.white);
+		g2.fill(sha);
+		g2.draw(sha);
+		
+		g2.setFont(font);
+		g2.setColor(Color.black);
+		g2.drawString(text, x, y);
 	}
 	
 }
