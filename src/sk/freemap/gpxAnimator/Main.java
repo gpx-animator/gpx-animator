@@ -153,7 +153,7 @@ public class Main {
 
 
 	private void printHelp() {
-		System.out.println("GPX Animator 0.5");
+		System.out.println("GPX Animator 0.6");
 		System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
 		System.out.println();
 		System.out.println("Usage:");
@@ -197,6 +197,10 @@ public class Main {
 	private void validateOptions() throws UserException {
 		if (inputGpxList.isEmpty()) {
 			throw new UserException("missing input file");
+		}
+		
+		if (String.format(frameFilePattern, 100).equals(String.format(frameFilePattern, 200))) {
+			throw new UserException("--output must be pattern, for example frame%08d.png");
 		}
 		
 		// TODO other validations
@@ -318,10 +322,7 @@ public class Main {
 		}
 
 		final int frames = (int) ((maxTime + tailDuration * 1000 - minTime) * fps / (MS * speedup));
-		
-		System.out.println("To encode generated frames you may run this command:");
-		System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 3000k -r " + fps + " video.avi");
-		
+				
 		for (int frame = 1; frame < frames; frame++) {
 			System.out.println("Frame: " + frame + "/" + (frames - 1));
 			paint(bi, frame, 0);
@@ -341,6 +342,10 @@ public class Main {
 				throw new UserException("error writing frame to " + outputfile);
 			}
 		}
+		
+		System.out.println("Done.");
+		System.out.println("To encode generated frames you may run this command:");
+		System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 3000k -r " + fps + " video.avi");
 	}
 
 
