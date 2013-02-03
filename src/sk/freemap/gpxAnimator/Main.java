@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
@@ -249,6 +250,7 @@ public class Main {
 				}
 				timePointMapList.add(timePointMap);
 			}
+			Collections.reverse(timePointMapList); // reversing because of last known location drawing
 			timePointMapListList.add(timePointMapList);
 		}
 
@@ -315,7 +317,7 @@ public class Main {
 		final int frames = (int) ((maxTime + tailDuration * 1000 - minTime) * fps / (MS * speedup));
 		
 		System.out.println("To encode generated frames you may run this command:");
-		System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 2000k -r " + fps + " video.avi");
+		System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 3000k -r " + fps + " video.avi");
 		
 		for (int frame = 1; frame < frames; frame++) {
 			System.out.println("Frame: " + frame + "/" + (frames - 1));
@@ -455,16 +457,17 @@ public class Main {
 		final long t2 = getTime(frame);
 		
 		int i = -1;
-		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
+		outer: for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
 			i++;
 			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
 				final Entry<Long, Point2D> ceilingEntry = timePointMap.ceilingEntry(t2);
 				final Entry<Long, Point2D> floorEntry = timePointMap.floorEntry(t2);
-				if (ceilingEntry == null || floorEntry == null) {
+				if (floorEntry == null) {
 					continue;
 				}
+				
 				final Point2D p = floorEntry.getValue();
-				g2.setColor(colorList.get(i));
+				g2.setColor(ceilingEntry == null ? Color.white : colorList.get(i));
 				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - 4.0, p.getY() - 4.0, 9.0, 9.0);
 				g2.fill(marker);
 				g2.setColor(Color.black);
@@ -477,6 +480,8 @@ public class Main {
 					
 					g2.drawString(labelList.get(i), (float) p.getX() + 8f, (float) p.getY() + 4f);
 				}
+				
+				continue outer;
 			}
 		}
 	}
