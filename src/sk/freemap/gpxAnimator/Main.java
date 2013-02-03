@@ -51,17 +51,18 @@ public class Main {
 
 	private int margin = 20;
 	private double speedup = 1000.0;
-	private long tailDuration = 60 * 60;
+	private long tailDuration = 3600;
 	private double fps = 30.0;
 	private boolean debug;
 	private double totalTime = Double.NaN;
 	private int width = 800;
 	private int zoom = 0;
+	private float backgroundMapVisibility = 50f;
 
 	private final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
 	private final List<String> inputGpxList = new ArrayList<String>();
 	private final List<String> labelList = new ArrayList<String>();
-	private final List<Float> hueList = new ArrayList<Float>();
+	private final List<Color> colorList = new ArrayList<Color>();
 	private String frameFilePattern = "frame%08d.png";
 	private String tmsUrlTemplate; // http://tile.openstreetmap.org/{zoom}/{x}/{y}.png, http://aio.freemap.sk/T/{zoom}/{x}/{y}.png
 
@@ -104,8 +105,8 @@ public class Main {
 					frameFilePattern = args[++i];
 				} else if (arg.equals("--label")) {
 					labelList.add(args[++i]);
-				} else if (arg.equals("--hue")) {
-					hueList.add(Float.parseFloat(args[++i]) / 360f);
+				} else if (arg.equals("--color")) {
+					colorList.add(Color.decode(args[++i]));
 				} else if (arg.equals("--margin")) {
 					margin = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--speedup")) {
@@ -118,12 +119,16 @@ public class Main {
 					fps = Double.parseDouble(args[++i]);
 				} else if (arg.equals("--width")) {
 					width = Integer.parseInt(args[++i]);
+				} else if (arg.equals("--zoom")) {
+					zoom = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--font-size")) {
 					fontSize = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--debug")) {
 					debug = true;
 				} else if (arg.equals("--tms-url-template")) {
 					tmsUrlTemplate = args[++i];
+				} else if (arg.equals("--background-map-visibility")) {
+					backgroundMapVisibility = Float.parseFloat(args[++i]);
 				} else if (arg.equals("--total-time")) {
 					totalTime = Double.parseDouble(args[++i]);
 				} else if (arg.equals("--help")) {
@@ -145,7 +150,7 @@ public class Main {
 
 
 	private void printHelp() {
-		System.out.println("GPX Animator 0.2");
+		System.out.println("GPX Animator 0.3");
 		System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
 		System.out.println();
 		System.out.println("Usage:");
@@ -157,8 +162,8 @@ public class Main {
 		System.out.println("\toutput filename template for saved frames; default frame%08d.png");
 		System.out.println("--label <label>");
 		System.out.println("\ttext displayed next to marker; can be specified multiple times if multiple tracks are provided");
-		System.out.println("--hue <hue>");
-		System.out.println("\thue in degrees 0.0-360.0; can be specified multiple times if multiple tracks are provided");
+		System.out.println("--color <color>");
+		System.out.println("\ttrack color in #RRGGBB representation; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--line-width <width>");
 		System.out.println("\ttrack line width in pixels; can be specified multiple times if multiple tracks are provided; default 2.0");
 		System.out.println("--tail-duration <time>");
@@ -176,7 +181,9 @@ public class Main {
 		System.out.println("--zoom <zoom>");
 		System.out.println("\tmap zoom typically from 1 to 18, alternative to --width option");
 		System.out.println("--tms-url-template <template>");
-		System.out.println("\tslippymap (TMS) URL template where {x}, {y} and {zoom} placeholrers will be replaced; for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap");
+		System.out.println("\tslippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap");
+		System.out.println("--background-map-visibility <visibility>");
+		System.out.println("\tvisibility of the background map in %, default 50.0");
 		System.out.println("--font-size <size>");
 		System.out.println("\tdatetime text font size; default 12; set to 0 for no date text");
 		System.out.println("--debug");
@@ -220,7 +227,7 @@ public class Main {
 	
 	private void render() throws UserException {
 		validateOptions();
-		normalizeHues();
+		normalizeColors();
 		normalizeLineWidths();
 		
 		double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
@@ -365,7 +372,7 @@ public class Main {
 					tile1 = tile;
 				}
 				
-				final RescaleOp op = new RescaleOp(0.5f, 150, null);
+				final RescaleOp op = new RescaleOp(backgroundMapVisibility / 100f, (1f - backgroundMapVisibility / 100f) * 255f, null);
 				ga.drawImage(tile1, op,
 						256 * (x - tileX) + offsetX,
 						bi.getHeight() - (256 * (tileY - y) + offsetY));
@@ -394,23 +401,20 @@ public class Main {
 	}
 
 
-	private void normalizeHues() {
+	private void normalizeColors() {
 		final int size = inputGpxList.size();
-		final int size2 = hueList.size();
+		final int size2 = colorList.size();
 		if (size2 == 0) {
-			if (size == 1) {
-				hueList.add(240f / 360f); // default blue
-			} else {
-				for (int i = 0; i < size; i++) {
-					hueList.add((float) i / size);
-				}
+			for (int i = 0; i < size; i++) {
+				colorList.add(Color.getHSBColor((float) i / size, 0.8f, 1f));
 			}
 		} else if (size2 < size) {
 			for (int i = size2; i < size; i++) {
-				hueList.add(hueList.get(i - size2));
+				colorList.add(colorList.get(i - size2));
 			}
 		}
 	}
+	
 	
 	
 	private void normalizeLineWidths() {
@@ -441,7 +445,6 @@ public class Main {
 
 	private void drawMarker(final BufferedImage bi, final int frame) {
 		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
-		// g2.translate(margin, margin);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		final long t2 = getTime(frame);
 		
@@ -454,7 +457,7 @@ public class Main {
 				continue;
 			}
 			final Point2D p = floorEntry.getValue();
-			g2.setColor(Color.getHSBColor(hueList.get(i), 0.25f, 1f));
+			g2.setColor(colorList.get(i));
 			final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - 4.0, p.getY() - 4.0, 9.0, 9.0);
 			g2.fill(marker);
 			g2.setColor(Color.black);
@@ -473,7 +476,6 @@ public class Main {
 
 	private void paint(final BufferedImage bi, final int frame, final long backTime) {
 		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
-		// g2.translate(margin, margin);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
 		final long time = getTime(frame);
@@ -499,7 +501,7 @@ public class Main {
 				}
 
 				final NavigableMap<Long, Point2D> subMap = timePointMap.subMap(fromTime, true, toTime, true);
-				g2.setPaint(Color.getHSBColor(hueList.get(i), 0.25f, 1f));
+				g2.setPaint(colorList.get(i));
 				for (final Entry<Long, Point2D> entry: subMap.entrySet()) {
 					if (prevPoint != null) {
 						g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
@@ -512,7 +514,9 @@ public class Main {
 					if (prevPoint != null) {
 						final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
 						if (ratio > 0) {
-							g2.setPaint(Color.getHSBColor(hueList.get(i), 0.33f + 0.34f * ratio, 1f - ratio));
+							final Color color = colorList.get(i);
+							final float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), new float[3]);
+							g2.setPaint(Color.getHSBColor(hsb[0], hsb[1], (1f - ratio) * hsb[2]));
 							g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
 						}
 					}
