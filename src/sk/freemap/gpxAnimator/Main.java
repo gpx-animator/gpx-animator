@@ -36,6 +36,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -58,14 +59,17 @@ public class Main {
 	private double fps = 30.0;
 	private boolean debug;
 	private double totalTime = Double.NaN;
-	private int width = 800;
+	private int width = 0;
+	private int height = 0;
 	private int zoom = 0;
 	private float backgroundMapVisibility = 50f;
+	private boolean skipIdle = true;
 
 	private final List<List<TreeMap<Long, Point2D>>> timePointMapListList = new ArrayList<List<TreeMap<Long,Point2D>>>();
 	private final List<String> inputGpxList = new ArrayList<String>();
 	private final List<String> labelList = new ArrayList<String>();
 	private final List<Color> colorList = new ArrayList<Color>();
+	private final List<Long> timeOffsetList = new ArrayList<Long>();
 	private String frameFilePattern = "frame%08d.png";
 	private String tmsUrlTemplate; // http://tile.openstreetmap.org/{zoom}/{x}/{y}.png, http://aio.freemap.sk/T/{zoom}/{x}/{y}.png
 
@@ -112,6 +116,8 @@ public class Main {
 					colorList.add(Color.decode(args[++i]));
 				} else if (arg.equals("--margin")) {
 					margin = Integer.parseInt(args[++i]);
+				} else if (arg.equals("--time-offset")) {
+					timeOffsetList.add(Long.parseLong(args[++i]) * 1000);
 				} else if (arg.equals("--speedup")) {
 					speedup = Double.parseDouble(args[++i]);
 				} else if (arg.equals("--line-width")) {
@@ -122,6 +128,8 @@ public class Main {
 					fps = Double.parseDouble(args[++i]);
 				} else if (arg.equals("--width")) {
 					width = Integer.parseInt(args[++i]);
+				} else if (arg.equals("--height")) {
+					height = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--zoom")) {
 					zoom = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--font-size")) {
@@ -134,6 +142,8 @@ public class Main {
 					backgroundMapVisibility = Float.parseFloat(args[++i]);
 				} else if (arg.equals("--total-time")) {
 					totalTime = Double.parseDouble(args[++i]);
+				} else if (arg.equals("--keep-idle")) {
+					skipIdle = false;
 				} else if (arg.equals("--help")) {
 					printHelp();
 				} else {
@@ -169,6 +179,8 @@ public class Main {
 		System.out.println("\ttrack color in #RRGGBB representation; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--line-width <width>");
 		System.out.println("\ttrack line width in pixels; can be specified multiple times if multiple tracks are provided; default 2.0");
+		System.out.println("--time-offset <seconds>");
+		System.out.println("\ttime offset for track in seconds; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--tail-duration <time>");
 		System.out.println("\tlatest time of highlighted tail in seconds; default 3600");
 		System.out.println("--margin <margin>");
@@ -180,15 +192,19 @@ public class Main {
 		System.out.println("--fps <fps>");
 		System.out.println("\tframes per second; default 30.0");
 		System.out.println("--width <width>");
-		System.out.println("\tvideo width in pixels; if --tms-url-template option is used then this option specifies max width; default 800");
+		System.out.println("\tvideo width in pixels; if not specified but --zoom option is specified, then computed from GPX bounding box and margin, otherwise 800");
+		System.out.println("--height <height>");
+		System.out.println("\tvideo height in pixels; if unspecified, it is derived from width, GPX bounding box and margin");
 		System.out.println("--zoom <zoom>");
-		System.out.println("\tmap zoom typically from 1 to 18, alternative to --width option");
+		System.out.println("\tmap zoom typically from 1 to 18; if not specified and --tms-url-template option is used then it is computed from --width option");
 		System.out.println("--tms-url-template <template>");
 		System.out.println("\tslippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap");
 		System.out.println("--background-map-visibility <visibility>");
 		System.out.println("\tvisibility of the background map in %, default 50.0");
 		System.out.println("--font-size <size>");
 		System.out.println("\tdatetime text font size; default 12; set to 0 for no date text");
+		System.out.println("--keep-idle");
+		System.out.println("\tdon't skip parts where no movement is present");
 		System.out.println("--debug");
 		System.out.println("\ttoggle debugging");
 	}
@@ -239,7 +255,11 @@ public class Main {
 		
 		double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
 		
+		final List<Long[]> spanList = new ArrayList<Long[]>();
+		
+		int i = -1;
 		for (final String inputGpx : inputGpxList) {
+			i++;
 			final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
 			for (final TreeMap<Long, LatLon> timeLatLonMap : parseGpx(inputGpx)) {
 				final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
@@ -253,15 +273,50 @@ public class Main {
 					maxX = Math.max(x, maxX);
 					maxY = Math.max(y, maxY);
 					
-					timePointMap.put(entry.getKey(), new Point2D.Double(x, y));
+					Long time = entry.getKey();
+					if (timeOffsetList.size() > i) {
+						time += timeOffsetList.get(i);
+					}
+					timePointMap.put(time, new Point2D.Double(x, y));
 				}
 				timePointMapList.add(timePointMap);
+
+				Long t0 = timePointMap.firstKey();
+				Long t1 = timePointMap.lastKey() + tailDuration * 1000;
+				test: { // code in the block merges connected spans; it is currently not important to do this
+					for (final Iterator<Long[]> iter = spanList.iterator(); iter.hasNext(); ) {
+						final Long[] span = iter.next();
+						if (t0 > span[0] && t1 < span[1]) {
+							// swallowed
+							break test;
+						}
+						
+						if (t0 < span[0] && t1 > span[1]) {
+							// swallows
+							iter.remove();
+						} else if (t1 > span[0] && t1 < span[1]) {
+							t1 = span[1];
+							iter.remove();
+						} else if (t0 < span[1] && t0 > span[0]) {
+							t0 = span[0];
+							iter.remove();
+						}
+					}
+					
+					spanList.add(new Long[] { t0, t1 });
+				}
 			}
 			Collections.reverse(timePointMapList); // reversing because of last known location drawing
 			timePointMapListList.add(timePointMapList);
 		}
 
+		final boolean userSpecifiedWidth = width != 0;
+		if (width == 0) {
+			width = 800;
+		}
+		
 		if (tmsUrlTemplate != null && zoom == 0) {
+			// force using computed zoom
 			zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - margin * 2) / (maxX - minX)) / Math.log(2));
 			if (debug) {
 				System.out.println("computed zoom is " + zoom);
@@ -272,14 +327,23 @@ public class Main {
 				? (width - margin * 2) / (maxX - minX)
 				: (128.0 * (1 << zoom)) / Math.PI;
 		
-		
-		// compute zoom from width
-			
 		minX -= margin / scale;
-		minY -= margin / scale;
 		maxX += margin / scale;
+		minY -= margin / scale;
 		maxY += margin / scale;
 		
+		if (userSpecifiedWidth) {
+			final double ww = width - (maxX - minX) * scale;
+			minX -= ww / scale / 2.0;
+			maxX += ww / scale / 2.0;
+		}
+
+		if (height != 0) {
+			final double hh = height - (maxY - minY) * scale;
+			minY -= hh / scale / 2.0;
+			maxY += hh / scale / 2.0;
+		}
+
 		// translate to 0,0
 		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
 			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
@@ -322,22 +386,39 @@ public class Main {
 		}
 
 		final int frames = (int) ((maxTime + tailDuration * 1000 - minTime) * fps / (MS * speedup));
-				
+		
+		int f = 0;
+		float skip = 1f;
 		for (int frame = 1; frame < frames; frame++) {
+			final Long time = getTime(frame);
+			skip: if (skipIdle) {
+				for (final Long[] span : spanList) {
+					if (span[0] <= time && span[1] >= time) {
+						break skip;
+					}
+				}
+				System.out.println("Skipping unused frame: " + frame + "/" + (frames - 1));
+				skip = 0f;
+				continue;
+			}
+			
 			System.out.println("Frame: " + frame + "/" + (frames - 1));
 			paint(bi, frame, 0);
 			
 			final BufferedImage bi2 = Utils.deepCopy(bi);
 			paint(bi2, frame, tailDuration * 1000);
 			drawMarker(bi2, frame);
-			
+
 			if (fontSize > 0) {
 				drawTime(bi2, frame);
 			}
 			
-			final File outputfile = new File(String.format(frameFilePattern, frame));
+			final BufferedImage bi3 = skip >= 1f ? bi2 : new RescaleOp(skip, (1f - skip) * 255f, null).filter(bi2, null);
+			skip += 1000f / 250f / fps; // 250ms
+
+			final File outputfile = new File(String.format(frameFilePattern, ++f));
 		    try {
-				ImageIO.write(bi2, "png", outputfile);
+				ImageIO.write(bi3, "png", outputfile);
 			} catch (final IOException e) {
 				throw new UserException("error writing frame to " + outputfile);
 			}
