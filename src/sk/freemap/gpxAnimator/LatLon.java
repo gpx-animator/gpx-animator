@@ -20,9 +20,12 @@ public class LatLon {
 	
 	private final double lon;
 
-	public LatLon(final double lat, final double lon) {
+	private final long time;
+
+	public LatLon(final double lat, final double lon, final long time) {
 		this.lat = lat;
 		this.lon = lon;
+		this.time = time;
 	}
 	
 	public double getLat() {
@@ -31,6 +34,10 @@ public class LatLon {
 	
 	public double getLon() {
 		return lon;
+	}
+	
+	public long getTime() {
+		return time;
 	}
 	
 }

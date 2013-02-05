@@ -70,6 +70,8 @@ public class Main {
 	private final List<String> labelList = new ArrayList<String>();
 	private final List<Color> colorList = new ArrayList<Color>();
 	private final List<Long> timeOffsetList = new ArrayList<Long>();
+	private final List<Long> forcedPointIntervalList = new ArrayList<Long>();
+	
 	private String frameFilePattern = "frame%08d.png";
 	private String tmsUrlTemplate; // http://tile.openstreetmap.org/{zoom}/{x}/{y}.png, http://aio.freemap.sk/T/{zoom}/{x}/{y}.png
 
@@ -79,6 +81,8 @@ public class Main {
 	private final List<Float> lineWidthList = new ArrayList<Float>();
 	
 	private long minTime = Long.MAX_VALUE;
+	private Color flashbackColor = Color.white;
+	private float flashbackDuration = 250f;
 	
 	/**
 	 * @param args
@@ -117,7 +121,9 @@ public class Main {
 				} else if (arg.equals("--margin")) {
 					margin = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--time-offset")) {
-					timeOffsetList.add(Long.parseLong(args[++i]) * 1000);
+					timeOffsetList.add(Long.parseLong(args[++i]));
+				} else if (arg.equals("--forced-point-time-interval")) {
+					forcedPointIntervalList.add(Long.parseLong(args[++i]));
 				} else if (arg.equals("--speedup")) {
 					speedup = Double.parseDouble(args[++i]);
 				} else if (arg.equals("--line-width")) {
@@ -144,6 +150,11 @@ public class Main {
 					totalTime = Double.parseDouble(args[++i]);
 				} else if (arg.equals("--keep-idle")) {
 					skipIdle = false;
+				} else if (arg.equals("--flashback-color")) {
+					final long lv = Long.decode(args[++i]).longValue();
+					flashbackColor = new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true);
+				} else if (arg.equals("--flashback-duration")) {
+					flashbackDuration = Float.parseFloat(args[++i]);
 				} else if (arg.equals("--help")) {
 					printHelp();
 					System.exit(0);
@@ -164,7 +175,7 @@ public class Main {
 
 
 	private void printHelp() {
-		System.out.println("GPX Animator 0.6");
+		System.out.println("GPX Animator 0.7");
 		System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
 		System.out.println();
 		System.out.println("Usage:");
@@ -180,8 +191,11 @@ public class Main {
 		System.out.println("\ttrack color in #RRGGBB representation; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--line-width <width>");
 		System.out.println("\ttrack line width in pixels; can be specified multiple times if multiple tracks are provided; default 2.0");
-		System.out.println("--time-offset <seconds>");
-		System.out.println("\ttime offset for track in seconds; can be specified multiple times if multiple tracks are provided");
+		System.out.println("--time-offset <milliseconds>");
+		System.out.println("\ttime offset for track in milliseconds; can be specified multiple times if multiple tracks are provided");
+		System.out.println("--forced-point-time-interval <milliseconds>");
+		System.out.println("\tinterval between adjanced GPS points in milliseconds - useful for GPX files with missing point time information; if specified, " +
+				"absolute time must be set with --time-offset option; can be specified multiple times if multiple tracks are provided; 0 for no forcing; default 0");
 		System.out.println("--tail-duration <time>");
 		System.out.println("\tlatest time of highlighted tail in seconds; default 3600");
 		System.out.println("--margin <margin>");
@@ -199,13 +213,18 @@ public class Main {
 		System.out.println("--zoom <zoom>");
 		System.out.println("\tmap zoom typically from 1 to 18; if not specified and --tms-url-template option is used then it is computed from --width option");
 		System.out.println("--tms-url-template <template>");
-		System.out.println("\tslippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap");
+		System.out.println("\tslippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; " +
+				"for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap");
 		System.out.println("--background-map-visibility <visibility>");
 		System.out.println("\tvisibility of the background map in %, default 50.0");
 		System.out.println("--font-size <size>");
 		System.out.println("\tdatetime text font size; default 12; set to 0 for no date text");
 		System.out.println("--keep-idle");
 		System.out.println("\tdon't skip parts where no movement is present");
+		System.out.println("--flashback-color <ARGBcolor>");
+		System.out.println("\tcolor of the idle-skipping flashback effect in #AARRGGBB representation; default is opaque white - #ffffffff");
+		System.out.println("--flashback-duration <duration>");
+		System.out.println("\tidle-skipping flashback effect duration in milliseconds; set to 0.0 for no flashback; default 250.0");
 		System.out.println("--debug");
 		System.out.println("\ttoggle debugging");
 	}
@@ -224,7 +243,7 @@ public class Main {
 	}
 	
 	
-	private static List<TreeMap<Long, LatLon>> parseGpx(final String inputGpx) throws UserException {
+	private static List<List<LatLon>> parseGpx(final String inputGpx) throws UserException {
 		final SAXParser saxParser;
 		try {
 			saxParser = SAXParserFactory.newInstance().newSAXParser();
@@ -245,7 +264,7 @@ public class Main {
 			throw new RuntimeException("internal error when parsing GPX file", e);
 		}
 		
-		return dh.getTimePointMapList();
+		return dh.getPointLists();
 	}
 	
 	
@@ -253,7 +272,7 @@ public class Main {
 		validateOptions();
 		normalizeColors();
 		normalizeLineWidths();
-		
+
 		double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
 		
 		final List<Long[]> spanList = new ArrayList<Long[]>();
@@ -262,10 +281,10 @@ public class Main {
 		for (final String inputGpx : inputGpxList) {
 			i++;
 			final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
-			for (final TreeMap<Long, LatLon> timeLatLonMap : parseGpx(inputGpx)) {
+			long forcedTime = 0;
+			for (final List<LatLon> latLonList : parseGpx(inputGpx)) {
 				final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
-				for (final Entry<Long, LatLon> entry : timeLatLonMap.entrySet()) {
-					final LatLon latLon = entry.getValue();
+				for (final LatLon latLon : latLonList) {
 					final double x = Math.toRadians(latLon.getLon());
 					final double y = Math.log(Math.tan(Math.PI / 4 + Math.toRadians(latLon.getLat()) / 2));
 					
@@ -273,9 +292,19 @@ public class Main {
 					minY = Math.min(y, minY);
 					maxX = Math.max(x, maxX);
 					maxY = Math.max(y, maxY);
-					
-					Long time = entry.getKey();
-					if (timeOffsetList.size() > i) {
+
+					long time;
+					if (i < forcedPointIntervalList.size() && !Long.valueOf(0L).equals(forcedPointIntervalList.get(i))) {
+						forcedTime += forcedPointIntervalList.get(i);
+						time = forcedTime;
+					} else {
+						time = latLon.getTime();
+						if (time == Long.MIN_VALUE) {
+							throw new UserException("missing time for point; specify --forced-point-time-interval option");
+						}
+					}
+				
+					if (i < timeOffsetList.size()) {
 						time += timeOffsetList.get(i);
 					}
 					timePointMap.put(time, new Point2D.Double(x, y));
@@ -389,7 +418,7 @@ public class Main {
 		final int frames = (int) ((maxTime + tailDuration * 1000 - minTime) * fps / (MS * speedup));
 		
 		int f = 0;
-		float skip = 1f;
+		float skip = -1f;
 		for (int frame = 1; frame < frames; frame++) {
 			final Long time = getTime(frame);
 			skip: if (skipIdle) {
@@ -399,7 +428,7 @@ public class Main {
 					}
 				}
 				System.out.println("Skipping unused frame: " + frame + "/" + (frames - 1));
-				skip = 0f;
+				skip = 1f;
 				continue;
 			}
 			
@@ -414,12 +443,16 @@ public class Main {
 				drawTime(bi2, frame);
 			}
 			
-			final BufferedImage bi3 = skip >= 1f ? bi2 : new RescaleOp(skip, (1f - skip) * 255f, null).filter(bi2, null);
-			skip += 1000f / 250f / fps; // 250ms
+			if (skip > 0f && flashbackColor.getAlpha() > 0 && flashbackDuration > 0f) {
+				final Graphics2D g2 = (Graphics2D) bi2.getGraphics();
+				g2.setColor(new Color(flashbackColor.getRed(), flashbackColor.getGreen(), flashbackColor.getBlue(), (int) (flashbackColor.getAlpha() * skip)));
+				g2.fillRect(0, 0, bi2.getWidth(), bi2.getHeight());
+				skip -= 1000f / flashbackDuration / fps;
+			}
 
 			final File outputfile = new File(String.format(frameFilePattern, ++f));
 		    try {
-				ImageIO.write(bi3, "png", outputfile);
+				ImageIO.write(bi2, "png", outputfile);
 			} catch (final IOException e) {
 				throw new UserException("error writing frame to " + outputfile);
 			}

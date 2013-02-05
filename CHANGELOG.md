@@ -1,4 +1,9 @@
-version 0.6 (2013-02-03)
+version 0.7 (2013-02-05)
+------------------------
+* added support for forced time intervals of GPS points
+* configurable flashback color and duration
+
+version 0.6 (2013-02-04)
 ------------------------
 * added video dimension settings
 * added track offset support (per track)
