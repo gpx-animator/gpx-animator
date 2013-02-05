@@ -146,6 +146,7 @@ public class Main {
 					skipIdle = false;
 				} else if (arg.equals("--help")) {
 					printHelp();
+					System.exit(0);
 				} else {
 					System.err.println("unrecognised option " + arg);
 					System.err.println("run program with --help option to print help");
