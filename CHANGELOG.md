@@ -13,7 +13,7 @@ version 0.5 (2013-02-03)
 ------------------------
 * outlining texts
 * improved user experience ;-)
-* fixing some indexed PNG bacground map tiles
+* fixing some indexed PNG background map tiles
 
 version 0.4 (2013-02-03)
 ------------------------

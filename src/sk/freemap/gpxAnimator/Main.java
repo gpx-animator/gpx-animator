@@ -43,8 +43,6 @@ import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
 
@@ -156,7 +154,7 @@ public class Main {
 				} else if (arg.equals("--flashback-duration")) {
 					flashbackDuration = Float.parseFloat(args[++i]);
 				} else if (arg.equals("--help")) {
-					printHelp();
+					Help.printHelp();
 					System.exit(0);
 				} else {
 					System.err.println("unrecognised option " + arg);
@@ -174,62 +172,6 @@ public class Main {
 	}
 
 
-	private void printHelp() {
-		System.out.println("GPX Animator 0.7");
-		System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
-		System.out.println();
-		System.out.println("Usage:");
-		System.out.println("--help");
-		System.out.println("\tthis help");
-		System.out.println("--input <input>");
-		System.out.println("\tinput GPX filename; can be provided multiple times for multiple tracks");
-		System.out.println("--output <output>");
-		System.out.println("\toutput filename template for saved frames; default frame%08d.png");
-		System.out.println("--label <label>");
-		System.out.println("\ttext displayed next to marker; can be specified multiple times if multiple tracks are provided");
-		System.out.println("--color <color>");
-		System.out.println("\ttrack color in #RRGGBB representation; can be specified multiple times if multiple tracks are provided");
-		System.out.println("--line-width <width>");
-		System.out.println("\ttrack line width in pixels; can be specified multiple times if multiple tracks are provided; default 2.0");
-		System.out.println("--time-offset <milliseconds>");
-		System.out.println("\ttime offset for track in milliseconds; can be specified multiple times if multiple tracks are provided");
-		System.out.println("--forced-point-time-interval <milliseconds>");
-		System.out.println("\tinterval between adjanced GPS points in milliseconds - useful for GPX files with missing point time information; if specified, " +
-				"absolute time must be set with --time-offset option; can be specified multiple times if multiple tracks are provided; 0 for no forcing; default 0");
-		System.out.println("--tail-duration <time>");
-		System.out.println("\tlatest time of highlighted tail in seconds; default 3600");
-		System.out.println("--margin <margin>");
-		System.out.println("\tmargin in pixels; default 20");
-		System.out.println("--speedup <speedup>");
-		System.out.println("\tspeed multiplication of the real time; default 1000.0; complementary to --total-time option");
-		System.out.println("--total-time <time>");
-		System.out.println("\ttotal length of video in seconds; complementary to --speedup option");
-		System.out.println("--fps <fps>");
-		System.out.println("\tframes per second; default 30.0");
-		System.out.println("--width <width>");
-		System.out.println("\tvideo width in pixels; if not specified but --zoom option is specified, then computed from GPX bounding box and margin, otherwise 800");
-		System.out.println("--height <height>");
-		System.out.println("\tvideo height in pixels; if unspecified, it is derived from width, GPX bounding box and margin");
-		System.out.println("--zoom <zoom>");
-		System.out.println("\tmap zoom typically from 1 to 18; if not specified and --tms-url-template option is used then it is computed from --width option");
-		System.out.println("--tms-url-template <template>");
-		System.out.println("\tslippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; " +
-				"for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap");
-		System.out.println("--background-map-visibility <visibility>");
-		System.out.println("\tvisibility of the background map in %, default 50.0");
-		System.out.println("--font-size <size>");
-		System.out.println("\tdatetime text font size; default 12; set to 0 for no date text");
-		System.out.println("--keep-idle");
-		System.out.println("\tdon't skip parts where no movement is present");
-		System.out.println("--flashback-color <ARGBcolor>");
-		System.out.println("\tcolor of the idle-skipping flashback effect in #AARRGGBB representation; default is opaque white - #ffffffff");
-		System.out.println("--flashback-duration <duration>");
-		System.out.println("\tidle-skipping flashback effect duration in milliseconds; set to 0.0 for no flashback; default 250.0");
-		System.out.println("--debug");
-		System.out.println("\ttoggle debugging");
-	}
-
-	
 	private void validateOptions() throws UserException {
 		if (inputGpxList.isEmpty()) {
 			throw new UserException("missing input file");
@@ -243,28 +185,33 @@ public class Main {
 	}
 	
 	
-	private static List<List<LatLon>> parseGpx(final String inputGpx) throws UserException {
-		final SAXParser saxParser;
-		try {
-			saxParser = SAXParserFactory.newInstance().newSAXParser();
-		} catch (final ParserConfigurationException e) {
-			throw new RuntimeException("can't create XML parser", e);
-		} catch (final SAXException e) {
-			throw new RuntimeException("can't create XML parser", e);
+	private void normalizeColors() {
+		final int size = inputGpxList.size();
+		final int size2 = colorList.size();
+		if (size2 == 0) {
+			for (int i = 0; i < size; i++) {
+				colorList.add(Color.getHSBColor((float) i / size, 0.8f, 1f));
+			}
+		} else if (size2 < size) {
+			for (int i = size2; i < size; i++) {
+				colorList.add(colorList.get(i - size2));
+			}
 		}
-		
-		final GpxContentHandler dh = new GpxContentHandler();
-		try {
-			saxParser.parse(new File(inputGpx), dh);
-		} catch (final SAXException e) {
-			throw new UserException("error parsing input GPX file", e);
-		} catch (final IOException e) {
-			throw new UserException("error reading input file", e);
-		} catch (final RuntimeException e) {
-			throw new RuntimeException("internal error when parsing GPX file", e);
+	}
+	
+	
+	private void normalizeLineWidths() {
+		final int size = inputGpxList.size();
+		final int size2 = lineWidthList.size();
+		if (size2 == 0) {
+			for (int i = 0; i < size; i++) {
+				lineWidthList.add(2f);
+			}
+		} else if (size2 < size) {
+			for (int i = size2; i < size; i++) {
+				lineWidthList.add(lineWidthList.get(i - size2));
+			}
 		}
-		
-		return dh.getPointLists();
 	}
 	
 	
@@ -282,7 +229,7 @@ public class Main {
 			i++;
 			final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
 			long forcedTime = 0;
-			for (final List<LatLon> latLonList : parseGpx(inputGpx)) {
+			for (final List<LatLon> latLonList : GpxParser.parseGpx(inputGpx)) {
 				final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
 				for (final LatLon latLon : latLonList) {
 					final double x = Math.toRadians(latLon.getLon());
@@ -525,37 +472,6 @@ public class Main {
 
 	private static double yToLat(final double y) {
 		return Math.toDegrees(2.0 * (Math.atan(Math.exp(y)) - Math.PI / 4.0));
-	}
-
-
-	private void normalizeColors() {
-		final int size = inputGpxList.size();
-		final int size2 = colorList.size();
-		if (size2 == 0) {
-			for (int i = 0; i < size; i++) {
-				colorList.add(Color.getHSBColor((float) i / size, 0.8f, 1f));
-			}
-		} else if (size2 < size) {
-			for (int i = size2; i < size; i++) {
-				colorList.add(colorList.get(i - size2));
-			}
-		}
-	}
-	
-	
-	
-	private void normalizeLineWidths() {
-		final int size = inputGpxList.size();
-		final int size2 = lineWidthList.size();
-		if (size2 == 0) {
-			for (int i = 0; i < size; i++) {
-				lineWidthList.add(2f);
-			}
-		} else if (size2 < size) {
-			for (int i = size2; i < size; i++) {
-				lineWidthList.add(lineWidthList.get(i - size2));
-			}
-		}
 	}
 
 
