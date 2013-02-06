@@ -29,6 +29,10 @@ Features
 * configurable video size, fps and speedup or total video time
 * background map from any public TMS server
 
+FAQ
+---
+https://github.com/zdila/gpx-animator/blob/master/FAQ.md
+
 Demos
 -----
 * https://www.facebook.com/photo.php?v=10151420417858769
