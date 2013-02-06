@@ -30,5 +30,5 @@ Fine-tune --speedup option or specify exact --total-time in seconds.
 Q: I have some other problem
 ----------------------------
 
-Feel free to write me at m.zdila@freemap.sk.
+Feel free to write me at martin.zdila@freemap.sk.
 
