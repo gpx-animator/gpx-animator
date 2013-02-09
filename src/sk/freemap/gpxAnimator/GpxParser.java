@@ -16,7 +16,6 @@ package sk.freemap.gpxAnimator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -26,7 +25,7 @@ import org.xml.sax.SAXException;
 
 class GpxParser {
 
-	static List<List<LatLon>> parseGpx(final String inputGpx) throws UserException {
+	static void parseGpx(final String inputGpx, final GpxContentHandler dh) throws UserException {
 		final SAXParser saxParser;
 		try {
 			saxParser = SAXParserFactory.newInstance().newSAXParser();
@@ -36,7 +35,6 @@ class GpxParser {
 			throw new RuntimeException("can't create XML parser", e);
 		}
 		
-		final GpxContentHandler dh = new GpxContentHandler();
 		try {
 			saxParser.parse(new File(inputGpx), dh);
 		} catch (final SAXException e) {
@@ -46,8 +44,6 @@ class GpxParser {
 		} catch (final RuntimeException e) {
 			throw new RuntimeException("internal error when parsing GPX file", e);
 		}
-		
-		return dh.getPointLists();
 	}
 
 

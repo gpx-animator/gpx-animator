@@ -28,34 +28,38 @@ final class GpxContentHandler extends DefaultHandler {
 	private static final String ATTR_LAT = "lat";
 	private static final String ELEM_TRKSEG = "trkseg";
 	private static final String ELEM_TRKPT = "trkpt";
+	private static final String ELEM_WPT = "wpt";
 	private static final String ELEM_TIME = "time";
+	private static final String ELEM_NAME = "name";
 	
 	private final List<List<LatLon>> timePointListList = new ArrayList<List<LatLon>>();
 	private List<LatLon> timePointList;
+	private final List<LatLon> waypointList = new ArrayList<LatLon>();
 
-	private final StringBuilder timeSb = new StringBuilder();
+	private StringBuilder sb;
 	private long time = Long.MIN_VALUE;
 	private double lat;
 	private double lon;
+	private String name;
 	
 
 	@Override
 	public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException {
 		if (ELEM_TRKSEG.equals(qName)) {
 			timePointList = new ArrayList<LatLon>();
-		} else if (ELEM_TRKPT.equals(qName)) {
+		} else if (ELEM_TRKPT.equals(qName) || ELEM_WPT.equals(qName)) {
 			lat = Double.parseDouble(attributes.getValue(ATTR_LAT));
 			lon = Double.parseDouble(attributes.getValue(ATTR_LON));
-		} else if (ELEM_TIME.equals(qName)) {
-			timeSb.setLength(0);
+		} else if (ELEM_TIME.equals(qName) || ELEM_NAME.equals(qName) ) {
+			sb = new StringBuilder();
 		}
 	}
 	
 
 	@Override
 	public void characters(final char[] ch, final int start, final int length) throws SAXException {
-		if (timeSb != null) {
-			timeSb.append(ch, start, length);
+		if (sb != null) {
+			sb.append(ch, start, length);
 		}
 	}
 	
@@ -68,19 +72,29 @@ final class GpxContentHandler extends DefaultHandler {
 		} else if (ELEM_TRKPT.equals(qName)) {
 			timePointList.add(new LatLon(lat, lon, time));
 			time = Long.MIN_VALUE;
+		} else if (ELEM_WPT.equals(qName)) {
+			waypointList.add(new Waypoint(lat, lon, time, name));
 		} else if (ELEM_TIME.equals(qName)) {
 			try {
-				time = Utils.parseISO8601(timeSb.toString()).getTime();
+				time = Utils.parseISO8601(sb.toString()).getTime();
 			} catch (final ParseException e) {
 				throw new SAXException(e);
 			}
-			timeSb.setLength(0);
+			sb = null;
+		} else if (ELEM_NAME.equals(qName)) {
+			name = sb.toString();
+			sb = null;
 		}
 	}
 	
 	
 	public List<List<LatLon>> getPointLists() {
 		return timePointListList;
+	}
+	
+	
+	public List<LatLon> getWaypointList() {
+		return waypointList;
 	}
 	
 }

@@ -1,3 +1,7 @@
+version 0.8 (2013-02-09)
+------------------------ 
+* added waypoint support
+
 version 0.7 (2013-02-05)
 ------------------------
 * added support for forced time intervals of GPS points

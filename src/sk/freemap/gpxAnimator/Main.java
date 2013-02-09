@@ -78,9 +78,14 @@ public class Main {
 	private int fontSize = 12;
 	private final List<Float> lineWidthList = new ArrayList<Float>();
 	
-	private long minTime = Long.MAX_VALUE;
 	private Color flashbackColor = Color.white;
 	private float flashbackDuration = 250f;
+	
+	private long minTime = Long.MAX_VALUE;
+	private double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
+	private double markerSize = 8.0;
+	private double waypointSize = 6.0;
+
 	
 	/**
 	 * @param args
@@ -130,6 +135,10 @@ public class Main {
 					tailDuration = Long.parseLong(args[++i]);
 				} else if (arg.equals("--fps")) {
 					fps = Double.parseDouble(args[++i]);
+				} else if (arg.equals("--marker-size")) {
+					markerSize = Double.parseDouble(args[++i]);
+				} else if (arg.equals("--waypoint-size")) {
+					waypointSize = Double.parseDouble(args[++i]);
 				} else if (arg.equals("--width")) {
 					width = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--height")) {
@@ -213,50 +222,32 @@ public class Main {
 			}
 		}
 	}
-	
+
 	
 	private void render() throws UserException {
 		validateOptions();
 		normalizeColors();
 		normalizeLineWidths();
-
-		double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
 		
 		final List<Long[]> spanList = new ArrayList<Long[]>();
+		
+		final TreeMap<Long, Point2D> wpMap = new TreeMap<Long, Point2D>();
 		
 		int i = -1;
 		for (final String inputGpx : inputGpxList) {
 			i++;
-			final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long,Point2D>>();
-			long forcedTime = 0;
-			for (final List<LatLon> latLonList : GpxParser.parseGpx(inputGpx)) {
-				final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
-				for (final LatLon latLon : latLonList) {
-					final double x = Math.toRadians(latLon.getLon());
-					final double y = Math.log(Math.tan(Math.PI / 4 + Math.toRadians(latLon.getLat()) / 2));
-					
-					minX = Math.min(x, minX);
-					minY = Math.min(y, minY);
-					maxX = Math.max(x, maxX);
-					maxY = Math.max(y, maxY);
+			
+			final GpxContentHandler gch = new GpxContentHandler();
+			GpxParser.parseGpx(inputGpx, gch);
 
-					long time;
-					if (i < forcedPointIntervalList.size() && !Long.valueOf(0L).equals(forcedPointIntervalList.get(i))) {
-						forcedTime += forcedPointIntervalList.get(i);
-						time = forcedTime;
-					} else {
-						time = latLon.getTime();
-						if (time == Long.MIN_VALUE) {
-							throw new UserException("missing time for point; specify --forced-point-time-interval option");
-						}
-					}
-				
-					if (i < timeOffsetList.size()) {
-						time += timeOffsetList.get(i);
-					}
-					timePointMap.put(time, new Point2D.Double(x, y));
-				}
+			
+			final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long, Point2D>>();
+						
+			for (final List<LatLon> latLonList : gch.getPointLists()) {
+				final TreeMap<Long, Point2D> timePointMap = toTimePointMap(i, latLonList);
 				timePointMapList.add(timePointMap);
+
+				wpMap.putAll(toTimePointMap(i, gch.getWaypointList()));
 
 				Long t0 = timePointMap.firstKey();
 				Long t1 = timePointMap.lastKey() + tailDuration * 1000;
@@ -295,9 +286,7 @@ public class Main {
 		if (tmsUrlTemplate != null && zoom == 0) {
 			// force using computed zoom
 			zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - margin * 2) / (maxX - minX)) / Math.log(2));
-			if (debug) {
-				System.out.println("computed zoom is " + zoom);
-			}
+			System.out.println("computed zoom is " + zoom);
 		}
 		
 		final double scale = zoom == 0
@@ -321,13 +310,25 @@ public class Main {
 			maxY += hh / scale / 2.0;
 		}
 
+		long maxTime = Long.MIN_VALUE;
+
 		// translate to 0,0
 		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
 			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+				maxTime = Math.max(maxTime, timePointMap.lastKey());
+				minTime = Math.min(minTime, timePointMap.firstKey());
+				
 				for (final Point2D point : timePointMap.values()) {
 					point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
 				}
 			}
+		}
+		
+		maxTime = Math.max(maxTime, wpMap.lastKey());
+		minTime = Math.min(minTime, wpMap.firstKey());
+		
+		for (final Point2D point : wpMap.values()) {
+			point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
 		}
 		
 		final BufferedImage bi = new BufferedImage(
@@ -349,15 +350,6 @@ public class Main {
 			fontMetrics = ga.getFontMetrics(font);
 		}
 
-		long maxTime = Long.MIN_VALUE;
-		
-		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
-			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
-				maxTime = Math.max(maxTime, timePointMap.lastKey());
-				minTime = Math.min(minTime, timePointMap.firstKey());
-			}
-		}
-		
 		if (!Double.isNaN(totalTime)) {
 			speedup = (maxTime - minTime) / totalTime;
 		}
@@ -384,6 +376,9 @@ public class Main {
 			
 			final BufferedImage bi2 = Utils.deepCopy(bi);
 			paint(bi2, frame, tailDuration * 1000);
+			if (waypointSize > 0.0) {
+				drawWaypoints(bi2, frame, wpMap);
+			}
 			drawMarker(bi2, frame);
 
 			if (fontSize > 0) {
@@ -411,6 +406,73 @@ public class Main {
 	}
 
 
+	private void drawWaypoints(final BufferedImage bi, final int frame, final TreeMap<Long, Point2D> wpMap) {
+		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		final long t2 = getTime(frame);
+		
+		if (t2 >= wpMap.firstKey())
+		for (final Point2D p : wpMap.subMap(wpMap.firstKey(), t2).values()) {
+			g2.setColor(Color.white);
+			final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - waypointSize / 2.0, p.getY() - waypointSize / 2.0, waypointSize, waypointSize);
+			g2.setStroke(new BasicStroke(1f));
+			g2.fill(marker);
+			g2.setColor(Color.black);
+			g2.draw(marker);
+			
+			printText(g2, ((NamedPoint) p).name, (float) p.getX() + 8f, (float) p.getY() + 4f);
+		}
+	}
+
+
+	private static class NamedPoint extends Point2D.Double {
+		private static final long serialVersionUID = 4011941819652468006L;
+		String name;
+	}
+	
+	
+	private TreeMap<Long, Point2D> toTimePointMap(final int i, final List<LatLon> latLonList) throws UserException {
+		long forcedTime = 0;
+
+		final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
+		for (final LatLon latLon : latLonList) {
+			final double x = Math.toRadians(latLon.getLon());
+			final double y = Math.log(Math.tan(Math.PI / 4 + Math.toRadians(latLon.getLat()) / 2));
+			
+			minX = Math.min(x, minX);
+			minY = Math.min(y, minY);
+			maxX = Math.max(x, maxX);
+			maxY = Math.max(y, maxY);
+
+			long time;
+			if (i < forcedPointIntervalList.size() && !Long.valueOf(0L).equals(forcedPointIntervalList.get(i))) {
+				forcedTime += forcedPointIntervalList.get(i);
+				time = forcedTime;
+			} else {
+				time = latLon.getTime();
+				if (time == Long.MIN_VALUE) {
+					throw new UserException("missing time for point; specify --forced-point-time-interval option");
+				}
+			}
+		
+			if (i < timeOffsetList.size()) {
+				time += timeOffsetList.get(i);
+			}
+			
+			
+			if (latLon instanceof Waypoint) {
+				final NamedPoint namedPoint = new NamedPoint();
+				namedPoint.setLocation(x, y);
+				namedPoint.name = ((Waypoint) latLon).getName();
+				timePointMap.put(time, namedPoint);
+			} else {
+				timePointMap.put(time, new Point2D.Double(x, y));
+			}
+		}
+		return timePointMap;
+	}
+
+
 	private void drawMap(final double minX, final double maxX, final double minY, final double maxY, final BufferedImage bi) throws UserException {
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 
@@ -431,9 +493,7 @@ public class Main {
 						.replace("{x}", Integer.toString(x))
 						.replace("{y}", Integer.toString(y));
 				
-				if (debug) {
-					System.out.println("reading tile " + url);
-				}
+				System.out.println("reading tile " + url);
 				
 				final BufferedImage tile;
 				try {
@@ -499,7 +559,7 @@ public class Main {
 				
 				final Point2D p = floorEntry.getValue();
 				g2.setColor(ceilingEntry == null ? Color.white : colorList.get(i));
-				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - 4.0, p.getY() - 4.0, 9.0, 9.0);
+				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - markerSize / 2.0, p.getY() - markerSize / 2.0, markerSize, markerSize);
 				g2.setStroke(new BasicStroke(1f));
 				g2.fill(marker);
 				g2.setColor(Color.black);
@@ -595,5 +655,5 @@ public class Main {
 		g2.setColor(Color.black);
 		g2.drawString(text, x, y);
 	}
-	
+
 }

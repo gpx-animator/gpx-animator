@@ -17,7 +17,7 @@ package sk.freemap.gpxAnimator;
 class Help {
 
 	static void printHelp() {
-		System.out.println("GPX Animator 0.7");
+		System.out.println("GPX Animator 0.8");
 		System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
 		System.out.println();
 		System.out.println("Usage:");
@@ -29,6 +29,10 @@ class Help {
 		System.out.println("\toutput filename template for saved frames; default frame%08d.png");
 		System.out.println("--label <label>");
 		System.out.println("\ttext displayed next to marker; can be specified multiple times if multiple tracks are provided");
+		System.out.println("--marker-size <size>");
+		System.out.println("\tmarker size in pixels; default 8.0");
+		System.out.println("--waypoint-size <size>");
+		System.out.println("\twaypoint size in pixels; for no waypoints specify 0.0; default 6.0");
 		System.out.println("--color <color>");
 		System.out.println("\ttrack color in #RRGGBB representation; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--line-width <width>");
