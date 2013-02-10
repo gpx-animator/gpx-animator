@@ -28,10 +28,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +53,6 @@ public class Main {
 	private double speedup = 1000.0;
 	private long tailDuration = 3600;
 	private double fps = 30.0;
-	private boolean debug;
 	private double totalTime = Double.NaN;
 	private int width = 0;
 	private int height = 0;
@@ -98,11 +95,7 @@ public class Main {
 		try {
 			main.render();
 		} catch (final UserException e) {
-			if (main.debug) {
-				e.printStackTrace();
-			} else {
-				System.err.println(e.getMessage());
-			}
+			e.printStackTrace();
 			System.exit(1);
 		}
 	}
@@ -147,8 +140,6 @@ public class Main {
 					zoom = Integer.parseInt(args[++i]);
 				} else if (arg.equals("--font-size")) {
 					fontSize = Integer.parseInt(args[++i]);
-				} else if (arg.equals("--debug")) {
-					debug = true;
 				} else if (arg.equals("--tms-url-template")) {
 					tmsUrlTemplate = args[++i];
 				} else if (arg.equals("--background-map-visibility")) {
@@ -239,7 +230,6 @@ public class Main {
 			
 			final GpxContentHandler gch = new GpxContentHandler();
 			GpxParser.parseGpx(inputGpx, gch);
-
 			
 			final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long, Point2D>>();
 						
@@ -344,7 +334,7 @@ public class Main {
 			ga.setColor(Color.white);
 			ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
 		} else {
-			drawMap(minX, maxX, minY, maxY, bi);
+			Map.drawMap(bi, tmsUrlTemplate, backgroundMapVisibility, zoom, minX, maxX, minY, maxY);
 		}
 		
 		if (fontSize > 0) {
@@ -377,11 +367,16 @@ public class Main {
 			paint(bi, frame, 0);
 			
 			final BufferedImage bi2 = Utils.deepCopy(bi);
+			
 			paint(bi2, frame, tailDuration * 1000);
+			
 			if (waypointSize > 0.0 && !wpMap.isEmpty()) {
 				drawWaypoints(bi2, frame, wpMap);
 			}
-			drawMarker(bi2, frame);
+			
+			if (markerSize > 0.0) {
+				drawMarker(bi2, frame);
+			}
 
 			if (fontSize > 0) {
 				drawTime(bi2, frame);
@@ -474,67 +469,6 @@ public class Main {
 		return timePointMap;
 	}
 
-
-	private void drawMap(final double minX, final double maxX, final double minY, final double maxY, final BufferedImage bi) throws UserException {
-		final Graphics2D ga = (Graphics2D) bi.getGraphics();
-
-		final double tileDblX = lonToTileX(xToLon(minX));
-		final int tileX = (int) Math.floor(tileDblX);
-		final int offsetX = (int) Math.floor(256.0 * (tileX - tileDblX));
-
-		final double tileDblY = latToTileY(yToLat(minY));
-		final int tileY = (int) Math.floor(tileDblY);
-		final int offsetY = (int) Math.floor(256.0 * (tileDblY - tileY));
-
-		final int maxXtile = (int) Math.floor(lonToTileX(xToLon(maxX)));
-		final int maxYtile = (int) Math.floor(latToTileY(yToLat(maxY)));
-		for (int x = tileX; x <= maxXtile; x++) {
-			for (int y = tileY; y >= maxYtile; y--) {
-				final String url = tmsUrlTemplate
-						.replace("{zoom}", Integer.toString(zoom))
-						.replace("{x}", Integer.toString(x))
-						.replace("{y}", Integer.toString(y));
-				
-				System.out.println("reading tile " + url);
-				
-				final BufferedImage tile;
-				try {
-					tile = ImageIO.read(new URL(url));
-				} catch (final IOException e) {
-					throw new UserException("error reading tile " + url);
-				}
-				
-				// convert to RGB format
-				final BufferedImage tile1 = new BufferedImage(tile.getWidth(), tile.getHeight(), BufferedImage.TYPE_INT_RGB);
-				tile1.getGraphics().drawImage(tile, 0, 0, null);
-				
-				ga.drawImage(tile1,
-						new RescaleOp(backgroundMapVisibility / 100f, (1f - backgroundMapVisibility / 100f) * 255f, null),
-						256 * (x - tileX) + offsetX,
-						bi.getHeight() - (256 * (tileY - y) + offsetY));
-			}
-		}
-	}
-
-
-	private double lonToTileX(final double lon) {
-		return (lon + 180.0) / 360.0 * (1 << zoom);
-	}
-
-
-	private double latToTileY(final double lat) {
-		return (1 - Math.log(Math.tan(Math.toRadians(lat)) + 1 / Math.cos(Math.toRadians(lat))) / Math.PI) / 2 * (1 << zoom);
-	}
-
-
-	private static double xToLon(final double x) {
-		return Math.toDegrees(x);
-	}
-
-
-	private static double yToLat(final double y) {
-		return Math.toDegrees(2.0 * (Math.atan(Math.exp(y)) - Math.PI / 4.0));
-	}
 
 
 	private void drawTime(final BufferedImage bi, final int frame) {
