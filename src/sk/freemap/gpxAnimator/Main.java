@@ -324,11 +324,13 @@ public class Main {
 			}
 		}
 		
-		maxTime = Math.max(maxTime, wpMap.lastKey());
-		minTime = Math.min(minTime, wpMap.firstKey());
-		
-		for (final Point2D point : wpMap.values()) {
-			point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
+		if (!wpMap.isEmpty()) {
+			maxTime = Math.max(maxTime, wpMap.lastKey());
+			minTime = Math.min(minTime, wpMap.firstKey());
+			
+			for (final Point2D point : wpMap.values()) {
+				point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
+			}
 		}
 		
 		final BufferedImage bi = new BufferedImage(
@@ -376,7 +378,7 @@ public class Main {
 			
 			final BufferedImage bi2 = Utils.deepCopy(bi);
 			paint(bi2, frame, tailDuration * 1000);
-			if (waypointSize > 0.0) {
+			if (waypointSize > 0.0 && !wpMap.isEmpty()) {
 				drawWaypoints(bi2, frame, wpMap);
 			}
 			drawMarker(bi2, frame);
