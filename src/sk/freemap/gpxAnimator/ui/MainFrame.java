@@ -21,10 +21,31 @@ import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
+import sk.freemap.gpxAnimator.Configuration;
+import sk.freemap.gpxAnimator.UserException;
+
 public class MainFrame extends JFrame {
 
+	private static final long serialVersionUID = 190371886979948114L;
+	
 	private final JPanel contentPane;
 	private final JSpinner heightSpinner;
+	private final FileSelector frameFileNamePatternFileSelector;
+	private final JSpinner widthSpinner;
+	private final JSpinner zoomSpinner;
+	private final JSpinner marginSpinner;
+	private final JSpinner speedupSpinner;
+	private final JSpinner markerSizeSpinner;
+	private final JSpinner waypintSizeSpinner;
+	private final JSpinner tailDurationSpinner;
+	private final JSpinner fpsSpinner;
+	private final JComboBox tmsUrlTemplateComboBox;
+	private final JSlider backgroundMapVisibilitySlider;
+	private final JSpinner fontSizeSpinner;
+	private final JCheckBox keepIdleCheckBox;
+	private final ColorSelector flashbackColorSelector;
+	private final JSpinner flashbackDurationSpinner;
+	private final JSpinner totalTimeSpinner;
 
 	/**
 	 * Launch the application.
@@ -36,17 +57,71 @@ public class MainFrame extends JFrame {
 				try {
 					final MainFrame frame = new MainFrame();
 					frame.setVisible(true);
+					frame.setConfiguration(Configuration.createBuilder().addInputGpx("xxx").build());
 				} catch (final Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
+	
+	
+	public Configuration createConfiguration() throws UserException {
+		final Configuration.Builder b = Configuration.createBuilder();
+		
+		b.height((Integer) heightSpinner.getValue());
+		b.width((Integer) widthSpinner.getValue());
+		b.margin((Integer) marginSpinner.getValue());
+		b.zoom((Integer) zoomSpinner.getValue());
+		b.speedup((Double) speedupSpinner.getValue());
+		b.tailDuration((Long) tailDurationSpinner.getValue());
+		b.fps((Double) fpsSpinner.getValue());
+		b.totalTime((Long) totalTimeSpinner.getValue());
+		b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
+		b.tmsUrlTemplate((String) tmsUrlTemplateComboBox.getSelectedItem());
+		b.skipIdle(!keepIdleCheckBox.isSelected());
+		b.flashbackColor(flashbackColorSelector.getColor());
+		b.flashbackDuration((Float) flashbackDurationSpinner.getValue());
+		b.frameFilePattern(frameFileNamePatternFileSelector.getFilename());
+		b.fontSize((Integer) fontSizeSpinner.getValue());
+		b.markerSize((Double) markerSizeSpinner.getValue());
+		b.waypointSize((Double) waypintSizeSpinner.getValue());
+		b.flashbackColor(flashbackColorSelector.getColor());
+		b.flashbackDuration((Float) flashbackDurationSpinner.getValue());
+		
+		// TODO tracks
+		
+		return b.build();
+	}
+	
+	
+	public void setConfiguration(final Configuration c) {
+		heightSpinner.setValue(c.getHeight());
+		widthSpinner.setValue(c.getWidth());
+		marginSpinner.setValue(c.getMargin());
+		zoomSpinner.setValue(c.getZoom());
+		speedupSpinner.setValue(c.getSpeedup());
+		tailDurationSpinner.setValue(c.getTailDuration());
+		fpsSpinner.setValue(c.getFps());
+		totalTimeSpinner.setValue(c.getTotalTime());
+		backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
+		tmsUrlTemplateComboBox.setSelectedItem(c.getTmsUrlTemplate());
+		keepIdleCheckBox.setSelected(!c.isSkipIdle());
+		flashbackColorSelector.setColor(c.getFlashbackColor());
+		frameFileNamePatternFileSelector.setFilename(c.getFrameFilePattern());
+		fontSizeSpinner.setValue(c.getFontSize());
+		markerSizeSpinner.setValue(c.getMarkerSize());
+		waypintSizeSpinner.setValue(c.getWaypointSize());
+		flashbackColorSelector.setColor(c.getFlashbackColor());
+		flashbackDurationSpinner.setValue(c.getFlashbackDuration());
+	}
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		setTitle("GPX Animator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 681, 606);
 		contentPane = new JPanel();
@@ -78,9 +153,9 @@ public class MainFrame extends JFrame {
 //		tabbedPane.addTab("General", null, panel, null);
 		final GridBagLayout gbl_tabContentPanel = new GridBagLayout();
 		gbl_tabContentPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_tabContentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_tabContentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_tabContentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_tabContentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_tabContentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		tabContentPanel.setLayout(gbl_tabContentPanel);
 		
 		final JLabel lblOutput = new JLabel("Output");
@@ -91,13 +166,13 @@ public class MainFrame extends JFrame {
 		gbc_lblOutput.gridy = 0;
 		tabContentPanel.add(lblOutput, gbc_lblOutput);
 		
-		final FileSelector fileSelector = new FileSelector();
-		final GridBagConstraints gbc_fileSelector = new GridBagConstraints();
-		gbc_fileSelector.insets = new Insets(0, 0, 5, 0);
-		gbc_fileSelector.fill = GridBagConstraints.BOTH;
-		gbc_fileSelector.gridx = 1;
-		gbc_fileSelector.gridy = 0;
-		tabContentPanel.add(fileSelector, gbc_fileSelector);
+		frameFileNamePatternFileSelector = new FileSelector();
+		final GridBagConstraints gbc_frameFileNamePatternFileSelector = new GridBagConstraints();
+		gbc_frameFileNamePatternFileSelector.insets = new Insets(0, 0, 5, 0);
+		gbc_frameFileNamePatternFileSelector.fill = GridBagConstraints.BOTH;
+		gbc_frameFileNamePatternFileSelector.gridx = 1;
+		gbc_frameFileNamePatternFileSelector.gridy = 0;
+		tabContentPanel.add(frameFileNamePatternFileSelector, gbc_frameFileNamePatternFileSelector);
 		
 		final JLabel lblWidth = new JLabel("Width");
 		final GridBagConstraints gbc_lblWidth = new GridBagConstraints();
@@ -107,8 +182,9 @@ public class MainFrame extends JFrame {
 		gbc_lblWidth.gridy = 1;
 		tabContentPanel.add(lblWidth, gbc_lblWidth);
 		
-		final JSpinner widthSpinner = new JSpinner();
-		widthSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		widthSpinner = new JSpinner();
+		widthSpinner.setModel(new EmptyNullSpinnerModel(new Integer(1), new Integer(0), null, new Integer(10)));
+		widthSpinner.setEditor(new EmptyZeroNumberEditor(widthSpinner, Integer.class));
 		final GridBagConstraints gbc_widthSpinner = new GridBagConstraints();
 		gbc_widthSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_widthSpinner.insets = new Insets(0, 0, 5, 0);
@@ -125,8 +201,8 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblHeight, gbc_lblHeight);
 		
 		heightSpinner = new JSpinner();
-		heightSpinner.setModel(new EmptyNullSpinnerModel());
-		heightSpinner.setEditor(new EmptyZeroNumberEditor(heightSpinner));
+		heightSpinner.setModel(new EmptyNullSpinnerModel(new Integer(1), new Integer(0), null, new Integer(10)));
+		heightSpinner.setEditor(new EmptyZeroNumberEditor(heightSpinner, Integer.class));
 		final GridBagConstraints gbc_heightSpinner = new GridBagConstraints();
 		gbc_heightSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_heightSpinner.insets = new Insets(0, 0, 5, 0);
@@ -142,8 +218,10 @@ public class MainFrame extends JFrame {
 		gbc_lblZoom.gridy = 3;
 		tabContentPanel.add(lblZoom, gbc_lblZoom);
 		
-		final JSpinner zoomSpinner = new JSpinner();
-		zoomSpinner.setModel(new SpinnerNumberModel(0, 0, 18, 1));
+		zoomSpinner = new JSpinner();
+		zoomSpinner.setModel(new EmptyNullSpinnerModel(new Integer(1), new Integer(0), new Integer(18), new Integer(1)));
+		zoomSpinner.setEditor(new EmptyZeroNumberEditor(zoomSpinner, Integer.class));
+
 		final GridBagConstraints gbc_zoomSpinner = new GridBagConstraints();
 		gbc_zoomSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_zoomSpinner.insets = new Insets(0, 0, 5, 0);
@@ -159,7 +237,7 @@ public class MainFrame extends JFrame {
 		gbc_lblMargin.gridy = 4;
 		tabContentPanel.add(lblMargin, gbc_lblMargin);
 		
-		final JSpinner marginSpinner = new JSpinner();
+		marginSpinner = new JSpinner();
 		final GridBagConstraints gbc_marginSpinner = new GridBagConstraints();
 		gbc_marginSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_marginSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -175,28 +253,49 @@ public class MainFrame extends JFrame {
 		gbc_lblSpeedup.gridy = 5;
 		tabContentPanel.add(lblSpeedup, gbc_lblSpeedup);
 		
-		final JSpinner sppedupSpinner = new JSpinner();
+		speedupSpinner = new JSpinner();
+		speedupSpinner.setModel(new EmptyNullSpinnerModel(new Double(0), new Double(0), null, new Double(1)));
+		speedupSpinner.setEditor(new EmptyZeroNumberEditor(speedupSpinner, Double.class));
 		final GridBagConstraints gbc_sppedupSpinner = new GridBagConstraints();
 		gbc_sppedupSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_sppedupSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sppedupSpinner.gridx = 1;
 		gbc_sppedupSpinner.gridy = 5;
-		tabContentPanel.add(sppedupSpinner, gbc_sppedupSpinner);
+		tabContentPanel.add(speedupSpinner, gbc_sppedupSpinner);
+		
+		final JLabel lblTotalTime = new JLabel("Total Time");
+		final GridBagConstraints gbc_lblTotalTime = new GridBagConstraints();
+		gbc_lblTotalTime.anchor = GridBagConstraints.EAST;
+		gbc_lblTotalTime.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTotalTime.gridx = 0;
+		gbc_lblTotalTime.gridy = 6;
+		tabContentPanel.add(lblTotalTime, gbc_lblTotalTime);
+		
+		totalTimeSpinner = new JSpinner();
+		totalTimeSpinner.setModel(new EmptyNullSpinnerModel(new Long(1), new Long(0), null, new Long(60)));
+		totalTimeSpinner.setEditor(new EmptyZeroNumberEditor(totalTimeSpinner, Long.class));
+		final GridBagConstraints gbc_totalTimeSpinner = new GridBagConstraints();
+		gbc_totalTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
+		gbc_totalTimeSpinner.insets = new Insets(0, 0, 5, 0);
+		gbc_totalTimeSpinner.gridx = 1;
+		gbc_totalTimeSpinner.gridy = 6;
+		tabContentPanel.add(totalTimeSpinner, gbc_totalTimeSpinner);
 		
 		final JLabel lblMarkerSize = new JLabel("Marker Size");
 		final GridBagConstraints gbc_lblMarkerSize = new GridBagConstraints();
 		gbc_lblMarkerSize.anchor = GridBagConstraints.EAST;
 		gbc_lblMarkerSize.insets = new Insets(0, 0, 5, 5);
 		gbc_lblMarkerSize.gridx = 0;
-		gbc_lblMarkerSize.gridy = 6;
+		gbc_lblMarkerSize.gridy = 7;
 		tabContentPanel.add(lblMarkerSize, gbc_lblMarkerSize);
 		
-		final JSpinner markerSizeSpinner = new JSpinner();
+		markerSizeSpinner = new JSpinner();
+		markerSizeSpinner.setModel(new SpinnerNumberModel(new Double(1), new Double(1), null, new Double(1)));
 		final GridBagConstraints gbc_markerSizeSpinner = new GridBagConstraints();
 		gbc_markerSizeSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_markerSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_markerSizeSpinner.gridx = 1;
-		gbc_markerSizeSpinner.gridy = 6;
+		gbc_markerSizeSpinner.gridy = 7;
 		tabContentPanel.add(markerSizeSpinner, gbc_markerSizeSpinner);
 		
 		final JLabel lblWaypointSize = new JLabel("Waypoint Size");
@@ -204,16 +303,16 @@ public class MainFrame extends JFrame {
 		gbc_lblWaypointSize.anchor = GridBagConstraints.EAST;
 		gbc_lblWaypointSize.insets = new Insets(0, 0, 5, 5);
 		gbc_lblWaypointSize.gridx = 0;
-		gbc_lblWaypointSize.gridy = 7;
+		gbc_lblWaypointSize.gridy = 8;
 		tabContentPanel.add(lblWaypointSize, gbc_lblWaypointSize);
 		
-		final JSpinner waypintSizeSpinner = new JSpinner();
-		waypintSizeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		waypintSizeSpinner = new JSpinner();
+		waypintSizeSpinner.setModel(new SpinnerNumberModel(new Double(1), new Double(1), null, new Double(1)));
 		final GridBagConstraints gbc_waypintSizeSpinner = new GridBagConstraints();
 		gbc_waypintSizeSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_waypintSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_waypintSizeSpinner.gridx = 1;
-		gbc_waypintSizeSpinner.gridy = 7;
+		gbc_waypintSizeSpinner.gridy = 8;
 		tabContentPanel.add(waypintSizeSpinner, gbc_waypintSizeSpinner);
 		
 		final JLabel lblTailDuration = new JLabel("Tail Duration");
@@ -221,16 +320,16 @@ public class MainFrame extends JFrame {
 		gbc_lblTailDuration.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTailDuration.anchor = GridBagConstraints.EAST;
 		gbc_lblTailDuration.gridx = 0;
-		gbc_lblTailDuration.gridy = 8;
+		gbc_lblTailDuration.gridy = 9;
 		tabContentPanel.add(lblTailDuration, gbc_lblTailDuration);
 		
-		final JSpinner tailDurationSpinner = new JSpinner();
-		tailDurationSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		tailDurationSpinner = new JSpinner();
+		tailDurationSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(60)));
 		final GridBagConstraints gbc_tailDurationSpinner = new GridBagConstraints();
 		gbc_tailDurationSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_tailDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tailDurationSpinner.gridx = 1;
-		gbc_tailDurationSpinner.gridy = 8;
+		gbc_tailDurationSpinner.gridy = 9;
 		tabContentPanel.add(tailDurationSpinner, gbc_tailDurationSpinner);
 		
 		final JLabel lblFps = new JLabel("FPS");
@@ -238,16 +337,16 @@ public class MainFrame extends JFrame {
 		gbc_lblFps.anchor = GridBagConstraints.EAST;
 		gbc_lblFps.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFps.gridx = 0;
-		gbc_lblFps.gridy = 9;
+		gbc_lblFps.gridy = 10;
 		tabContentPanel.add(lblFps, gbc_lblFps);
 		
-		final JSpinner fpsSpinner = new JSpinner();
-		fpsSpinner.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(1)));
+		fpsSpinner = new JSpinner();
+		fpsSpinner.setModel(new SpinnerNumberModel(new Double(0.1), new Double(0.1), null, new Double(1)));
 		final GridBagConstraints gbc_fpsSpinner = new GridBagConstraints();
 		gbc_fpsSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fpsSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_fpsSpinner.gridx = 1;
-		gbc_fpsSpinner.gridy = 9;
+		gbc_fpsSpinner.gridy = 10;
 		tabContentPanel.add(fpsSpinner, gbc_fpsSpinner);
 		
 		final JLabel lblTmsUrlTemplate = new JLabel("TMS URL Template");
@@ -255,17 +354,17 @@ public class MainFrame extends JFrame {
 		gbc_lblTmsUrlTemplate.anchor = GridBagConstraints.EAST;
 		gbc_lblTmsUrlTemplate.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTmsUrlTemplate.gridx = 0;
-		gbc_lblTmsUrlTemplate.gridy = 10;
+		gbc_lblTmsUrlTemplate.gridy = 11;
 		tabContentPanel.add(lblTmsUrlTemplate, gbc_lblTmsUrlTemplate);
 		
-		final JComboBox tmsUrlTemplateComboBox = new JComboBox();
+		tmsUrlTemplateComboBox = new JComboBox();
 		tmsUrlTemplateComboBox.setEditable(true);
 		tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png", "http://t{switch:1,2,3,4}.freemap.sk/T/{zoom}/{x}/{y}.png"}));
 		final GridBagConstraints gbc_tmsUrlTemplateComboBox = new GridBagConstraints();
 		gbc_tmsUrlTemplateComboBox.insets = new Insets(0, 0, 5, 0);
 		gbc_tmsUrlTemplateComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tmsUrlTemplateComboBox.gridx = 1;
-		gbc_tmsUrlTemplateComboBox.gridy = 10;
+		gbc_tmsUrlTemplateComboBox.gridy = 11;
 		tabContentPanel.add(tmsUrlTemplateComboBox, gbc_tmsUrlTemplateComboBox);
 		
 		final JLabel lblVisibility = new JLabel("Visibility");
@@ -273,36 +372,36 @@ public class MainFrame extends JFrame {
 		gbc_lblVisibility.anchor = GridBagConstraints.EAST;
 		gbc_lblVisibility.insets = new Insets(0, 0, 5, 5);
 		gbc_lblVisibility.gridx = 0;
-		gbc_lblVisibility.gridy = 11;
+		gbc_lblVisibility.gridy = 12;
 		tabContentPanel.add(lblVisibility, gbc_lblVisibility);
 		
-		final JSlider visibilitySlider = new JSlider();
-		visibilitySlider.setMinorTickSpacing(5);
-		visibilitySlider.setPaintTicks(true);
-		visibilitySlider.setMajorTickSpacing(10);
-		visibilitySlider.setPaintLabels(true);
-		final GridBagConstraints gbc_visibilitySlider = new GridBagConstraints();
-		gbc_visibilitySlider.insets = new Insets(0, 0, 5, 0);
-		gbc_visibilitySlider.fill = GridBagConstraints.HORIZONTAL;
-		gbc_visibilitySlider.gridx = 1;
-		gbc_visibilitySlider.gridy = 11;
-		tabContentPanel.add(visibilitySlider, gbc_visibilitySlider);
+		backgroundMapVisibilitySlider = new JSlider();
+		backgroundMapVisibilitySlider.setMinorTickSpacing(5);
+		backgroundMapVisibilitySlider.setPaintTicks(true);
+		backgroundMapVisibilitySlider.setMajorTickSpacing(10);
+		backgroundMapVisibilitySlider.setPaintLabels(true);
+		final GridBagConstraints gbc_backgroundMapVisibilitySlider = new GridBagConstraints();
+		gbc_backgroundMapVisibilitySlider.insets = new Insets(0, 0, 5, 0);
+		gbc_backgroundMapVisibilitySlider.fill = GridBagConstraints.HORIZONTAL;
+		gbc_backgroundMapVisibilitySlider.gridx = 1;
+		gbc_backgroundMapVisibilitySlider.gridy = 12;
+		tabContentPanel.add(backgroundMapVisibilitySlider, gbc_backgroundMapVisibilitySlider);
 		
 		final JLabel lblFontSize = new JLabel("Font Size");
 		final GridBagConstraints gbc_lblFontSize = new GridBagConstraints();
 		gbc_lblFontSize.anchor = GridBagConstraints.EAST;
 		gbc_lblFontSize.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFontSize.gridx = 0;
-		gbc_lblFontSize.gridy = 12;
+		gbc_lblFontSize.gridy = 13;
 		tabContentPanel.add(lblFontSize, gbc_lblFontSize);
 		
-		final JSpinner fontSizeSpinner = new JSpinner();
-		fontSizeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		fontSizeSpinner = new JSpinner();
+		fontSizeSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		final GridBagConstraints gbc_fontSizeSpinner = new GridBagConstraints();
 		gbc_fontSizeSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_fontSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fontSizeSpinner.gridx = 1;
-		gbc_fontSizeSpinner.gridy = 12;
+		gbc_fontSizeSpinner.gridy = 13;
 		tabContentPanel.add(fontSizeSpinner, gbc_fontSizeSpinner);
 		
 		final JLabel lblKeepIdle = new JLabel("Keep Idle");
@@ -310,15 +409,15 @@ public class MainFrame extends JFrame {
 		gbc_lblKeepIdle.anchor = GridBagConstraints.EAST;
 		gbc_lblKeepIdle.insets = new Insets(0, 0, 5, 5);
 		gbc_lblKeepIdle.gridx = 0;
-		gbc_lblKeepIdle.gridy = 13;
+		gbc_lblKeepIdle.gridy = 14;
 		tabContentPanel.add(lblKeepIdle, gbc_lblKeepIdle);
 		
-		final JCheckBox keepIdleCheckBox = new JCheckBox("");
+		keepIdleCheckBox = new JCheckBox("");
 		final GridBagConstraints gbc_keepIdleCheckBox = new GridBagConstraints();
 		gbc_keepIdleCheckBox.anchor = GridBagConstraints.WEST;
 		gbc_keepIdleCheckBox.insets = new Insets(0, 0, 5, 0);
 		gbc_keepIdleCheckBox.gridx = 1;
-		gbc_keepIdleCheckBox.gridy = 13;
+		gbc_keepIdleCheckBox.gridy = 14;
 		tabContentPanel.add(keepIdleCheckBox, gbc_keepIdleCheckBox);
 		
 		final JLabel lblFlashbackColor = new JLabel("Flashback Color");
@@ -326,15 +425,15 @@ public class MainFrame extends JFrame {
 		gbc_lblFlashbackColor.anchor = GridBagConstraints.EAST;
 		gbc_lblFlashbackColor.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFlashbackColor.gridx = 0;
-		gbc_lblFlashbackColor.gridy = 14;
+		gbc_lblFlashbackColor.gridy = 15;
 		tabContentPanel.add(lblFlashbackColor, gbc_lblFlashbackColor);
 		
-		final ColorSelector flashbackColorSelector = new ColorSelector();
+		flashbackColorSelector = new ColorSelector();
 		final GridBagConstraints gbc_flashbackColorSelector = new GridBagConstraints();
 		gbc_flashbackColorSelector.insets = new Insets(0, 0, 5, 0);
 		gbc_flashbackColorSelector.fill = GridBagConstraints.BOTH;
 		gbc_flashbackColorSelector.gridx = 1;
-		gbc_flashbackColorSelector.gridy = 14;
+		gbc_flashbackColorSelector.gridy = 15;
 		tabContentPanel.add(flashbackColorSelector, gbc_flashbackColorSelector);
 		
 		final JLabel lblFlashbackDuration = new JLabel("Flashback Duration");
@@ -342,15 +441,16 @@ public class MainFrame extends JFrame {
 		gbc_lblFlashbackDuration.anchor = GridBagConstraints.EAST;
 		gbc_lblFlashbackDuration.insets = new Insets(0, 0, 0, 5);
 		gbc_lblFlashbackDuration.gridx = 0;
-		gbc_lblFlashbackDuration.gridy = 15;
+		gbc_lblFlashbackDuration.gridy = 16;
 		tabContentPanel.add(lblFlashbackDuration, gbc_lblFlashbackDuration);
 		
-		final JSpinner flashbackDurationSpinner = new JSpinner();
-		flashbackDurationSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		flashbackDurationSpinner = new JSpinner();
+		flashbackDurationSpinner.setModel(new EmptyNullSpinnerModel(new Float(0), new Float(0), null, new Float(10)));
+		flashbackDurationSpinner.setEditor(new EmptyZeroNumberEditor(flashbackDurationSpinner, Float.class));
 		final GridBagConstraints gbc_flashbackDurationSpinner = new GridBagConstraints();
 		gbc_flashbackDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_flashbackDurationSpinner.gridx = 1;
-		gbc_flashbackDurationSpinner.gridy = 15;
+		gbc_flashbackDurationSpinner.gridy = 16;
 		tabContentPanel.add(flashbackDurationSpinner, gbc_flashbackDurationSpinner);
 		
 		final TrackSettingsPanel trackSettingsPanel = new TrackSettingsPanel(null);

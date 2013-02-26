@@ -56,6 +56,7 @@ public class Main {
 	private long minTime = Long.MAX_VALUE;
 	private double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
 
+	private double speedup;
 	
 	public static void main(final String[] args) {
 		try {
@@ -69,9 +70,6 @@ public class Main {
 	
 	public Main(final String[] args) throws UserException {
 		cfg = CommandLineConfigurationFactory.createConfiguration(args);
-		cfg.validateOptions();
-		cfg.normalizeColors();
-		cfg.normalizeLineWidths();
 	}
 
 
@@ -81,7 +79,7 @@ public class Main {
 		final TreeMap<Long, Point2D> wpMap = new TreeMap<Long, Point2D>();
 		
 		int i = -1;
-		for (final String inputGpx : cfg.inputGpxList) {
+		for (final String inputGpx : cfg.getInputGpxList()) {
 			i++;
 			
 			final GpxContentHandler gch = new GpxContentHandler();
@@ -96,7 +94,7 @@ public class Main {
 				wpMap.putAll(toTimePointMap(i, gch.getWaypointList()));
 
 				Long t0 = timePointMap.firstKey();
-				Long t1 = timePointMap.lastKey() + cfg.tailDuration * 1000;
+				Long t1 = timePointMap.lastKey() + cfg.getTailDuration();
 				test: { // code in the block merges connected spans; it is currently not important to do this
 					for (final Iterator<Long[]> iter = spanList.iterator(); iter.hasNext(); ) {
 						final Long[] span = iter.next();
@@ -123,35 +121,37 @@ public class Main {
 			Collections.reverse(timePointMapList); // reversing because of last known location drawing
 			timePointMapListList.add(timePointMapList);
 		}
-
-		final boolean userSpecifiedWidth = cfg.width != 0;
-		if (cfg.width == 0) {
-			cfg.width = 800;
-		}
 		
-		if (cfg.tmsUrlTemplate != null && cfg.zoom == 0) {
+		final boolean userSpecifiedWidth = cfg.getWidth() != null;
+		final int width = userSpecifiedWidth ? cfg.getWidth() : 800;
+		
+		final Integer zoom;
+		
+		if (cfg.getTmsUrlTemplate() != null && cfg.getZoom() == null) {
 			// force using computed zoom
-			cfg.zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (cfg.width - cfg.margin * 2) / (maxX - minX)) / Math.log(2));
-			System.out.println("computed zoom is " + cfg.zoom);
+			zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
+			System.out.println("computed zoom is " + zoom);
+		} else {
+			zoom = null;
 		}
 		
-		final double scale = cfg.zoom == 0
-				? (cfg.width - cfg.margin * 2) / (maxX - minX)
-				: (128.0 * (1 << cfg.zoom)) / Math.PI;
+		final double scale = zoom == null
+				? (width - cfg.getMargin() * 2) / (maxX - minX)
+				: (128.0 * (1 << zoom)) / Math.PI;
 		
-		minX -= cfg.margin / scale;
-		maxX += cfg.margin / scale;
-		minY -= cfg.margin / scale;
-		maxY += cfg.margin / scale;
+		minX -= cfg.getMargin() / scale;
+		maxX += cfg.getMargin() / scale;
+		minY -= cfg.getMargin() / scale;
+		maxY += cfg.getMargin() / scale;
 		
 		if (userSpecifiedWidth) {
-			final double ww = cfg.width - (maxX - minX) * scale;
+			final double ww = width - (maxX - minX) * scale;
 			minX -= ww / scale / 2.0;
 			maxX += ww / scale / 2.0;
 		}
 
-		if (cfg.height != 0) {
-			final double hh = cfg.height - (maxY - minY) * scale;
+		if (cfg.getHeight() != null) {
+			final double hh = cfg.getHeight() - (maxY - minY) * scale;
 			minY -= hh / scale / 2.0;
 			maxY += hh / scale / 2.0;
 		}
@@ -186,29 +186,31 @@ public class Main {
 		
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 		
-		if (cfg.tmsUrlTemplate == null) {
+		if (cfg.getTmsUrlTemplate() == null) {
 			ga.setColor(Color.white);
 			ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
 		} else {
-			Map.drawMap(bi, cfg.tmsUrlTemplate, cfg.backgroundMapVisibility, cfg.zoom, minX, maxX, minY, maxY);
+			Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY);
 		}
 		
-		if (cfg.fontSize > 0) {
-			font = new Font(Font.MONOSPACED, Font.PLAIN, cfg.fontSize);
+		if (cfg.getFontSize() > 0) {
+			font = new Font(Font.MONOSPACED, Font.PLAIN, cfg.getFontSize());
 			fontMetrics = ga.getFontMetrics(font);
 		}
 
-		if (!Double.isNaN(cfg.totalTime)) {
-			cfg.speedup = (maxTime - minTime) / cfg.totalTime;
+		if (cfg.getTotalTime() != null) {
+			speedup = 1.0 * (maxTime - minTime) / cfg.getTotalTime();
+		} else {
+			speedup = cfg.getSpeedup();
 		}
 
-		final int frames = (int) ((maxTime + cfg.tailDuration * 1000 - minTime) * cfg.fps / (MS * cfg.speedup));
+		final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
 		
 		int f = 0;
 		float skip = -1f;
 		for (int frame = 1; frame < frames; frame++) {
 			final Long time = getTime(frame);
-			skip: if (cfg.skipIdle) {
+			skip: if (cfg.isSkipIdle()) {
 				for (final Long[] span : spanList) {
 					if (span[0] <= time && span[1] >= time) {
 						break skip;
@@ -224,28 +226,29 @@ public class Main {
 			
 			final BufferedImage bi2 = Utils.deepCopy(bi);
 			
-			paint(bi2, frame, cfg.tailDuration * 1000);
+			paint(bi2, frame, cfg.getTailDuration());
 			
-			if (cfg.waypointSize > 0.0 && !wpMap.isEmpty()) {
+			if (cfg.getWaypointSize() > 0.0 && !wpMap.isEmpty()) {
 				drawWaypoints(bi2, frame, wpMap);
 			}
 			
-			if (cfg.markerSize > 0.0) {
+			if (cfg.getMarkerSize() > 0.0) {
 				drawMarker(bi2, frame);
 			}
 
-			if (cfg.fontSize > 0) {
+			if (font != null) {
 				drawTime(bi2, frame);
 			}
 			
-			if (skip > 0f && cfg.flashbackColor.getAlpha() > 0 && cfg.flashbackDuration > 0f) {
+			final Color flashbackColor = cfg.getFlashbackColor();
+			if (skip > 0f && flashbackColor.getAlpha() > 0 && cfg.getFlashbackDuration() > 0f) {
 				final Graphics2D g2 = (Graphics2D) bi2.getGraphics();
-				g2.setColor(new Color(cfg.flashbackColor.getRed(), cfg.flashbackColor.getGreen(), cfg.flashbackColor.getBlue(), (int) (cfg.flashbackColor.getAlpha() * skip)));
+				g2.setColor(new Color(flashbackColor.getRed(), flashbackColor.getGreen(), flashbackColor.getBlue(), (int) (flashbackColor.getAlpha() * skip)));
 				g2.fillRect(0, 0, bi2.getWidth(), bi2.getHeight());
-				skip -= 1000f / cfg.flashbackDuration / cfg.fps;
+				skip -= 1000f / cfg.getFlashbackDuration() / cfg.getFps();
 			}
 
-			final File outputfile = new File(String.format(cfg.frameFilePattern, ++f));
+			final File outputfile = new File(String.format(cfg.getFrameFilePattern(), ++f));
 		    try {
 				ImageIO.write(bi2, "png", outputfile);
 			} catch (final IOException e) {
@@ -255,7 +258,7 @@ public class Main {
 		
 		System.out.println("Done.");
 		System.out.println("To encode generated frames you may run this command:");
-		System.out.println("ffmpeg -i " + cfg.frameFilePattern + " -vcodec mpeg4 -b 3000k -r " + cfg.fps + " video.avi");
+		System.out.println("ffmpeg -i " + cfg.getFrameFilePattern() + " -vcodec mpeg4 -b 3000k -r " + cfg.getFps() + " video.avi");
 	}
 
 
@@ -264,10 +267,12 @@ public class Main {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		final long t2 = getTime(frame);
 		
+		final double waypointSize = cfg.getWaypointSize();
+		
 		if (t2 >= wpMap.firstKey()) {
 			for (final Point2D p : wpMap.subMap(wpMap.firstKey(), t2).values()) {
 				g2.setColor(Color.white);
-				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - cfg.waypointSize / 2.0, p.getY() - cfg.waypointSize / 2.0, cfg.waypointSize, cfg.waypointSize);
+				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - waypointSize / 2.0, p.getY() - waypointSize / 2.0, waypointSize, waypointSize);
 				g2.setStroke(new BasicStroke(1f));
 				g2.fill(marker);
 				g2.setColor(Color.black);
@@ -299,8 +304,9 @@ public class Main {
 			maxY = Math.max(y, maxY);
 
 			long time;
-			if (i < cfg.forcedPointIntervalList.size() && !Long.valueOf(0L).equals(cfg.forcedPointIntervalList.get(i))) {
-				forcedTime += cfg.forcedPointIntervalList.get(i);
+			final List<Long> forcedPointIntervalList = cfg.getForcedPointIntervalList();
+			if (i < forcedPointIntervalList.size() && !Long.valueOf(0L).equals(forcedPointIntervalList.get(i))) {
+				forcedTime += forcedPointIntervalList.get(i);
 				time = forcedTime;
 			} else {
 				time = latLon.getTime();
@@ -309,8 +315,10 @@ public class Main {
 				}
 			}
 		
-			if (i < cfg.timeOffsetList.size()) {
-				time += cfg.timeOffsetList.get(i);
+			
+			final List<Long> timeOffsetList = cfg.getTimeOffsetList();
+			if (i < timeOffsetList.size()) {
+				time += timeOffsetList.get(i);
 			}
 			
 			
@@ -331,7 +339,7 @@ public class Main {
 	private void drawTime(final BufferedImage bi, final int frame) {
 		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
-		printText(g2, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.margin, bi.getHeight() - cfg.margin);
+		printText(g2, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(), bi.getHeight() - cfg.getMargin());
 	}
 
 
@@ -339,6 +347,10 @@ public class Main {
 		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		final long t2 = getTime(frame);
+		
+		final double markerSize = cfg.getMarkerSize();
+		final List<String> labelList = cfg.getLabelList();
+		final List<Color> colorList = cfg.getColorList();
 		
 		int i = -1;
 		outer: for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
@@ -351,15 +363,15 @@ public class Main {
 				}
 				
 				final Point2D p = floorEntry.getValue();
-				g2.setColor(ceilingEntry == null ? Color.white : cfg.colorList.get(i));
-				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - cfg.markerSize / 2.0, p.getY() - cfg.markerSize / 2.0, cfg.markerSize, cfg.markerSize);
+				g2.setColor(ceilingEntry == null ? Color.white : colorList.get(i));
+				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - markerSize / 2.0, p.getY() - markerSize / 2.0, markerSize, markerSize);
 				g2.setStroke(new BasicStroke(1f));
 				g2.fill(marker);
 				g2.setColor(Color.black);
 				g2.draw(marker);
 				
-				if (i < cfg.labelList.size()) {
-					printText(g2, cfg.labelList.get(i), (float) p.getX() + 8f, (float) p.getY() + 4f);
+				if (i < labelList.size()) {
+					printText(g2, labelList.get(i), (float) p.getX() + 8f, (float) p.getY() + 4f);
 				}
 				
 				continue outer;
@@ -374,11 +386,14 @@ public class Main {
         
 		final long time = getTime(frame);
 		
+		final List<Float> lineWidthList = cfg.getLineWidthList();
+		final List<Color> colorList = cfg.getColorList();
+
 		int i = -1;
 		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
 			i++;
 			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
-				g2.setStroke(new BasicStroke(cfg.lineWidthList.get(i), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2.setStroke(new BasicStroke(lineWidthList.get(i), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				
 				final Long toTime = timePointMap.floorKey(time);
 				
@@ -399,7 +414,7 @@ public class Main {
 						continue;
 					}
 					
-					g2.setPaint(cfg.colorList.get(i));
+					g2.setPaint(colorList.get(i));
 					for (final Entry<Long, Point2D> entry: timePointMap.subMap(fromTime, true, toTime, true).entrySet()) {
 						if (prevPoint != null) {
 							g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
@@ -411,7 +426,7 @@ public class Main {
 						if (prevPoint != null) {
 							final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
 							if (ratio > 0) {
-								final Color color = cfg.colorList.get(i);
+								final Color color = colorList.get(i);
 								final float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), new float[3]);
 								g2.setPaint(Color.getHSBColor(hsb[0], hsb[1], (1f - ratio) * hsb[2]));
 								g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
@@ -427,7 +442,7 @@ public class Main {
 
 
 	private long getTime(final int frame) {
-		return (long) Math.floor(minTime + frame / cfg.fps * MS * cfg.speedup);
+		return (long) Math.floor(minTime + frame / cfg.getFps() * MS * speedup);
 	}
 	
 	

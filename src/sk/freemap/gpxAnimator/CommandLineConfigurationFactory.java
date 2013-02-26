@@ -28,59 +28,59 @@ public final class CommandLineConfigurationFactory {
 	 * @throws UserException
 	 */
 	public static Configuration createConfiguration(final String[] args) throws UserException {
-		final Configuration cfg = new Configuration();
+		final Configuration.Builder cfg = Configuration.createBuilder();
 		
 		for (int i = 0; i < args.length; i++) {
 			final String arg = args[i];
 			
 			try {
 				if (arg.equals("--input")) {
-					cfg.inputGpxList.add(args[++i]);
+					cfg.addInputGpx(args[++i]);
 				} else if (arg.equals("--output")) {
-					cfg.frameFilePattern = args[++i];
+					cfg.frameFilePattern(args[++i]);
 				} else if (arg.equals("--label")) {
-					cfg.labelList.add(args[++i]);
+					cfg.addLabel(args[++i]);
 				} else if (arg.equals("--color")) {
-					cfg.colorList.add(Color.decode(args[++i]));
+					cfg.addColor(Color.decode(args[++i]));
 				} else if (arg.equals("--margin")) {
-					cfg.margin = Integer.parseInt(args[++i]);
+					cfg.margin(Integer.parseInt(args[++i]));
 				} else if (arg.equals("--time-offset")) {
-					cfg.timeOffsetList.add(Long.parseLong(args[++i]));
+					cfg.addTimeOffset(Long.parseLong(args[++i]));
 				} else if (arg.equals("--forced-point-time-interval")) {
-					cfg.forcedPointIntervalList.add(Long.parseLong(args[++i]));
+					cfg.addForcedPointInterval(Long.parseLong(args[++i]));
 				} else if (arg.equals("--speedup")) {
-					cfg.speedup = Double.parseDouble(args[++i]);
+					cfg.speedup(Double.parseDouble(args[++i]));
 				} else if (arg.equals("--line-width")) {
-					cfg.lineWidthList.add(Float.parseFloat(args[++i]));
+					cfg.addLineWidth(Float.parseFloat(args[++i]));
 				} else if (arg.equals("--tail-duration")) {
-					cfg.tailDuration = Long.parseLong(args[++i]);
+					cfg.tailDuration(Long.parseLong(args[++i]) * 1000);
 				} else if (arg.equals("--fps")) {
-					cfg.fps = Double.parseDouble(args[++i]);
+					cfg.fps(Double.parseDouble(args[++i]));
 				} else if (arg.equals("--marker-size")) {
-					cfg.markerSize = Double.parseDouble(args[++i]);
+					cfg.markerSize(Double.parseDouble(args[++i]));
 				} else if (arg.equals("--waypoint-size")) {
-					cfg.waypointSize = Double.parseDouble(args[++i]);
+					cfg.waypointSize(Double.parseDouble(args[++i]));
 				} else if (arg.equals("--width")) {
-					cfg.width = Integer.parseInt(args[++i]);
+					cfg.width(Integer.valueOf(args[++i]));
 				} else if (arg.equals("--height")) {
-					cfg.height = Integer.parseInt(args[++i]);
+					cfg.height(Integer.valueOf(args[++i]));
 				} else if (arg.equals("--zoom")) {
-					cfg.zoom = Integer.parseInt(args[++i]);
+					cfg.zoom(Integer.parseInt(args[++i]));
 				} else if (arg.equals("--font-size")) {
-					cfg.fontSize = Integer.parseInt(args[++i]);
+					cfg.fontSize(Integer.parseInt(args[++i]));
 				} else if (arg.equals("--tms-url-template")) {
-					cfg.tmsUrlTemplate = args[++i];
+					cfg.tmsUrlTemplate(args[++i]);
 				} else if (arg.equals("--background-map-visibility")) {
-					cfg.backgroundMapVisibility = Float.parseFloat(args[++i]);
+					cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
 				} else if (arg.equals("--total-time")) {
-					cfg.totalTime = Double.parseDouble(args[++i]);
+					cfg.totalTime(Long.valueOf(args[++i]));
 				} else if (arg.equals("--keep-idle")) {
-					cfg.skipIdle = false;
+					cfg.skipIdle(false);
 				} else if (arg.equals("--flashback-color")) {
 					final long lv = Long.decode(args[++i]).longValue();
-					cfg.flashbackColor = new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true);
+					cfg.flashbackColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
 				} else if (arg.equals("--flashback-duration")) {
-					cfg.flashbackDuration = Float.parseFloat(args[++i]);
+					cfg.flashbackDuration(Float.parseFloat(args[++i]));
 				} else if (arg.equals("--help")) {
 					Help.printHelp();
 					System.exit(0);
@@ -94,7 +94,7 @@ public final class CommandLineConfigurationFactory {
 			}
 		}
 		
-		return cfg;
+		return cfg.build();
 	}
 
 }

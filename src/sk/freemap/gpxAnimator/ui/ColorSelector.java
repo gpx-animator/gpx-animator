@@ -15,8 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class ColorSelector extends JPanel {
+	
+	private static final long serialVersionUID = 6506364764640471311L;
+	
 	private final JTextField colorTextField;
 
+	
 	/**
 	 * Create the panel.
 	 */
@@ -52,4 +56,15 @@ public class ColorSelector extends JPanel {
 		});		add(selectButton);
 
 	}
+
+	
+	public Color getColor() {
+		return colorTextField.getBackground();
+	}
+	
+	
+	public void setColor(final Color color) {
+		colorTextField.setBackground(color);
+	}
+	
 }

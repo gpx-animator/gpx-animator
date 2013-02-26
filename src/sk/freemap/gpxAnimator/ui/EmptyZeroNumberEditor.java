@@ -1,5 +1,6 @@
 package sk.freemap.gpxAnimator.ui;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 
 import javax.swing.JFormattedTextField;
@@ -14,7 +15,7 @@ public class EmptyZeroNumberEditor extends DefaultEditor {
 	private static final long serialVersionUID = -3860212824757198990L;
 
 	
-	public EmptyZeroNumberEditor(final JSpinner spinner) {
+	public EmptyZeroNumberEditor(final JSpinner spinner, final Class<? extends Number> clazz) {
 		super(spinner);
 
 		final JFormattedTextField ftf = getTextField();
@@ -29,10 +30,28 @@ public class EmptyZeroNumberEditor extends DefaultEditor {
 			
 			@Override
 			public Object stringToValue(final String text) throws ParseException {
+				if (text.isEmpty()) {
+					return null;
+				}
+				
 				try {
-					return text.isEmpty() ? null : Integer.parseInt(text);
+					return clazz.getConstructor(String.class).newInstance(text);
 				} catch (final NumberFormatException e) {
 					throw new ParseException(text, 0);
+				} catch (final InstantiationException e) {
+					throw new RuntimeException(e);
+				} catch (final IllegalAccessException e) {
+					throw new RuntimeException(e);
+				} catch (final InvocationTargetException e) {
+					try {
+						throw e.getCause();
+					} catch (final NumberFormatException e1) {
+						throw new ParseException(text, 0);
+					} catch (final Throwable e1) {
+						throw new RuntimeException(e1);
+					}
+				} catch (final NoSuchMethodException e) {
+					throw new RuntimeException(e);
 				}
 			}
 		}));

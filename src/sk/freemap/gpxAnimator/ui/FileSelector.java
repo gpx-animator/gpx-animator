@@ -15,6 +15,8 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FileSelector extends JPanel {
+	private static final long serialVersionUID = 3157365691996396016L;
+	
 	private final JTextField fileTextField;
 
 	/**
@@ -51,5 +53,13 @@ public class FileSelector extends JPanel {
 		});
 		add(btnNewButton);
 
+	}
+
+	public String getFilename() {
+		return fileTextField.getText();
+	}
+	
+	public void setFilename(final String filename) {
+		fileTextField.setText(filename);
 	}
 }
