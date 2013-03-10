@@ -15,6 +15,11 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
+import sk.freemap.gpxAnimator.Help;
+import sk.freemap.gpxAnimator.TrackConfiguration;
+import sk.freemap.gpxAnimator.TrackConfiguration.Builder;
+import sk.freemap.gpxAnimator.UserException;
+
 public class TrackSettingsPanel extends JPanel {
 
 	private static final long serialVersionUID = 2492074184123083022L;
@@ -50,6 +55,8 @@ public class TrackSettingsPanel extends JPanel {
 		add(lblGpx, gbc_lblGpx);
 		
 		inputGpxFileSelector = new FileSelector();
+		inputGpxFileSelector.setToolTipText(Help.HELP_INPUT);
+		lblGpx.setLabelFor(inputGpxFileSelector);
 		final GridBagConstraints gbc_inputGpxFileSelector = new GridBagConstraints();
 		gbc_inputGpxFileSelector.insets = new Insets(0, 0, 5, 0);
 		gbc_inputGpxFileSelector.fill = GridBagConstraints.BOTH;
@@ -66,6 +73,8 @@ public class TrackSettingsPanel extends JPanel {
 		add(lblLabel, gbc_lblLabel);
 		
 		labelTextField = new JTextField();
+		labelTextField.setToolTipText(Help.HELP_LABEL);
+		lblLabel.setLabelFor(labelTextField);
 		final GridBagConstraints gbc_labelTextField = new GridBagConstraints();
 		gbc_labelTextField.insets = new Insets(0, 0, 5, 0);
 		gbc_labelTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -100,7 +109,7 @@ public class TrackSettingsPanel extends JPanel {
 		
 		lineWidthSpinner = new JSpinner();
 		lineWidthSpinner.setFont(new Font("Dialog", Font.PLAIN, 12));
-		lineWidthSpinner.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(1)));
+		lineWidthSpinner.setModel(new SpinnerNumberModel(Float.valueOf(0f), Float.valueOf(0f), null, Float.valueOf(0.5f)));
 		final GridBagConstraints gbc_lineWidthSpinner = new GridBagConstraints();
 		gbc_lineWidthSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lineWidthSpinner.insets = new Insets(0, 0, 5, 0);
@@ -117,6 +126,7 @@ public class TrackSettingsPanel extends JPanel {
 		add(lblTimeOffset, gbc_lblTimeOffset);
 		
 		timeOffsetSpinner = new JSpinner();
+		lineWidthSpinner.setModel(new SpinnerNumberModel(Long.valueOf(0), Long.valueOf(0), null, Long.valueOf(1000l)));
 		final GridBagConstraints gbc_timeOffsetSpinner = new GridBagConstraints();
 		gbc_timeOffsetSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_timeOffsetSpinner.insets = new Insets(0, 0, 5, 0);
@@ -133,6 +143,8 @@ public class TrackSettingsPanel extends JPanel {
 		add(lblForcedPointTime, gbc_lblForcedPointTime);
 		
 		forcedPointTimeIntervalSpinner = new JSpinner();
+		forcedPointTimeIntervalSpinner.setModel(new EmptyNullSpinnerModel(new Long(0), new Long(0), null, new Long(1000)));
+		forcedPointTimeIntervalSpinner.setEditor(new EmptyZeroNumberEditor(forcedPointTimeIntervalSpinner, Long.class));
 		final GridBagConstraints gbc_forcedPointTimeIntervalSpinner = new GridBagConstraints();
 		gbc_forcedPointTimeIntervalSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_forcedPointTimeIntervalSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -156,6 +168,30 @@ public class TrackSettingsPanel extends JPanel {
 			gbc_btnNewButton.gridy = 7;
 			add(btnNewButton, gbc_btnNewButton);
 		}
+	}
+
+
+	public TrackConfiguration createConfiguration() throws UserException {
+		final Builder b = TrackConfiguration.createBuilder();
+		
+		b.inputGpx(inputGpxFileSelector.getFilename());
+		b.label(labelTextField.getText());
+		b.color(colorSelector.getColor());
+		b.lineWidth((Float) lineWidthSpinner.getValue());
+		b.forcedPointInterval((Long) forcedPointTimeIntervalSpinner.getValue());
+		b.timeOffset((Long) timeOffsetSpinner.getValue());
+		
+		return b.build();
+	}
+	
+	
+	public void setConfiguration(final TrackConfiguration c) {
+		inputGpxFileSelector.setFilename(c.getInputGpx());
+		labelTextField.setText(c.getLabel());
+		colorSelector.setColor(c.getColor());
+		lineWidthSpinner.setValue(c.getLineWidth());
+		forcedPointTimeIntervalSpinner.setValue(c.getForcedPointInterval());
+		timeOffsetSpinner.setValue(c.getTimeOffset());
 	}
 
 }

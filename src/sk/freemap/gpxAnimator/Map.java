@@ -60,7 +60,7 @@ public class Map {
 				tile1.getGraphics().drawImage(tile, 0, 0, null);
 				
 				ga.drawImage(tile1,
-						new RescaleOp(backgroundMapVisibility / 100f, (1f - backgroundMapVisibility / 100f) * 255f, null),
+						new RescaleOp(backgroundMapVisibility, (1f - backgroundMapVisibility) * 255f, null),
 						256 * (x - tileX) + offsetX,
 						bi.getHeight() - (256 * (tileY - y) + offsetY));
 			}

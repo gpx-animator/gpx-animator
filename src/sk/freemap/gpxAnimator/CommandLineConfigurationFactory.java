@@ -15,19 +15,38 @@
 package sk.freemap.gpxAnimator;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class CommandLineConfigurationFactory {
 
-	private CommandLineConfigurationFactory() {
-		throw new AssertionError();
+	private final List<String> inputGpxList = new ArrayList<String>();
+	
+	private final List<String> labelList = new ArrayList<String>();
+	
+	private final List<Color> colorList = new ArrayList<Color>();
+	
+	private final List<Long> timeOffsetList = new ArrayList<Long>();
+	
+	private final List<Long> forcedPointIntervalList = new ArrayList<Long>();
+	
+	private final List<Float> lineWidthList = new ArrayList<Float>();
+	
+
+	public static Configuration createConfiguration(final String[] args) throws UserException {
+		return new CommandLineConfigurationFactory().createConfigurationInt(args);
 	}
 	
 	
+	private CommandLineConfigurationFactory() {
+	}
+
+
 	/**
 	 * @param args
 	 * @throws UserException
 	 */
-	public static Configuration createConfiguration(final String[] args) throws UserException {
+	private Configuration createConfigurationInt(final String[] args) throws UserException {
 		final Configuration.Builder cfg = Configuration.createBuilder();
 		
 		for (int i = 0; i < args.length; i++) {
@@ -35,23 +54,25 @@ public final class CommandLineConfigurationFactory {
 			
 			try {
 				if (arg.equals("--input")) {
-					cfg.addInputGpx(args[++i]);
+					inputGpxList.add(args[++i]);
 				} else if (arg.equals("--output")) {
 					cfg.frameFilePattern(args[++i]);
 				} else if (arg.equals("--label")) {
-					cfg.addLabel(args[++i]);
+					labelList.add(args[++i]);
 				} else if (arg.equals("--color")) {
-					cfg.addColor(Color.decode(args[++i]));
+					colorList.add(Color.decode(args[++i]));
 				} else if (arg.equals("--margin")) {
 					cfg.margin(Integer.parseInt(args[++i]));
 				} else if (arg.equals("--time-offset")) {
-					cfg.addTimeOffset(Long.parseLong(args[++i]));
+					timeOffsetList.add(Long.valueOf(args[++i]));
 				} else if (arg.equals("--forced-point-time-interval")) {
-					cfg.addForcedPointInterval(Long.parseLong(args[++i]));
+					final String s = args[++i];
+					Long l;
+					forcedPointIntervalList.add(s.isEmpty() ? null : (l = Long.valueOf(s)).longValue() == 0l ? null : l);
 				} else if (arg.equals("--speedup")) {
 					cfg.speedup(Double.parseDouble(args[++i]));
 				} else if (arg.equals("--line-width")) {
-					cfg.addLineWidth(Float.parseFloat(args[++i]));
+					lineWidthList.add(Float.valueOf(args[++i]));
 				} else if (arg.equals("--tail-duration")) {
 					cfg.tailDuration(Long.parseLong(args[++i]) * 1000);
 				} else if (arg.equals("--fps")) {
@@ -71,7 +92,7 @@ public final class CommandLineConfigurationFactory {
 				} else if (arg.equals("--tms-url-template")) {
 					cfg.tmsUrlTemplate(args[++i]);
 				} else if (arg.equals("--background-map-visibility")) {
-					cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
+					cfg.backgroundMapVisibility(Float.parseFloat(args[++i]) / 100f);
 				} else if (arg.equals("--total-time")) {
 					cfg.totalTime(Long.valueOf(args[++i]));
 				} else if (arg.equals("--keep-idle")) {
@@ -94,7 +115,55 @@ public final class CommandLineConfigurationFactory {
 			}
 		}
 		
+		normalizeColors();
+		normalizeLineWidths();
+		
+//			private final List<String> labelList = new ArrayList<String>();
+//			private final List<Long> timeOffsetList = new ArrayList<Long>();
+//			private final List<Long> forcedPointIntervalList = new ArrayList<Long>();
+		
+		for (int i = 0, n = inputGpxList.size(); i < n; i++) {
+			final TrackConfiguration.Builder tcb = TrackConfiguration.createBuilder();
+			tcb.inputGpx(inputGpxList.get(i));
+			tcb.color(colorList.get(i));
+			tcb.lineWidth(lineWidthList.get(i));
+			tcb.label(i < labelList.size() ? labelList.get(i) : "");
+			tcb.timeOffset(i < timeOffsetList.size() ? timeOffsetList.get(i) : Long.valueOf(0));
+			tcb.forcedPointInterval(i < forcedPointIntervalList.size() ? forcedPointIntervalList.get(i) : null);
+			
+			cfg.addTrackConfiguration(tcb.build());
+		}
+		
 		return cfg.build();
 	}
 
+	private void normalizeColors() {
+		final int size = inputGpxList.size();
+		final int size2 = colorList.size();
+		if (size2 == 0) {
+			for (int i = 0; i < size; i++) {
+				colorList.add(Color.getHSBColor((float) i / size, 0.8f, 1f));
+			}
+		} else if (size2 < size) {
+			for (int i = size2; i < size; i++) {
+				colorList.add(colorList.get(i - size2));
+			}
+		}
+	}
+
+
+	private void normalizeLineWidths() {
+		final int size = inputGpxList.size();
+		final int size2 = lineWidthList.size();
+		if (size2 == 0) {
+			for (int i = 0; i < size; i++) {
+				lineWidthList.add(2f);
+			}
+		} else if (size2 < size) {
+			for (int i = size2; i < size; i++) {
+				lineWidthList.add(lineWidthList.get(i - size2));
+			}
+		}
+	}
+	
 }

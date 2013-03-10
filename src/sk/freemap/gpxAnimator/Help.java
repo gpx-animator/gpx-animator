@@ -1,5 +1,3 @@
-package sk.freemap.gpxAnimator;
-
 /*
  *  Copyright 2013 Martin Ždila, Freemap Slovakia
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,40 +12,67 @@ package sk.freemap.gpxAnimator;
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-class Help {
+package sk.freemap.gpxAnimator;
+
+
+public class Help {
+
+	private static final String HELP_SPEEDUP = "speed multiplication of the real time";
+
+	private static final String HELP_MARGIN = "margin in pixels";
+
+	private static final String HELP_TAIL_DURATION = "latest time of highlighted tail in seconds";
+
+	private static final String HELP_FORCED_POINT_TIME_INTERVAL = "interval between adjanced GPS points in milliseconds - useful for GPX files with missing point time information; if specified";
+
+	private static final String HELP_TIME_OFFSET = "time offset for track in milliseconds";
+
+	public static final String HELP_INPUT = "input GPX filename";
+	
+	public static final String HELP_OUTPUT = "output filename template for saved frames";
+	
+	public static final String HELP_LABEL = "text displayed next to marker";
+
+	public static final String HELP_MARKER_SIZE = "marker size in pixels";
+	
+	public static final String HELP_WAYPOINT_SIZE = "waypoint size in pixels";
+	
+	public static final String HELP_COLOR = "track color in #RRGGBB representation";
+	
+	private static final String HELP_LINE_WIDTH = "track line width in pixels";
+	
 
 	static void printHelp() {
-		System.out.println("GPX Animator 0.8");
+		System.out.println("GPX Animator 0.9");
 		System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
 		System.out.println();
 		System.out.println("Usage:");
 		System.out.println("--help");
 		System.out.println("\tthis help");
 		System.out.println("--input <input>");
-		System.out.println("\tinput GPX filename; can be provided multiple times for multiple tracks");
+		System.out.println("\t" + HELP_INPUT + "; can be provided multiple times for multiple tracks");
 		System.out.println("--output <output>");
-		System.out.println("\toutput filename template for saved frames; default frame%08d.png");
+		System.out.println("\t" + HELP_OUTPUT + "; default frame%08d.png");
 		System.out.println("--label <label>");
-		System.out.println("\ttext displayed next to marker; can be specified multiple times if multiple tracks are provided");
+		System.out.println("\t" + HELP_LABEL + "; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--marker-size <size>");
-		System.out.println("\tmarker size in pixels; default 8.0");
+		System.out.println("\t" + HELP_MARKER_SIZE + "; default 8.0");
 		System.out.println("--waypoint-size <size>");
-		System.out.println("\twaypoint size in pixels; for no waypoints specify 0.0; default 6.0");
+		System.out.println("\t" + HELP_WAYPOINT_SIZE + "; for no waypoints specify 0.0; default 6.0");
 		System.out.println("--color <color>");
-		System.out.println("\ttrack color in #RRGGBB representation; can be specified multiple times if multiple tracks are provided");
+		System.out.println("\t" + HELP_COLOR + "; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--line-width <width>");
-		System.out.println("\ttrack line width in pixels; can be specified multiple times if multiple tracks are provided; default 2.0");
+		System.out.println("\t" + HELP_LINE_WIDTH + "; can be specified multiple times if multiple tracks are provided; default 2.0");
 		System.out.println("--time-offset <milliseconds>");
-		System.out.println("\ttime offset for track in milliseconds; can be specified multiple times if multiple tracks are provided");
+		System.out.println("\t" + HELP_TIME_OFFSET + "; can be specified multiple times if multiple tracks are provided");
 		System.out.println("--forced-point-time-interval <milliseconds>");
-		System.out.println("\tinterval between adjanced GPS points in milliseconds - useful for GPX files with missing point time information; if specified, " +
-				"absolute time must be set with --time-offset option; can be specified multiple times if multiple tracks are provided; 0 for no forcing; default 0");
+		System.out.println("\t" + HELP_FORCED_POINT_TIME_INTERVAL + ", absolute time must be set with --time-offset option; can be specified multiple times if multiple tracks are provided; 0 for no forcing; default 0");
 		System.out.println("--tail-duration <time>");
-		System.out.println("\tlatest time of highlighted tail in seconds; default 3600");
+		System.out.println("\t" + HELP_TAIL_DURATION + "; default 3600");
 		System.out.println("--margin <margin>");
-		System.out.println("\tmargin in pixels; default 20");
+		System.out.println("\t" + HELP_MARGIN + "; default 20");
 		System.out.println("--speedup <speedup>");
-		System.out.println("\tspeed multiplication of the real time; default 1000.0; complementary to --total-time option");
+		System.out.println("\t" + HELP_SPEEDUP + "; default 1000.0; complementary to --total-time option");
 		System.out.println("--total-time <time>");
 		System.out.println("\ttotal length of video in seconds; complementary to --speedup option");
 		System.out.println("--fps <fps>");

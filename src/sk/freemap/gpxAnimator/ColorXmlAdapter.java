@@ -14,17 +14,20 @@
  */
 package sk.freemap.gpxAnimator;
 
+import java.awt.Color;
 
-public class Main {
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-	public static void main(final String[] args) {
-		try {
-			final Configuration cfg = CommandLineConfigurationFactory.createConfiguration(args);
-			new Renderer(cfg).render();
-		} catch (final UserException e) {
-			System.err.println(e.getMessage());
-			System.exit(1);
-		}
+public class ColorXmlAdapter extends XmlAdapter<String, Color> {
+
+	@Override
+	public Color unmarshal(final String string) throws Exception {
+		return new Color(Long.decode(string).intValue());
+	}
+
+	@Override
+	public String marshal(final Color color) throws Exception {
+		return "#" + Integer.toHexString(color.getRGB()).toUpperCase();
 	}
 
 }

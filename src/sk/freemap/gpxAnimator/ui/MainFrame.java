@@ -6,22 +6,36 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import sk.freemap.gpxAnimator.Configuration;
+import sk.freemap.gpxAnimator.Renderer;
+import sk.freemap.gpxAnimator.TrackConfiguration;
 import sk.freemap.gpxAnimator.UserException;
 
 public class MainFrame extends JFrame {
@@ -46,6 +60,21 @@ public class MainFrame extends JFrame {
 	private final ColorSelector flashbackColorSelector;
 	private final JSpinner flashbackDurationSpinner;
 	private final JSpinner totalTimeSpinner;
+	private final JTabbedPane tabbedPane;
+
+	private final FileFilter filter = new FileFilter() {
+		@Override
+		public String getDescription() {
+			return "GPX Animator Configuration Files";
+		}
+		
+		@Override
+		public boolean accept(final File f) {
+			return f.isDirectory() || f.getName().endsWith("ga.xml");
+		}
+	};
+	
+	private final JFileChooser fileChooser = new JFileChooser();
 
 	/**
 	 * Launch the application.
@@ -57,7 +86,7 @@ public class MainFrame extends JFrame {
 				try {
 					final MainFrame frame = new MainFrame();
 					frame.setVisible(true);
-					frame.setConfiguration(Configuration.createBuilder().addInputGpx("xxx").build());
+					frame.setConfiguration(Configuration.createBuilder().build());
 				} catch (final Exception e) {
 					e.printStackTrace();
 				}
@@ -89,7 +118,10 @@ public class MainFrame extends JFrame {
 		b.flashbackColor(flashbackColorSelector.getColor());
 		b.flashbackDuration((Float) flashbackDurationSpinner.getValue());
 		
-		// TODO tracks
+		for (int i = 1, n = tabbedPane.getTabCount(); i < n; i++) {
+			final TrackSettingsPanel tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
+			b.addTrackConfiguration(tsp.createConfiguration());
+		}
 		
 		return b.build();
 	}
@@ -114,6 +146,15 @@ public class MainFrame extends JFrame {
 		waypintSizeSpinner.setValue(c.getWaypointSize());
 		flashbackColorSelector.setColor(c.getFlashbackColor());
 		flashbackDurationSpinner.setValue(c.getFlashbackDuration());
+		
+		// remove all track tabs
+		for (int i = tabbedPane.getTabCount() - 1; i > 0; i--) {
+			tabbedPane.remove(i);
+		}
+		
+		for (final TrackConfiguration tc : c.getTrackConfigurationList()) {
+			addTrackSettingsTab(tc);
+		}
 	}
 	
 
@@ -121,9 +162,129 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		fileChooser.addChoosableFileFilter(filter);
+
 		setTitle("GPX Animator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 681, 606);
+		
+		final JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		final JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		final JMenuItem mntmNew = new JMenuItem("New");
+		mntmNew.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				try {
+					setConfiguration(Configuration.createBuilder().build());
+				} catch (final UserException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		mnFile.add(mntmNew);
+		
+		final JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+					final File file = fileChooser.getSelectedFile();
+					try {
+						final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
+						final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+						setConfiguration((Configuration) unmarshaller.unmarshal(file));
+					} catch (final JAXBException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		mnFile.add(mntmOpen);
+		
+		final JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooser.getSelectedFile();
+					if (!file.getName().endsWith(".ga.xml")) {
+						file = new File(file.getPath() + ".ga.xml");
+					}
+					try {
+						final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
+						final Marshaller marshaller = jaxbContext.createMarshaller();
+						marshaller.marshal(createConfiguration(), file);
+					} catch (final JAXBException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (final UserException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		mnFile.add(mntmSave);
+		
+		final JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				MainFrame.this.dispose();
+			}
+		});
+		mnFile.add(mntmExit);
+		
+		final JMenu mnTrack = new JMenu("Track");
+		menuBar.add(mnTrack);
+		
+		final JMenuItem mntmAddTrack = new JMenuItem("Add");
+		mntmAddTrack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				try {
+					addTrackSettingsTab(TrackConfiguration.createBuilder().build());
+				} catch (final UserException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		mnTrack.add(mntmAddTrack);
+		
+		final JMenuItem mntmRemoveTrack = new JMenuItem("Remove");
+		mntmRemoveTrack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final int index = tabbedPane.getSelectedIndex();
+				if (index > 0) {
+					tabbedPane.remove(index);
+				}
+			}
+		});
+		mnTrack.add(mntmRemoveTrack);
+		
+		final JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		
+		final JMenuItem mntmAbout = new JMenuItem("About");
+		mntmAbout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final AboutDialog aboutDialog = new AboutDialog();
+				aboutDialog.setLocationRelativeTo(MainFrame.this);
+				aboutDialog.setVisible(true);
+			}
+		});
+		mnHelp.add(mntmAbout);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -134,7 +295,7 @@ public class MainFrame extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		final GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
 		gbc_tabbedPane.gridwidth = 2;
 		gbc_tabbedPane.insets = new Insets(0, 0, 5, 0);
@@ -324,7 +485,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblTailDuration, gbc_lblTailDuration);
 		
 		tailDurationSpinner = new JSpinner();
-		tailDurationSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(60)));
+		tailDurationSpinner.setModel(new SpinnerNumberModel(new Long(0), new Long(0), null, new Long(60)));
 		final GridBagConstraints gbc_tailDurationSpinner = new GridBagConstraints();
 		gbc_tailDurationSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_tailDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -453,18 +614,6 @@ public class MainFrame extends JFrame {
 		gbc_flashbackDurationSpinner.gridy = 16;
 		tabContentPanel.add(flashbackDurationSpinner, gbc_flashbackDurationSpinner);
 		
-		final TrackSettingsPanel trackSettingsPanel = new TrackSettingsPanel(null);
-		
-		final JScrollPane trackScrollPane = new JScrollPane();
-		tabbedPane.addTab("Track", null, trackScrollPane, null);
-		trackScrollPane.setViewportView(trackSettingsPanel);
-		
-		final JButton button = new JButton("Remove track");
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-			}
-		});
 		final GridBagConstraints gbc_button = new GridBagConstraints();
 		gbc_button.anchor = GridBagConstraints.EAST;
 		gbc_button.gridwidth = 3;
@@ -484,21 +633,51 @@ public class MainFrame extends JFrame {
 		addTrackButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				final JScrollPane scrollPane = new JScrollPane();
-				final TrackSettingsPanel trackSettingsPanel = new TrackSettingsPanel(new ActionListener() {
-					@Override
-					public void actionPerformed(final ActionEvent e) {
-						tabbedPane.remove(scrollPane);
-					}
-				});
-				scrollPane.setViewportView(trackSettingsPanel);
-				tabbedPane.addTab("Track", null, scrollPane, null);
-				tabbedPane.setSelectedComponent(scrollPane);
+				try {
+					addTrackSettingsTab(TrackConfiguration.createBuilder().build());
+				} catch (final UserException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		buttonPanel.add(addTrackButton);
 		
 		final JButton startButton = new JButton("Start");
+		startButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							new Renderer(createConfiguration()).render();
+							JOptionPane.showMessageDialog(MainFrame.this, "Success", "Finished", JOptionPane.INFORMATION_MESSAGE);
+						} catch (final UserException e1) {
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(MainFrame.this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				});
+			}
+		});
 		buttonPanel.add(startButton);
 	}
+	
+
+	private void addTrackSettingsTab(final TrackConfiguration tc) {
+		final JScrollPane trackScrollPane = new JScrollPane();
+		final TrackSettingsPanel trackSettingsPanel = new TrackSettingsPanel(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				tabbedPane.remove(trackScrollPane);
+			}
+		});
+		trackSettingsPanel.setConfiguration(tc);
+		
+		tabbedPane.addTab("Track", null, trackScrollPane, null);
+		trackScrollPane.setViewportView(trackSettingsPanel);
+		tabbedPane.setSelectedComponent(trackScrollPane);
+	}
+	
 }

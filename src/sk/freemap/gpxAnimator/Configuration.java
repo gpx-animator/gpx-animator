@@ -19,38 +19,52 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Configuration {
 	
-	private final int margin;
-	private final Integer width;
-	private final Integer height;
-	private final Integer zoom;
+	private int margin;
+	private Integer width;
+	private Integer height;
+	private Integer zoom;
 	
-	private final Double speedup;
-	private final long tailDuration ;
-	private final double fps;
-	private final Long totalTime;
+	private Double speedup;
+	private long tailDuration ;
+	private double fps;
+	private Long totalTime;
 	
-	private final float backgroundMapVisibility;
-	private final String tmsUrlTemplate;
+	private float backgroundMapVisibility;
+	private String tmsUrlTemplate;
 
-	private final boolean skipIdle;
-	private final Color flashbackColor;
-	private final float flashbackDuration;
+	private boolean skipIdle;
 	
-	private final String frameFilePattern;
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
+	private Color flashbackColor;
+	private float flashbackDuration;
 	
-	private final int fontSize;
-	private final double markerSize;
-	private final double waypointSize;
+	private String frameFilePattern;
+	
+	private int fontSize;
+	private double markerSize;
+	private double waypointSize;
 
-	private final List<String> inputGpxList;
-	private final List<String> labelList;
-	private final List<Color> colorList;
-	private final List<Long> timeOffsetList;
-	private final List<Long> forcedPointIntervalList;
-	private final List<Float> lineWidthList;
+	@XmlElementWrapper
+	@XmlElement(name = "trackConfiguration")
+	private List<TrackConfiguration> trackConfigurationList;
 	
+	
+	// for JAXB
+	@SuppressWarnings("unused")
+	private Configuration() {
+		
+	}
 	
 	public Configuration(
 			final int margin, final Integer width, final Integer height, final Integer zoom,
@@ -59,8 +73,7 @@ public class Configuration {
 			final boolean skipIdle, final Color flashbackColor, final float flashbackDuration,
 			final String frameFilePattern,
 			final int fontSize, final double markerSize, final double waypointSize,
-			final List<String> inputGpxList, final List<String> labelList, final List<Color> colorList, final List<Long> timeOffsetList,
-			final List<Long> forcedPointIntervalList, final List<Float> lineWidthList) {
+			final List<TrackConfiguration> trackConfigurationList) {
 		this.margin = margin;
 		this.width = width;
 		this.height = height;
@@ -78,12 +91,7 @@ public class Configuration {
 		this.fontSize = fontSize;
 		this.markerSize = markerSize;
 		this.waypointSize = waypointSize;
-		this.inputGpxList = inputGpxList;
-		this.labelList = labelList;
-		this.colorList = colorList;
-		this.timeOffsetList = timeOffsetList;
-		this.forcedPointIntervalList = forcedPointIntervalList;
-		this.lineWidthList = lineWidthList;
+		this.trackConfigurationList = trackConfigurationList;
 	}
 
 
@@ -142,11 +150,6 @@ public class Configuration {
 	}
 	
 	
-	public static Builder createBuilder() {
-		return new Builder();
-	}
-	
-	
 	public Color getFlashbackColor() {
 		return flashbackColor;
 	}
@@ -176,35 +179,16 @@ public class Configuration {
 		return waypointSize;
 	}
 
-	public List<String> getInputGpxList() {
-		return inputGpxList;
+	
+	public List<TrackConfiguration> getTrackConfigurationList() {
+		return trackConfigurationList;
+	}
+	
+	
+	public static Builder createBuilder() {
+		return new Builder();
 	}
 
-	
-	public List<String> getLabelList() {
-		return labelList;
-	}
-
-	
-	public List<Color> getColorList() {
-		return colorList;
-	}
-	
-	
-	public List<Long> getTimeOffsetList() {
-		return timeOffsetList;
-	}
-
-	
-	public List<Long> getForcedPointIntervalList() {
-		return forcedPointIntervalList;
-	}
-
-	
-	public List<Float> getLineWidthList() {
-		return lineWidthList;
-	}
-	
 	
 	public static class Builder {
 		private int margin = 20;
@@ -217,8 +201,8 @@ public class Configuration {
 		private double fps = 30.0;
 		private Long totalTime;
 		
-		private float backgroundMapVisibility = 50f;
-		private String tmsUrlTemplate; // http://tile.openstreetmap.org/{zoom}/{x}/{y}.png, http://aio.freemap.sk/T/{zoom}/{x}/{y}.png
+		private float backgroundMapVisibility = 0.5f;
+		private String tmsUrlTemplate;
 
 		private boolean skipIdle = true;
 		private Color flashbackColor = Color.white;
@@ -230,18 +214,11 @@ public class Configuration {
 		private double markerSize = 8.0;
 		private double waypointSize = 6.0;
 
-		private final List<String> inputGpxList = new ArrayList<String>();
-		private final List<String> labelList = new ArrayList<String>();
-		private final List<Color> colorList = new ArrayList<Color>();
-		private final List<Long> timeOffsetList = new ArrayList<Long>();
-		private final List<Long> forcedPointIntervalList = new ArrayList<Long>();
-		private final List<Float> lineWidthList = new ArrayList<Float>();
+		private final List<TrackConfiguration> trackConfigurationList = new ArrayList<TrackConfiguration>();
 		
 
 		public Configuration build() throws UserException {
 			validateOptions();
-			normalizeColors();
-			normalizeLineWidths();
 			
 			return new Configuration(
 					margin, height, width, zoom,
@@ -250,20 +227,14 @@ public class Configuration {
 					skipIdle, flashbackColor, flashbackDuration,
 					frameFilePattern,
 					fontSize, markerSize, waypointSize,
-					Collections.unmodifiableList(inputGpxList),
-					Collections.unmodifiableList(labelList),
-					Collections.unmodifiableList(colorList),
-					Collections.unmodifiableList(timeOffsetList),
-					Collections.unmodifiableList(forcedPointIntervalList),
-					Collections.unmodifiableList(lineWidthList)
+					Collections.unmodifiableList(trackConfigurationList)
 			);
 		}
 		
-		
 
 		private void validateOptions() throws UserException {
-			if (inputGpxList.isEmpty()) {
-				throw new UserException("missing input file");
+			if (trackConfigurationList.isEmpty()) {
+				// TODO throw new UserException("missing input file");
 			}
 			
 			if (String.format(frameFilePattern, 100).equals(String.format(frameFilePattern, 200))) {
@@ -271,36 +242,6 @@ public class Configuration {
 			}
 			
 			// TODO other validations
-		}
-
-
-		private void normalizeColors() {
-			final int size = inputGpxList.size();
-			final int size2 = colorList.size();
-			if (size2 == 0) {
-				for (int i = 0; i < size; i++) {
-					colorList.add(Color.getHSBColor((float) i / size, 0.8f, 1f));
-				}
-			} else if (size2 < size) {
-				for (int i = size2; i < size; i++) {
-					colorList.add(colorList.get(i - size2));
-				}
-			}
-		}
-
-
-		private void normalizeLineWidths() {
-			final int size = inputGpxList.size();
-			final int size2 = lineWidthList.size();
-			if (size2 == 0) {
-				for (int i = 0; i < size; i++) {
-					lineWidthList.add(2f);
-				}
-			} else if (size2 < size) {
-				for (int i = size2; i < size; i++) {
-					lineWidthList.add(lineWidthList.get(i - size2));
-				}
-			}
 		}
 
 
@@ -389,47 +330,34 @@ public class Configuration {
 			return this;
 		}
 
-		public Builder addInputGpx(final String inputGpx) {
-			inputGpxList.add(inputGpx);
+		public Builder addTrackConfiguration(final TrackConfiguration trackConfiguration) {
+			this.trackConfigurationList.add(trackConfiguration);
 			return this;
 		}
-
-		public Builder addLabel(final String label) {
-			labelList.add(label);
-			return this;
-		}
-
-		public Builder addColor(final Color color) {
-			colorList.add(color);
-			return this;
-		}
-
-		public Builder addTimeOffset(final Long timeOffset) {
-			timeOffsetList.add(timeOffset);
-			return this;
-		}
-
-		public Builder addForcedPointInterval(final Long forcedPointInterval) {
-			forcedPointIntervalList.add(forcedPointInterval);
-			return this;
-		}
-
-		public Builder addLineWidth(final Float lineWidth) {
-			lineWidthList.add(lineWidth);
-			return this;
-		}
-		
 	}
-	
+
 
 	@Override
 	public String toString() {
-		return "Configuration [margin=" + margin + ", width=" + width + ", height=" + height + ", zoom=" + zoom + ", speedup=" + speedup + ", tailDuration=" + tailDuration + ", fps=" + fps + ", totalTime=" + totalTime
-				+ ", backgroundMapVisibility=" + backgroundMapVisibility + ", tmsUrlTemplate=" + tmsUrlTemplate + ", skipIdle=" + skipIdle + ", flashbackColor=" + flashbackColor + ", flashbackDuration=" + flashbackDuration
-				+ ", frameFilePattern=" + frameFilePattern + ", fontSize=" + fontSize + ", markerSize=" + markerSize + ", waypointSize=" + waypointSize + ", inputGpxList=" + inputGpxList + ", labelList=" + labelList + ", colorList="
-				+ colorList + ", timeOffsetList=" + timeOffsetList + ", forcedPointIntervalList=" + forcedPointIntervalList + ", lineWidthList=" + lineWidthList + "]";
+		return "Configuration [margin=" + margin
+				+ ", width=" + width
+				+ ", height=" + height
+				+ ", zoom=" + zoom
+				+ ", speedup=" + speedup
+				+ ", tailDuration=" + tailDuration
+				+ ", fps=" + fps + ", totalTime=" + totalTime
+				+ ", backgroundMapVisibility=" + backgroundMapVisibility
+				+ ", tmsUrlTemplate=" + tmsUrlTemplate
+				+ ", skipIdle=" + skipIdle
+				+ ", flashbackColor=" + flashbackColor
+				+ ", flashbackDuration=" + flashbackDuration
+				+ ", frameFilePattern=" + frameFilePattern
+				+ ", fontSize=" + fontSize
+				+ ", markerSize=" + markerSize
+				+ ", waypointSize=" + waypointSize
+				+ ", trackConfigurationList=" + trackConfigurationList
+				+ "]";
 	}
+	
 
-	
-	
 }
