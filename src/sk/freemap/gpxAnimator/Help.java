@@ -14,6 +14,8 @@
  */
 package sk.freemap.gpxAnimator;
 
+import java.io.PrintWriter;
+
 
 public class Help {
 
@@ -42,62 +44,68 @@ public class Help {
 	private static final String HELP_LINE_WIDTH = "track line width in pixels";
 	
 
-	static void printHelp() {
-		System.out.println("GPX Animator 0.9");
-		System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
-		System.out.println();
-		System.out.println("Usage:");
-		System.out.println("--help");
-		System.out.println("\tthis help");
-		System.out.println("--input <input>");
-		System.out.println("\t" + HELP_INPUT + "; can be provided multiple times for multiple tracks");
-		System.out.println("--output <output>");
-		System.out.println("\t" + HELP_OUTPUT + "; default frame%08d.png");
-		System.out.println("--label <label>");
-		System.out.println("\t" + HELP_LABEL + "; can be specified multiple times if multiple tracks are provided");
-		System.out.println("--marker-size <size>");
-		System.out.println("\t" + HELP_MARKER_SIZE + "; default 8.0");
-		System.out.println("--waypoint-size <size>");
-		System.out.println("\t" + HELP_WAYPOINT_SIZE + "; for no waypoints specify 0.0; default 6.0");
-		System.out.println("--color <color>");
-		System.out.println("\t" + HELP_COLOR + "; can be specified multiple times if multiple tracks are provided");
-		System.out.println("--line-width <width>");
-		System.out.println("\t" + HELP_LINE_WIDTH + "; can be specified multiple times if multiple tracks are provided; default 2.0");
-		System.out.println("--time-offset <milliseconds>");
-		System.out.println("\t" + HELP_TIME_OFFSET + "; can be specified multiple times if multiple tracks are provided");
-		System.out.println("--forced-point-time-interval <milliseconds>");
-		System.out.println("\t" + HELP_FORCED_POINT_TIME_INTERVAL + ", absolute time must be set with --time-offset option; can be specified multiple times if multiple tracks are provided; 0 for no forcing; default 0");
-		System.out.println("--tail-duration <time>");
-		System.out.println("\t" + HELP_TAIL_DURATION + "; default 3600");
-		System.out.println("--margin <margin>");
-		System.out.println("\t" + HELP_MARGIN + "; default 20");
-		System.out.println("--speedup <speedup>");
-		System.out.println("\t" + HELP_SPEEDUP + "; default 1000.0; complementary to --total-time option");
-		System.out.println("--total-time <time>");
-		System.out.println("\ttotal length of video in seconds; complementary to --speedup option");
-		System.out.println("--fps <fps>");
-		System.out.println("\tframes per second; default 30.0");
-		System.out.println("--width <width>");
-		System.out.println("\tvideo width in pixels; if not specified but --zoom option is specified, then computed from GPX bounding box and margin, otherwise 800");
-		System.out.println("--height <height>");
-		System.out.println("\tvideo height in pixels; if unspecified, it is derived from width, GPX bounding box and margin");
-		System.out.println("--zoom <zoom>");
-		System.out.println("\tmap zoom typically from 1 to 18; if not specified and --tms-url-template option is used then it is computed from --width option");
-		System.out.println("--tms-url-template <template>");
-		System.out.println("\tslippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; " +
-				"for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap");
-		System.out.println("--background-map-visibility <visibility>");
-		System.out.println("\tvisibility of the background map in %, default 50.0");
-		System.out.println("--font-size <size>");
-		System.out.println("\tdatetime text font size; default 12; set to 0 for no date text");
-		System.out.println("--keep-idle");
-		System.out.println("\tdon't skip parts where no movement is present");
-		System.out.println("--flashback-color <ARGBcolor>");
-		System.out.println("\tcolor of the idle-skipping flashback effect in #AARRGGBB representation; default is opaque white - #ffffffff");
-		System.out.println("--flashback-duration <duration>");
-		System.out.println("\tidle-skipping flashback effect duration in milliseconds; set to 0.0 for no flashback; default 250.0");
-		System.out.println("--debug");
-		System.out.println("\ttoggle debugging");
+	public static void printHelp(final OptionHelpWriter w) {
+		w.writeOptionHelp("help", null, "this help", false, null);
+		w.writeOptionHelp("gui", null, "show GUI", false, "if no argument is specified");
+		w.writeOptionHelp("input", "input", HELP_INPUT, true, null);
+		w.writeOptionHelp("output", "output", HELP_OUTPUT, false, "frame%08d.png");
+		w.writeOptionHelp("label", "label", HELP_LABEL, true, "\"\"");
+		w.writeOptionHelp("marker-size", "size", HELP_MARKER_SIZE, false, "8.0");
+		w.writeOptionHelp("waypoint-size", "size", HELP_WAYPOINT_SIZE + "; for no waypoints specify", false, "6.0");
+		w.writeOptionHelp("color", "color", HELP_COLOR, true, "some nice color :-)");
+		w.writeOptionHelp("line-width", "width", HELP_LINE_WIDTH, true, "2.0");
+		w.writeOptionHelp("time-offset", "milliseconds", HELP_TIME_OFFSET, true, "0");
+		w.writeOptionHelp("forced-point-time-interval", "milliseconds", HELP_FORCED_POINT_TIME_INTERVAL + ", absolute time must be set with --time-offset option; can be specified multiple times if multiple tracks are provided; \"\" for no forcing", true, "\"\"");
+		w.writeOptionHelp("tail-duration", "time", HELP_TAIL_DURATION, false, "3600");
+		w.writeOptionHelp("margin", "margin", HELP_MARGIN, false, "20");
+		w.writeOptionHelp("speedup", "speedup", HELP_SPEEDUP + "; complementary to --total-time option", false, "1000.0");
+		w.writeOptionHelp("total-time", "time", "total length of video in seconds; complementary to --speedup option", false, null);
+		w.writeOptionHelp("fps", "fps", "frames per second", false, "30.0");
+		w.writeOptionHelp("width", "width", "video width in pixels; if not specified but --zoom option is specified, then computed from GPX bounding box and margin, otherwise 800", false, "(800)");
+		w.writeOptionHelp("height", "height", "video height in pixels; if unspecified, it is derived from width, GPX bounding box and margin", false, null);
+		w.writeOptionHelp("zoom", "zoom", "map zoom typically from 1 to 18; if not specified and --tms-url-template option is used then it is computed from --width option", false, null);
+		w.writeOptionHelp("tms-url-template", "template", "slippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; " +
+				"for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap", false, null);
+		w.writeOptionHelp("background-map-visibility", "visibility", "visibility of the background map in %", false, "50.0");
+		w.writeOptionHelp("font-size", "size", "datetime text font size; set to 0 for no date text", false, "12");
+		w.writeOptionHelp("keep-idle", null, "don't skip parts where no movement is present", false, null);
+		w.writeOptionHelp("flashback-color", "ARGBcolor", "color of the idle-skipping flashback effect in #AARRGGBB representation", false, "opaque white - #ffffffff");
+		w.writeOptionHelp("flashback-duration", "duration", "idle-skipping flashback effect duration in milliseconds; set to 0.0 for no flashback", false, "250.0");
+		w.writeOptionHelp("debug", null, "toggle debugging", false, null);
+	}
+	
+	public interface OptionHelpWriter {
+		void writeOptionHelp(String option, String argument, String description, boolean track, String defaultValue);
+	}
+	
+	public static class PrintWriterOptionHelpWriter implements OptionHelpWriter {
+		private final PrintWriter pw;
+
+		public PrintWriterOptionHelpWriter(final PrintWriter pw) {
+			this.pw = pw;
+		}
+
+		@Override
+		public void writeOptionHelp(final String option, final String argument, final String description, final boolean track, final String defaultValue) {
+			pw.print("--");
+			pw.print(option);
+			if (argument != null) {
+				pw.print(" <");
+				pw.print(argument);
+				pw.print(">");
+			}
+			pw.println();
+			pw.print('\t');
+			pw.print(description);
+			if (track) {
+				pw.print("; can be specified multiple times if multiple tracks are provided");
+			}
+			if (defaultValue != null) {
+				pw.print("; default ");
+				pw.print(defaultValue);
+			}
+			pw.println();
+		}
 	}
 
 }

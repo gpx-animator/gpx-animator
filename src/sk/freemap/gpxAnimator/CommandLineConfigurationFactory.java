@@ -15,6 +15,8 @@
 package sk.freemap.gpxAnimator;
 
 import java.awt.Color;
+import java.awt.GraphicsEnvironment;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,30 +33,31 @@ public final class CommandLineConfigurationFactory {
 	private final List<Long> forcedPointIntervalList = new ArrayList<Long>();
 	
 	private final List<Float> lineWidthList = new ArrayList<Float>();
+
+	private final boolean gui;
+
+	
+	private final Configuration configuration;
 	
 
-	public static Configuration createConfiguration(final String[] args) throws UserException {
-		return new CommandLineConfigurationFactory().createConfigurationInt(args);
-	}
-	
-	
-	private CommandLineConfigurationFactory() {
-	}
-
-
-	/**
-	 * @param args
-	 * @throws UserException
-	 */
-	private Configuration createConfigurationInt(final String[] args) throws UserException {
+	public CommandLineConfigurationFactory(final String[] args) throws UserException {
 		final Configuration.Builder cfg = Configuration.createBuilder();
-		
+
+		boolean forceGui = false;
+
 		for (int i = 0; i < args.length; i++) {
 			final String arg = args[i];
 			
 			try {
-				if (arg.equals("--input")) {
+				if (arg.equals("--gui")) {
+					if (GraphicsEnvironment.isHeadless()) {
+						throw new UserException("graphics is not supported in this environment");
+					}
+					forceGui = true;
+				} else if (arg.equals("--input")) {
 					inputGpxList.add(args[++i]);
+// TODO				} else if (arg.equals("--configuration")) {
+//					args[++i];
 				} else if (arg.equals("--output")) {
 					cfg.frameFilePattern(args[++i]);
 				} else if (arg.equals("--label")) {
@@ -103,7 +106,13 @@ public final class CommandLineConfigurationFactory {
 				} else if (arg.equals("--flashback-duration")) {
 					cfg.flashbackDuration(Float.parseFloat(args[++i]));
 				} else if (arg.equals("--help")) {
-					Help.printHelp();
+					System.out.println("GPX Animator 0.9");
+					System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
+					System.out.println();
+					System.out.println("Usage:");
+					final PrintWriter pw = new PrintWriter(System.out);
+					Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
+					pw.flush();
 					System.exit(0);
 				} else {
 					throw new UserException("unrecognised option " + arg + "\nrun program with --help option to print help");
@@ -118,10 +127,6 @@ public final class CommandLineConfigurationFactory {
 		normalizeColors();
 		normalizeLineWidths();
 		
-//			private final List<String> labelList = new ArrayList<String>();
-//			private final List<Long> timeOffsetList = new ArrayList<Long>();
-//			private final List<Long> forcedPointIntervalList = new ArrayList<Long>();
-		
 		for (int i = 0, n = inputGpxList.size(); i < n; i++) {
 			final TrackConfiguration.Builder tcb = TrackConfiguration.createBuilder();
 			tcb.inputGpx(inputGpxList.get(i));
@@ -134,7 +139,9 @@ public final class CommandLineConfigurationFactory {
 			cfg.addTrackConfiguration(tcb.build());
 		}
 		
-		return cfg.build();
+		gui = args.length == 0 || forceGui;
+		
+		configuration = cfg.build();
 	}
 
 	private void normalizeColors() {
@@ -164,6 +171,16 @@ public final class CommandLineConfigurationFactory {
 				lineWidthList.add(lineWidthList.get(i - size2));
 			}
 		}
+	}
+	
+	
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+	
+	
+	public boolean isGui() {
+		return gui;
 	}
 	
 }

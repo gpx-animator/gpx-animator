@@ -14,13 +14,40 @@
  */
 package sk.freemap.gpxAnimator;
 
+import java.awt.EventQueue;
+import java.awt.GraphicsEnvironment;
+
+import sk.freemap.gpxAnimator.ui.MainFrame;
+
 
 public class Main {
 
 	public static void main(final String[] args) {
 		try {
-			final Configuration cfg = CommandLineConfigurationFactory.createConfiguration(args);
-			new Renderer(cfg).render();
+			final CommandLineConfigurationFactory cf = new CommandLineConfigurationFactory(args);
+			final Configuration configuration = cf.getConfiguration();
+			
+			if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
+				EventQueue.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							final MainFrame frame = new MainFrame();
+							frame.setVisible(true);
+							frame.setConfiguration(configuration);
+						} catch (final Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			} else {
+				new Renderer(configuration).render(new ProgressRecorder() {
+					@Override
+					public void setProgress1(final int pct, final String message) {
+						System.out.printf("%03d% %s", pct, message);
+					}
+				});
+			}
 		} catch (final UserException e) {
 			System.err.println(e.getMessage());
 			System.exit(1);

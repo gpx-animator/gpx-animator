@@ -64,7 +64,7 @@ public class Renderer {
 	}
 
 
-	public void render() throws UserException {
+	public void render(final ProgressRecorder pr) throws UserException {
 		final List<Long[]> spanList = new ArrayList<Long[]>();
 		
 		final TreeMap<Long, Point2D> wpMap = new TreeMap<Long, Point2D>();
@@ -122,7 +122,7 @@ public class Renderer {
 		if (cfg.getTmsUrlTemplate() != null && cfg.getZoom() == null) {
 			// force using computed zoom
 			zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
-			System.out.println("computed zoom is " + zoom);
+			pr.setProgress1(0, "computed zoom is " + zoom);
 		} else {
 			zoom = cfg.getZoom();
 		}
@@ -182,7 +182,7 @@ public class Renderer {
 			ga.setColor(Color.white);
 			ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
 		} else {
-			Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY);
+			Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, pr);
 		}
 		
 		if (cfg.getFontSize() > 0) {
@@ -208,12 +208,13 @@ public class Renderer {
 						break skip;
 					}
 				}
-				System.out.println("Skipping unused frame: " + frame + "/" + (frames - 1));
+				pr.setProgress1((int) (100.0 * frame / frames), "Skipping unused Frame: " + frame + "/" + (frames - 1));
 				skip = 1f;
 				continue;
 			}
 			
-			System.out.println("Frame: " + frame + "/" + (frames - 1));
+			pr.setProgress1((int) (100.0 * frame / frames), "Rendering Frame: " + frame + "/" + (frames - 1));
+
 			paint(bi, frame, 0);
 			
 			final BufferedImage bi2 = Utils.deepCopy(bi);
@@ -249,6 +250,8 @@ public class Renderer {
 		}
 		
 		System.out.println("Done.");
+		
+		// TODO show in GUI too
 		System.out.println("To encode generated frames you may run this command:");
 		System.out.println("ffmpeg -i " + cfg.getFrameFilePattern() + " -vcodec mpeg4 -b 3000k -r " + cfg.getFps() + " video.avi");
 	}

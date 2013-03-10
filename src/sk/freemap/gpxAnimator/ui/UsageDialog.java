@@ -18,6 +18,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -28,16 +30,21 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
-public class AboutDialog extends JDialog {
+import sk.freemap.gpxAnimator.Help;
+import sk.freemap.gpxAnimator.Help.OptionHelpWriter;
 
+public class UsageDialog extends JDialog {
+
+	private static final long serialVersionUID = -8639477664121609849L;
+	
 	private final JPanel contentPanel = new JPanel();
 
 	/**
 	 * Create the dialog.
 	 */
-	public AboutDialog() {
-		setTitle("About");
-		setBounds(100, 100, 450, 300);
+	public UsageDialog() {
+		setTitle("Usage");
+		setBounds(100, 100, 657, 535);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -47,7 +54,40 @@ public class AboutDialog extends JDialog {
 			dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			dtrpngpxNavigator.setEditable(false);
 			dtrpngpxNavigator.setContentType("text/html");
-			dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. 0.9<br/>\n&copy; 2013 Freemap Slovakia\n</div>\n<p>GPX Animator generates video frames from GPX as series of images.\nGenerated images can be then encoded to video with ffmpeg or similar software.</p>\n");
+			
+			final StringWriter sw = new StringWriter();
+			final PrintWriter pw = new PrintWriter(sw);
+			pw.println("<dl>");
+			Help.printHelp(new OptionHelpWriter() {
+				@Override
+				public void writeOptionHelp(final String option, final String argument, final String description, final boolean track, final String defaultValue) {
+					// TODO html escape
+					pw.print("<dt><b>--");
+					pw.print(option);
+					if (argument != null) {
+						pw.print(" &lt;");
+						pw.print(argument);
+						pw.print("&gt;");
+					}
+					pw.println("</b></dt>");
+					pw.print("<dd>");
+					pw.print(description);
+					if (track) {
+						pw.print("; can be specified multiple times if multiple tracks are provided");
+					}
+					if (defaultValue != null) {
+						pw.print("; default ");
+						pw.print(defaultValue);
+					}
+					pw.println("</dd>");
+				}
+			});
+			pw.println("</dl>");
+			pw.close();
+
+			dtrpngpxNavigator.setText("Commandline parameters:" + sw.toString());
+			
+			dtrpngpxNavigator.setCaretPosition(0);
 
 			{
 				final JScrollPane scrollPane = new JScrollPane(dtrpngpxNavigator);
@@ -63,7 +103,7 @@ public class AboutDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(final ActionEvent e) {
-						AboutDialog.this.dispose();
+						UsageDialog.this.dispose();
 					}
 				});
 				okButton.setActionCommand("OK");

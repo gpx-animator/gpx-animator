@@ -26,7 +26,7 @@ public class Map {
 
 	
 	public static void drawMap(final BufferedImage bi, final String tmsUrlTemplate, final float backgroundMapVisibility, final int zoom,
-			final double minX, final double maxX, final double minY, final double maxY) throws UserException {
+			final double minX, final double maxX, final double minY, final double maxY, final ProgressRecorder pr) throws UserException {
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 
 		final double tileDblX = xToTileX(zoom, minX);
@@ -39,14 +39,20 @@ public class Map {
 
 		final int maxXtile = (int) Math.floor(xToTileX(zoom, maxX));
 		final int maxYtile = (int) Math.floor(yToTileY(zoom, maxY));
+		
+		final int total = (maxXtile - tileX + 1) * (tileY - maxYtile + 1);
+		int  i = 0;
+		
 		for (int x = tileX; x <= maxXtile; x++) {
 			for (int y = tileY; y >= maxYtile; y--) {
+				i++;
+				
 				final String url = tmsUrlTemplate
 						.replace("{zoom}", Integer.toString(zoom))
 						.replace("{x}", Integer.toString(x))
 						.replace("{y}", Integer.toString(y));
 				
-				System.out.println("reading tile " + url);
+				pr.setProgress1((int) (100.0 * i / total), "Reading Map Tile: " + i + "/" + total);
 				
 				final BufferedImage tile;
 				try {

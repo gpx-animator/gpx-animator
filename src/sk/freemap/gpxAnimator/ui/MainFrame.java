@@ -1,12 +1,15 @@
 package sk.freemap.gpxAnimator.ui;
 
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -20,12 +23,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.xml.bind.JAXBContext;
@@ -34,6 +38,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import sk.freemap.gpxAnimator.Configuration;
+import sk.freemap.gpxAnimator.ProgressRecorder;
 import sk.freemap.gpxAnimator.Renderer;
 import sk.freemap.gpxAnimator.TrackConfiguration;
 import sk.freemap.gpxAnimator.UserException;
@@ -75,24 +80,6 @@ public class MainFrame extends JFrame {
 	};
 	
 	private final JFileChooser fileChooser = new JFileChooser();
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(final String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					final MainFrame frame = new MainFrame();
-					frame.setVisible(true);
-					frame.setConfiguration(Configuration.createBuilder().build());
-				} catch (final Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	
 	
 	public Configuration createConfiguration() throws UserException {
@@ -165,7 +152,7 @@ public class MainFrame extends JFrame {
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(filter);
 
-		setTitle("GPX Animator");
+		setTitle("GPX Animator 0.9");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 681, 606);
 		
@@ -285,19 +272,29 @@ public class MainFrame extends JFrame {
 			}
 		});
 		mnHelp.add(mntmAbout);
+		
+		final JMenuItem mntmUsage = new JMenuItem("Usage");
+		mntmUsage.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final UsageDialog usageDialog = new UsageDialog();
+				usageDialog.setLocationRelativeTo(MainFrame.this);
+				usageDialog.setVisible(true);
+			}
+		});
+		mnHelp.add(mntmUsage);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		final GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{438, 0, 0};
+		gbl_contentPane.columnWidths = new int[]{438, 0};
 		gbl_contentPane.rowHeights = new int[]{264, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		final GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-		gbc_tabbedPane.gridwidth = 2;
 		gbc_tabbedPane.insets = new Insets(0, 0, 5, 0);
 		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
 		gbc_tabbedPane.gridx = 0;
@@ -620,16 +617,36 @@ public class MainFrame extends JFrame {
 		gbc_button.gridx = 0;
 		gbc_button.gridy = 7;
 		
-		final JPanel buttonPanel = new JPanel();
-		final GridBagConstraints gbc_buttonPanel = new GridBagConstraints();
-		gbc_buttonPanel.anchor = GridBagConstraints.EAST;
-		gbc_buttonPanel.gridwidth = 2;
-		gbc_buttonPanel.fill = GridBagConstraints.VERTICAL;
-		gbc_buttonPanel.gridx = 0;
-		gbc_buttonPanel.gridy = 1;
-		contentPane.add(buttonPanel, gbc_buttonPanel);
+		final JPanel panel = new JPanel();
+		final GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.gridx = 0;
+		gbc_panel.gridy = 1;
+		contentPane.add(panel, gbc_panel);
+		final GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{174, 49, 32, 0};
+		gbl_panel.rowHeights = new int[]{27, 0};
+		gbl_panel.columnWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panel.setLayout(gbl_panel);
+		
+		final JProgressBar progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
+		progressBar.setVisible(false);
+		final GridBagConstraints gbc_progressBar = new GridBagConstraints();
+		gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_progressBar.insets = new Insets(0, 0, 0, 5);
+		gbc_progressBar.gridx = 0;
+		gbc_progressBar.gridy = 0;
+		panel.add(progressBar, gbc_progressBar);
 		
 		final JButton addTrackButton = new JButton("Add Track");
+		final GridBagConstraints gbc_addTrackButton = new GridBagConstraints();
+		gbc_addTrackButton.anchor = GridBagConstraints.NORTHWEST;
+		gbc_addTrackButton.insets = new Insets(0, 0, 0, 5);
+		gbc_addTrackButton.gridx = 1;
+		gbc_addTrackButton.gridy = 0;
+		panel.add(addTrackButton, gbc_addTrackButton);
 		addTrackButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -641,27 +658,70 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		buttonPanel.add(addTrackButton);
 		
 		final JButton startButton = new JButton("Start");
+		final GridBagConstraints gbc_startButton = new GridBagConstraints();
+		gbc_startButton.anchor = GridBagConstraints.NORTHWEST;
+		gbc_startButton.gridx = 2;
+		gbc_startButton.gridy = 0;
+		panel.add(startButton, gbc_startButton);
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
+				final SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
 					@Override
-					public void run() {
+					protected Void doInBackground() throws Exception {
+						new Renderer(createConfiguration()).render(new ProgressRecorder() {
+							@Override
+							public void setProgress1(final int pct, final String message) {
+								System.out.printf("[%3d%%] %s\n", pct, message);
+								setProgress(pct);
+								publish(message + " (" + pct + "%)");
+							}
+						});
+
+						return null;
+					}
+					
+					@Override
+					protected void process(final List<String> chunks) {
+						if (!chunks.isEmpty()) {
+							progressBar.setString(chunks.get(chunks.size() - 1));
+						}
+					}
+					
+					
+					@Override
+					protected void done() {
+						progressBar.setVisible(false);
 						try {
-							new Renderer(createConfiguration()).render();
+							get();
 							JOptionPane.showMessageDialog(MainFrame.this, "Success", "Finished", JOptionPane.INFORMATION_MESSAGE);
-						} catch (final UserException e1) {
-							e1.printStackTrace();
-							JOptionPane.showMessageDialog(MainFrame.this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (final InterruptedException e) {
+							JOptionPane.showMessageDialog(MainFrame.this, "Interrupted", "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (final ExecutionException e) {
+							e.printStackTrace();
+							JOptionPane.showMessageDialog(MainFrame.this, e.getCause().getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
+						
+						startButton.setEnabled(true);
+					}
+				};
+				
+				swingWorker.addPropertyChangeListener(new PropertyChangeListener() {
+					@Override
+					public void propertyChange(final PropertyChangeEvent evt) {
+						if ("progress".equals(evt.getPropertyName())) {
+							progressBar.setValue((Integer) evt.getNewValue());
 						}
 					}
 				});
+				
+				progressBar.setVisible(true);
+				startButton.setEnabled(false);
+				swingWorker.execute();
 			}
 		});
-		buttonPanel.add(startButton);
 	}
 	
 

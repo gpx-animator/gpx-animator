@@ -1,3 +1,7 @@
+version 0.9 (2013-03-10)
+------------------------ 
+* added configuration GUI
+
 version 0.8 (2013-02-09)
 ------------------------ 
 * added waypoint support
