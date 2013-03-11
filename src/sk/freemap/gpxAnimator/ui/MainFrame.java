@@ -7,8 +7,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.DefaultComboBoxModel;
@@ -38,8 +45,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import sk.freemap.gpxAnimator.Configuration;
-import sk.freemap.gpxAnimator.ProgressRecorder;
 import sk.freemap.gpxAnimator.Renderer;
+import sk.freemap.gpxAnimator.RenderingContext;
 import sk.freemap.gpxAnimator.TrackConfiguration;
 import sk.freemap.gpxAnimator.UserException;
 
@@ -58,7 +65,7 @@ public class MainFrame extends JFrame {
 	private final JSpinner waypintSizeSpinner;
 	private final JSpinner tailDurationSpinner;
 	private final JSpinner fpsSpinner;
-	private final JComboBox tmsUrlTemplateComboBox;
+	private final JComboBox<Object> tmsUrlTemplateComboBox;
 	private final JSlider backgroundMapVisibilitySlider;
 	private final JSpinner fontSizeSpinner;
 	private final JCheckBox keepIdleCheckBox;
@@ -80,6 +87,8 @@ public class MainFrame extends JFrame {
 	};
 	
 	private final JFileChooser fileChooser = new JFileChooser();
+
+	private List<LabeledItem> mapTamplateList;
 	
 	
 	public Configuration createConfiguration() throws UserException {
@@ -94,7 +103,8 @@ public class MainFrame extends JFrame {
 		b.fps((Double) fpsSpinner.getValue());
 		b.totalTime((Long) totalTimeSpinner.getValue());
 		b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
-		b.tmsUrlTemplate((String) tmsUrlTemplateComboBox.getSelectedItem());
+		final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
+		b.tmsUrlTemplate(tmsItem instanceof LabeledItem ? ((LabeledItem) tmsItem).getValue() : (String) tmsItem);
 		b.skipIdle(!keepIdleCheckBox.isSelected());
 		b.flashbackColor(flashbackColorSelector.getColor());
 		b.flashbackDuration((Float) flashbackDurationSpinner.getValue());
@@ -124,7 +134,18 @@ public class MainFrame extends JFrame {
 		fpsSpinner.setValue(c.getFps());
 		totalTimeSpinner.setValue(c.getTotalTime());
 		backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
-		tmsUrlTemplateComboBox.setSelectedItem(c.getTmsUrlTemplate());
+
+		final String tmsUrlTemplate = c.getTmsUrlTemplate();
+		found: {
+			for (final LabeledItem labeledItem : mapTamplateList) {
+				if (labeledItem.getValue().equals(tmsUrlTemplate)) {
+					tmsUrlTemplateComboBox.setSelectedItem(labeledItem);
+					break found;
+				}
+			}
+			tmsUrlTemplateComboBox.setSelectedItem(tmsUrlTemplate);
+		}
+		
 		keepIdleCheckBox.setSelected(!c.isSkipIdle());
 		flashbackColorSelector.setColor(c.getFlashbackColor());
 		frameFileNamePatternFileSelector.setFilename(c.getFrameFilePattern());
@@ -149,6 +170,12 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		try {
+			mapTamplateList = readMaps();
+		} catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+		
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(filter);
 
@@ -515,9 +542,9 @@ public class MainFrame extends JFrame {
 		gbc_lblTmsUrlTemplate.gridy = 11;
 		tabContentPanel.add(lblTmsUrlTemplate, gbc_lblTmsUrlTemplate);
 		
-		tmsUrlTemplateComboBox = new JComboBox();
+		tmsUrlTemplateComboBox = new JComboBox<Object>();
 		tmsUrlTemplateComboBox.setEditable(true);
-		tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png", "http://t{switch:1,2,3,4}.freemap.sk/T/{zoom}/{x}/{y}.png"}));
+		tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<Object>(mapTamplateList.toArray()));
 		final GridBagConstraints gbc_tmsUrlTemplateComboBox = new GridBagConstraints();
 		gbc_tmsUrlTemplateComboBox.insets = new Insets(0, 0, 5, 0);
 		gbc_tmsUrlTemplateComboBox.fill = GridBagConstraints.HORIZONTAL;
@@ -668,15 +695,26 @@ public class MainFrame extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				final SwingWorker<Void, String> swingWorker = new SwingWorker<Void, String>() {
+				if (swingWorker != null) {
+					swingWorker.cancel(false);
+					return;
+				}
+				
+				swingWorker = new SwingWorker<Void, String>() {
+					
 					@Override
 					protected Void doInBackground() throws Exception {
-						new Renderer(createConfiguration()).render(new ProgressRecorder() {
+						new Renderer(createConfiguration()).render(new RenderingContext() {
 							@Override
 							public void setProgress1(final int pct, final String message) {
 								System.out.printf("[%3d%%] %s\n", pct, message);
 								setProgress(pct);
 								publish(message + " (" + pct + "%)");
+							}
+
+							@Override
+							public boolean isCancelled1() {
+								return isCancelled();
 							}
 						});
 
@@ -690,21 +728,23 @@ public class MainFrame extends JFrame {
 						}
 					}
 					
-					
 					@Override
 					protected void done() {
+						swingWorker = null;
 						progressBar.setVisible(false);
+						startButton.setText("Start");
+
 						try {
 							get();
-							JOptionPane.showMessageDialog(MainFrame.this, "Success", "Finished", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(MainFrame.this, "Rendering has finished successfully.", "Finished", JOptionPane.INFORMATION_MESSAGE);
 						} catch (final InterruptedException e) {
-							JOptionPane.showMessageDialog(MainFrame.this, "Interrupted", "Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(MainFrame.this, "Rendering has been interrupder.", "Interrupted", JOptionPane.ERROR_MESSAGE);
 						} catch (final ExecutionException e) {
 							e.printStackTrace();
-							JOptionPane.showMessageDialog(MainFrame.this, e.getCause().getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(MainFrame.this, "Error while rendering:\n" + e.getCause().getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (final CancellationException e) {
+							JOptionPane.showMessageDialog(MainFrame.this, "Rendering has been cancelled.", "Cancelled", JOptionPane.WARNING_MESSAGE);
 						}
-						
-						startButton.setEnabled(true);
 					}
 				};
 				
@@ -718,10 +758,42 @@ public class MainFrame extends JFrame {
 				});
 				
 				progressBar.setVisible(true);
-				startButton.setEnabled(false);
+				startButton.setText("Cancel");
 				swingWorker.execute();
 			}
 		});
+	}
+	
+	
+	private SwingWorker<Void, String> swingWorker;
+	
+	
+	private List<LabeledItem> readMaps() throws IOException {
+		final List<LabeledItem> labeledItems = new ArrayList<LabeledItem>();
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(MainFrame.class.getResourceAsStream("maps")));
+		String line;
+		String label = null;
+		while ((line = reader.readLine()) != null) {
+			if (line.startsWith("#") || line.trim().isEmpty()) {
+				continue;
+			}
+			if (label == null) {
+				label = line;
+			} else {
+				labeledItems.add(new LabeledItem(label, line));
+				label = null;
+			}
+		}
+		reader.close();
+		
+		Collections.sort(labeledItems, new Comparator<LabeledItem>() {
+			@Override
+			public int compare(final LabeledItem o1, final LabeledItem o2) {
+				return o1.toString().compareTo(o2.toString());
+			}
+		});
+		
+		return labeledItems;
 	}
 	
 

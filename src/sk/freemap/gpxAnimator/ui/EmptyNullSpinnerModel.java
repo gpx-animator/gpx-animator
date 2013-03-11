@@ -18,6 +18,8 @@ import javax.swing.AbstractSpinnerModel;
 
 public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
+	private static final long serialVersionUID = -8064362052986633347L;
+	
 	private Number value;
 	private final Number stepSize;
 	private final Comparable minimum, maximum;

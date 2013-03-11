@@ -221,7 +221,7 @@ public class Configuration {
 			validateOptions();
 			
 			return new Configuration(
-					margin, height, width, zoom,
+					margin, width, height, zoom,
 					speedup, tailDuration, fps, totalTime,
 					backgroundMapVisibility, tmsUrlTemplate,
 					skipIdle, flashbackColor, flashbackDuration,

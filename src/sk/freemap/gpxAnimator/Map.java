@@ -19,14 +19,18 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.IOException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
 public class Map {
 
+	private static final Pattern SWITCH_PATTERN = Pattern.compile("\\{switch:([^}]*)\\}");
+
 	
 	public static void drawMap(final BufferedImage bi, final String tmsUrlTemplate, final float backgroundMapVisibility, final int zoom,
-			final double minX, final double maxX, final double minY, final double maxY, final ProgressRecorder pr) throws UserException {
+			final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc) throws UserException {
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 
 		final double tileDblX = xToTileX(zoom, minX);
@@ -43,16 +47,33 @@ public class Map {
 		final int total = (maxXtile - tileX + 1) * (tileY - maxYtile + 1);
 		int  i = 0;
 		
+		final Matcher m = SWITCH_PATTERN.matcher(tmsUrlTemplate); // note that only one switch in pattern is supported
+		final String[] options = m.find() ? m.group(1).split(",") : null;
+		
 		for (int x = tileX; x <= maxXtile; x++) {
 			for (int y = tileY; y >= maxYtile; y--) {
+				if (rc.isCancelled1()) {
+					return;
+				}
+				
 				i++;
 				
-				final String url = tmsUrlTemplate
+				String url = tmsUrlTemplate
 						.replace("{zoom}", Integer.toString(zoom))
 						.replace("{x}", Integer.toString(x))
 						.replace("{y}", Integer.toString(y));
 				
-				pr.setProgress1((int) (100.0 * i / total), "Reading Map Tile: " + i + "/" + total);
+				if (options != null) {
+					final StringBuffer sb = new StringBuffer();
+					final Matcher matcher = SWITCH_PATTERN.matcher(url);
+					if (matcher.find()) {
+						matcher.appendReplacement(sb, options[i % options.length]);
+					}
+					matcher.appendTail(sb);
+					url = sb.toString();
+				}
+				
+				rc.setProgress1((int) (100.0 * i / total), "Reading Map Tile: " + i + "/" + total);
 				
 				final BufferedImage tile;
 				try {

@@ -30,6 +30,8 @@ import javax.swing.border.EtchedBorder;
 
 public class AboutDialog extends JDialog {
 
+	private static final long serialVersionUID = 8374270428933983176L;
+	
 	private final JPanel contentPanel = new JPanel();
 
 	/**

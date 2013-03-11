@@ -64,7 +64,7 @@ public class Renderer {
 	}
 
 
-	public void render(final ProgressRecorder pr) throws UserException {
+	public void render(final RenderingContext rc) throws UserException {
 		final List<Long[]> spanList = new ArrayList<Long[]>();
 		
 		final TreeMap<Long, Point2D> wpMap = new TreeMap<Long, Point2D>();
@@ -122,7 +122,7 @@ public class Renderer {
 		if (cfg.getTmsUrlTemplate() != null && cfg.getZoom() == null) {
 			// force using computed zoom
 			zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
-			pr.setProgress1(0, "computed zoom is " + zoom);
+			rc.setProgress1(0, "computed zoom is " + zoom);
 		} else {
 			zoom = cfg.getZoom();
 		}
@@ -182,7 +182,7 @@ public class Renderer {
 			ga.setColor(Color.white);
 			ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
 		} else {
-			Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, pr);
+			Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
 		}
 		
 		if (cfg.getFontSize() > 0) {
@@ -201,6 +201,10 @@ public class Renderer {
 		int f = 0;
 		float skip = -1f;
 		for (int frame = 1; frame < frames; frame++) {
+			if (rc.isCancelled1()) {
+				return;
+			}
+			
 			final Long time = getTime(frame);
 			skip: if (cfg.isSkipIdle()) {
 				for (final Long[] span : spanList) {
@@ -208,12 +212,12 @@ public class Renderer {
 						break skip;
 					}
 				}
-				pr.setProgress1((int) (100.0 * frame / frames), "Skipping unused Frame: " + frame + "/" + (frames - 1));
+				rc.setProgress1((int) (100.0 * frame / frames), "Skipping unused Frame: " + frame + "/" + (frames - 1));
 				skip = 1f;
 				continue;
 			}
 			
-			pr.setProgress1((int) (100.0 * frame / frames), "Rendering Frame: " + frame + "/" + (frames - 1));
+			rc.setProgress1((int) (100.0 * frame / frames), "Rendering Frame: " + frame + "/" + (frames - 1));
 
 			paint(bi, frame, 0);
 			
@@ -325,8 +329,6 @@ public class Renderer {
 		}
 		return timePointMap;
 	}
-
-
 
 	private void drawTime(final BufferedImage bi, final int frame) {
 		final Graphics2D g2 = (Graphics2D) bi.getGraphics();

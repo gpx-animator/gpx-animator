@@ -12,10 +12,29 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package sk.freemap.gpxAnimator;
+package sk.freemap.gpxAnimator.ui;
 
-public interface ProgressRecorder {
+public class LabeledItem {
+
+	private final String label;
 	
-	void setProgress1(int pct, String message);
+	private final String value;
+	
 
+	public LabeledItem(final String label, final String value) {
+		this.label = label;
+		this.value = value;
+	}
+	
+	
+	public String getValue() {
+		return value;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return label;
+	}
+	
 }

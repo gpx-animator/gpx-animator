@@ -1,0 +1,123 @@
+# generated with xmlstarlet sel -N x=http://josm.openstreetmap.de/maps-1.0 -t -m "//x:entry" -i "x:type='tms'" -v x:name -nl -v x:url -nl maps.xml
+# where maps.xml is obtained from http://josm.openstreetmap.de/wiki/Maps
+
+MapBox Satellite
+http://{switch:a,b,c}.tiles.mapbox.com/v3/openstreetmap.map-4wvf9l0l/{zoom}/{x}/{y}.png
+MapQuest Open Aerial
+http://oatile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/sat/{zoom}/{x}/{y}.png
+OpenStreetMap (Mapnik)
+http://tile.openstreetmap.org/{zoom}/{x}/{y}.png
+OpenStreetMap (Mapnik Black & White)
+http://{switch:a,b,c}.www.toolserver.org/tiles/bw-mapnik/{zoom}/{x}/{y}.png
+Skobbler
+http://tiles{switch:1,2,3,4}.skobbler.net/osm_tiles2/{zoom}/{x}/{y}.png
+OpenCycleMap
+http://tile.opencyclemap.org/cycle/{zoom}/{x}/{y}.png
+MapQuest OSM
+http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/osm/{zoom}/{x}/{y}.png
+Public Transport (ÖPNV)
+http://tile.memomaps.de/tilegen/{zoom}/{x}/{y}.png
+OpenStreetMap (German Style)
+http://{switch:a,b,c,d}.tile.openstreetmap.de/tiles/osmde/{zoom}/{x}/{y}.png
+Hike & Bike
+http://toolserver.org/tiles/hikebike/{zoom}/{x}/{y}.png
+OpenStreetMap (Sorbian Language)
+http://toolserver.org/tiles/osm-locale-hsb/{zoom}/{x}/{y}.png
+OpenStreetMap (German Language)
+http://toolserver.org/tiles/osm-locale-de/{zoom}/{x}/{y}.png
+OpenPT Map (overlay)
+http://openptmap.de/tiles/{zoom}/{x}/{y}.png
+Vienna: Mehrzweckkarte (general purpose)
+http://www.wien.gv.at/wmts/fmzk/pastell/google3857/{zoom}/{y}/{x}.jpeg
+Vienna: Beschriftungen (annotations)
+http://www.wien.gv.at/wmts/beschriftung/normal/google3857/{zoom}/{y}/{x}.png
+Vienna: Orthofoto (aerial image)
+http://www.wien.gv.at/wmts/lb/farbe/google3857/{zoom}/{y}/{x}.jpeg
+Kanton Aargau 25cm (AGIS 2011)
+http://tiles.poole.ch/AGIS/OF2011/{zoom}/{x}/{y}.png
+Stadt Uster Orthophoto 2008 10cm
+http://mapproxy.sosm.ch:8080/tiles/uster/EPSG900913/{zoom}/{x}/{y}.png?origin=nw
+Stadtplan Zürich
+http://mapproxy.sosm.ch:8080/tiles/zh_stadtplan/EPSG900913/{zoom}/{x}/{y}.png?origin=nw
+British Columbia Mosaic
+http://{switch:a,b,c,d}.imagery.paulnorman.ca/tiles/bc_mosaic/{zoom}/{x}/{y}.png
+USGS Scanned Topographic Maps
+http://{switch:a,b,c}.tile.openstreetmap.us/usgs_scanned_topos/{zoom}/{x}/{y}.png
+USGS Large Scale Imagery
+http://{switch:a,b,c}.tile.openstreetmap.us/usgs_large_scale/{zoom}/{x}/{y}.jpg
+OSM US TIGER 2012 Roads Overlay
+http://{switch:a,b,c}.tile.openstreetmap.us/tiger2012_roads_expanded/{zoom}/{x}/{y}.png
+7th Series (OS7)
+http://ooc.openstreetmap.org/os7/{zoom}/{x}/{y}.jpg
+OS New Popular Edition historic
+http://ooc.openstreetmap.org/npe/{zoom}/{x}/{y}.png
+OS OpenData StreetView
+http://os.openstreetmap.org/sv/{zoom}/{x}/{y}.png
+OS OpenData Locator
+http://tiles.itoworld.com/os_locator/{zoom}/{x}/{y}.png
+Surrey Air Survey
+http://gravitystorm.dev.openstreetmap.org/surrey/{zoom}/{x}/{y}.png
+NLS - OS 6-inch Scotland 1842-82
+http://geo.nls.uk/maps/os/six_inch/{zoom}/{x}/{-y}.png
+NLS - OS 1:25k 1st Series 1937-61
+http://geo.nls.uk/mapdata2/os/25000/{zoom}/{x}/{-y}.png
+NLS - OS 1-inch 7th Series 1955-61
+http://geo.nls.uk/mapdata2/os/seventh/{zoom}/{x}/{-y}.png
+Ireland British War Office One-Inch 1941-43 GSGS 4136
+http://geo.nls.uk/maps/ireland/gsgs4136/{zoom}/{x}/{-y}.png
+Ireland Bartholomew Quarter-Inch 1940
+http://geo.nls.uk/maps/ireland/bartholomew/{zoom}/{x}/{-y}.png
+Ireland EEA GMES Urban Atlas
+http://a.tile.openstreetmap.ie/tiles/urbanatlas/{zoom}/{x}/{y}.png
+Ireland EEA CORINE 2006
+http://a.tile.openstreetmap.ie/tiles/corine/{zoom}/{x}/{y}.png
+Toulouse - Orthophotoplan 2011
+http://wms.openstreetmap.fr/tms/1.0.0/toulouse_ortho2011/{zoom}/{x}/{y}
+Toulouse - Orthophotoplan 2007
+http://wms.openstreetmap.fr/tms/1.0.0/toulouse_ortho2007/{zoom}/{x}/{y}
+Tours - Orthophotos 2008-2010
+http://wms.openstreetmap.fr/tms/1.0.0/tours/{zoom}/{x}/{y}
+Tours - Orthophotos 2008
+http://tms.mapspot.ge/tms/2/nonstandard/{zoom}/{x}/{y}.jpeg
+Fugro (Denmark)
+http://{switch:a,b,c}.tile.openstreetmap.dk/fugro2005/{zoom}/{x}/{y}.png
+Stevns (Denmark)
+http://{switch:a,b,c}.tile.openstreetmap.dk/stevns/2009/{zoom}/{x}/{y}.png
+Vejmidte (Denmark)
+http://{switch:a,b,c}.tile.openstreetmap.dk/danmark/vejmidte/{zoom}/{x}/{y}.png
+Pangasinán/Bulacan (Phillipines HiRes)
+http://gravitystorm.dev.openstreetmap.org/imagery/philippines/{zoom}/{x}/{y}.png
+Cambodia, Laos, Thailand, Vietnam bilingual
+http://{switch:a,b,c,d}.tile.osm-tools.org/osm_then/{zoom}/{x}/{y}.png
+Niger Delta Oct 2012 Landsat
+http://pnorman.dev.openstreetmap.org/imagery/niger_oct_2012_321/{zoom}/{x}/{y}.png
+South Africa CD:NGI Aerial
+http://{switch:a,b,c}.aerial.openstreetmap.org.za/ngi-aerial/{zoom}/{x}/{y}.jpg
+Freemap.sk Car
+http://t{switch:1,2,3,4}.freemap.sk/A/{zoom}/{x}/{y}.jpeg
+Freemap.sk Hiking
+http://t{switch:1,2,3,4}.freemap.sk/T/{zoom}/{x}/{y}.jpeg
+Freemap.sk Cyclo
+http://t{switch:1,2,3,4}.freemap.sk/C/{zoom}/{x}/{y}.jpeg
+Freemap.sk Ski
+http://t{switch:1,2,3,4}.freemap.sk/K/{zoom}/{x}/{y}.jpeg
+Katastrálna mapa Slovenska (KaPor, 2010-04)
+http://www.freemap.sk/tms/kapor2/{zoom}/{x}/{y}.jpg
+Katastrálna mapa Slovenska (KaPor, 2011-05)
+http://www.freemap.sk/tms/kapor2_201105/{zoom}/{x}/{y}.jpg
+Slovakia EEA GMES Urban Atlas
+http://www.freemap.sk/tms/urbanatlas/{zoom}/{x}/{y}.png
+Slovakia EEA CORINE 2006
+http://www.freemap.sk/tms/clc/{zoom}/{x}/{y}.png
+Slovakia Historic Maps
+http://tms.freemap.sk/historicke/{zoom}/{x}/{y}.png
+AGRI black-and-white 2.5m
+http://agri.openstreetmap.org/{zoom}/{x}/{y}.png
+OSM - Tiger Edited Map
+http://tiger-osm.mapquest.com/tiles/1.0.0/tiger/{zoom}/{x}/{y}.png
+OS 1:25k historic (OSM)
+http://ooc.openstreetmap.org/os1/{zoom}/{x}/{y}.jpg
+OS Scottish Popular historic
+http://ooc.openstreetmap.org/npescotland/tiles/{zoom}/{x}/{y}.jpg
+2u
+http://{switch:a,b,c}.layers.openstreetmap.fr/2u/{zoom}/{x}/{y}.png

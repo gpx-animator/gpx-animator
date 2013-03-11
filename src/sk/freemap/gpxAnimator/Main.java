@@ -41,10 +41,15 @@ public class Main {
 					}
 				});
 			} else {
-				new Renderer(configuration).render(new ProgressRecorder() {
+				new Renderer(configuration).render(new RenderingContext() {
 					@Override
 					public void setProgress1(final int pct, final String message) {
 						System.out.printf("%03d% %s", pct, message);
+					}
+
+					@Override
+					public boolean isCancelled1() {
+						return false;
 					}
 				});
 			}
