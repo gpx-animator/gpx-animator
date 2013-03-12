@@ -23,7 +23,7 @@ public class Help {
 
 	private static final String HELP_MARGIN = "margin in pixels";
 
-	private static final String HELP_TAIL_DURATION = "latest time of highlighted tail in seconds";
+	private static final String HELP_TAIL_DURATION = "highlighted tail length in real time milliseconds";
 
 	private static final String HELP_FORCED_POINT_TIME_INTERVAL = "interval between adjanced GPS points in milliseconds - useful for GPX files with missing point time information; if specified";
 
@@ -56,10 +56,10 @@ public class Help {
 		w.writeOptionHelp("line-width", "width", HELP_LINE_WIDTH, true, "2.0");
 		w.writeOptionHelp("time-offset", "milliseconds", HELP_TIME_OFFSET, true, "0");
 		w.writeOptionHelp("forced-point-time-interval", "milliseconds", HELP_FORCED_POINT_TIME_INTERVAL + ", absolute time must be set with --time-offset option; can be specified multiple times if multiple tracks are provided; \"\" for no forcing", true, "\"\"");
-		w.writeOptionHelp("tail-duration", "time", HELP_TAIL_DURATION, false, "3600");
+		w.writeOptionHelp("tail-duration", "time", HELP_TAIL_DURATION, false, "3600000");
 		w.writeOptionHelp("margin", "margin", HELP_MARGIN, false, "20");
 		w.writeOptionHelp("speedup", "speedup", HELP_SPEEDUP + "; complementary to --total-time option", false, "1000.0");
-		w.writeOptionHelp("total-time", "time", "total length of video in seconds; complementary to --speedup option", false, null);
+		w.writeOptionHelp("total-time", "time", "total length of video in milliseconds; complementary to --speedup option", false, null);
 		w.writeOptionHelp("fps", "fps", "frames per second", false, "30.0");
 		w.writeOptionHelp("width", "width", "video width in pixels; if not specified but --zoom option is specified, then computed from GPX bounding box and margin, otherwise 800", false, "(800)");
 		w.writeOptionHelp("height", "height", "video height in pixels; if unspecified, it is derived from width, GPX bounding box and margin", false, null);
@@ -70,7 +70,7 @@ public class Help {
 		w.writeOptionHelp("font-size", "size", "datetime text font size; set to 0 for no date text", false, "12");
 		w.writeOptionHelp("keep-idle", null, "don't skip parts where no movement is present", false, null);
 		w.writeOptionHelp("flashback-color", "ARGBcolor", "color of the idle-skipping flashback effect in #AARRGGBB representation", false, "opaque white - #ffffffff");
-		w.writeOptionHelp("flashback-duration", "duration", "idle-skipping flashback effect duration in milliseconds; set to 0.0 for no flashback", false, "250.0");
+		w.writeOptionHelp("flashback-duration", "duration", "idle-skipping flashback effect duration in milliseconds; set to \"\" for no flashback", false, "250");
 		w.writeOptionHelp("debug", null, "toggle debugging", false, null);
 	}
 	

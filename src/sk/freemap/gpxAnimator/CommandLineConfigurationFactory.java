@@ -67,17 +67,17 @@ public final class CommandLineConfigurationFactory {
 				} else if (arg.equals("--margin")) {
 					cfg.margin(Integer.parseInt(args[++i]));
 				} else if (arg.equals("--time-offset")) {
-					timeOffsetList.add(Long.valueOf(args[++i]));
+					final String s = args[++i].trim();
+					timeOffsetList.add(s.isEmpty() ? null : Long.valueOf(s));
 				} else if (arg.equals("--forced-point-time-interval")) {
-					final String s = args[++i];
-					Long l;
-					forcedPointIntervalList.add(s.isEmpty() ? null : (l = Long.valueOf(s)).longValue() == 0l ? null : l);
+					final String s = args[++i].trim();
+					forcedPointIntervalList.add(s.isEmpty() ? null : Long.valueOf(s));
 				} else if (arg.equals("--speedup")) {
 					cfg.speedup(Double.parseDouble(args[++i]));
 				} else if (arg.equals("--line-width")) {
 					lineWidthList.add(Float.valueOf(args[++i]));
 				} else if (arg.equals("--tail-duration")) {
-					cfg.tailDuration(Long.parseLong(args[++i]) * 1000);
+					cfg.tailDuration(Long.parseLong(args[++i]));
 				} else if (arg.equals("--fps")) {
 					cfg.fps(Double.parseDouble(args[++i]));
 				} else if (arg.equals("--marker-size")) {
@@ -97,14 +97,16 @@ public final class CommandLineConfigurationFactory {
 				} else if (arg.equals("--background-map-visibility")) {
 					cfg.backgroundMapVisibility(Float.parseFloat(args[++i]) / 100f);
 				} else if (arg.equals("--total-time")) {
-					cfg.totalTime(Long.valueOf(args[++i]));
+					final String s = args[++i].trim();
+					cfg.totalTime(s.isEmpty() ? null : Long.valueOf(s));
 				} else if (arg.equals("--keep-idle")) {
 					cfg.skipIdle(false);
 				} else if (arg.equals("--flashback-color")) {
 					final long lv = Long.decode(args[++i]).longValue();
 					cfg.flashbackColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
 				} else if (arg.equals("--flashback-duration")) {
-					cfg.flashbackDuration(Float.parseFloat(args[++i]));
+					final String s = args[++i];
+					cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s));
 				} else if (arg.equals("--help")) {
 					System.out.println("GPX Animator 0.9");
 					System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");

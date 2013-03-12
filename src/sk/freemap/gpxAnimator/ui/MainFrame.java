@@ -5,6 +5,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
@@ -38,6 +40,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -52,6 +56,8 @@ import sk.freemap.gpxAnimator.UserException;
 
 public class MainFrame extends JFrame {
 
+	private static final String TITLE = "GPX Animator 0.9";
+
 	private static final long serialVersionUID = 190371886979948114L;
 	
 	private final JPanel contentPane;
@@ -65,7 +71,7 @@ public class MainFrame extends JFrame {
 	private final JSpinner waypintSizeSpinner;
 	private final JSpinner tailDurationSpinner;
 	private final JSpinner fpsSpinner;
-	private final JComboBox<Object> tmsUrlTemplateComboBox;
+	private final JComboBox tmsUrlTemplateComboBox;
 	private final JSlider backgroundMapVisibilitySlider;
 	private final JSpinner fontSizeSpinner;
 	private final JCheckBox keepIdleCheckBox;
@@ -89,6 +95,10 @@ public class MainFrame extends JFrame {
 	private final JFileChooser fileChooser = new JFileChooser();
 
 	private List<LabeledItem> mapTamplateList;
+
+	protected File file;
+
+	private boolean changed;
 	
 	
 	public Configuration createConfiguration() throws UserException {
@@ -99,7 +109,8 @@ public class MainFrame extends JFrame {
 		b.margin((Integer) marginSpinner.getValue());
 		b.zoom((Integer) zoomSpinner.getValue());
 		b.speedup((Double) speedupSpinner.getValue());
-		b.tailDuration((Long) tailDurationSpinner.getValue());
+		final Long td = (Long) tailDurationSpinner.getValue();
+		b.tailDuration(td == null ? 0l : td.longValue());
 		b.fps((Double) fpsSpinner.getValue());
 		b.totalTime((Long) totalTimeSpinner.getValue());
 		b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
@@ -107,13 +118,11 @@ public class MainFrame extends JFrame {
 		b.tmsUrlTemplate(tmsItem instanceof LabeledItem ? ((LabeledItem) tmsItem).getValue() : (String) tmsItem);
 		b.skipIdle(!keepIdleCheckBox.isSelected());
 		b.flashbackColor(flashbackColorSelector.getColor());
-		b.flashbackDuration((Float) flashbackDurationSpinner.getValue());
+		b.flashbackDuration((Long) flashbackDurationSpinner.getValue());
 		b.frameFilePattern(frameFileNamePatternFileSelector.getFilename());
 		b.fontSize((Integer) fontSizeSpinner.getValue());
 		b.markerSize((Double) markerSizeSpinner.getValue());
 		b.waypointSize((Double) waypintSizeSpinner.getValue());
-		b.flashbackColor(flashbackColorSelector.getColor());
-		b.flashbackDuration((Float) flashbackDurationSpinner.getValue());
 		
 		for (int i = 1, n = tabbedPane.getTabCount(); i < n; i++) {
 			final TrackSettingsPanel tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
@@ -163,6 +172,8 @@ public class MainFrame extends JFrame {
 		for (final TrackConfiguration tc : c.getTrackConfigurationList()) {
 			addTrackSettingsTab(tc);
 		}
+		
+		changed(false);
 	}
 	
 
@@ -179,8 +190,8 @@ public class MainFrame extends JFrame {
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(filter);
 
-		setTitle("GPX Animator 0.9");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle(TITLE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 681, 606);
 		
 		final JMenuBar menuBar = new JMenuBar();
@@ -203,7 +214,7 @@ public class MainFrame extends JFrame {
 		});
 		mnFile.add(mntmNew);
 		
-		final JMenuItem mntmOpen = new JMenuItem("Open");
+		final JMenuItem mntmOpen = new JMenuItem("Open...");
 		mntmOpen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -213,9 +224,9 @@ public class MainFrame extends JFrame {
 						final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
 						final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 						setConfiguration((Configuration) unmarshaller.unmarshal(file));
+						MainFrame.this.file = file;
 					} catch (final JAXBException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -224,29 +235,25 @@ public class MainFrame extends JFrame {
 		
 		final JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-					File file = fileChooser.getSelectedFile();
-					if (!file.getName().endsWith(".ga.xml")) {
-						file = new File(file.getPath() + ".ga.xml");
-					}
-					try {
-						final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
-						final Marshaller marshaller = jaxbContext.createMarshaller();
-						marshaller.marshal(createConfiguration(), file);
-					} catch (final JAXBException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (final UserException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+				if (file == null) {
+					saveAs();
+				} else {
+					save(file);
 				}
 			}
 		});
 		mnFile.add(mntmSave);
+		
+		final JMenuItem mntmSaveAs = new JMenuItem("Save As...");
+		mntmSaveAs.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				saveAs();
+			}
+		});
+		mnFile.add(mntmSaveAs);
 		
 		final JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
@@ -281,6 +288,7 @@ public class MainFrame extends JFrame {
 				final int index = tabbedPane.getSelectedIndex();
 				if (index > 0) {
 					tabbedPane.remove(index);
+					changed(true);
 				}
 			}
 		});
@@ -457,8 +465,8 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblTotalTime, gbc_lblTotalTime);
 		
 		totalTimeSpinner = new JSpinner();
-		totalTimeSpinner.setModel(new EmptyNullSpinnerModel(new Long(1), new Long(0), null, new Long(60)));
-		totalTimeSpinner.setEditor(new EmptyZeroNumberEditor(totalTimeSpinner, Long.class));
+		totalTimeSpinner.setModel(new DurationSpinnerModel());
+		totalTimeSpinner.setEditor(new DurationEditor(totalTimeSpinner));
 		final GridBagConstraints gbc_totalTimeSpinner = new GridBagConstraints();
 		gbc_totalTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_totalTimeSpinner.insets = new Insets(0, 0, 5, 0);
@@ -509,7 +517,8 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblTailDuration, gbc_lblTailDuration);
 		
 		tailDurationSpinner = new JSpinner();
-		tailDurationSpinner.setModel(new SpinnerNumberModel(new Long(0), new Long(0), null, new Long(60)));
+		tailDurationSpinner.setModel(new DurationSpinnerModel());
+		tailDurationSpinner.setEditor(new DurationEditor(tailDurationSpinner));
 		final GridBagConstraints gbc_tailDurationSpinner = new GridBagConstraints();
 		gbc_tailDurationSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_tailDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -542,9 +551,9 @@ public class MainFrame extends JFrame {
 		gbc_lblTmsUrlTemplate.gridy = 11;
 		tabContentPanel.add(lblTmsUrlTemplate, gbc_lblTmsUrlTemplate);
 		
-		tmsUrlTemplateComboBox = new JComboBox<Object>();
+		tmsUrlTemplateComboBox = new JComboBox();
 		tmsUrlTemplateComboBox.setEditable(true);
-		tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<Object>(mapTamplateList.toArray()));
+		tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel(mapTamplateList.toArray()));
 		final GridBagConstraints gbc_tmsUrlTemplateComboBox = new GridBagConstraints();
 		gbc_tmsUrlTemplateComboBox.insets = new Insets(0, 0, 5, 0);
 		gbc_tmsUrlTemplateComboBox.fill = GridBagConstraints.HORIZONTAL;
@@ -630,8 +639,8 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblFlashbackDuration, gbc_lblFlashbackDuration);
 		
 		flashbackDurationSpinner = new JSpinner();
-		flashbackDurationSpinner.setModel(new EmptyNullSpinnerModel(new Float(0), new Float(0), null, new Float(10)));
-		flashbackDurationSpinner.setEditor(new EmptyZeroNumberEditor(flashbackDurationSpinner, Float.class));
+		flashbackDurationSpinner.setModel(new DurationSpinnerModel());
+		flashbackDurationSpinner.setEditor(new DurationEditor(flashbackDurationSpinner));
 		final GridBagConstraints gbc_flashbackDurationSpinner = new GridBagConstraints();
 		gbc_flashbackDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_flashbackDurationSpinner.gridx = 1;
@@ -701,7 +710,6 @@ public class MainFrame extends JFrame {
 				}
 				
 				swingWorker = new SwingWorker<Void, String>() {
-					
 					@Override
 					protected Void doInBackground() throws Exception {
 						new Renderer(createConfiguration()).render(new RenderingContext() {
@@ -738,7 +746,7 @@ public class MainFrame extends JFrame {
 							get();
 							JOptionPane.showMessageDialog(MainFrame.this, "Rendering has finished successfully.", "Finished", JOptionPane.INFORMATION_MESSAGE);
 						} catch (final InterruptedException e) {
-							JOptionPane.showMessageDialog(MainFrame.this, "Rendering has been interrupder.", "Interrupted", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(MainFrame.this, "Rendering has been interrupted.", "Interrupted", JOptionPane.ERROR_MESSAGE);
 						} catch (final ExecutionException e) {
 							e.printStackTrace();
 							JOptionPane.showMessageDialog(MainFrame.this, "Error while rendering:\n" + e.getCause().getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -762,6 +770,49 @@ public class MainFrame extends JFrame {
 				swingWorker.execute();
 			}
 		});
+		
+		final ChangeListener listener = new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e) {
+				changed(true);
+			}
+
+		};
+		
+//		frameFileNamePatternFileSelector.addChangeListener(listener);
+		widthSpinner.addChangeListener(listener);
+		heightSpinner.addChangeListener(listener);
+		zoomSpinner.addChangeListener(listener);
+		marginSpinner.addChangeListener(listener);
+		speedupSpinner.addChangeListener(listener);
+		totalTimeSpinner.addChangeListener(listener);
+		markerSizeSpinner.addChangeListener(listener);
+		waypintSizeSpinner.addChangeListener(listener);
+		tailDurationSpinner.addChangeListener(listener);
+		fpsSpinner.addChangeListener(listener);
+//		tmsUrlTemplateComboBox.addChangeListener(listener);
+		backgroundMapVisibilitySlider.addChangeListener(listener);
+		fontSizeSpinner.addChangeListener(listener);
+		keepIdleCheckBox.addChangeListener(listener);
+//		flashbackColorSelector.addChangeListener(listener);
+		flashbackDurationSpinner.addChangeListener(listener);
+		
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent e) {
+				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this,
+						"There are unsaved changes. Close anyway?", "Error", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+			}
+		});
+	}
+	
+	
+	private void changed(final boolean changed) {
+		this.changed = changed;
+		setTitle(TITLE + (changed ? " (*)" : ""));
 	}
 	
 	
@@ -803,6 +854,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				tabbedPane.remove(trackScrollPane);
+				changed(true);
 			}
 		});
 		trackSettingsPanel.setConfiguration(tc);
@@ -810,6 +862,34 @@ public class MainFrame extends JFrame {
 		tabbedPane.addTab("Track", null, trackScrollPane, null);
 		trackScrollPane.setViewportView(trackSettingsPanel);
 		tabbedPane.setSelectedComponent(trackScrollPane);
+		
+		changed(true);
 	}
 	
+	
+	private void saveAs() {
+		if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooser.getSelectedFile();
+			if (!file.getName().endsWith(".ga.xml")) {
+				file = new File(file.getPath() + ".ga.xml");
+			}
+			save(file);
+		}
+	}
+
+
+	private void save(final File file) {
+		try {
+			final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
+			final Marshaller marshaller = jaxbContext.createMarshaller();
+			marshaller.marshal(createConfiguration(), file);
+			MainFrame.this.file = file;
+			changed(false);
+		} catch (final JAXBException e) {
+			JOptionPane.showMessageDialog(this, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (final UserException e) {
+			JOptionPane.showMessageDialog(this, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 }

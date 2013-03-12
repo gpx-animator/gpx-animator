@@ -47,7 +47,7 @@ public class Configuration {
 	
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color flashbackColor;
-	private float flashbackDuration;
+	private Long flashbackDuration;
 	
 	private String frameFilePattern;
 	
@@ -70,7 +70,7 @@ public class Configuration {
 			final int margin, final Integer width, final Integer height, final Integer zoom,
 			final Double speedup, final long tailDuration, final double fps, final Long totalTime,
 			final float backgroundMapVisibility, final String tmsUrlTemplate,
-			final boolean skipIdle, final Color flashbackColor, final float flashbackDuration,
+			final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
 			final String frameFilePattern,
 			final int fontSize, final double markerSize, final double waypointSize,
 			final List<TrackConfiguration> trackConfigurationList) {
@@ -155,7 +155,7 @@ public class Configuration {
 	}
 	
 	
-	public float getFlashbackDuration() {
+	public Long getFlashbackDuration() {
 		return flashbackDuration;
 	}
 	
@@ -206,7 +206,7 @@ public class Configuration {
 
 		private boolean skipIdle = true;
 		private Color flashbackColor = Color.white;
-		private float flashbackDuration = 250f;
+		private Long flashbackDuration = 250l;
 		
 		private String frameFilePattern = "frame%08d.png";
 		
@@ -305,7 +305,7 @@ public class Configuration {
 			return this;
 		}
 
-		public Builder flashbackDuration(final float flashbackDuration) {
+		public Builder flashbackDuration(final Long flashbackDuration) {
 			this.flashbackDuration = flashbackDuration;
 			return this;
 		}

@@ -29,7 +29,7 @@ public class TrackConfiguration {
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color color;
 	
-	private long timeOffset;
+	private Long timeOffset;
 	private Long forcedPointInterval;
 	private float lineWidth;
 	
@@ -39,7 +39,7 @@ public class TrackConfiguration {
 	}
 	
 	
-	private TrackConfiguration(final String inputGpx, final String label, final Color color, final long timeOffset, final Long forcedPointInterval, final float lineWidth) {
+	private TrackConfiguration(final String inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final float lineWidth) {
 		this.inputGpx = inputGpx;
 		this.label = label;
 		this.color = color;
@@ -64,7 +64,7 @@ public class TrackConfiguration {
 	}
 	
 	
-	public long getTimeOffset() {
+	public Long getTimeOffset() {
 		return timeOffset;
 	}
 	
@@ -92,7 +92,7 @@ public class TrackConfiguration {
 		@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 		private Color color = Color.BLUE;
 		
-		private long timeOffset = 0l;
+		private Long timeOffset;
 		private Long forcedPointInterval;
 		private float lineWidth = 2f;
 		
@@ -124,7 +124,7 @@ public class TrackConfiguration {
 		}
 		
 		
-		public Builder timeOffset(final long timeOffset) {
+		public Builder timeOffset(final Long timeOffset) {
 			this.timeOffset = timeOffset;
 			return this;
 		}

@@ -126,7 +126,6 @@ public class TrackSettingsPanel extends JPanel {
 		add(lblTimeOffset, gbc_lblTimeOffset);
 		
 		timeOffsetSpinner = new JSpinner();
-//		timeOffsetSpinner.setModel(new SpinnerNumberModel(Long.valueOf(0), Long.valueOf(0), null, Long.valueOf(1000l)));
 		timeOffsetSpinner.setModel(new DurationSpinnerModel());
 		timeOffsetSpinner.setEditor(new DurationEditor(timeOffsetSpinner));
 		final GridBagConstraints gbc_timeOffsetSpinner = new GridBagConstraints();
@@ -145,8 +144,8 @@ public class TrackSettingsPanel extends JPanel {
 		add(lblForcedPointTime, gbc_lblForcedPointTime);
 		
 		forcedPointTimeIntervalSpinner = new JSpinner();
-		forcedPointTimeIntervalSpinner.setModel(new EmptyNullSpinnerModel(new Long(0), new Long(0), null, new Long(1000)));
-		forcedPointTimeIntervalSpinner.setEditor(new EmptyZeroNumberEditor(forcedPointTimeIntervalSpinner, Long.class));
+		forcedPointTimeIntervalSpinner.setModel(new DurationSpinnerModel());
+		forcedPointTimeIntervalSpinner.setEditor(new DurationEditor(forcedPointTimeIntervalSpinner));
 		final GridBagConstraints gbc_forcedPointTimeIntervalSpinner = new GridBagConstraints();
 		gbc_forcedPointTimeIntervalSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_forcedPointTimeIntervalSpinner.fill = GridBagConstraints.HORIZONTAL;

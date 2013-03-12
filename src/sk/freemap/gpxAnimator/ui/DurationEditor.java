@@ -24,6 +24,7 @@ import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.DefaultFormatterFactory;
@@ -31,7 +32,7 @@ import javax.swing.text.DefaultFormatterFactory;
 import sk.freemap.gpxAnimator.ui.DurationSpinnerModel.Field;
 
 public class DurationEditor extends DefaultEditor {
-
+	
 	private static final long serialVersionUID = -3860212824757198990L;
 
 	
@@ -40,66 +41,55 @@ public class DurationEditor extends DefaultEditor {
 
 		final JFormattedTextField ftf = getTextField();
 		
-//		ftf.getDocument().addDocumentListener(new DocumentListener() {
-//
-//			@Override
-//			public void removeUpdate(final DocumentEvent e) {
-//				System.out.println("YY");
-//			}
-//
-//			@Override
-//			public void insertUpdate(final DocumentEvent e) {
-//				System.out.println("XX");
-//			}
-//
-//			@Override
-//			public void changedUpdate(final DocumentEvent e) {
-//				System.out.println("ZZ");
-//			}
-//		});
-		
 		ftf.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(final CaretEvent e) {
 				final SpinnerModel model = spinner.getModel();
-				if (model instanceof DurationSpinnerModel) {
-					final String text = ftf.getText();
-					final int n = text.length();
-							
-					int i = e.getDot();
-					
-					while (i < n && !Character.isLowerCase(text.charAt(i))) {
-						i++;
+				if (!(model instanceof DurationSpinnerModel)) {
+					return;
+				}
+				
+				final DurationSpinnerModel dsm = (DurationSpinnerModel) model;
+				
+				// special hack to select number
+				if (!ftf.isValid()) {
+					final Field field = dsm.getField();
+					final Matcher matcher = Pattern.compile("(\\d+)\\s*" + field.getUnit() + "\\b").matcher(ftf.getText());
+					if (matcher.find()) {
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								ftf.setSelectionStart(matcher.start(1));
+								ftf.setSelectionEnd(matcher.end(1));
+							}
+						});
 					}
 					
-					while (i > 1 && Character.isLowerCase(text.charAt(i - 1))) {
-						i--;
-					}
-					
-					final StringBuilder sb = new StringBuilder();
-					for (; i < n && Character.isLowerCase(text.charAt(i)); i++) {
-						sb.append(text.charAt(i));
-					}
-					
-					final String fieldString = sb.toString();
-					final Field field;
-					if (fieldString.equals("ms")) {
-						field = Field.MILLISECOND;
-					} else if (fieldString.equals("s")) {
-						field = Field.SECOND;
-					} else if (fieldString.equals("m")) {
-						field = Field.MINUTE;
-					} else if (fieldString.equals("h")) {
-						field = Field.HOUR;
-					} else if (fieldString.equals("d")) {
-						field = Field.DAY;
-					} else {
-						field = null;
-					}
-					
-					if (field != null) {
-						((DurationSpinnerModel) model).setField(field);
-					}
+					return;
+				}
+				
+				final String text = ftf.getText();
+				final int n = text.length();
+						
+				int i = e.getDot();
+				
+				while (i < n && !Character.isLowerCase(text.charAt(i))) {
+					i++;
+				}
+				
+				while (i > 1 && Character.isLowerCase(text.charAt(i - 1))) {
+					i--;
+				}
+				
+				final StringBuilder sb = new StringBuilder();
+				for (; i < n && Character.isLowerCase(text.charAt(i)); i++) {
+					sb.append(text.charAt(i));
+				}
+				
+				final Field field = Field.fromUnit(sb.toString());
+				
+				if (field != null) {
+					dsm.setField(field);
 				}
 			}
 		});
@@ -142,7 +132,7 @@ public class DurationEditor extends DefaultEditor {
 			
 			@Override
 			public Object stringToValue(final String text) throws ParseException {
-				if (text.isEmpty()) {
+				if (text.trim().isEmpty()) {
 					return null;
 				}
 				
@@ -155,23 +145,26 @@ public class DurationEditor extends DefaultEditor {
 				
 				final Matcher matcher = pattern.matcher(text);
 				
-				if (!matcher.matches()) {
+				if (matcher.matches()) {
+					long result = 0;
+					long mul = 1;
+					
+					final long[] muls = new long[] { 1, 1000, 60, 60, 24 };
+					
+					for (int i = 5; i > 0; i--) {
+						mul *= muls[5 - i];
+						if (matcher.group(i) != null) {
+							result += Long.parseLong(matcher.group(i)) * mul;
+						}
+					}
+					
+					return result;
+				} else if (text.matches("\\s*\\d+\\s*")) {
+					return Long.valueOf(text);
+				} else {
 					throw new ParseException("invalid format", 0);
 				}
 				
-				long result = 0;
-				long mul = 1;
-
-				final long[] muls = new long[] { 1, 1000, 60, 60, 24 };
-				
-				for (int i = 5; i > 0; i--) {
-					mul *= muls[5 - i];
-					if (matcher.group(i) != null) {
-						result += Long.parseLong(matcher.group(i)) * mul;
-					}
-				}
-
-				return result;
 			}
 		}));
 		

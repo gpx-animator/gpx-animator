@@ -18,18 +18,36 @@ import javax.swing.AbstractSpinnerModel;
 
 public class DurationSpinnerModel extends AbstractSpinnerModel {
 
-	private static final long serialVersionUID = -2807094520076994683L;
-	
-	private long duration;
+	private Long duration;
 	
 	
 	public enum Field {
-		MILLISECOND,
-		SECOND,
-		MINUTE,
-		HOUR,
-		DAY
+		MILLISECOND("ms"),
+		SECOND("s"),
+		MINUTE("m"),
+		HOUR("h"),
+		DAY("d");
+		
+		private final String unit;
+
+		private Field(final String unit) {
+			this.unit = unit;
+		}
+		
+		public String getUnit() {
+			return unit;
+		}
+		
+		public static Field fromUnit(final String unit) {
+			for (final Field field : Field.values()) {
+				if (field.getUnit().equals(unit)) {
+					return field;
+				}
+			}
+			return null;
+		}
 	}
+	
 	
 	private Field field = Field.SECOND;
 	
@@ -42,7 +60,7 @@ public class DurationSpinnerModel extends AbstractSpinnerModel {
 
 	@Override
 	public void setValue(final Object value) {
-		if (!Long.valueOf(duration).equals(value)) {
+		if (duration == null ? value != null : !duration.equals(value)) {
 			duration = (Long) value;
 			fireStateChanged();
 		}
@@ -51,18 +69,23 @@ public class DurationSpinnerModel extends AbstractSpinnerModel {
 
 	@Override
 	public Object getNextValue() {
-		return duration + getDiffMs();
+		return (duration == null ? 0 : duration) + getDiffMs();
 	}
 	
 
 	@Override
 	public Object getPreviousValue() {
-		return duration - getDiffMs();
+		return (duration == null ? 0 : duration) - getDiffMs();
 	}
 	
 	
 	public void setField(final Field field) {
 		this.field = field;
+	}
+	
+	
+	public Field getField() {
+		return field;
 	}
 	
 

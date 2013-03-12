@@ -238,7 +238,7 @@ public class Renderer {
 			}
 			
 			final Color flashbackColor = cfg.getFlashbackColor();
-			if (skip > 0f && flashbackColor.getAlpha() > 0 && cfg.getFlashbackDuration() > 0f) {
+			if (skip > 0f && flashbackColor.getAlpha() > 0 && cfg.getFlashbackDuration() != null && cfg.getFlashbackDuration() > 0) {
 				final Graphics2D g2 = (Graphics2D) bi2.getGraphics();
 				g2.setColor(new Color(flashbackColor.getRed(), flashbackColor.getGreen(), flashbackColor.getBlue(), (int) (flashbackColor.getAlpha() * skip)));
 				g2.fillRect(0, 0, bi2.getWidth(), bi2.getHeight());
@@ -316,7 +316,9 @@ public class Renderer {
 				}
 			}
 		
-			time += trackConfiguration.getTimeOffset();
+			if (trackConfiguration.getTimeOffset() != null) {
+				time += trackConfiguration.getTimeOffset();
+			}
 			
 			if (latLon instanceof Waypoint) {
 				final NamedPoint namedPoint = new NamedPoint();
