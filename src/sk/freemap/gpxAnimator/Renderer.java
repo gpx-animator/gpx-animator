@@ -176,14 +176,39 @@ public class Renderer {
 			}
 		}
 		
-		final IMediaWriter writer = ToolFactory.makeWriter("/home/martin/output.mp4");
-		
 		final BufferedImage bi = new BufferedImage(
 				(int) ((maxX - minX) * scale),
 				(int) ((maxY - minY) * scale),
 				BufferedImage.TYPE_3BYTE_BGR);
 
-		writer.addVideoStream(0, 0, IRational.make(cfg.getFps()), bi.getWidth(), bi.getHeight());
+		final FrameWriter frameWriter = new FrameWriter() {
+			
+			@Override
+			public void close() throws IOException {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void addFrame(final BufferedImage bi) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		
+		// TODO make abstract writer also for images
+		
+		final IMediaWriter writer;
+		final String frameFilePattern = cfg.getFrameFilePattern();
+		final int dot = frameFilePattern.lastIndexOf('.');
+		final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1);
+		
+		if ("png".equalsIgnoreCase(ext) || "jpg".equalsIgnoreCase(ext)) {
+			writer = null;
+		} else {
+			writer = ToolFactory.makeWriter(frameFilePattern);
+			writer.addVideoStream(0, 0, IRational.make(cfg.getFps()), bi.getWidth(), bi.getHeight());
+		}
 				
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 		
@@ -254,23 +279,27 @@ public class Renderer {
 				skip -= 1000f / cfg.getFlashbackDuration() / cfg.getFps();
 			}
 			
-			writer.encodeVideo(0, bi2, (int) (f * 1000d / cfg.getFps()), TimeUnit.MILLISECONDS);
-			
-			final File outputfile = new File(String.format(cfg.getFrameFilePattern(), ++f));
-		    try {
-				ImageIO.write(bi2, "png", outputfile);
-			} catch (final IOException e) {
-				throw new UserException("error writing frame to " + outputfile);
+			if (writer == null) {
+				final File outputfile = new File(String.format(frameFilePattern, ++f));
+			    try {
+					ImageIO.write(bi2, ext, outputfile);
+				} catch (final IOException e) {
+					throw new UserException("error writing frame to " + outputfile);
+				}
+			} else {
+				writer.encodeVideo(0, bi2, (int) (f * 1000d / cfg.getFps()), TimeUnit.MILLISECONDS);
 			}
 		}
 		
-		writer.close();
-		
 		System.out.println("Done.");
 		
-		// TODO show in GUI too
-		System.out.println("To encode generated frames you may run this command:");
-		System.out.println("ffmpeg -i " + cfg.getFrameFilePattern() + " -vcodec mpeg4 -b 3000k -r " + cfg.getFps() + " video.avi");
+		if (writer == null) {
+			// TODO show in GUI too
+			System.out.println("To encode generated frames you may run this command:");
+			System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 3000k -r " + cfg.getFps() + " video.avi");
+		} else {
+			writer.close();
+		}
 	}
 
 
