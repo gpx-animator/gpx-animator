@@ -28,8 +28,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,13 +36,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
 
-import javax.imageio.ImageIO;
+import sk.freemap.gpxAnimator.frameWriter.FileFrameWriter;
+import sk.freemap.gpxAnimator.frameWriter.FrameWriter;
+import sk.freemap.gpxAnimator.frameWriter.VideoFrameWriter;
 
-import com.xuggle.mediatool.IMediaWriter;
-import com.xuggle.mediatool.ToolFactory;
-import com.xuggle.xuggler.IRational;
 
 public class Renderer {
 
@@ -181,34 +177,14 @@ public class Renderer {
 				(int) ((maxY - minY) * scale),
 				BufferedImage.TYPE_3BYTE_BGR);
 
-		final FrameWriter frameWriter = new FrameWriter() {
-			
-			@Override
-			public void close() throws IOException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void addFrame(final BufferedImage bi) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		
-		// TODO make abstract writer also for images
-		
-		final IMediaWriter writer;
+
 		final String frameFilePattern = cfg.getFrameFilePattern();
 		final int dot = frameFilePattern.lastIndexOf('.');
 		final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1);
 		
-		if ("png".equalsIgnoreCase(ext) || "jpg".equalsIgnoreCase(ext)) {
-			writer = null;
-		} else {
-			writer = ToolFactory.makeWriter(frameFilePattern);
-			writer.addVideoStream(0, 0, IRational.make(cfg.getFps()), bi.getWidth(), bi.getHeight());
-		}
+		final FrameWriter frameWriter = "png".equalsIgnoreCase(ext) || "jpg".equalsIgnoreCase(ext)
+				? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
+				: new VideoFrameWriter(cfg.getFrameFilePattern(), cfg.getFps(), bi.getWidth(), bi.getHeight());
 				
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 		
@@ -224,15 +200,10 @@ public class Renderer {
 			fontMetrics = ga.getFontMetrics(font);
 		}
 
-		if (cfg.getTotalTime() != null) {
-			speedup = 1.0 * (maxTime - minTime) / cfg.getTotalTime();
-		} else {
-			speedup = cfg.getSpeedup();
-		}
+		speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / cfg.getTotalTime();
 
 		final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
 		
-		int f = 0;
 		float skip = -1f;
 		for (int frame = 1; frame < frames; frame++) {
 			if (rc.isCancelled1()) {
@@ -279,27 +250,12 @@ public class Renderer {
 				skip -= 1000f / cfg.getFlashbackDuration() / cfg.getFps();
 			}
 			
-			if (writer == null) {
-				final File outputfile = new File(String.format(frameFilePattern, ++f));
-			    try {
-					ImageIO.write(bi2, ext, outputfile);
-				} catch (final IOException e) {
-					throw new UserException("error writing frame to " + outputfile);
-				}
-			} else {
-				writer.encodeVideo(0, bi2, (int) (f * 1000d / cfg.getFps()), TimeUnit.MILLISECONDS);
-			}
+			frameWriter.addFrame(bi2);
 		}
+		
+		frameWriter.close();
 		
 		System.out.println("Done.");
-		
-		if (writer == null) {
-			// TODO show in GUI too
-			System.out.println("To encode generated frames you may run this command:");
-			System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 3000k -r " + cfg.getFps() + " video.avi");
-		} else {
-			writer.close();
-		}
 	}
 
 

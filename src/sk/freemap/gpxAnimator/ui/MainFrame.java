@@ -805,6 +805,10 @@ public class MainFrame extends JFrame {
 						"There are unsaved changes. Close anyway?", "Error", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					System.exit(0);
 				}
+				
+				if (swingWorker != null && !swingWorker.isDone()) {
+					swingWorker.cancel(false);
+				}
 			}
 		});
 	}
