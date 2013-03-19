@@ -38,8 +38,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
+
+import com.xuggle.mediatool.IMediaWriter;
+import com.xuggle.mediatool.ToolFactory;
+import com.xuggle.xuggler.IRational;
 
 public class Renderer {
 
@@ -171,11 +176,15 @@ public class Renderer {
 			}
 		}
 		
+		final IMediaWriter writer = ToolFactory.makeWriter("/home/martin/output.mp4");
+		
 		final BufferedImage bi = new BufferedImage(
 				(int) ((maxX - minX) * scale),
 				(int) ((maxY - minY) * scale),
-				BufferedImage.TYPE_INT_RGB);
-		
+				BufferedImage.TYPE_3BYTE_BGR);
+
+		writer.addVideoStream(0, 0, IRational.make(cfg.getFps()), bi.getWidth(), bi.getHeight());
+				
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 		
 		if (cfg.getTmsUrlTemplate() == null) {
@@ -244,7 +253,9 @@ public class Renderer {
 				g2.fillRect(0, 0, bi2.getWidth(), bi2.getHeight());
 				skip -= 1000f / cfg.getFlashbackDuration() / cfg.getFps();
 			}
-
+			
+			writer.encodeVideo(0, bi2, (int) (f * 1000d / cfg.getFps()), TimeUnit.MILLISECONDS);
+			
 			final File outputfile = new File(String.format(cfg.getFrameFilePattern(), ++f));
 		    try {
 				ImageIO.write(bi2, "png", outputfile);
@@ -252,6 +263,8 @@ public class Renderer {
 				throw new UserException("error writing frame to " + outputfile);
 			}
 		}
+		
+		writer.close();
 		
 		System.out.println("Done.");
 		
