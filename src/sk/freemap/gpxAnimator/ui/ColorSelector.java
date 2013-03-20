@@ -27,8 +27,6 @@ import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 public class ColorSelector extends JPanel {
 	
@@ -49,25 +47,6 @@ public class ColorSelector extends JPanel {
 		colorTextField.setPreferredSize(new Dimension(55, 21));
 		add(colorTextField);
 		colorTextField.setColumns(10);
-		colorTextField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void removeUpdate(final DocumentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void insertUpdate(final DocumentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void changedUpdate(final DocumentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 		
 		final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
 		add(rigidArea);
@@ -99,10 +78,12 @@ public class ColorSelector extends JPanel {
 	
 	
 	public void setColor(final Color color) {
+		final Color oldColor = colorTextField.getBackground();
 		colorTextField.setBackground(color);
 		final double l = color.getRed() / 255.0 * 0.299 + color.getGreen() / 255.0 * 0.587 + color.getBlue() / 255.0 * 0.114;
 		colorTextField.setForeground(l > 0.5 ? Color.BLACK : Color.WHITE);
 		colorTextField.setText("#" + Integer.toHexString(color.getRGB()).toUpperCase());
+		firePropertyChange("color", oldColor, color);
 	}
 	
 }

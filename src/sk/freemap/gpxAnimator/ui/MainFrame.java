@@ -98,9 +98,25 @@ public class MainFrame extends JFrame {
 
 	private List<LabeledItem> mapTamplateList;
 
-	protected File file;
+	private File file;
 
 	private boolean changed;
+	
+	
+	private final ChangeListener changeListener = new ChangeListener() {
+		@Override
+		public void stateChanged(final ChangeEvent e) {
+			changed(true);
+		}
+
+	};
+	
+	private final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(final PropertyChangeEvent evt) {
+			changed(true);
+		}
+	};
 	
 	
 	public Configuration createConfiguration() throws UserException {
@@ -691,8 +707,7 @@ public class MainFrame extends JFrame {
 				try {
 					addTrackSettingsTab(TrackConfiguration.createBuilder().build());
 				} catch (final UserException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					throw new RuntimeException(e1);
 				}
 			}
 		});
@@ -773,39 +788,28 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		final ChangeListener listener = new ChangeListener() {
-			@Override
-			public void stateChanged(final ChangeEvent e) {
-				changed(true);
-			}
-
-		};
-		
-		
-		
-		
-//		frameFileNamePatternFileSelector.addChangeListener(listener);
-		widthSpinner.addChangeListener(listener);
-		heightSpinner.addChangeListener(listener);
-		zoomSpinner.addChangeListener(listener);
-		marginSpinner.addChangeListener(listener);
-		speedupSpinner.addChangeListener(listener);
-		totalTimeSpinner.addChangeListener(listener);
-		markerSizeSpinner.addChangeListener(listener);
-		waypintSizeSpinner.addChangeListener(listener);
-		tailDurationSpinner.addChangeListener(listener);
-		fpsSpinner.addChangeListener(listener);
+		frameFileNamePatternFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
+		widthSpinner.addChangeListener(changeListener);
+		heightSpinner.addChangeListener(changeListener);
+		zoomSpinner.addChangeListener(changeListener);
+		marginSpinner.addChangeListener(changeListener);
+		speedupSpinner.addChangeListener(changeListener);
+		totalTimeSpinner.addChangeListener(changeListener);
+		markerSizeSpinner.addChangeListener(changeListener);
+		waypintSizeSpinner.addChangeListener(changeListener);
+		tailDurationSpinner.addChangeListener(changeListener);
+		fpsSpinner.addChangeListener(changeListener);
 //		tmsUrlTemplateComboBox.addChangeListener(listener);
-		backgroundMapVisibilitySlider.addChangeListener(listener);
-		fontSizeSpinner.addChangeListener(listener);
+		backgroundMapVisibilitySlider.addChangeListener(changeListener);
+		fontSizeSpinner.addChangeListener(changeListener);
 		keepIdleCheckBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
 				changed(true);
 			}
 		});
-//		flashbackColorSelector.addChangeListener(listener);
-		flashbackDurationSpinner.addChangeListener(listener);
+		flashbackColorSelector.addPropertyChangeListener("color", propertyChangeListener);
+		flashbackDurationSpinner.addChangeListener(changeListener);
 		
 		
 		addWindowListener(new WindowAdapter() {
@@ -840,9 +844,8 @@ public class MainFrame extends JFrame {
 		String label = null;
 		while ((line = reader.readLine()) != null) {
 			if (line.startsWith("#") || line.trim().isEmpty()) {
-				continue;
-			}
-			if (label == null) {
+				// nothing
+			} else if (label == null) {
 				label = line;
 			} else {
 				labeledItems.add(new LabeledItem(label, line));
@@ -864,18 +867,28 @@ public class MainFrame extends JFrame {
 
 	private void addTrackSettingsTab(final TrackConfiguration tc) {
 		final JScrollPane trackScrollPane = new JScrollPane();
-		final TrackSettingsPanel trackSettingsPanel = new TrackSettingsPanel(new ActionListener() {
+		final TrackSettingsPanel trackSettingsPanel = new TrackSettingsPanel() {
+			private static final long serialVersionUID = 308660875202822183L;
+
 			@Override
-			public void actionPerformed(final ActionEvent e) {
+			protected void remove() {
 				tabbedPane.remove(trackScrollPane);
 				changed(true);
 			}
-		});
+
+			@Override
+			protected void configurationChanged() {
+				changed(true);
+			}
+		};
+		
 		trackSettingsPanel.setConfiguration(tc);
 		
 		tabbedPane.addTab("Track", null, trackScrollPane, null);
 		trackScrollPane.setViewportView(trackSettingsPanel);
 		tabbedPane.setSelectedComponent(trackScrollPane);
+		
+		trackSettingsPanel.addPropertyChangeListener("trackConfiguration", propertyChangeListener);
 		
 		changed(true);
 	}

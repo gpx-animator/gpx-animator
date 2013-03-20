@@ -79,7 +79,7 @@ public class Map {
 				try {
 					tile = ImageIO.read(new URL(url));
 				} catch (final IOException e) {
-					throw new UserException("error reading tile " + url);
+					throw new UserException("error reading tile " + url, e);
 				}
 				
 				// convert to RGB format

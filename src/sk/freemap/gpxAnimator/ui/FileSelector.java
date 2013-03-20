@@ -25,6 +25,8 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -45,6 +47,29 @@ public class FileSelector extends JPanel {
 		add(fileTextField);
 		fileTextField.setColumns(10);
 		
+		fileTextField.getDocument().addDocumentListener(new DocumentListener() {
+			String oldText = fileTextField.getText();
+			
+			@Override
+			public void removeUpdate(final DocumentEvent e) {
+				fire();
+			}
+			
+			@Override
+			public void insertUpdate(final DocumentEvent e) {
+				fire();
+			}
+			
+			@Override
+			public void changedUpdate(final DocumentEvent e) {
+				fire();
+			}
+			
+			private void fire() {
+				firePropertyChange("filename", oldText, oldText = fileTextField.getText());
+			}
+		});
+		
 		final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
 		add(rigidArea);
 		
@@ -57,7 +82,7 @@ public class FileSelector extends JPanel {
 				gpxFileChooser.setAcceptAllFileFilterUsed(false);
 				gpxFileChooser.addChoosableFileFilter(filter);
 				if (gpxFileChooser.showOpenDialog(FileSelector.this) == JFileChooser.APPROVE_OPTION) {
-					fileTextField.setText(gpxFileChooser.getSelectedFile().toString());
+					setFilename(gpxFileChooser.getSelectedFile().toString());
 				}
 				
 //				final JFileChooser chooser = new JFileChooser();
@@ -76,4 +101,5 @@ public class FileSelector extends JPanel {
 	public void setFilename(final String filename) {
 		fileTextField.setText(filename);
 	}
+
 }

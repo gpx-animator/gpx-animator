@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,13 +16,17 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import sk.freemap.gpxAnimator.Help;
 import sk.freemap.gpxAnimator.TrackConfiguration;
 import sk.freemap.gpxAnimator.TrackConfiguration.Builder;
 import sk.freemap.gpxAnimator.UserException;
 
-public class TrackSettingsPanel extends JPanel {
+abstract class TrackSettingsPanel extends JPanel {
 
 	private static final long serialVersionUID = 2492074184123083022L;
 	private final JLabel lblLabel;
@@ -36,7 +42,7 @@ public class TrackSettingsPanel extends JPanel {
 	private final FileSelector inputGpxFileSelector;
 
 
-	public TrackSettingsPanel(final ActionListener removeActionListener) {
+	public TrackSettingsPanel() {
 		setBounds(100, 100, 595, 419);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		final GridBagLayout gbl_contentPane = new GridBagLayout();
@@ -153,22 +159,58 @@ public class TrackSettingsPanel extends JPanel {
 		gbc_forcedPointTimeIntervalSpinner.gridy = 5;
 		add(forcedPointTimeIntervalSpinner, gbc_forcedPointTimeIntervalSpinner);
 		
-		if (removeActionListener != null) {
-			final JButton btnNewButton = new JButton("Remove Track");
-			btnNewButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent e) {
-					removeActionListener.actionPerformed(new ActionEvent(TrackSettingsPanel.this, ActionEvent.ACTION_PERFORMED, ""));
-				}
-			});
-			final GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-			gbc_btnNewButton.anchor = GridBagConstraints.EAST;
-			gbc_btnNewButton.gridwidth = 3;
-			gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-			gbc_btnNewButton.gridx = 0;
-			gbc_btnNewButton.gridy = 7;
-			add(btnNewButton, gbc_btnNewButton);
-		}
+		final JButton btnNewButton = new JButton("Remove Track");
+		btnNewButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				remove();
+			}
+		});
+		final GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.anchor = GridBagConstraints.EAST;
+		gbc_btnNewButton.gridwidth = 3;
+		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.gridx = 0;
+		gbc_btnNewButton.gridy = 7;
+		add(btnNewButton, gbc_btnNewButton);
+	
+		final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				TrackSettingsPanel.this.firePropertyChange("trackConfiguration", null, null); // TODO old and new value
+			}
+		};
+		inputGpxFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
+		
+		labelTextField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(final DocumentEvent e) {
+				configurationChanged();
+			}
+			
+			@Override
+			public void insertUpdate(final DocumentEvent e) {
+				configurationChanged();
+			}
+			
+			@Override
+			public void changedUpdate(final DocumentEvent e) {
+				configurationChanged();
+			}
+		});
+		
+		colorSelector.addPropertyChangeListener("color", propertyChangeListener);
+		
+		final ChangeListener changeListener = new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e) {
+				configurationChanged();
+			}
+		};
+		
+		lineWidthSpinner.addChangeListener(changeListener);
+		timeOffsetSpinner.addChangeListener(changeListener);
+		forcedPointTimeIntervalSpinner.addChangeListener(changeListener);
 	}
 
 
@@ -194,4 +236,10 @@ public class TrackSettingsPanel extends JPanel {
 		forcedPointTimeIntervalSpinner.setValue(c.getForcedPointInterval());
 		timeOffsetSpinner.setValue(c.getTimeOffset());
 	}
+	
+	
+	protected abstract void remove();
+	
+	protected abstract void configurationChanged();
+	
 }
