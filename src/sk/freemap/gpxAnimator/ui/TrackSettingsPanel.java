@@ -10,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -20,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sk.freemap.gpxAnimator.Help;
 import sk.freemap.gpxAnimator.TrackConfiguration;
@@ -60,7 +62,17 @@ abstract class TrackSettingsPanel extends JPanel {
 		gbc_lblGpx.gridy = 0;
 		add(lblGpx, gbc_lblGpx);
 		
-		inputGpxFileSelector = new FileSelector();
+		inputGpxFileSelector = new FileSelector() {
+			private static final long serialVersionUID = -7085193817022374995L;
+
+			@Override
+			protected Type configure(final JFileChooser gpxFileChooser)  {
+				gpxFileChooser.setAcceptAllFileFilterUsed(false);
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("GPX Files", "gpx"));
+				return Type.OPEN;
+			}
+		};
+		
 		inputGpxFileSelector.setToolTipText(Help.HELP_INPUT);
 		lblGpx.setLabelFor(inputGpxFileSelector);
 		final GridBagConstraints gbc_inputGpxFileSelector = new GridBagConstraints();

@@ -27,13 +27,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class FileSelector extends JPanel {
+public abstract class FileSelector extends JPanel {
 	private static final long serialVersionUID = 3157365691996396016L;
 	
 	private final JTextField fileTextField;
+	
+	public enum Type {
+		OPEN, SAVE
+	}
 
 	/**
 	 * Create the panel.
@@ -77,22 +79,18 @@ public class FileSelector extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				final JFileChooser gpxFileChooser = new JFileChooser();
-				final FileFilter filter = new FileNameExtensionFilter("GPX Files", "gpx");
-				gpxFileChooser.setAcceptAllFileFilterUsed(false);
-				gpxFileChooser.addChoosableFileFilter(filter);
-				if (gpxFileChooser.showOpenDialog(FileSelector.this) == JFileChooser.APPROVE_OPTION) {
-					setFilename(gpxFileChooser.getSelectedFile().toString());
+				final JFileChooser fileChooser = new JFileChooser();
+				final Type type = configure(fileChooser);
+				if ((type == Type.OPEN ? fileChooser.showOpenDialog(FileSelector.this) : fileChooser.showSaveDialog(FileSelector.this)) == JFileChooser.APPROVE_OPTION) {
+					setFilename(fileChooser.getSelectedFile().toString());
 				}
-				
-//				final JFileChooser chooser = new JFileChooser();
-//				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//				chooser.showOpenDialog(MainFrame.this);
 			}
 		});
 		add(btnNewButton);
 
 	}
+
+	protected abstract Type configure(final JFileChooser gpxFileChooser);
 
 	public String getFilename() {
 		return fileTextField.getText();

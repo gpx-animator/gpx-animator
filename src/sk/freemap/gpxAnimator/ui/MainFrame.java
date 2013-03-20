@@ -45,6 +45,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -64,7 +65,7 @@ public class MainFrame extends JFrame {
 	
 	private final JPanel contentPane;
 	private final JSpinner heightSpinner;
-	private final FileSelector frameFileNamePatternFileSelector;
+	private final FileSelector outputFileSelector;
 	private final JSpinner widthSpinner;
 	private final JSpinner zoomSpinner;
 	private final JSpinner marginSpinner;
@@ -137,7 +138,7 @@ public class MainFrame extends JFrame {
 		b.skipIdle(!keepIdleCheckBox.isSelected());
 		b.flashbackColor(flashbackColorSelector.getColor());
 		b.flashbackDuration((Long) flashbackDurationSpinner.getValue());
-		b.output(frameFileNamePatternFileSelector.getFilename());
+		b.output(outputFileSelector.getFilename());
 		b.fontSize((Integer) fontSizeSpinner.getValue());
 		b.markerSize((Double) markerSizeSpinner.getValue());
 		b.waypointSize((Double) waypintSizeSpinner.getValue());
@@ -175,7 +176,7 @@ public class MainFrame extends JFrame {
 		
 		keepIdleCheckBox.setSelected(!c.isSkipIdle());
 		flashbackColorSelector.setColor(c.getFlashbackColor());
-		frameFileNamePatternFileSelector.setFilename(c.getOutput());
+		outputFileSelector.setFilename(c.getOutput());
 		fontSizeSpinner.setValue(c.getFontSize());
 		markerSizeSpinner.setValue(c.getMarkerSize());
 		waypintSizeSpinner.setValue(c.getWaypointSize());
@@ -236,17 +237,22 @@ public class MainFrame extends JFrame {
 		mntmOpen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-					final File file = fileChooser.getSelectedFile();
-					try {
-						final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
-						final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-						setConfiguration((Configuration) unmarshaller.unmarshal(file));
-						MainFrame.this.file = file;
-					} catch (final JAXBException e1) {
-						JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this,
+						"There are unsaved changes. Continue?", "Error", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					
+					if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+						final File file = fileChooser.getSelectedFile();
+						try {
+							final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
+							final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+							setConfiguration((Configuration) unmarshaller.unmarshal(file));
+							MainFrame.this.file = file;
+						} catch (final JAXBException e1) {
+							JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				}
+				
 			}
 		});
 		mnFile.add(mntmOpen);
@@ -377,13 +383,22 @@ public class MainFrame extends JFrame {
 		gbc_lblOutput.gridy = 0;
 		tabContentPanel.add(lblOutput, gbc_lblOutput);
 		
-		frameFileNamePatternFileSelector = new FileSelector();
+		outputFileSelector = new FileSelector() {
+			private static final long serialVersionUID = 7372002778976603239L;
+
+			@Override
+			protected Type configure(final JFileChooser gpxFileChooser) {
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Files", "mp4"));
+				return Type.SAVE;
+			}
+		};
+		
 		final GridBagConstraints gbc_frameFileNamePatternFileSelector = new GridBagConstraints();
 		gbc_frameFileNamePatternFileSelector.insets = new Insets(0, 0, 5, 0);
 		gbc_frameFileNamePatternFileSelector.fill = GridBagConstraints.BOTH;
 		gbc_frameFileNamePatternFileSelector.gridx = 1;
 		gbc_frameFileNamePatternFileSelector.gridy = 0;
-		tabContentPanel.add(frameFileNamePatternFileSelector, gbc_frameFileNamePatternFileSelector);
+		tabContentPanel.add(outputFileSelector, gbc_frameFileNamePatternFileSelector);
 		
 		final JLabel lblWidth = new JLabel("Width");
 		final GridBagConstraints gbc_lblWidth = new GridBagConstraints();
@@ -788,7 +803,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		frameFileNamePatternFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
+		outputFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
 		widthSpinner.addChangeListener(changeListener);
 		heightSpinner.addChangeListener(changeListener);
 		zoomSpinner.addChangeListener(changeListener);
