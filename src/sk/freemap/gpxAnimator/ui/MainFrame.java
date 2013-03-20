@@ -5,6 +5,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -119,7 +121,7 @@ public class MainFrame extends JFrame {
 		b.skipIdle(!keepIdleCheckBox.isSelected());
 		b.flashbackColor(flashbackColorSelector.getColor());
 		b.flashbackDuration((Long) flashbackDurationSpinner.getValue());
-		b.frameFilePattern(frameFileNamePatternFileSelector.getFilename());
+		b.output(frameFileNamePatternFileSelector.getFilename());
 		b.fontSize((Integer) fontSizeSpinner.getValue());
 		b.markerSize((Double) markerSizeSpinner.getValue());
 		b.waypointSize((Double) waypintSizeSpinner.getValue());
@@ -157,7 +159,7 @@ public class MainFrame extends JFrame {
 		
 		keepIdleCheckBox.setSelected(!c.isSkipIdle());
 		flashbackColorSelector.setColor(c.getFlashbackColor());
-		frameFileNamePatternFileSelector.setFilename(c.getFrameFilePattern());
+		frameFileNamePatternFileSelector.setFilename(c.getOutput());
 		fontSizeSpinner.setValue(c.getFontSize());
 		markerSizeSpinner.setValue(c.getMarkerSize());
 		waypintSizeSpinner.setValue(c.getWaypointSize());
@@ -543,7 +545,7 @@ public class MainFrame extends JFrame {
 		gbc_fpsSpinner.gridy = 10;
 		tabContentPanel.add(fpsSpinner, gbc_fpsSpinner);
 		
-		final JLabel lblTmsUrlTemplate = new JLabel("TMS URL Template");
+		final JLabel lblTmsUrlTemplate = new JLabel("Background Map");
 		final GridBagConstraints gbc_lblTmsUrlTemplate = new GridBagConstraints();
 		gbc_lblTmsUrlTemplate.anchor = GridBagConstraints.EAST;
 		gbc_lblTmsUrlTemplate.insets = new Insets(0, 0, 5, 5);
@@ -561,7 +563,7 @@ public class MainFrame extends JFrame {
 		gbc_tmsUrlTemplateComboBox.gridy = 11;
 		tabContentPanel.add(tmsUrlTemplateComboBox, gbc_tmsUrlTemplateComboBox);
 		
-		final JLabel lblVisibility = new JLabel("Visibility");
+		final JLabel lblVisibility = new JLabel("Map Visibility");
 		final GridBagConstraints gbc_lblVisibility = new GridBagConstraints();
 		gbc_lblVisibility.anchor = GridBagConstraints.EAST;
 		gbc_lblVisibility.insets = new Insets(0, 0, 5, 5);
@@ -779,6 +781,9 @@ public class MainFrame extends JFrame {
 
 		};
 		
+		
+		
+		
 //		frameFileNamePatternFileSelector.addChangeListener(listener);
 		widthSpinner.addChangeListener(listener);
 		heightSpinner.addChangeListener(listener);
@@ -793,7 +798,12 @@ public class MainFrame extends JFrame {
 //		tmsUrlTemplateComboBox.addChangeListener(listener);
 		backgroundMapVisibilitySlider.addChangeListener(listener);
 		fontSizeSpinner.addChangeListener(listener);
-		keepIdleCheckBox.addChangeListener(listener);
+		keepIdleCheckBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				changed(true);
+			}
+		});
 //		flashbackColorSelector.addChangeListener(listener);
 		flashbackDurationSpinner.addChangeListener(listener);
 		

@@ -28,7 +28,11 @@ public final class FileFrameWriter implements FrameWriter {
 	private int frame;
 	private final double fps;
 
-	public FileFrameWriter(final String frameFilePattern, final String imageType, final double fps) {
+	public FileFrameWriter(final String frameFilePattern, final String imageType, final double fps) throws UserException {
+		if (String.format(frameFilePattern, 100).equals(String.format(frameFilePattern, 200))) {
+			throw new UserException("output must be pattern, for example frame%08d.png");
+		}
+
 		this.frameFilePattern = frameFilePattern;
 		this.imageType = imageType;
 		this.fps = fps;

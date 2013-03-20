@@ -27,6 +27,8 @@ import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class ColorSelector extends JPanel {
 	
@@ -47,6 +49,25 @@ public class ColorSelector extends JPanel {
 		colorTextField.setPreferredSize(new Dimension(55, 21));
 		add(colorTextField);
 		colorTextField.setColumns(10);
+		colorTextField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(final DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void insertUpdate(final DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void changedUpdate(final DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
 		add(rigidArea);
@@ -66,8 +87,9 @@ public class ColorSelector extends JPanel {
 				final JDialog colorChooser = JColorChooser.createDialog(ColorSelector.this, "Track Color", true, chooserPane, okListener, null);
 				colorChooser.setVisible(true);
 			}
-		});		add(selectButton);
-
+		});
+		
+		add(selectButton);
 	}
 
 	

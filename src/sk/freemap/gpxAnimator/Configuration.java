@@ -49,7 +49,7 @@ public class Configuration {
 	private Color flashbackColor;
 	private Long flashbackDuration;
 	
-	private String frameFilePattern;
+	private String output;
 	
 	private int fontSize;
 	private double markerSize;
@@ -71,7 +71,7 @@ public class Configuration {
 			final Double speedup, final long tailDuration, final double fps, final Long totalTime,
 			final float backgroundMapVisibility, final String tmsUrlTemplate,
 			final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
-			final String frameFilePattern,
+			final String output,
 			final int fontSize, final double markerSize, final double waypointSize,
 			final List<TrackConfiguration> trackConfigurationList) {
 		this.margin = margin;
@@ -87,7 +87,7 @@ public class Configuration {
 		this.skipIdle = skipIdle;
 		this.flashbackColor = flashbackColor;
 		this.flashbackDuration = flashbackDuration;
-		this.frameFilePattern = frameFilePattern;
+		this.output = output;
 		this.fontSize = fontSize;
 		this.markerSize = markerSize;
 		this.waypointSize = waypointSize;
@@ -160,8 +160,8 @@ public class Configuration {
 	}
 	
 	
-	public String getFrameFilePattern() {
-		return frameFilePattern;
+	public String getOutput() {
+		return output;
 	}
 	
 	
@@ -208,7 +208,7 @@ public class Configuration {
 		private Color flashbackColor = Color.white;
 		private Long flashbackDuration = 250l;
 		
-		private String frameFilePattern = "frame%08d.png";
+		private String output = "video.mp4"; // frame%08d.png
 		
 		private int fontSize = 12;
 		private double markerSize = 8.0;
@@ -218,30 +218,15 @@ public class Configuration {
 		
 
 		public Configuration build() throws UserException {
-			validateOptions();
-			
 			return new Configuration(
 					margin, width, height, zoom,
 					speedup, tailDuration, fps, totalTime,
 					backgroundMapVisibility, tmsUrlTemplate,
 					skipIdle, flashbackColor, flashbackDuration,
-					frameFilePattern,
+					output,
 					fontSize, markerSize, waypointSize,
 					Collections.unmodifiableList(trackConfigurationList)
 			);
-		}
-		
-
-		private void validateOptions() throws UserException {
-			if (trackConfigurationList.isEmpty()) {
-				// TODO throw new UserException("missing input file");
-			}
-			
-			if (String.format(frameFilePattern, 100).equals(String.format(frameFilePattern, 200))) {
-				throw new UserException("--output must be pattern, for example frame%08d.png");
-			}
-			
-			// TODO other validations
 		}
 
 
@@ -310,8 +295,8 @@ public class Configuration {
 			return this;
 		}
 
-		public Builder frameFilePattern(final String frameFilePattern) {
-			this.frameFilePattern = frameFilePattern;
+		public Builder output(final String output) {
+			this.output = output;
 			return this;
 		}
 
@@ -351,7 +336,7 @@ public class Configuration {
 				+ ", skipIdle=" + skipIdle
 				+ ", flashbackColor=" + flashbackColor
 				+ ", flashbackDuration=" + flashbackDuration
-				+ ", frameFilePattern=" + frameFilePattern
+				+ ", output=" + output
 				+ ", fontSize=" + fontSize
 				+ ", markerSize=" + markerSize
 				+ ", waypointSize=" + waypointSize

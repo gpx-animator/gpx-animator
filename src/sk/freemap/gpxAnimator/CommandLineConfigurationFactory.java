@@ -59,7 +59,7 @@ public final class CommandLineConfigurationFactory {
 // TODO				} else if (arg.equals("--configuration")) {
 //					args[++i];
 				} else if (arg.equals("--output")) {
-					cfg.frameFilePattern(args[++i]);
+					cfg.output(args[++i]);
 				} else if (arg.equals("--label")) {
 					labelList.add(args[++i]);
 				} else if (arg.equals("--color")) {
@@ -95,7 +95,7 @@ public final class CommandLineConfigurationFactory {
 				} else if (arg.equals("--tms-url-template")) {
 					cfg.tmsUrlTemplate(args[++i]);
 				} else if (arg.equals("--background-map-visibility")) {
-					cfg.backgroundMapVisibility(Float.parseFloat(args[++i]) / 100f);
+					cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
 				} else if (arg.equals("--total-time")) {
 					final String s = args[++i].trim();
 					cfg.totalTime(s.isEmpty() ? null : Long.valueOf(s));

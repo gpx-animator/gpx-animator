@@ -60,7 +60,7 @@ public class UsageDialog extends JDialog {
 			pw.println("<dl>");
 			Help.printHelp(new OptionHelpWriter() {
 				@Override
-				public void writeOptionHelp(final String option, final String argument, final String description, final boolean track, final String defaultValue) {
+				public void writeOptionHelp(final String option, final String argument, final String description, final boolean track, final Object defaultValue) {
 					// TODO html escape
 					pw.print("<dt><b>--");
 					pw.print(option);

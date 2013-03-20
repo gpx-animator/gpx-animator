@@ -173,18 +173,18 @@ public class Renderer {
 		}
 		
 		final BufferedImage bi = new BufferedImage(
-				(int) ((maxX - minX) * scale),
-				(int) ((maxY - minY) * scale),
+				(int) Math.round(((maxX - minX) * scale)),
+				(int) Math.round(((maxY - minY) * scale)),
 				BufferedImage.TYPE_3BYTE_BGR);
 
 
-		final String frameFilePattern = cfg.getFrameFilePattern();
+		final String frameFilePattern = cfg.getOutput();
 		final int dot = frameFilePattern.lastIndexOf('.');
 		final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1);
 		
 		final FrameWriter frameWriter = "png".equalsIgnoreCase(ext) || "jpg".equalsIgnoreCase(ext)
 				? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
-				: new VideoFrameWriter(cfg.getFrameFilePattern(), cfg.getFps(), bi.getWidth(), bi.getHeight());
+				: new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), bi.getWidth(), bi.getHeight());
 				
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 		
