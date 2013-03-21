@@ -82,7 +82,7 @@ public abstract class FileSelector extends JPanel {
 				final JFileChooser fileChooser = new JFileChooser();
 				final Type type = configure(fileChooser);
 				if ((type == Type.OPEN ? fileChooser.showOpenDialog(FileSelector.this) : fileChooser.showSaveDialog(FileSelector.this)) == JFileChooser.APPROVE_OPTION) {
-					setFilename(fileChooser.getSelectedFile().toString());
+					setFilename(transformFilename(fileChooser.getSelectedFile().toString()));
 				}
 			}
 		});
@@ -91,6 +91,10 @@ public abstract class FileSelector extends JPanel {
 	}
 
 	protected abstract Type configure(final JFileChooser gpxFileChooser);
+
+	protected String transformFilename(final String filename) {
+		return filename;
+	}
 
 	public String getFilename() {
 		return fileTextField.getText();
