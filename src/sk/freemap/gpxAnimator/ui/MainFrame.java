@@ -59,7 +59,7 @@ import sk.freemap.gpxAnimator.UserException;
 
 public class MainFrame extends JFrame {
 
-	private static final String TITLE = "GPX Animator 0.9";
+	private static final String TITLE = "GPX Animator 0.9.SNAPSHOT-201303210743";
 
 	private static final long serialVersionUID = 190371886979948114L;
 	
@@ -388,8 +388,27 @@ public class MainFrame extends JFrame {
 
 			@Override
 			protected Type configure(final JFileChooser gpxFileChooser) {
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Files", "mp4"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Image Frames", "png"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("H.264 Encoded Video Files (*.mp4, *.mov, *.mkv)", "mp4", "mov", "mkv"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-1 Encoded Video Files (*.mpg)", "mpg"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Encoded Video Files (*.avi)", "avi"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MS MPEG-4 Encoded Video Files (*.wmv, *.asf)", "wmv", "asf"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Theora Encoded Video Files (*.ogv)", "ogv"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("FLV Encoded Video Files (*.flv)", "flv"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("RV10 Encoded Video Files (*.rm)", "rm"));
 				return Type.SAVE;
+			}
+			
+			@Override
+			protected String transformFilename(final String filename) {
+				if ((filename.toLowerCase().endsWith(".png") || filename.toLowerCase().endsWith(".jpg"))
+						&& String.format(filename, 100).equals(String.format(filename, 200))) {
+					final int n = filename.lastIndexOf('.');
+					return filename.substring(0, n) + "%08d" + filename.substring(n);
+				} else {
+					return filename;
+				}
 			}
 		};
 		
