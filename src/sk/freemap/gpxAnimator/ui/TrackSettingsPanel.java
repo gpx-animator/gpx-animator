@@ -1,6 +1,5 @@
 package sk.freemap.gpxAnimator.ui;
 
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -126,7 +125,6 @@ abstract class TrackSettingsPanel extends JPanel {
 		add(lblLineWidth, gbc_lblLineWidth);
 		
 		lineWidthSpinner = new JSpinner();
-		lineWidthSpinner.setFont(new Font("Dialog", Font.PLAIN, 12));
 		lineWidthSpinner.setModel(new SpinnerNumberModel(Float.valueOf(0f), Float.valueOf(0f), null, Float.valueOf(0.5f)));
 		final GridBagConstraints gbc_lineWidthSpinner = new GridBagConstraints();
 		gbc_lineWidthSpinner.fill = GridBagConstraints.HORIZONTAL;

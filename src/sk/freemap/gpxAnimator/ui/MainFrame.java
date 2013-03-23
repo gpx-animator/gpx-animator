@@ -223,11 +223,14 @@ public class MainFrame extends JFrame {
 		mntmNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				try {
-					setConfiguration(Configuration.createBuilder().build());
-				} catch (final UserException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this,
+						"There are unsaved changes. Continue?", "Error", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					try {
+						setConfiguration(Configuration.createBuilder().build());
+					} catch (final UserException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -360,6 +363,13 @@ public class MainFrame extends JFrame {
 		gbc_tabbedPane.gridy = 0;
 		contentPane.add(tabbedPane, gbc_tabbedPane);
 		
+		tabbedPane.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e) {
+				mntmRemoveTrack.setEnabled(tabbedPane.getSelectedIndex() > 0);
+			}
+		});
+		
 		final JScrollPane generalScrollPane = new JScrollPane();
 		tabbedPane.addTab("General", null, generalScrollPane, null);
 		
@@ -483,6 +493,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblMargin, gbc_lblMargin);
 		
 		marginSpinner = new JSpinner();
+		marginSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		final GridBagConstraints gbc_marginSpinner = new GridBagConstraints();
 		gbc_marginSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_marginSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -508,6 +519,17 @@ public class MainFrame extends JFrame {
 		gbc_sppedupSpinner.gridy = 5;
 		tabContentPanel.add(speedupSpinner, gbc_sppedupSpinner);
 		
+		speedupSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e) {
+				final boolean enabled = speedupSpinner.getValue() == null;
+				if (!enabled) {
+					totalTimeSpinner.setValue(null);
+				}
+				totalTimeSpinner.setEnabled(enabled);
+			}
+		});
+		
 		final JLabel lblTotalTime = new JLabel("Total Time");
 		final GridBagConstraints gbc_lblTotalTime = new GridBagConstraints();
 		gbc_lblTotalTime.anchor = GridBagConstraints.EAST;
@@ -525,6 +547,17 @@ public class MainFrame extends JFrame {
 		gbc_totalTimeSpinner.gridx = 1;
 		gbc_totalTimeSpinner.gridy = 6;
 		tabContentPanel.add(totalTimeSpinner, gbc_totalTimeSpinner);
+		
+		totalTimeSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e) {
+				final boolean enabled = totalTimeSpinner.getValue() == null;
+				if (!enabled) {
+					speedupSpinner.setValue(null);
+				}
+				speedupSpinner.setEnabled(enabled);
+			}
+		});
 		
 		final JLabel lblMarkerSize = new JLabel("Marker Size");
 		final GridBagConstraints gbc_lblMarkerSize = new GridBagConstraints();

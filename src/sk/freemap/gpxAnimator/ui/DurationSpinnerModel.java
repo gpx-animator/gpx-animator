@@ -75,7 +75,8 @@ public class DurationSpinnerModel extends AbstractSpinnerModel {
 
 	@Override
 	public Object getPreviousValue() {
-		return (duration == null ? 0 : duration) - getDiffMs();
+		final long prev = (duration == null ? 0 : duration) - getDiffMs();
+		return prev < 0 ? null : prev;
 	}
 	
 	
