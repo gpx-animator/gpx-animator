@@ -83,7 +83,11 @@ public class MainFrame extends JFrame {
 	private final JSpinner flashbackDurationSpinner;
 	private final JSpinner totalTimeSpinner;
 	private final JTabbedPane tabbedPane;
+	private final JButton startButton;
+	
+	private SwingWorker<Void, String> swingWorker;
 
+	
 	private final FileFilter filter = new FileFilter() {
 		@Override
 		public String getDescription() {
@@ -110,7 +114,6 @@ public class MainFrame extends JFrame {
 		public void stateChanged(final ChangeEvent e) {
 			changed(true);
 		}
-
 	};
 	
 	private final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
@@ -135,7 +138,8 @@ public class MainFrame extends JFrame {
 		b.totalTime((Long) totalTimeSpinner.getValue());
 		b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
 		final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
-		b.tmsUrlTemplate(tmsItem instanceof LabeledItem ? ((LabeledItem) tmsItem).getValue() : (String) tmsItem);
+		final String tmsUrlTemplate = tmsItem instanceof LabeledItem ? ((LabeledItem) tmsItem).getValue() : (String) tmsItem;
+		b.tmsUrlTemplate(tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate);
 		b.skipIdle(skipIdleCheckBox.isSelected());
 		b.flashbackColor(flashbackColorSelector.getColor());
 		b.flashbackDuration((Long) flashbackDurationSpinner.getValue());
@@ -188,6 +192,7 @@ public class MainFrame extends JFrame {
 		for (int i = tabbedPane.getTabCount() - 1; i > 0; i--) {
 			tabbedPane.remove(i);
 		}
+		afterRemove();
 		
 		for (final TrackConfiguration tc : c.getTrackConfigurationList()) {
 			addTrackSettingsTab(tc);
@@ -316,7 +321,7 @@ public class MainFrame extends JFrame {
 				final int index = tabbedPane.getSelectedIndex();
 				if (index > 0) {
 					tabbedPane.remove(index);
-					changed(true);
+					afterRemove();
 				}
 			}
 		});
@@ -798,7 +803,8 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		final JButton startButton = new JButton("Start");
+		startButton = new JButton("Start");
+		startButton.setEnabled(false);
 		final GridBagConstraints gbc_startButton = new GridBagConstraints();
 		gbc_startButton.anchor = GridBagConstraints.NORTHWEST;
 		gbc_startButton.gridx = 2;
@@ -920,9 +926,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	private SwingWorker<Void, String> swingWorker;
-	
-	
 	private List<LabeledItem> readMaps() throws IOException {
 		final List<LabeledItem> labeledItems = new ArrayList<LabeledItem>();
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(MainFrame.class.getResourceAsStream("maps")));
@@ -959,7 +962,7 @@ public class MainFrame extends JFrame {
 			@Override
 			protected void remove() {
 				tabbedPane.remove(trackScrollPane);
-				changed(true);
+				afterRemove();
 			}
 
 			@Override
@@ -976,9 +979,19 @@ public class MainFrame extends JFrame {
 		
 		trackSettingsPanel.addPropertyChangeListener("trackConfiguration", propertyChangeListener);
 		
+		startButton.setEnabled(true);
+		
 		changed(true);
 	}
+
 	
+	private void afterRemove() {
+		if (tabbedPane.getTabCount() == 1) {
+			startButton.setEnabled(false);
+		}
+		changed(true);
+	}
+
 	
 	private void saveAs() {
 		if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {

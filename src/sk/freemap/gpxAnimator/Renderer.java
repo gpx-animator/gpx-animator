@@ -260,8 +260,8 @@ public class Renderer {
 
 
 	private void drawWaypoints(final BufferedImage bi, final int frame, final TreeMap<Long, Point2D> wpMap) {
-		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		final Graphics2D g2 = getGraphics(bi);
+		
 		final long t2 = getTime(frame);
 		
 		final double waypointSize = cfg.getWaypointSize();
@@ -270,7 +270,7 @@ public class Renderer {
 			for (final Point2D p : wpMap.subMap(wpMap.firstKey(), t2).values()) {
 				g2.setColor(Color.white);
 				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - waypointSize / 2.0, p.getY() - waypointSize / 2.0, waypointSize, waypointSize);
-				g2.setStroke(new BasicStroke(1f));
+				g2.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				g2.fill(marker);
 				g2.setColor(Color.black);
 				g2.draw(marker);
@@ -331,15 +331,15 @@ public class Renderer {
 	}
 
 	private void drawTime(final BufferedImage bi, final int frame) {
-		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
+		final Graphics2D g2 = getGraphics(bi);
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
 		printText(g2, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(), bi.getHeight() - cfg.getMargin());
 	}
 
 
 	private void drawMarker(final BufferedImage bi, final int frame) {
-		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		final Graphics2D g2 = getGraphics(bi);
+		
 		final long t2 = getTime(frame);
 		
 		final double markerSize = cfg.getMarkerSize();
@@ -376,8 +376,7 @@ public class Renderer {
 	
 
 	private void paint(final BufferedImage bi, final int frame, final long backTime) {
-		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		final Graphics2D g2 = getGraphics(bi);
         
 		final long time = getTime(frame);
 		
@@ -429,7 +428,6 @@ public class Renderer {
 						}
 						prevPoint = entry.getValue();
 					}
-					
 				}
 			}
 		}
@@ -442,9 +440,6 @@ public class Renderer {
 	
 	
 	private void printText(final Graphics2D g2, final String text, final float x, final float y) {
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
 		final FontRenderContext frc = g2.getFontRenderContext();
 		g2.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
@@ -457,6 +452,18 @@ public class Renderer {
 		g2.setFont(font);
 		g2.setColor(Color.black);
 		g2.drawString(text, x, y);
+	}
+
+
+	private Graphics2D getGraphics(final BufferedImage bi) {
+		final Graphics2D g2 = (Graphics2D) bi.getGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+		g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		return g2;
 	}
 
 }
