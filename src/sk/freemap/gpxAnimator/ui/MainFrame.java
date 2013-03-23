@@ -60,6 +60,8 @@ import sk.freemap.gpxAnimator.UserException;
 
 public class MainFrame extends JFrame {
 
+	private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
+
 	private static final String TITLE = "GPX Animator 1.0.0";
 
 	private static final long serialVersionUID = 190371886979948114L;
@@ -139,7 +141,7 @@ public class MainFrame extends JFrame {
 		b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
 		final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
 		final String tmsUrlTemplate = tmsItem instanceof LabeledItem ? ((LabeledItem) tmsItem).getValue() : (String) tmsItem;
-		b.tmsUrlTemplate(tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate);
+		b.tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate);
 		b.skipIdle(skipIdleCheckBox.isSelected());
 		b.flashbackColor(flashbackColorSelector.getColor());
 		b.flashbackDuration((Long) flashbackDurationSpinner.getValue());
@@ -229,13 +231,11 @@ public class MainFrame extends JFrame {
 		mntmNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this,
-						"There are unsaved changes. Continue?", "Error", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					try {
 						setConfiguration(Configuration.createBuilder().build());
 					} catch (final UserException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						throw new RuntimeException(e1);
 					}
 				}
 			}
@@ -246,8 +246,7 @@ public class MainFrame extends JFrame {
 		mntmOpen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this,
-						"There are unsaved changes. Continue?", "Error", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					
 					if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
 						final File file = fileChooser.getSelectedFile();
@@ -292,7 +291,9 @@ public class MainFrame extends JFrame {
 		mntmExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				MainFrame.this.dispose();
+				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					MainFrame.this.dispose();
+				}
 			}
 		});
 		mnFile.add(mntmExit);
@@ -307,8 +308,7 @@ public class MainFrame extends JFrame {
 				try {
 					addTrackSettingsTab(TrackConfiguration.createBuilder().build());
 				} catch (final UserException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					throw new RuntimeException(e1);
 				}
 			}
 		});

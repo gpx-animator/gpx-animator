@@ -171,26 +171,34 @@ public class Renderer {
 				point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
 			}
 		}
-		
-		final BufferedImage bi = new BufferedImage(
-				(int) Math.round(((maxX - minX) * scale)),
-				(int) Math.round(((maxY - minY) * scale)),
-				BufferedImage.TYPE_3BYTE_BGR);
-
 
 		final String frameFilePattern = cfg.getOutput();
 		final int dot = frameFilePattern.lastIndexOf('.');
 		final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1);
+		final boolean toImages = "png".equalsIgnoreCase(ext) || "jpg".equalsIgnoreCase(ext);
+
+		int realWidth = (int) Math.round(((maxX - minX) * scale));
+		int realHeight = (int) Math.round(((maxY - minY) * scale));
 		
-		final FrameWriter frameWriter = "png".equalsIgnoreCase(ext) || "jpg".equalsIgnoreCase(ext)
+		// align width and height to 2 for videos
+		if (realWidth % 2 == 1 && !userSpecifiedWidth && !toImages) {
+			realWidth ++;
+		}
+		if (realHeight % 2 == 1 && cfg.getHeight() == null && !toImages) {
+			realHeight ++;
+		}
+		
+		final BufferedImage bi = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_3BYTE_BGR);
+
+		final FrameWriter frameWriter = toImages
 				? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
-				: new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), bi.getWidth(), bi.getHeight());
+				: new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), realWidth, realHeight);
 				
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 		
 		if (cfg.getTmsUrlTemplate() == null) {
 			ga.setColor(Color.white);
-			ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+			ga.fillRect(0, 0, realWidth, realHeight);
 		} else {
 			Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
 		}
