@@ -59,7 +59,7 @@ import sk.freemap.gpxAnimator.UserException;
 
 public class MainFrame extends JFrame {
 
-	private static final String TITLE = "GPX Animator 0.9";
+	private static final String TITLE = "GPX Animator 0.9.SNAPSHOT-201303210743";
 
 	private static final long serialVersionUID = 190371886979948114L;
 	
@@ -223,11 +223,14 @@ public class MainFrame extends JFrame {
 		mntmNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				try {
-					setConfiguration(Configuration.createBuilder().build());
-				} catch (final UserException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this,
+						"There are unsaved changes. Continue?", "Error", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					try {
+						setConfiguration(Configuration.createBuilder().build());
+					} catch (final UserException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -360,6 +363,13 @@ public class MainFrame extends JFrame {
 		gbc_tabbedPane.gridy = 0;
 		contentPane.add(tabbedPane, gbc_tabbedPane);
 		
+		tabbedPane.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e) {
+				mntmRemoveTrack.setEnabled(tabbedPane.getSelectedIndex() > 0);
+			}
+		});
+		
 		final JScrollPane generalScrollPane = new JScrollPane();
 		tabbedPane.addTab("General", null, generalScrollPane, null);
 		
@@ -388,8 +398,27 @@ public class MainFrame extends JFrame {
 
 			@Override
 			protected Type configure(final JFileChooser gpxFileChooser) {
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Files", "mp4"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Image Frames", "png"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("H.264 Encoded Video Files (*.mp4, *.mov, *.mkv)", "mp4", "mov", "mkv"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-1 Encoded Video Files (*.mpg)", "mpg"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Encoded Video Files (*.avi)", "avi"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MS MPEG-4 Encoded Video Files (*.wmv, *.asf)", "wmv", "asf"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Theora Encoded Video Files (*.ogv)", "ogv"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("FLV Encoded Video Files (*.flv)", "flv"));
+				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("RV10 Encoded Video Files (*.rm)", "rm"));
 				return Type.SAVE;
+			}
+			
+			@Override
+			protected String transformFilename(final String filename) {
+				if ((filename.toLowerCase().endsWith(".png") || filename.toLowerCase().endsWith(".jpg"))
+						&& String.format(filename, 100).equals(String.format(filename, 200))) {
+					final int n = filename.lastIndexOf('.');
+					return filename.substring(0, n) + "%08d" + filename.substring(n);
+				} else {
+					return filename;
+				}
 			}
 		};
 		
@@ -464,6 +493,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblMargin, gbc_lblMargin);
 		
 		marginSpinner = new JSpinner();
+		marginSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		final GridBagConstraints gbc_marginSpinner = new GridBagConstraints();
 		gbc_marginSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_marginSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -489,6 +519,17 @@ public class MainFrame extends JFrame {
 		gbc_sppedupSpinner.gridy = 5;
 		tabContentPanel.add(speedupSpinner, gbc_sppedupSpinner);
 		
+		speedupSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e) {
+				final boolean enabled = speedupSpinner.getValue() == null;
+				if (!enabled) {
+					totalTimeSpinner.setValue(null);
+				}
+				totalTimeSpinner.setEnabled(enabled);
+			}
+		});
+		
 		final JLabel lblTotalTime = new JLabel("Total Time");
 		final GridBagConstraints gbc_lblTotalTime = new GridBagConstraints();
 		gbc_lblTotalTime.anchor = GridBagConstraints.EAST;
@@ -506,6 +547,17 @@ public class MainFrame extends JFrame {
 		gbc_totalTimeSpinner.gridx = 1;
 		gbc_totalTimeSpinner.gridy = 6;
 		tabContentPanel.add(totalTimeSpinner, gbc_totalTimeSpinner);
+		
+		totalTimeSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e) {
+				final boolean enabled = totalTimeSpinner.getValue() == null;
+				if (!enabled) {
+					speedupSpinner.setValue(null);
+				}
+				speedupSpinner.setEnabled(enabled);
+			}
+		});
 		
 		final JLabel lblMarkerSize = new JLabel("Marker Size");
 		final GridBagConstraints gbc_lblMarkerSize = new GridBagConstraints();

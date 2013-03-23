@@ -106,6 +106,10 @@ public class DurationEditor extends DefaultEditor {
 				
 				long l = (Long) value;
 				
+				if (l == 0) {
+					return "";
+				}
+				
 				final StringBuilder sb = new StringBuilder();
 				
 				sb.insert(0, "ms");
