@@ -59,7 +59,7 @@ import sk.freemap.gpxAnimator.UserException;
 
 public class MainFrame extends JFrame {
 
-	private static final String TITLE = "GPX Animator 0.9.SNAPSHOT-201303210743";
+	private static final String TITLE = "GPX Animator 0.9";
 
 	private static final long serialVersionUID = 190371886979948114L;
 	
