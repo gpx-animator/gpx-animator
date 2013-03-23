@@ -1,4 +1,4 @@
-version 0.9 (2013-03-10)
+version 1.0.0 (2013-03-23)
 ------------------------ 
 * added configuration GUI
 * direct video rendering support

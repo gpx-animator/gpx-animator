@@ -49,7 +49,7 @@ public class AboutDialog extends JDialog {
 			dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			dtrpngpxNavigator.setEditable(false);
 			dtrpngpxNavigator.setContentType("text/html");
-			dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. 0.9<br/>\n&copy; 2013 <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n<p>GPX Animator generates video frames from GPX as series of images.\nGenerated images can be then encoded to video with ffmpeg or similar software.</p>\n");
+			dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. 1.0.0<br/>\n&copy; 2013 <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n<p>GPX Animator generates video frames from GPX as series of images.\nGenerated images can be then encoded to video with ffmpeg or similar software.</p>\n");
 
 			{
 				final JScrollPane scrollPane = new JScrollPane(dtrpngpxNavigator);
