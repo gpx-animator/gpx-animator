@@ -37,17 +37,10 @@
 
 <p>GPX Animator generates video from GPX files.</p>
 
-<p>You can build it from sources or <a href="downloads/GpxAnimator-1.0.0.jar">download</a>.</p>
-
-<p>For program help run:</p>
-
-<pre><code>java -jar GpxAnimator.jar --help
-</code></pre>
-
-<h2>Basic usage</h2>
-
-<pre><code>java -jar GpxAnimator.jar --input track.gpx
-</code></pre>
+<p>
+You can build it from sources or <a href="downloads/GpxAnimator-1.0.0.jar">download</a>.
+Older, commandline-only version is also <a href="downloads/GpxAnimator-0.8.jar">available</a>.
+</p>
 
 <h2>Features</h2>
 
@@ -59,21 +52,22 @@
 <li>background map from any public TMS server</li>
 </ul>
 
+<h2>Basic usage</h2>
+
+<p>For default GUI run:</p>
+<pre><code>java -jar GpxAnimator.jar</code></pre>
+
+<p>For program help run:</p>
+<pre><code>java -jar GpxAnimator.jar --help</code></pre>
+
+<p>For direct rendering run:</p>
+<pre><code>java -jar GpxAnimator.jar --input track.gpx</code></pre>
+
 <h2>FAQ</h2>
 <h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
 <p>Your GPX trace covers probably too big area. Try to specify lower zoom, width and/or height.</p>
 <h3>Does it run on Linux, Windows, WhateverOS?</h3>
 <p>Application will run on any platform where you can run Java.</p>
-<p>For Ubuntu / Debian it is very easy to install:</p>
-<pre>
-sudo apt-get install default-jre
-
-# for GUI run
-java -jar GpxAnimator.jar
-
-# for commandline help run
-java -jar GpxAnimator.jar --help
-</pre>
 
 <h3>My GPX is missing point timestamps</h3>
 <p>No problem. Add --forced-point-time-interval option.</p>
