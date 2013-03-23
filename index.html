@@ -58,9 +58,32 @@ Generated images can be then encoded to video with ffmpeg or similar software.</
 <li>configurable color, label, width and time offset per track</li>
 <li>configurable video size, fps and speedup or total video time</li>
 <li>background map from any public TMS server</li>
-</ul><h2>FAQ</h2>
+</ul>
 
-<p><a href="https://github.com/zdila/gpx-animator/blob/master/FAQ.md">https://github.com/zdila/gpx-animator/blob/master/FAQ.md</a></p>
+<h2>FAQ</h2>
+<h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
+<p>Your GPX trace covers probably too big area. Try to specify lower zoom, width and/or height.</p>
+<h3>Does it run on Linux, Windows, WhateverOS?</h3>
+<p>Application will run on any platform where you can run Java.</p>
+<p>For Ubuntu / Debian it is very easy to install:</p>
+<pre>
+sudo apt-get install default-jre
+
+# for GUI run
+java -jar GpxAnimator.jar
+
+# for commandline help run
+java -jar GpxAnimator.jar --help
+</pre>
+
+<h3>My GPX is missing point timestamps</h3>
+<p>No problem. Add --forced-point-time-interval option.</p>
+
+<h3>Video is very short or long</h3>
+<p>Fine-tune speedup or specify exact total time in seconds.
+
+<h3>I have some other problem</h3>
+<p>Feel free to write me at martin.zdila<span>@</span>freemap.sk.</p>
 
 <h2>Demos</h2>
 
