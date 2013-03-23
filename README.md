@@ -4,10 +4,8 @@ GPX Animator
 Introduction
 ------------
 
-GPX Animator generates video frames from GPX as series of images.
-Generated images can be then encoded to video with ffmpeg or similar software.
-
-You can build it from sources or download stable version from https://github.com/zdila/gpx-animator/raw/master/dist/GpxAnimator-0.8.jar or development version with GUI support from https://github.com/zdila/gpx-animator/raw/master/dist/GpxAnimator-0.9.SNAPSHOT-201303210743.one-jar.jar.
+GPX Animator generates video from GPX files.
+More information can be found at http://zdila.github.com/gpx-animator/.
 
 For program help run:
 
@@ -29,19 +27,3 @@ Features
 * configurable color, label, width and time offset per track
 * configurable video size, fps and speedup or total video time
 * background map from any public TMS server
-
-FAQ
----
-https://github.com/zdila/gpx-animator/blob/master/FAQ.md
-
-Demos
------
-* https://www.facebook.com/photo.php?v=10151420417858769
-* http://www.youtube.com/watch?v=YWZzUpNi0yA&hd=1&wide=1
-* https://www.facebook.com/photo.php?v=10151390101548769
-* http://www.youtube.com/watch?v=Kvdpq5MCuFY
-
-Changelog
----------
-https://github.com/zdila/gpx-animator/blob/master/CHANGELOG.md
-
