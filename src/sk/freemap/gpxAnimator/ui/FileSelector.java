@@ -32,6 +32,8 @@ public abstract class FileSelector extends JPanel {
 	private static final long serialVersionUID = 3157365691996396016L;
 	
 	private final JTextField fileTextField;
+
+	private final JButton btnNewButton;
 	
 	public enum Type {
 		OPEN, SAVE
@@ -75,7 +77,7 @@ public abstract class FileSelector extends JPanel {
 		final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
 		add(rigidArea);
 		
-		final JButton btnNewButton = new JButton("Browse");
+		btnNewButton = new JButton("Browse");
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -102,6 +104,17 @@ public abstract class FileSelector extends JPanel {
 	
 	public void setFilename(final String filename) {
 		fileTextField.setText(filename);
+	}
+	
+	@Override
+	public void setToolTipText(final String text) {
+		fileTextField.setToolTipText(text);
+		btnNewButton.setToolTipText(text);
+	}
+	
+	@Override
+	public String getToolTipText() {
+		return fileTextField.getToolTipText();
 	}
 
 }

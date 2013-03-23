@@ -34,6 +34,8 @@ public class ColorSelector extends JPanel {
 	
 	private final JTextField colorTextField;
 
+	private final JButton selectButton;
+
 	
 	/**
 	 * Create the panel.
@@ -51,7 +53,7 @@ public class ColorSelector extends JPanel {
 		final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
 		add(rigidArea);
 		
-		final JButton selectButton = new JButton("Select");
+		selectButton = new JButton("Select");
 		selectButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -70,12 +72,10 @@ public class ColorSelector extends JPanel {
 		
 		add(selectButton);
 	}
-
 	
 	public Color getColor() {
 		return colorTextField.getBackground();
 	}
-	
 	
 	public void setColor(final Color color) {
 		final Color oldColor = colorTextField.getBackground();
@@ -84,6 +84,17 @@ public class ColorSelector extends JPanel {
 		colorTextField.setForeground(l > 0.5 ? Color.BLACK : Color.WHITE);
 		colorTextField.setText("#" + Integer.toHexString(color.getRGB()).toUpperCase());
 		firePropertyChange("color", oldColor, color);
+	}
+	
+	@Override
+	public void setToolTipText(final String text) {
+		colorTextField.setToolTipText(text);
+		selectButton.setToolTipText(text);
+	}
+	
+	@Override
+	public String getToolTipText() {
+		return colorTextField.getToolTipText();
 	}
 	
 }

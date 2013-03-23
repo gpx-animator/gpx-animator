@@ -86,8 +86,8 @@ public class TrackConfiguration {
 	
 	public static class Builder {
 		
-		private String inputGpx = "";
-		private String label = "";
+		private String inputGpx;
+		private String label;
 		
 		@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 		private Color color = Color.BLUE;

@@ -52,6 +52,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import sk.freemap.gpxAnimator.Configuration;
+import sk.freemap.gpxAnimator.Help;
 import sk.freemap.gpxAnimator.Renderer;
 import sk.freemap.gpxAnimator.RenderingContext;
 import sk.freemap.gpxAnimator.TrackConfiguration;
@@ -71,13 +72,13 @@ public class MainFrame extends JFrame {
 	private final JSpinner marginSpinner;
 	private final JSpinner speedupSpinner;
 	private final JSpinner markerSizeSpinner;
-	private final JSpinner waypintSizeSpinner;
+	private final JSpinner waypointSizeSpinner;
 	private final JSpinner tailDurationSpinner;
 	private final JSpinner fpsSpinner;
 	private final JComboBox tmsUrlTemplateComboBox;
 	private final JSlider backgroundMapVisibilitySlider;
 	private final JSpinner fontSizeSpinner;
-	private final JCheckBox keepIdleCheckBox;
+	private final JCheckBox skipIdleCheckBox;
 	private final ColorSelector flashbackColorSelector;
 	private final JSpinner flashbackDurationSpinner;
 	private final JSpinner totalTimeSpinner;
@@ -135,13 +136,13 @@ public class MainFrame extends JFrame {
 		b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
 		final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
 		b.tmsUrlTemplate(tmsItem instanceof LabeledItem ? ((LabeledItem) tmsItem).getValue() : (String) tmsItem);
-		b.skipIdle(!keepIdleCheckBox.isSelected());
+		b.skipIdle(skipIdleCheckBox.isSelected());
 		b.flashbackColor(flashbackColorSelector.getColor());
 		b.flashbackDuration((Long) flashbackDurationSpinner.getValue());
 		b.output(outputFileSelector.getFilename());
 		b.fontSize((Integer) fontSizeSpinner.getValue());
 		b.markerSize((Double) markerSizeSpinner.getValue());
-		b.waypointSize((Double) waypintSizeSpinner.getValue());
+		b.waypointSize((Double) waypointSizeSpinner.getValue());
 		
 		for (int i = 1, n = tabbedPane.getTabCount(); i < n; i++) {
 			final TrackSettingsPanel tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
@@ -174,12 +175,12 @@ public class MainFrame extends JFrame {
 			tmsUrlTemplateComboBox.setSelectedItem(tmsUrlTemplate);
 		}
 		
-		keepIdleCheckBox.setSelected(!c.isSkipIdle());
+		skipIdleCheckBox.setSelected(c.isSkipIdle());
 		flashbackColorSelector.setColor(c.getFlashbackColor());
 		outputFileSelector.setFilename(c.getOutput());
 		fontSizeSpinner.setValue(c.getFontSize());
 		markerSizeSpinner.setValue(c.getMarkerSize());
-		waypintSizeSpinner.setValue(c.getWaypointSize());
+		waypointSizeSpinner.setValue(c.getWaypointSize());
 		flashbackColorSelector.setColor(c.getFlashbackColor());
 		flashbackDurationSpinner.setValue(c.getFlashbackDuration());
 		
@@ -422,6 +423,8 @@ public class MainFrame extends JFrame {
 			}
 		};
 		
+		outputFileSelector.setToolTipText(Help.HELP_OUTPUT);
+		
 		final GridBagConstraints gbc_frameFileNamePatternFileSelector = new GridBagConstraints();
 		gbc_frameFileNamePatternFileSelector.insets = new Insets(0, 0, 5, 0);
 		gbc_frameFileNamePatternFileSelector.fill = GridBagConstraints.BOTH;
@@ -438,6 +441,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblWidth, gbc_lblWidth);
 		
 		widthSpinner = new JSpinner();
+		widthSpinner.setToolTipText(Help.HELP_WIDTH);
 		widthSpinner.setModel(new EmptyNullSpinnerModel(new Integer(1), new Integer(0), null, new Integer(10)));
 		widthSpinner.setEditor(new EmptyZeroNumberEditor(widthSpinner, Integer.class));
 		final GridBagConstraints gbc_widthSpinner = new GridBagConstraints();
@@ -456,6 +460,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblHeight, gbc_lblHeight);
 		
 		heightSpinner = new JSpinner();
+		heightSpinner.setToolTipText(Help.HELP_HEIGHT);
 		heightSpinner.setModel(new EmptyNullSpinnerModel(new Integer(1), new Integer(0), null, new Integer(10)));
 		heightSpinner.setEditor(new EmptyZeroNumberEditor(heightSpinner, Integer.class));
 		final GridBagConstraints gbc_heightSpinner = new GridBagConstraints();
@@ -474,6 +479,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblZoom, gbc_lblZoom);
 		
 		zoomSpinner = new JSpinner();
+		zoomSpinner.setToolTipText(Help.HELP_ZOOM);
 		zoomSpinner.setModel(new EmptyNullSpinnerModel(new Integer(1), new Integer(0), new Integer(18), new Integer(1)));
 		zoomSpinner.setEditor(new EmptyZeroNumberEditor(zoomSpinner, Integer.class));
 
@@ -493,6 +499,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblMargin, gbc_lblMargin);
 		
 		marginSpinner = new JSpinner();
+		marginSpinner.setToolTipText(Help.HELP_MARGIN);
 		marginSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		final GridBagConstraints gbc_marginSpinner = new GridBagConstraints();
 		gbc_marginSpinner.insets = new Insets(0, 0, 5, 0);
@@ -510,6 +517,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblSpeedup, gbc_lblSpeedup);
 		
 		speedupSpinner = new JSpinner();
+		speedupSpinner.setToolTipText(Help.HELP_SPEEDUP);
 		speedupSpinner.setModel(new EmptyNullSpinnerModel(new Double(0), new Double(0), null, new Double(1)));
 		speedupSpinner.setEditor(new EmptyZeroNumberEditor(speedupSpinner, Double.class));
 		final GridBagConstraints gbc_sppedupSpinner = new GridBagConstraints();
@@ -539,6 +547,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblTotalTime, gbc_lblTotalTime);
 		
 		totalTimeSpinner = new JSpinner();
+		totalTimeSpinner.setToolTipText(Help.HELP_TOTAL_LENGTH);
 		totalTimeSpinner.setModel(new DurationSpinnerModel());
 		totalTimeSpinner.setEditor(new DurationEditor(totalTimeSpinner));
 		final GridBagConstraints gbc_totalTimeSpinner = new GridBagConstraints();
@@ -568,6 +577,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblMarkerSize, gbc_lblMarkerSize);
 		
 		markerSizeSpinner = new JSpinner();
+		markerSizeSpinner.setToolTipText(Help.HELP_MARKER_SIZE);
 		markerSizeSpinner.setModel(new SpinnerNumberModel(new Double(1), new Double(1), null, new Double(1)));
 		final GridBagConstraints gbc_markerSizeSpinner = new GridBagConstraints();
 		gbc_markerSizeSpinner.insets = new Insets(0, 0, 5, 0);
@@ -584,14 +594,15 @@ public class MainFrame extends JFrame {
 		gbc_lblWaypointSize.gridy = 8;
 		tabContentPanel.add(lblWaypointSize, gbc_lblWaypointSize);
 		
-		waypintSizeSpinner = new JSpinner();
-		waypintSizeSpinner.setModel(new SpinnerNumberModel(new Double(1), new Double(1), null, new Double(1)));
+		waypointSizeSpinner = new JSpinner();
+		waypointSizeSpinner.setToolTipText(Help.HELP_WAYPOINT_SIZE);
+		waypointSizeSpinner.setModel(new SpinnerNumberModel(new Double(1), new Double(1), null, new Double(1)));
 		final GridBagConstraints gbc_waypintSizeSpinner = new GridBagConstraints();
 		gbc_waypintSizeSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_waypintSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_waypintSizeSpinner.gridx = 1;
 		gbc_waypintSizeSpinner.gridy = 8;
-		tabContentPanel.add(waypintSizeSpinner, gbc_waypintSizeSpinner);
+		tabContentPanel.add(waypointSizeSpinner, gbc_waypintSizeSpinner);
 		
 		final JLabel lblTailDuration = new JLabel("Tail Duration");
 		final GridBagConstraints gbc_lblTailDuration = new GridBagConstraints();
@@ -602,6 +613,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblTailDuration, gbc_lblTailDuration);
 		
 		tailDurationSpinner = new JSpinner();
+		tailDurationSpinner.setToolTipText(Help.HELP_TAIL_DURATION);
 		tailDurationSpinner.setModel(new DurationSpinnerModel());
 		tailDurationSpinner.setEditor(new DurationEditor(tailDurationSpinner));
 		final GridBagConstraints gbc_tailDurationSpinner = new GridBagConstraints();
@@ -620,6 +632,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblFps, gbc_lblFps);
 		
 		fpsSpinner = new JSpinner();
+		fpsSpinner.setToolTipText(Help.HELP_FPS);
 		fpsSpinner.setModel(new SpinnerNumberModel(new Double(0.1), new Double(0.1), null, new Double(1)));
 		final GridBagConstraints gbc_fpsSpinner = new GridBagConstraints();
 		gbc_fpsSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -637,6 +650,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblTmsUrlTemplate, gbc_lblTmsUrlTemplate);
 		
 		tmsUrlTemplateComboBox = new JComboBox();
+		tmsUrlTemplateComboBox.setToolTipText(Help.HELP_TMS_URL_TEMPLATE);
 		tmsUrlTemplateComboBox.setEditable(true);
 		tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel(mapTamplateList.toArray()));
 		final GridBagConstraints gbc_tmsUrlTemplateComboBox = new GridBagConstraints();
@@ -659,6 +673,7 @@ public class MainFrame extends JFrame {
 		backgroundMapVisibilitySlider.setPaintTicks(true);
 		backgroundMapVisibilitySlider.setMajorTickSpacing(10);
 		backgroundMapVisibilitySlider.setPaintLabels(true);
+		backgroundMapVisibilitySlider.setToolTipText(Help.HELP_BG_MAP_VISIBILITY);
 		final GridBagConstraints gbc_backgroundMapVisibilitySlider = new GridBagConstraints();
 		gbc_backgroundMapVisibilitySlider.insets = new Insets(0, 0, 5, 0);
 		gbc_backgroundMapVisibilitySlider.fill = GridBagConstraints.HORIZONTAL;
@@ -675,6 +690,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblFontSize, gbc_lblFontSize);
 		
 		fontSizeSpinner = new JSpinner();
+		fontSizeSpinner.setToolTipText(Help.HELP_FONT_SIZE);
 		fontSizeSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		final GridBagConstraints gbc_fontSizeSpinner = new GridBagConstraints();
 		gbc_fontSizeSpinner.insets = new Insets(0, 0, 5, 0);
@@ -683,21 +699,22 @@ public class MainFrame extends JFrame {
 		gbc_fontSizeSpinner.gridy = 13;
 		tabContentPanel.add(fontSizeSpinner, gbc_fontSizeSpinner);
 		
-		final JLabel lblKeepIdle = new JLabel("Keep Idle");
-		final GridBagConstraints gbc_lblKeepIdle = new GridBagConstraints();
-		gbc_lblKeepIdle.anchor = GridBagConstraints.EAST;
-		gbc_lblKeepIdle.insets = new Insets(0, 0, 5, 5);
-		gbc_lblKeepIdle.gridx = 0;
-		gbc_lblKeepIdle.gridy = 14;
-		tabContentPanel.add(lblKeepIdle, gbc_lblKeepIdle);
+		final JLabel lblSkipIdle = new JLabel("Skip Idle");
+		final GridBagConstraints gbc_lblSkipIdle = new GridBagConstraints();
+		gbc_lblSkipIdle.anchor = GridBagConstraints.EAST;
+		gbc_lblSkipIdle.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSkipIdle.gridx = 0;
+		gbc_lblSkipIdle.gridy = 14;
+		tabContentPanel.add(lblSkipIdle, gbc_lblSkipIdle);
 		
-		keepIdleCheckBox = new JCheckBox("");
+		skipIdleCheckBox = new JCheckBox("");
+		skipIdleCheckBox.setToolTipText(Help.HELP_SKIP_IDLE);
 		final GridBagConstraints gbc_keepIdleCheckBox = new GridBagConstraints();
 		gbc_keepIdleCheckBox.anchor = GridBagConstraints.WEST;
 		gbc_keepIdleCheckBox.insets = new Insets(0, 0, 5, 0);
 		gbc_keepIdleCheckBox.gridx = 1;
 		gbc_keepIdleCheckBox.gridy = 14;
-		tabContentPanel.add(keepIdleCheckBox, gbc_keepIdleCheckBox);
+		tabContentPanel.add(skipIdleCheckBox, gbc_keepIdleCheckBox);
 		
 		final JLabel lblFlashbackColor = new JLabel("Flashback Color");
 		final GridBagConstraints gbc_lblFlashbackColor = new GridBagConstraints();
@@ -708,6 +725,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblFlashbackColor, gbc_lblFlashbackColor);
 		
 		flashbackColorSelector = new ColorSelector();
+		flashbackColorSelector.setToolTipText(Help.HELP_FLASHBACK_COLOR);
 		final GridBagConstraints gbc_flashbackColorSelector = new GridBagConstraints();
 		gbc_flashbackColorSelector.insets = new Insets(0, 0, 5, 0);
 		gbc_flashbackColorSelector.fill = GridBagConstraints.BOTH;
@@ -724,6 +742,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblFlashbackDuration, gbc_lblFlashbackDuration);
 		
 		flashbackDurationSpinner = new JSpinner();
+		flashbackDurationSpinner.setToolTipText(Help.HELP_FLASHBACK_DURATION);
 		flashbackDurationSpinner.setModel(new DurationSpinnerModel());
 		flashbackDurationSpinner.setEditor(new DurationEditor(flashbackDurationSpinner));
 		final GridBagConstraints gbc_flashbackDurationSpinner = new GridBagConstraints();
@@ -863,13 +882,13 @@ public class MainFrame extends JFrame {
 		speedupSpinner.addChangeListener(changeListener);
 		totalTimeSpinner.addChangeListener(changeListener);
 		markerSizeSpinner.addChangeListener(changeListener);
-		waypintSizeSpinner.addChangeListener(changeListener);
+		waypointSizeSpinner.addChangeListener(changeListener);
 		tailDurationSpinner.addChangeListener(changeListener);
 		fpsSpinner.addChangeListener(changeListener);
 //		tmsUrlTemplateComboBox.addChangeListener(listener);
 		backgroundMapVisibilitySlider.addChangeListener(changeListener);
 		fontSizeSpinner.addChangeListener(changeListener);
-		keepIdleCheckBox.addItemListener(new ItemListener() {
+		skipIdleCheckBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
 				changed(true);

@@ -109,6 +109,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		add(lblColor_1, gbc_lblColor_1);
 		
 		colorSelector = new ColorSelector();
+		colorSelector.setToolTipText(Help.HELP_COLOR);
 		final GridBagConstraints gbc_colorSelector = new GridBagConstraints();
 		gbc_colorSelector.insets = new Insets(0, 0, 5, 0);
 		gbc_colorSelector.fill = GridBagConstraints.BOTH;
@@ -125,6 +126,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		add(lblLineWidth, gbc_lblLineWidth);
 		
 		lineWidthSpinner = new JSpinner();
+		lineWidthSpinner.setToolTipText(Help.HELP_LINE_WIDTH);
 		lineWidthSpinner.setModel(new SpinnerNumberModel(Float.valueOf(0f), Float.valueOf(0f), null, Float.valueOf(0.5f)));
 		final GridBagConstraints gbc_lineWidthSpinner = new GridBagConstraints();
 		gbc_lineWidthSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -142,6 +144,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		add(lblTimeOffset, gbc_lblTimeOffset);
 		
 		timeOffsetSpinner = new JSpinner();
+		timeOffsetSpinner.setToolTipText(Help.HELP_TIME_OFFSET);
 		timeOffsetSpinner.setModel(new DurationSpinnerModel());
 		timeOffsetSpinner.setEditor(new DurationEditor(timeOffsetSpinner));
 		final GridBagConstraints gbc_timeOffsetSpinner = new GridBagConstraints();
@@ -160,6 +163,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		add(lblForcedPointTime, gbc_lblForcedPointTime);
 		
 		forcedPointTimeIntervalSpinner = new JSpinner();
+		forcedPointTimeIntervalSpinner.setToolTipText(Help.HELP_FORCED_POINT_TIME_INTERVAL);
 		forcedPointTimeIntervalSpinner.setModel(new DurationSpinnerModel());
 		forcedPointTimeIntervalSpinner.setEditor(new DurationEditor(forcedPointTimeIntervalSpinner));
 		final GridBagConstraints gbc_forcedPointTimeIntervalSpinner = new GridBagConstraints();
