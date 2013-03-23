@@ -2,6 +2,7 @@ version 1.0.0 (2013-03-23)
 ------------------------ 
 * added configuration GUI
 * direct video rendering support
+* minor rendering improvements
 
 version 0.8 (2013-02-09)
 ------------------------ 
