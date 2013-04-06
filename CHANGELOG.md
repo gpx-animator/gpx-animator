@@ -1,4 +1,4 @@
-version 1.0.1 (2013-03-23)
+version 1.0.1 (2013-04-06)
 --------------------------
 * fixed reading of alpha channel
 * fixed alpha channel interpolation for tail
