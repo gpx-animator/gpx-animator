@@ -22,7 +22,7 @@ public class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
 	@Override
 	public Color unmarshal(final String string) throws Exception {
-		return new Color(Long.decode(string).intValue());
+		return new Color(Long.decode(string).intValue(), true);
 	}
 
 	@Override

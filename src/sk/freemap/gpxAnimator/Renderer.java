@@ -430,7 +430,8 @@ public class Renderer {
 							if (ratio > 0) {
 								final Color color = trackConfiguration.getColor();
 								final float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), new float[3]);
-								g2.setPaint(Color.getHSBColor(hsb[0], hsb[1], (1f - ratio) * hsb[2]));
+								final Color c = Color.getHSBColor(hsb[0], hsb[1], (1f - ratio) * hsb[2]);
+								g2.setPaint(new Color(c.getRed(), c.getGreen(), c.getBlue(), (int) (ratio * (255 - color.getAlpha()) + color.getAlpha())));
 								g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
 							}
 						}

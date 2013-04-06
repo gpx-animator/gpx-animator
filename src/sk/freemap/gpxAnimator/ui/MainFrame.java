@@ -62,7 +62,7 @@ public class MainFrame extends JFrame {
 
 	private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
 
-	private static final String TITLE = "GPX Animator 1.0.0";
+	private static final String TITLE = "GPX Animator 1.0.1";
 
 	private static final long serialVersionUID = 190371886979948114L;
 	

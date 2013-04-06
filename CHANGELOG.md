@@ -1,5 +1,10 @@
+version 1.0.1 (2013-03-23)
+--------------------------
+* fixed reading of alpha channel
+* fixed alpha channel interpolation for tail
+
 version 1.0.0 (2013-03-23)
------------------------- 
+-------------------------- 
 * added configuration GUI
 * direct video rendering support
 * minor rendering improvements

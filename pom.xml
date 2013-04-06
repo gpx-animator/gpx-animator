@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>GpxAnimator</groupId>
 	<artifactId>GpxAnimator</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<repositories>
 		<repository>
 			<id>xuggle repo</id>
