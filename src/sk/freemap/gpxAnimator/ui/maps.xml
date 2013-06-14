@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+<imagery xmlns="http://josm.openstreetmap.de/maps-1.0">
+  <entry>
+    <name>MapBox Satellite</name>
+    <url>http://{switch:a,b,c}.tiles.mapbox.com/v3/openstreetmap.map-4wvf9l0l/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>MapQuest Open Aerial</name>
+    <url>http://oatile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/sat/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>OpenStreetMap (Mapnik)</name>
+    <url>http://tile.openstreetmap.org/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>OpenStreetMap (Mapnik Black &amp; White)</name>
+    <url>http://{switch:a,b,c}.www.toolserver.org/tiles/bw-mapnik/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>Skobbler</name>
+    <url>http://tiles{switch:1,2,3,4}.skobbler.net/osm_tiles2/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; Tiles: skobbler Map data: OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>OpenCycleMap</name>
+    <url>http://tile.opencyclemap.org/cycle/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>MapQuest OSM</name>
+    <url>http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/osm/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>Public Transport (&#xD6;PNV)</name>
+    <url>http://tile.memomaps.de/tilegen/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>OpenStreetMap (German Style)</name>
+    <url>http://{switch:a,b,c,d}.tile.openstreetmap.de/tiles/osmde/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>Hike &amp; Bike</name>
+    <url>http://toolserver.org/tiles/hikebike/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>OpenStreetMap (Sorbian Language)</name>
+    <url>http://toolserver.org/tiles/osm-locale-hsb/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>OpenStreetMap (German Language)</name>
+    <url>http://toolserver.org/tiles/osm-locale-de/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>OpenPT Map (overlay)</name>
+    <url>http://openptmap.de/tiles/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>Vienna: Mehrzweckkarte (general purpose)</name>
+    <url>http://www.wien.gv.at/wmts/fmzk/pastell/google3857/{zoom}/{y}/{x}.jpeg</url>
+    <attribution-text>Stadt Wien</attribution-text>
+  </entry>
+  <entry>
+    <name>Vienna: Beschriftungen (annotations)</name>
+    <url>http://www.wien.gv.at/wmts/beschriftung/normal/google3857/{zoom}/{y}/{x}.png</url>
+    <attribution-text>Stadt Wien</attribution-text>
+  </entry>
+  <entry>
+    <name>Vienna: Orthofoto (aerial image)</name>
+    <url>http://www.wien.gv.at/wmts/lb/farbe/google3857/{zoom}/{y}/{x}.jpeg</url>
+    <attribution-text>Stadt Wien</attribution-text>
+  </entry>
+  <entry>
+    <name>Kanton Aargau 25cm (AGIS 2011)</name>
+    <url>http://tiles.poole.ch/AGIS/OF2011/{zoom}/{x}/{y}.png</url>
+    <attribution-text>AGIS OF2011</attribution-text>
+  </entry>
+  <entry>
+    <name>Stadt Uster Orthophoto 2008 10cm</name>
+    <url>http://mapproxy.sosm.ch:8080/tiles/uster/EPSG900913/{zoom}/{x}/{y}.png?origin=nw</url>
+    <attribution-text>Stadt Uster Vermessung Orthophoto 2008</attribution-text>
+  </entry>
+  <entry>
+    <name>Stadtplan Z&#xFC;rich</name>
+    <url>http://mapproxy.sosm.ch:8080/tiles/zh_stadtplan/EPSG900913/{zoom}/{x}/{y}.png?origin=nw</url>
+    <attribution-text>Stadt Z&#xFC;rich Open Government Data</attribution-text>
+  </entry>
+  <entry>
+    <name>Ville de Nyon - Orthophoto 2010 HD 5cm/pi</name>
+    <url>http://osmdata.asitvd.ch/tiles/nyon2010/{zoom}/{x}/{y}.png</url>
+    <attribution-text>Ville de Nyon</attribution-text>
+  </entry>
+  <entry>
+    <name>Cartoriviera - Orthophoto 2012</name>
+    <url>http://osmdata.asitvd.ch/tiles/cartoriviera2012/{zoom}/{x}/{y}.png</url>
+    <attribution-text>Cartoriviera</attribution-text>
+  </entry>
+  <entry>
+    <name>SIGIP - Orthophoto 2012</name>
+    <url>http://osmdata.asitvd.ch/tiles/sigip2012/{zoom}/{x}/{y}.png</url>
+    <attribution-text>SIGIP</attribution-text>
+  </entry>
+  <entry>
+    <name>Lausanne - Orthophoto technique 2012</name>
+    <url>http://osmdata.asitvd.ch/tiles/lausanne2012/{zoom}/{x}/{y}.png</url>
+    <attribution-text>Ville de Lausanne - Orthophoto technique 2012</attribution-text>
+  </entry>
+  <entry>
+    <name>7th Series (OS7)</name>
+    <url>http://ooc.openstreetmap.org/os7/{zoom}/{x}/{y}.jpg</url>
+  </entry>
+  <entry>
+    <name>OS New Popular Edition historic</name>
+    <url>http://ooc.openstreetmap.org/npe/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>OS OpenData StreetView</name>
+    <url>http://os.openstreetmap.org/sv/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>OS OpenData Locator</name>
+    <url>http://tiles.itoworld.com/os_locator/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>Surrey Air Survey</name>
+    <url>http://gravitystorm.dev.openstreetmap.org/surrey/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>NLS - OS 6-inch Scotland 1842-82</name>
+    <url>http://geo.nls.uk/maps/os/six_inch/{zoom}/{x}/{-y}.png</url>
+    <attribution-text>National Library of Scotland Historic Maps</attribution-text>
+  </entry>
+  <entry>
+    <name>NLS - OS 1:25k 1st Series 1937-61</name>
+    <url>http://geo.nls.uk/mapdata2/os/25000/{zoom}/{x}/{-y}.png</url>
+    <attribution-text>National Library of Scotland Historic Maps</attribution-text>
+  </entry>
+  <entry>
+    <name>NLS - OS 1-inch 7th Series 1955-61</name>
+    <url>http://geo.nls.uk/mapdata2/os/seventh/{zoom}/{x}/{-y}.png</url>
+    <attribution-text>National Library of Scotland Historic Maps</attribution-text>
+  </entry>
+  <entry>
+    <name>Toulouse - Orthophotoplan 2011</name>
+    <url>http://wms.openstreetmap.fr/tms/1.0.0/toulouse_ortho2011/{zoom}/{x}/{y}</url>
+    <attribution-text>ToulouseMetropole</attribution-text>
+  </entry>
+  <entry>
+    <name>Toulouse - Orthophotoplan 2007</name>
+    <url>http://wms.openstreetmap.fr/tms/1.0.0/toulouse_ortho2007/{zoom}/{x}/{y}</url>
+    <attribution-text>ToulouseMetropole</attribution-text>
+  </entry>
+  <entry>
+    <name>Tours - Orthophotos 2008-2010</name>
+    <url>http://wms.openstreetmap.fr/tms/1.0.0/tours/{zoom}/{x}/{y}</url>
+    <attribution-text>Orthophoto Tour(s) Plus 2008</attribution-text>
+  </entry>
+  <entry>
+    <name>Tours - Orthophotos 2008</name>
+    <url>http://tms.mapspot.ge/tms/2/nonstandard/{zoom}/{x}/{y}.jpeg</url>
+    <attribution-text>Orthophoto Tour(s) Plus 2008</attribution-text>
+  </entry>
+  <entry>
+    <name>ORT10LT (Lithuania)</name>
+    <url>http://mapproxy.openmap.lt/ort10lt/g/{zoom}/{x}/{y}.jpeg</url>
+    <attribution-text>N&#x17D;T ORT10LT</attribution-text>
+  </entry>
+  <entry>
+    <name>Fugro (Denmark)</name>
+    <url>http://{switch:a,b,c}.tile.openstreetmap.dk/fugro2005/{zoom}/{x}/{y}.png</url>
+    <attribution-text>Fugro Aerial Mapping</attribution-text>
+  </entry>
+  <entry>
+    <name>Stevns (Denmark)</name>
+    <url>http://{switch:a,b,c}.tile.openstreetmap.dk/stevns/2009/{zoom}/{x}/{y}.png</url>
+    <attribution-text>Stevns Kommune</attribution-text>
+  </entry>
+  <entry>
+    <name>Vejmidte (Denmark)</name>
+    <url>http://{switch:a,b,c}.tile.openstreetmap.dk/danmark/vejmidte/{zoom}/{x}/{y}.png</url>
+    <attribution-text>Danish municipalities</attribution-text>
+  </entry>
+  <entry>
+    <name>Pangasin&#xE1;n/Bulacan (Phillipines HiRes)</name>
+    <url>http://gravitystorm.dev.openstreetmap.org/imagery/philippines/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>Cambodia, Laos, Thailand, Vietnam bilingual</name>
+    <url>http://{switch:a,b,c,d}.tile.osm-tools.org/osm_then/{zoom}/{x}/{y}.png</url>
+    <attribution-text>&#xA9; osm-tools.org &amp; OpenStreetMap contributors, CC-BY-SA</attribution-text>
+  </entry>
+  <entry>
+    <name>Niger Delta Oct 2012 Landsat</name>
+    <url>http://pnorman.dev.openstreetmap.org/imagery/niger_oct_2012_321/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>South Africa CD:NGI Aerial</name>
+    <url>http://{switch:a,b,c}.aerial.openstreetmap.org.za/ngi-aerial/{zoom}/{x}/{y}.jpg</url>
+  </entry>
+  <entry>
+    <name>Freemap.sk Car</name>
+    <url>http://t{switch:1,2,3,4}.freemap.sk/A/{zoom}/{x}/{y}.jpeg</url>
+    <attribution-text>Copyright &#xA9;2007-2012 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
+  </entry>
+  <entry>
+    <name>Freemap.sk Hiking</name>
+    <url>http://t{switch:1,2,3,4}.freemap.sk/T/{zoom}/{x}/{y}.jpeg</url>
+    <attribution-text>Copyright &#xA9;2007-2012 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
+  </entry>
+  <entry>
+    <name>Freemap.sk Cyclo</name>
+    <url>http://t{switch:1,2,3,4}.freemap.sk/C/{zoom}/{x}/{y}.jpeg</url>
+    <attribution-text>Copyright &#xA9;2007-2012 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
+  </entry>
+  <entry>
+    <name>Freemap.sk Ski</name>
+    <url>http://t{switch:1,2,3,4}.freemap.sk/K/{zoom}/{x}/{y}.jpeg</url>
+    <attribution-text>Copyright &#xA9;2007-2012 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
+  </entry>
+  <entry>
+    <name>Katastr&#xE1;lna mapa Slovenska (KaPor, 2010-04)</name>
+    <url>http://www.freemap.sk/tms/kapor2/{zoom}/{x}/{y}.jpg</url>
+    <attribution-text>Permisssion by UGKK</attribution-text>
+  </entry>
+  <entry>
+    <name>Katastr&#xE1;lna mapa Slovenska (KaPor, 2011-05)</name>
+    <url>http://www.freemap.sk/tms/kapor2_201105/{zoom}/{x}/{y}.jpg</url>
+    <attribution-text>Permisssion by UGKK</attribution-text>
+  </entry>
+  <entry>
+    <name>Slovakia EEA GMES Urban Atlas</name>
+    <url>http://www.freemap.sk/tms/urbanatlas/{zoom}/{x}/{y}.png</url>
+    <attribution-text>EEA GMES Urban Atlas</attribution-text>
+  </entry>
+  <entry>
+    <name>Slovakia EEA CORINE 2006</name>
+    <url>http://www.freemap.sk/tms/clc/{zoom}/{x}/{y}.png</url>
+    <attribution-text>EEA Corine 2006</attribution-text>
+  </entry>
+  <entry>
+    <name>Slovakia Historic Maps</name>
+    <url>http://tms.freemap.sk/historicke/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>AGRI black-and-white 2.5m</name>
+    <url>http://agri.openstreetmap.org/{zoom}/{x}/{y}.png</url>
+    <attribution-text>AGRI</attribution-text>
+  </entry>
+  <entry>
+    <name>OS 1:25k historic (OSM)</name>
+    <url>http://ooc.openstreetmap.org/os1/{zoom}/{x}/{y}.jpg</url>
+  </entry>
+  <entry>
+    <name>OS Scottish Popular historic</name>
+    <url>http://ooc.openstreetmap.org/npescotland/tiles/{zoom}/{x}/{y}.jpg</url>
+  </entry>
+  <entry>
+    <name>2u</name>
+    <url>http://{switch:a,b,c}.layers.openstreetmap.fr/2u/{zoom}/{x}/{y}.png</url>
+    <attribution-text>Tiles &#xA9; sly, data &#xA9; OpenStreetMap contributors, ODBL</attribution-text>
+  </entry>
+  <entry>
+    <name>MassGIS L3 Parcels</name>
+    <url>http://tile.osm.osuosl.org/tiles/massgis_parcels/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>Ukraine - Orthophotomaps 2012</name>
+    <url>http://212.26.144.110/tile2/orto_10000/{zoom}/{x}/{-y}.jpg</url>
+  </entry>
+  <entry>
+    <name>British Columbia Mosaic</name>
+    <url>http://{switch:a,b,c,d}.imagery.paulnorman.ca/tiles/bc_mosaic/{zoom}/{x}/{y}.png</url>
+    <attribution-text>Copyright Province of British Columbia, City of Surrey</attribution-text>
+  </entry>
+  <entry>
+    <name>Ireland British War Office One-Inch 1941-43 GSGS 4136</name>
+    <url>http://geo.nls.uk/maps/ireland/gsgs4136/{zoom}/{x}/{-y}.png</url>
+    <attribution-text>National Library of Scotland Historic Maps</attribution-text>
+  </entry>
+  <entry>
+    <name>Ireland Bartholomew Quarter-Inch 1940</name>
+    <url>http://geo.nls.uk/maps/ireland/bartholomew/{zoom}/{x}/{-y}.png</url>
+    <attribution-text>National Library of Scotland Historic Maps</attribution-text>
+  </entry>
+  <entry>
+    <name>Ireland EEA GMES Urban Atlas</name>
+    <url>http://a.tile.openstreetmap.ie/tiles/urbanatlas/{zoom}/{x}/{y}.png</url>
+    <attribution-text>EEA GMES Urban Atlas</attribution-text>
+  </entry>
+  <entry>
+    <name>Ireland EEA CORINE 2006</name>
+    <url>http://a.tile.openstreetmap.ie/tiles/corine/{zoom}/{x}/{y}.png</url>
+    <attribution-text>EEA Corine 2006</attribution-text>
+  </entry>
+  <entry>
+    <name>USGS Scanned Topographic Maps</name>
+    <url>http://{switch:a,b,c}.tile.openstreetmap.us/usgs_scanned_topos/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>USGS Large Scale Imagery</name>
+    <url>http://{switch:a,b,c}.tile.openstreetmap.us/usgs_large_scale/{zoom}/{x}/{y}.jpg</url>
+  </entry>
+  <entry>
+    <name>OSM US TIGER 2012 Roads Overlay</name>
+    <url>http://{switch:a,b,c}.tile.openstreetmap.us/tiger2012_roads_expanded/{zoom}/{x}/{y}.png</url>
+  </entry>
+  <entry>
+    <name>OSM - Tiger Edited Map</name>
+    <url>http://tiger-osm.mapquest.com/tiles/1.0.0/tiger/{zoom}/{x}/{y}.png</url>
+  </entry>
+</imagery>
