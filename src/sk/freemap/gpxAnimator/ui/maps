@@ -1,5 +1,5 @@
 # generated with xmlstarlet sel -N x=http://josm.openstreetmap.de/maps-1.0 -t -m "//x:entry" -i "x:type='tms'" -v x:name -nl -v x:url -nl maps.xml
-# where maps.xml is obtained from http://josm.openstreetmap.de/wiki/Maps
+# where maps.xml is obtained from http://josm.openstreetmap.de/maps
 
 MapBox Satellite
 http://{switch:a,b,c}.tiles.mapbox.com/v3/openstreetmap.map-4wvf9l0l/{zoom}/{x}/{y}.png

@@ -14,8 +14,11 @@
  */
 package sk.freemap.gpxAnimator;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PushbackInputStream;
+import java.util.zip.GZIPInputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -36,15 +39,32 @@ class GpxParser {
 		}
 		
 		try {
-			saxParser.parse(new File(inputGpx), dh);
-		} catch (final SAXException e) {
-			throw new UserException("error parsing input GPX file", e);
+			final InputStream is = new FileInputStream(inputGpx);
+			try {
+				final InputStream dis = decompressStream(is);
+				try {
+					saxParser.parse(dis, dh);
+				} catch (final SAXException e) {
+					throw new UserException("error parsing input GPX file", e);
+				} catch (final RuntimeException e) {
+					throw new RuntimeException("internal error when parsing GPX file", e);
+				} finally {
+					dis.close();
+				}
+			} finally {
+				is.close();
+			}
 		} catch (final IOException e) {
 			throw new UserException("error reading input file", e);
-		} catch (final RuntimeException e) {
-			throw new RuntimeException("internal error when parsing GPX file", e);
 		}
 	}
-
+	
+	public static InputStream decompressStream(final InputStream input) throws IOException {
+		final PushbackInputStream pb = new PushbackInputStream(input, 2);
+		final byte[] signature = new byte[2];
+		pb.read(signature);
+		pb.unread(signature);
+		return signature[0] == (byte) 0x1f && signature[1] == (byte) 0x8b ? new GZIPInputStream(pb) : pb;
+	}
 
 }

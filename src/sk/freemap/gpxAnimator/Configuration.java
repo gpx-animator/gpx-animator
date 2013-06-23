@@ -50,10 +50,12 @@ public class Configuration {
 	private Long flashbackDuration;
 	
 	private String output;
+	private String attribution;
 	
 	private int fontSize;
 	private double markerSize;
 	private double waypointSize;
+
 
 	@XmlElementWrapper
 	@XmlElement(name = "trackConfiguration")
@@ -71,7 +73,7 @@ public class Configuration {
 			final Double speedup, final long tailDuration, final double fps, final Long totalTime,
 			final float backgroundMapVisibility, final String tmsUrlTemplate,
 			final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
-			final String output,
+			final String output, final String attribution,
 			final int fontSize, final double markerSize, final double waypointSize,
 			final List<TrackConfiguration> trackConfigurationList) {
 		this.margin = margin;
@@ -88,6 +90,7 @@ public class Configuration {
 		this.flashbackColor = flashbackColor;
 		this.flashbackDuration = flashbackDuration;
 		this.output = output;
+		this.attribution = attribution;
 		this.fontSize = fontSize;
 		this.markerSize = markerSize;
 		this.waypointSize = waypointSize;
@@ -165,6 +168,11 @@ public class Configuration {
 	}
 	
 	
+	public String getAttribution() {
+		return attribution;
+	}
+	
+	
 	public int getFontSize() {
 		return fontSize;
 	}
@@ -209,6 +217,7 @@ public class Configuration {
 		private Long flashbackDuration = 250l;
 		
 		private String output = "video.mp4"; // frame%08d.png
+		private String attribution = "Created by GPX Animator 1.1.0";
 		
 		private int fontSize = 12;
 		private double markerSize = 8.0;
@@ -223,7 +232,7 @@ public class Configuration {
 					speedup, tailDuration, fps, totalTime,
 					backgroundMapVisibility, tmsUrlTemplate,
 					skipIdle, flashbackColor, flashbackDuration,
-					output,
+					output, attribution,
 					fontSize, markerSize, waypointSize,
 					Collections.unmodifiableList(trackConfigurationList)
 			);
@@ -297,6 +306,11 @@ public class Configuration {
 
 		public Builder output(final String output) {
 			this.output = output;
+			return this;
+		}
+		
+		public Builder attribution(final String attribution) {
+			this.attribution = attribution;
 			return this;
 		}
 

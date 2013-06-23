@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -20,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sk.freemap.gpxAnimator.Help;
@@ -67,7 +69,29 @@ abstract class TrackSettingsPanel extends JPanel {
 			@Override
 			protected Type configure(final JFileChooser gpxFileChooser)  {
 				gpxFileChooser.setAcceptAllFileFilterUsed(false);
+				gpxFileChooser.addChoosableFileFilter(new FileFilter() {
+					@Override
+					public String getDescription() {
+						return "All supported GPS files";
+					}
+					
+					@Override
+					public boolean accept(final File f) {
+						return f.isDirectory() || f.getName().endsWith(".gpx") || f.getName().endsWith(".gpx.gz");
+					}
+				});
 				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("GPX Files", "gpx"));
+				gpxFileChooser.addChoosableFileFilter(new FileFilter() {
+					@Override
+					public String getDescription() {
+						return "GZipped GPX Files";
+					}
+					
+					@Override
+					public boolean accept(final File f) {
+						return f.isDirectory() || f.getName().endsWith(".gpx.gz");
+					}
+				});
 				return Type.OPEN;
 			}
 		};

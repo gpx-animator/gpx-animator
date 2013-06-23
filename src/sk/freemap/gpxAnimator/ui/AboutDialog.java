@@ -49,7 +49,7 @@ public class AboutDialog extends JDialog {
 			dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			dtrpngpxNavigator.setEditable(false);
 			dtrpngpxNavigator.setContentType("text/html");
-			dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. 1.0.1<br/>\n&copy; 2013 <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n"
+			dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. 1.1.0<br/>\n&copy; 2013 <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n"
 					+ "<p>GPX Animator generates video from GPX files.</p>"
 					+ "<p>More information can be found at <a href=\"http://zdila.github.com/gpx-animator/\">http://zdila.github.com/gpx-animator/</a>.</p>\n");
 

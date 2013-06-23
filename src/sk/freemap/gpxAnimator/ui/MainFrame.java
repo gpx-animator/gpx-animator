@@ -11,11 +11,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -50,6 +51,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import sk.freemap.gpxAnimator.Configuration;
 import sk.freemap.gpxAnimator.Help;
@@ -62,7 +69,7 @@ public class MainFrame extends JFrame {
 
 	private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
 
-	private static final String TITLE = "GPX Animator 1.0.1";
+	private static final String TITLE = "GPX Animator 1.1.0";
 
 	private static final long serialVersionUID = 190371886979948114L;
 	
@@ -88,23 +95,10 @@ public class MainFrame extends JFrame {
 	private final JButton startButton;
 	
 	private SwingWorker<Void, String> swingWorker;
-
-	
-	private final FileFilter filter = new FileFilter() {
-		@Override
-		public String getDescription() {
-			return "GPX Animator Configuration Files";
-		}
-		
-		@Override
-		public boolean accept(final File f) {
-			return f.isDirectory() || f.getName().endsWith("ga.xml");
-		}
-	};
 	
 	private final JFileChooser fileChooser = new JFileChooser();
 
-	private List<LabeledItem> mapTamplateList;
+	private List<MapTemplate> mapTamplateList;
 
 	private File file;
 
@@ -140,7 +134,7 @@ public class MainFrame extends JFrame {
 		b.totalTime((Long) totalTimeSpinner.getValue());
 		b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
 		final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
-		final String tmsUrlTemplate = tmsItem instanceof LabeledItem ? ((LabeledItem) tmsItem).getValue() : (String) tmsItem;
+		final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
 		b.tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate);
 		b.skipIdle(skipIdleCheckBox.isSelected());
 		b.flashbackColor(flashbackColorSelector.getColor());
@@ -149,6 +143,13 @@ public class MainFrame extends JFrame {
 		b.fontSize((Integer) fontSizeSpinner.getValue());
 		b.markerSize((Double) markerSizeSpinner.getValue());
 		b.waypointSize((Double) waypointSizeSpinner.getValue());
+		
+		final StringBuilder attribSb = new StringBuilder("Created by GPX Animator 1.1.0");
+		if (tmsItem instanceof MapTemplate) {
+			attribSb.append('\n').append(((MapTemplate) tmsItem).getAttributionText());
+		}
+		
+		b.attribution(attribSb.toString());
 		
 		for (int i = 1, n = tabbedPane.getTabCount(); i < n; i++) {
 			final TrackSettingsPanel tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
@@ -172,9 +173,9 @@ public class MainFrame extends JFrame {
 
 		final String tmsUrlTemplate = c.getTmsUrlTemplate();
 		found: {
-			for (final LabeledItem labeledItem : mapTamplateList) {
-				if (labeledItem.getValue().equals(tmsUrlTemplate)) {
-					tmsUrlTemplateComboBox.setSelectedItem(labeledItem);
+			for (final MapTemplate mapTemplate : mapTamplateList) {
+				if (mapTemplate.getUrl().equals(tmsUrlTemplate)) {
+					tmsUrlTemplateComboBox.setSelectedItem(mapTemplate);
 					break found;
 				}
 			}
@@ -208,16 +209,28 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
-		try {
-			mapTamplateList = readMaps();
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
+		mapTamplateList = readMaps();
 		
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.addChoosableFileFilter(new FileFilter() {
+			@Override
+			public String getDescription() {
+				return "GPX Animator Configuration Files";
+			}
+			
+			@Override
+			public boolean accept(final File f) {
+				return f.isDirectory() || f.getName().endsWith(".ga.xml");
+			}
+		});
 
 		setTitle(TITLE);
+		setIconImages(
+				Arrays.asList(
+						new ImageIcon(MainFrame.class.getResource("icon_16.png")).getImage(),
+						new ImageIcon(MainFrame.class.getResource("icon_32.png")).getImage()
+				)
+		);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 681, 606);
 		
@@ -403,16 +416,16 @@ public class MainFrame extends JFrame {
 			private static final long serialVersionUID = 7372002778976603239L;
 
 			@Override
-			protected Type configure(final JFileChooser gpxFileChooser) {
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Image Frames", "png"));
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("H.264 Encoded Video Files (*.mp4, *.mov, *.mkv)", "mp4", "mov", "mkv"));
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-1 Encoded Video Files (*.mpg)", "mpg"));
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Encoded Video Files (*.avi)", "avi"));
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MS MPEG-4 Encoded Video Files (*.wmv, *.asf)", "wmv", "asf"));
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Theora Encoded Video Files (*.ogv)", "ogv"));
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("FLV Encoded Video Files (*.flv)", "flv"));
-				gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("RV10 Encoded Video Files (*.rm)", "rm"));
+			protected Type configure(final JFileChooser outputFileChooser) {
+				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
+				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Image Frames", "png"));
+				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("H.264 Encoded Video Files (*.mp4, *.mov, *.mkv)", "mp4", "mov", "mkv"));
+				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-1 Encoded Video Files (*.mpg)", "mpg"));
+				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Encoded Video Files (*.avi)", "avi"));
+				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MS MPEG-4 Encoded Video Files (*.wmv, *.asf)", "wmv", "asf"));
+				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Theora Encoded Video Files (*.ogv)", "ogv"));
+				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("FLV Encoded Video Files (*.flv)", "flv"));
+				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("RV10 Encoded Video Files (*.rm)", "rm"));
 				return Type.SAVE;
 			}
 			
@@ -926,26 +939,60 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	private List<LabeledItem> readMaps() throws IOException {
-		final List<LabeledItem> labeledItems = new ArrayList<LabeledItem>();
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(MainFrame.class.getResourceAsStream("maps")));
-		String line;
-		String label = null;
-		while ((line = reader.readLine()) != null) {
-			if (line.startsWith("#") || line.trim().isEmpty()) {
-				// nothing
-			} else if (label == null) {
-				label = line;
-			} else {
-				labeledItems.add(new LabeledItem(label, line));
-				label = null;
-			}
+	private List<MapTemplate> readMaps() {
+		final SAXParserFactory factory = SAXParserFactory.newInstance();
+		final SAXParser saxParser;
+		try {
+			saxParser = factory.newSAXParser();
+		} catch (final ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		} catch (final SAXException e) {
+			throw new RuntimeException(e);
 		}
-		reader.close();
 		
-		Collections.sort(labeledItems, new Comparator<LabeledItem>() {
+		final List<MapTemplate> labeledItems = new ArrayList<MapTemplate>();
+
+		final InputStream is = MainFrame.class.getResourceAsStream("maps.xml");
+		
+		try {
+			try {
+				saxParser.parse(is, new DefaultHandler() {
+					StringBuilder sb = new StringBuilder();
+					String name;
+					String url;
+					String attributionText;
+
+					@Override
+					public void endElement(final String uri, final String localName, final String qName) throws SAXException {
+						if ("name".equals(qName)) {
+							name = sb.toString().trim();
+						} else if ("url".equals(qName)) {
+							url = sb.toString().trim();
+						} else if ("attribution-text".equals(qName)) {
+							attributionText = sb.toString().trim();
+						} else if ("entry".equals(qName)) {
+							labeledItems.add(new MapTemplate(name, url, attributionText));
+						}
+						sb.setLength(0);
+					}
+	
+					@Override
+					public void characters(final char[] ch, final int start, final int length) throws SAXException {
+						sb.append(ch, start, length);
+					}
+				});
+			} catch (final SAXException e) {
+				throw new RuntimeException(e);
+			} finally {
+				is.close();
+			}
+		} catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+		
+		Collections.sort(labeledItems, new Comparator<MapTemplate>() {
 			@Override
-			public int compare(final LabeledItem o1, final LabeledItem o2) {
+			public int compare(final MapTemplate o1, final MapTemplate o2) {
 				return o1.toString().compareTo(o2.toString());
 			}
 		});

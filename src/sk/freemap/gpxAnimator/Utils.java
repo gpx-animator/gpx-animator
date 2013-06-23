@@ -23,11 +23,12 @@ import java.util.Date;
 
 final class Utils {
 
+	// NOTE: SimpleDateFormat uses GMT[-+]hh:mm for the TZ which breaks
+	// things a bit. Before we go on we have to repair this.
+	private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+	private static final SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
+
 	static Date parseISO8601(String input) throws ParseException {
-		// NOTE: SimpleDateFormat uses GMT[-+]hh:mm for the TZ which breaks
-		// things a bit. Before we go on we have to repair this.
-		final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
-	
 		// this is zero time so we need to add that TZ indicator for
 		if (input.endsWith("Z")) {
 			input = input.substring(0, input.length() - 1) + "GMT-00:00";
@@ -40,7 +41,11 @@ final class Utils {
 			input = s0 + "GMT" + s1;
 		}
 	
-		return df.parse(input);
+		try {
+			return df.parse(input);
+		} catch (final ParseException e) {
+			return df1.parse(input);
+		}
 	}
 	
 

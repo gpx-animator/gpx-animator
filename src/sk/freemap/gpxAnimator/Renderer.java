@@ -248,6 +248,7 @@ public class Renderer {
 
 			if (font != null) {
 				drawTime(bi2, frame);
+				drawAttribution(bi2, cfg.getAttribution());
 			}
 			
 			final Color flashbackColor = cfg.getFlashbackColor();
@@ -337,11 +338,16 @@ public class Renderer {
 		}
 		return timePointMap;
 	}
+	
 
 	private void drawTime(final BufferedImage bi, final int frame) {
-		final Graphics2D g2 = getGraphics(bi);
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
-		printText(g2, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+		printText(getGraphics(bi), dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+	}
+	
+	
+	private void drawAttribution(final BufferedImage bi, final String attribution) {
+		printText(getGraphics(bi), attribution, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
 	}
 
 
