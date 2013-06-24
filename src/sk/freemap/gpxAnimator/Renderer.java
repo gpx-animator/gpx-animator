@@ -371,16 +371,22 @@ public class Renderer {
 				}
 				
 				final Point2D p = floorEntry.getValue();
-				g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
-				final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - markerSize / 2.0, p.getY() - markerSize / 2.0, markerSize, markerSize);
-				g2.setStroke(new BasicStroke(1f));
-				g2.fill(marker);
-				g2.setColor(Color.black);
-				g2.draw(marker);
-				
-				final String label = trackConfiguration.getLabel();
-				if (!label.isEmpty()) {
-					printText(g2, label, (float) p.getX() + 8f, (float) p.getY() + 4f);
+				if (t2 - floorEntry.getKey() < cfg.getTailDuration()) { // TODO make configurable
+					g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
+					final Ellipse2D.Double marker = new Ellipse2D.Double(
+							p.getX() - markerSize / 2.0,
+							p.getY() - markerSize / 2.0,
+							markerSize,
+							markerSize);
+					g2.setStroke(new BasicStroke(1f));
+					g2.fill(marker);
+					g2.setColor(Color.black);
+					g2.draw(marker);
+					
+					final String label = trackConfiguration.getLabel();
+					if (!label.isEmpty()) {
+						printText(g2, label, (float) p.getX() + 8f, (float) p.getY() + 4f);
+					}
 				}
 				
 				continue outer;
@@ -457,16 +463,22 @@ public class Renderer {
 	private void printText(final Graphics2D g2, final String text, final float x, final float y) {
 		final FontRenderContext frc = g2.getFontRenderContext();
 		g2.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-
-		final TextLayout tl = new TextLayout(text, font, frc);
-		final Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(x, y));
-		g2.setColor(Color.white);
-		g2.fill(sha);
-		g2.draw(sha);
+		final int height = g2.getFontMetrics(font).getHeight();
 		
-		g2.setFont(font);
-		g2.setColor(Color.black);
-		g2.drawString(text, x, y);
+		final String[] lines = text.split("\n");
+		float yy = y - (lines.length - 1) * height;
+		for (final String line : lines) {
+			final TextLayout tl = new TextLayout(line, font, frc);
+			final Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(x, yy));
+			g2.setColor(Color.white);
+			g2.fill(sha);
+			g2.draw(sha);
+			
+			g2.setFont(font);
+			g2.setColor(Color.black);
+			g2.drawString(line, x, yy);
+			yy += height;
+		}
 	}
 
 
