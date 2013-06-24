@@ -1016,14 +1016,17 @@ public class MainFrame extends JFrame {
 			protected void configurationChanged() {
 				changed(true);
 			}
+
+			@Override
+			protected void labelChanged(final String label) {
+				tabbedPane.setTitleAt(tabbedPane.indexOfComponent(trackScrollPane), label == null || label.isEmpty() ? "Track" : label);
+			}
 		};
-		
-		trackSettingsPanel.setConfiguration(tc);
-		
+				
 		tabbedPane.addTab("Track", null, trackScrollPane, null);
 		trackScrollPane.setViewportView(trackSettingsPanel);
 		tabbedPane.setSelectedComponent(trackScrollPane);
-		
+		trackSettingsPanel.setConfiguration(tc);
 		trackSettingsPanel.addPropertyChangeListener("trackConfiguration", propertyChangeListener);
 		
 		startButton.setEnabled(true);

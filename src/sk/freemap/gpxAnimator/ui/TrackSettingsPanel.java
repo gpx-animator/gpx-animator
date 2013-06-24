@@ -123,6 +123,26 @@ abstract class TrackSettingsPanel extends JPanel {
 		gbc_labelTextField.gridy = 1;
 		add(labelTextField, gbc_labelTextField);
 		labelTextField.setColumns(10);
+		labelTextField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(final DocumentEvent documentEvent) {
+				labelChanged();
+			}
+
+			@Override
+			public void insertUpdate(final DocumentEvent documentEvent) {
+				labelChanged();
+			}
+			
+			@Override
+			public void changedUpdate(final DocumentEvent documentEvent) {
+				labelChanged();
+			}
+
+			private void labelChanged() {
+				TrackSettingsPanel.this.labelChanged(labelTextField.getText());
+			}
+		});
 		
 		lblColor_1 = new JLabel("Color");
 		final GridBagConstraints gbc_lblColor_1 = new GridBagConstraints();
@@ -252,6 +272,9 @@ abstract class TrackSettingsPanel extends JPanel {
 	}
 
 
+	protected abstract void labelChanged(String label);
+
+
 	public TrackConfiguration createConfiguration() throws UserException {
 		final Builder b = TrackConfiguration.createBuilder();
 		
@@ -273,6 +296,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		lineWidthSpinner.setValue(c.getLineWidth());
 		forcedPointTimeIntervalSpinner.setValue(c.getForcedPointInterval());
 		timeOffsetSpinner.setValue(c.getTimeOffset());
+		labelChanged(c.getLabel());
 	}
 	
 	
