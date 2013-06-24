@@ -1,5 +1,6 @@
 package sk.freemap.gpxAnimator.ui;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -400,7 +401,7 @@ public class MainFrame extends JFrame {
 		gbl_tabContentPanel.columnWidths = new int[]{0, 0, 0};
 		gbl_tabContentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_tabContentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_tabContentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_tabContentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		tabContentPanel.setLayout(gbl_tabContentPanel);
 		
 		final JLabel lblOutput = new JLabel("Output");
@@ -595,7 +596,8 @@ public class MainFrame extends JFrame {
 		
 		markerSizeSpinner = new JSpinner();
 		markerSizeSpinner.setToolTipText(Help.HELP_MARKER_SIZE);
-		markerSizeSpinner.setModel(new SpinnerNumberModel(new Double(1), new Double(1), null, new Double(1)));
+		markerSizeSpinner.setEditor(new EmptyZeroNumberEditor(markerSizeSpinner, Double.class));
+		markerSizeSpinner.setModel(new EmptyNullSpinnerModel(Double.valueOf(6.0), Double.valueOf(0.0), null, Double.valueOf(1.0)));
 		final GridBagConstraints gbc_markerSizeSpinner = new GridBagConstraints();
 		gbc_markerSizeSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_markerSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -613,7 +615,8 @@ public class MainFrame extends JFrame {
 		
 		waypointSizeSpinner = new JSpinner();
 		waypointSizeSpinner.setToolTipText(Help.HELP_WAYPOINT_SIZE);
-		waypointSizeSpinner.setModel(new SpinnerNumberModel(new Double(1), new Double(1), null, new Double(1)));
+		waypointSizeSpinner.setEditor(new EmptyZeroNumberEditor(waypointSizeSpinner, Double.class));
+		waypointSizeSpinner.setModel(new EmptyNullSpinnerModel(Double.valueOf(1.0), Double.valueOf(0.0), null, Double.valueOf(1.0)));
 		final GridBagConstraints gbc_waypintSizeSpinner = new GridBagConstraints();
 		gbc_waypintSizeSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_waypintSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -686,6 +689,7 @@ public class MainFrame extends JFrame {
 		tabContentPanel.add(lblAttribution, gbc_lblAttribution);
 		
 		final JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setPreferredSize(new Dimension(3, 50));
 		final GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;

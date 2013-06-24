@@ -36,7 +36,7 @@ public class Configuration {
 	private Integer zoom;
 	
 	private Double speedup;
-	private long tailDuration ;
+	private long tailDuration;
 	private double fps;
 	private Long totalTime;
 	
@@ -53,8 +53,8 @@ public class Configuration {
 	private String attribution;
 	
 	private int fontSize;
-	private double markerSize;
-	private double waypointSize;
+	private Double markerSize;
+	private Double waypointSize;
 
 
 	@XmlElementWrapper
@@ -74,7 +74,7 @@ public class Configuration {
 			final float backgroundMapVisibility, final String tmsUrlTemplate,
 			final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
 			final String output, final String attribution,
-			final int fontSize, final double markerSize, final double waypointSize,
+			final int fontSize, final Double markerSize, final Double waypointSize,
 			final List<TrackConfiguration> trackConfigurationList) {
 		this.margin = margin;
 		this.width = width;
@@ -178,12 +178,12 @@ public class Configuration {
 	}
 	
 	
-	public double getMarkerSize() {
+	public Double getMarkerSize() {
 		return markerSize;
 	}
 	
 	
-	public double getWaypointSize() {
+	public Double getWaypointSize() {
 		return waypointSize;
 	}
 
@@ -220,8 +220,8 @@ public class Configuration {
 		private String attribution = "Created by GPX Animator 1.1.0\n%MAP_ATTRIBUTION%";
 		
 		private int fontSize = 12;
-		private double markerSize = 8.0;
-		private double waypointSize = 6.0;
+		private Double markerSize = 8.0;
+		private Double waypointSize = 6.0;
 
 		private final List<TrackConfiguration> trackConfigurationList = new ArrayList<TrackConfiguration>();
 		
@@ -319,12 +319,12 @@ public class Configuration {
 			return this;
 		}
 
-		public Builder markerSize(final double markerSize) {
+		public Builder markerSize(final Double markerSize) {
 			this.markerSize = markerSize;
 			return this;
 		}
 
-		public Builder waypointSize(final double waypointSize) {
+		public Builder waypointSize(final Double waypointSize) {
 			this.waypointSize = waypointSize;
 			return this;
 		}

@@ -86,7 +86,7 @@ public class Help {
 		w.writeOptionHelp("output", "output", HELP_OUTPUT, false, cfg.getOutput());
 		w.writeOptionHelp("label", "label", HELP_LABEL, true, tc.getLabel());
 		w.writeOptionHelp("marker-size", "size", HELP_MARKER_SIZE, false, cfg.getMarkerSize());
-		w.writeOptionHelp("waypoint-size", "size", HELP_WAYPOINT_SIZE + "; for no waypoints specify", false, cfg.getWaypointSize());
+		w.writeOptionHelp("waypoint-size", "size", HELP_WAYPOINT_SIZE + "; for no waypoints specify 0", false, cfg.getWaypointSize());
 		w.writeOptionHelp("color", "color", HELP_COLOR, true, "some nice color :-)");
 		w.writeOptionHelp("line-width", "width", HELP_LINE_WIDTH, true, tc.getLineWidth());
 		w.writeOptionHelp("time-offset", "milliseconds", HELP_TIME_OFFSET, true, tc.getTimeOffset());

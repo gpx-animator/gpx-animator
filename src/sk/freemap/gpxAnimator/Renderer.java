@@ -238,13 +238,9 @@ public class Renderer {
 			
 			paint(bi2, frame, cfg.getTailDuration());
 			
-			if (cfg.getWaypointSize() > 0.0 && !wpMap.isEmpty()) {
-				drawWaypoints(bi2, frame, wpMap);
-			}
+			drawWaypoints(bi2, frame, wpMap);
 			
-			if (cfg.getMarkerSize() > 0.0) {
-				drawMarker(bi2, frame);
-			}
+			drawMarker(bi2, frame);
 
 			if (font != null) {
 				drawTime(bi2, frame);
@@ -269,11 +265,15 @@ public class Renderer {
 
 
 	private void drawWaypoints(final BufferedImage bi, final int frame, final TreeMap<Long, Point2D> wpMap) {
+		final Double waypointSize = cfg.getWaypointSize();
+		if (waypointSize == null || waypointSize.doubleValue() == 0.0 || wpMap.isEmpty()) {
+			return;
+		}
+		
 		final Graphics2D g2 = getGraphics(bi);
 		
 		final long t2 = getTime(frame);
 		
-		final double waypointSize = cfg.getWaypointSize();
 		
 		if (t2 >= wpMap.firstKey()) {
 			for (final Point2D p : wpMap.subMap(wpMap.firstKey(), t2).values()) {
@@ -352,6 +352,10 @@ public class Renderer {
 
 
 	private void drawMarker(final BufferedImage bi, final int frame) {
+		if (cfg.getMarkerSize() == null || cfg.getMarkerSize().doubleValue() == 0.0) {
+			return;
+		}
+		
 		final Graphics2D g2 = getGraphics(bi);
 		
 		final long t2 = getTime(frame);
