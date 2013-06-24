@@ -1,7 +1,12 @@
-version 1.1.0 (2013-04-06)
+version 1.1.0 (2013-06-24)
 --------------------------
+* configurable map attribution
+* display track label in GUI tab title
+* hide inactive marker after tail timeout
+* added program icon
 * fixed reading of alpha channel
 * fixed alpha channel interpolation for tail
+* fixed parsing of GPX dates with milliseconds
 
 version 1.0.0 (2013-03-23)
 -------------------------- 
