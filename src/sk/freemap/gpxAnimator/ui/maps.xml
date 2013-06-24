@@ -208,22 +208,22 @@
   <entry>
     <name>Freemap.sk Car</name>
     <url>http://t{switch:1,2,3,4}.freemap.sk/A/{zoom}/{x}/{y}.jpeg</url>
-    <attribution-text>Copyright &#xA9;2007-2012 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
+    <attribution-text>Copyright &#xA9;2007-2013 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
   </entry>
   <entry>
     <name>Freemap.sk Hiking</name>
     <url>http://t{switch:1,2,3,4}.freemap.sk/T/{zoom}/{x}/{y}.jpeg</url>
-    <attribution-text>Copyright &#xA9;2007-2012 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
+    <attribution-text>Copyright &#xA9;2007-2013 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
   </entry>
   <entry>
     <name>Freemap.sk Cyclo</name>
     <url>http://t{switch:1,2,3,4}.freemap.sk/C/{zoom}/{x}/{y}.jpeg</url>
-    <attribution-text>Copyright &#xA9;2007-2012 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
+    <attribution-text>Copyright &#xA9;2007-2013 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
   </entry>
   <entry>
     <name>Freemap.sk Ski</name>
     <url>http://t{switch:1,2,3,4}.freemap.sk/K/{zoom}/{x}/{y}.jpeg</url>
-    <attribution-text>Copyright &#xA9;2007-2012 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
+    <attribution-text>Copyright &#xA9;2007-2013 Freemap Slovakia (www.freemap.sk). Some rights reserved.</attribution-text>
   </entry>
   <entry>
     <name>Katastr&#xE1;lna mapa Slovenska (KaPor, 2010-04)</name>
