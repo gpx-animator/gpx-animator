@@ -31,6 +31,8 @@ public class Help {
 
 	public static final String HELP_TMS_URL_TEMPLATE = "slippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap";
 
+	public static final String HELP_ATTRIBUTION = "map attribution text; %MAP_ATTRIBUTION% placeholder is replaced by attribution of selected pre-defined map (only from GUI)";
+
 	public static final String HELP_ZOOM = "map zoom typically from 1 to 18; if not specified and TMS URL Template (Background Map) is specified then it is computed from width";
 
 	public static final String HELP_HEIGHT = "video height in pixels; if unspecified, it is derived from width, GPX bounding box and margin";
@@ -65,7 +67,7 @@ public class Help {
 	public static final String HELP_COLOR = "track color in #RRGGBB representation";
 	
 	public static final String HELP_LINE_WIDTH = "track line width in pixels";
-	
+
 
 	public static void printHelp(final OptionHelpWriter w) {
 		final Configuration cfg;
@@ -98,6 +100,7 @@ public class Help {
 		w.writeOptionHelp("height", "height", HELP_HEIGHT, false, cfg.getHeight());
 		w.writeOptionHelp("zoom", "zoom", HELP_ZOOM, false, cfg.getZoom());
 		w.writeOptionHelp("tms-url-template", "template", HELP_TMS_URL_TEMPLATE, false, cfg.getTmsUrlTemplate());
+		w.writeOptionHelp("attribution", "text", HELP_ATTRIBUTION, false, cfg.getAttribution());
 		w.writeOptionHelp("background-map-visibility", "visibility", HELP_BG_MAP_VISIBILITY + " from 0.0 to 1.0", false, cfg.getBackgroundMapVisibility());
 		w.writeOptionHelp("font-size", "size", HELP_FONT_SIZE, false, cfg.getFontSize());
 		w.writeOptionHelp("skip-idle", null, HELP_SKIP_IDLE, false, cfg.isSkipIdle());

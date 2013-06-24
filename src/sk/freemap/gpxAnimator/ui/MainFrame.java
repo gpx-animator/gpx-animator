@@ -40,6 +40,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
@@ -118,6 +119,7 @@ public class MainFrame extends JFrame {
 			changed(true);
 		}
 	};
+	private JTextArea attributionTextArea;
 	
 	
 	public Configuration createConfiguration() throws UserException {
@@ -144,12 +146,8 @@ public class MainFrame extends JFrame {
 		b.markerSize((Double) markerSizeSpinner.getValue());
 		b.waypointSize((Double) waypointSizeSpinner.getValue());
 		
-		final StringBuilder attribSb = new StringBuilder("Created by GPX Animator 1.1.0");
-		if (tmsItem instanceof MapTemplate) {
-			attribSb.append('\n').append(((MapTemplate) tmsItem).getAttributionText());
-		}
-		
-		b.attribution(attribSb.toString());
+		b.attribution(attributionTextArea.getText().replace("%MAP_ATTRIBUTION%",
+				tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getAttributionText() : "").trim());
 		
 		for (int i = 1, n = tabbedPane.getTabCount(); i < n; i++) {
 			final TrackSettingsPanel tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
@@ -182,6 +180,7 @@ public class MainFrame extends JFrame {
 			tmsUrlTemplateComboBox.setSelectedItem(tmsUrlTemplate);
 		}
 		
+		attributionTextArea.setText(c.getAttribution());
 		skipIdleCheckBox.setSelected(c.isSkipIdle());
 		flashbackColorSelector.setColor(c.getFlashbackColor());
 		outputFileSelector.setFilename(c.getOutput());
@@ -232,7 +231,7 @@ public class MainFrame extends JFrame {
 				)
 		);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 681, 606);
+		setBounds(100, 100, 681, 647);
 		
 		final JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -399,9 +398,9 @@ public class MainFrame extends JFrame {
 //		tabbedPane.addTab("General", null, panel, null);
 		final GridBagLayout gbl_tabContentPanel = new GridBagLayout();
 		gbl_tabContentPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_tabContentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_tabContentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_tabContentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_tabContentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_tabContentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		tabContentPanel.setLayout(gbl_tabContentPanel);
 		
 		final JLabel lblOutput = new JLabel("Output");
@@ -678,12 +677,32 @@ public class MainFrame extends JFrame {
 		gbc_tmsUrlTemplateComboBox.gridy = 11;
 		tabContentPanel.add(tmsUrlTemplateComboBox, gbc_tmsUrlTemplateComboBox);
 		
+		final JLabel lblAttribution = new JLabel("Attribution");
+		final GridBagConstraints gbc_lblAttribution = new GridBagConstraints();
+		gbc_lblAttribution.anchor = GridBagConstraints.EAST;
+		gbc_lblAttribution.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAttribution.gridx = 0;
+		gbc_lblAttribution.gridy = 12;
+		tabContentPanel.add(lblAttribution, gbc_lblAttribution);
+		
+		final JScrollPane scrollPane = new JScrollPane();
+		final GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 1;
+		gbc_scrollPane.gridy = 12;
+		tabContentPanel.add(scrollPane, gbc_scrollPane);
+		
+		attributionTextArea = new JTextArea();
+		attributionTextArea.setToolTipText(Help.HELP_ATTRIBUTION);
+		scrollPane.setViewportView(attributionTextArea);
+		
 		final JLabel lblVisibility = new JLabel("Map Visibility");
 		final GridBagConstraints gbc_lblVisibility = new GridBagConstraints();
 		gbc_lblVisibility.anchor = GridBagConstraints.EAST;
 		gbc_lblVisibility.insets = new Insets(0, 0, 5, 5);
 		gbc_lblVisibility.gridx = 0;
-		gbc_lblVisibility.gridy = 12;
+		gbc_lblVisibility.gridy = 13;
 		tabContentPanel.add(lblVisibility, gbc_lblVisibility);
 		
 		backgroundMapVisibilitySlider = new JSlider();
@@ -696,7 +715,7 @@ public class MainFrame extends JFrame {
 		gbc_backgroundMapVisibilitySlider.insets = new Insets(0, 0, 5, 0);
 		gbc_backgroundMapVisibilitySlider.fill = GridBagConstraints.HORIZONTAL;
 		gbc_backgroundMapVisibilitySlider.gridx = 1;
-		gbc_backgroundMapVisibilitySlider.gridy = 12;
+		gbc_backgroundMapVisibilitySlider.gridy = 13;
 		tabContentPanel.add(backgroundMapVisibilitySlider, gbc_backgroundMapVisibilitySlider);
 		
 		final JLabel lblFontSize = new JLabel("Font Size");
@@ -704,7 +723,7 @@ public class MainFrame extends JFrame {
 		gbc_lblFontSize.anchor = GridBagConstraints.EAST;
 		gbc_lblFontSize.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFontSize.gridx = 0;
-		gbc_lblFontSize.gridy = 13;
+		gbc_lblFontSize.gridy = 14;
 		tabContentPanel.add(lblFontSize, gbc_lblFontSize);
 		
 		fontSizeSpinner = new JSpinner();
@@ -714,7 +733,7 @@ public class MainFrame extends JFrame {
 		gbc_fontSizeSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_fontSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fontSizeSpinner.gridx = 1;
-		gbc_fontSizeSpinner.gridy = 13;
+		gbc_fontSizeSpinner.gridy = 14;
 		tabContentPanel.add(fontSizeSpinner, gbc_fontSizeSpinner);
 		
 		final JLabel lblSkipIdle = new JLabel("Skip Idle");
@@ -722,7 +741,7 @@ public class MainFrame extends JFrame {
 		gbc_lblSkipIdle.anchor = GridBagConstraints.EAST;
 		gbc_lblSkipIdle.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSkipIdle.gridx = 0;
-		gbc_lblSkipIdle.gridy = 14;
+		gbc_lblSkipIdle.gridy = 15;
 		tabContentPanel.add(lblSkipIdle, gbc_lblSkipIdle);
 		
 		skipIdleCheckBox = new JCheckBox("");
@@ -731,7 +750,7 @@ public class MainFrame extends JFrame {
 		gbc_keepIdleCheckBox.anchor = GridBagConstraints.WEST;
 		gbc_keepIdleCheckBox.insets = new Insets(0, 0, 5, 0);
 		gbc_keepIdleCheckBox.gridx = 1;
-		gbc_keepIdleCheckBox.gridy = 14;
+		gbc_keepIdleCheckBox.gridy = 15;
 		tabContentPanel.add(skipIdleCheckBox, gbc_keepIdleCheckBox);
 		
 		final JLabel lblFlashbackColor = new JLabel("Flashback Color");
@@ -739,7 +758,7 @@ public class MainFrame extends JFrame {
 		gbc_lblFlashbackColor.anchor = GridBagConstraints.EAST;
 		gbc_lblFlashbackColor.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFlashbackColor.gridx = 0;
-		gbc_lblFlashbackColor.gridy = 15;
+		gbc_lblFlashbackColor.gridy = 16;
 		tabContentPanel.add(lblFlashbackColor, gbc_lblFlashbackColor);
 		
 		flashbackColorSelector = new ColorSelector();
@@ -748,7 +767,7 @@ public class MainFrame extends JFrame {
 		gbc_flashbackColorSelector.insets = new Insets(0, 0, 5, 0);
 		gbc_flashbackColorSelector.fill = GridBagConstraints.BOTH;
 		gbc_flashbackColorSelector.gridx = 1;
-		gbc_flashbackColorSelector.gridy = 15;
+		gbc_flashbackColorSelector.gridy = 16;
 		tabContentPanel.add(flashbackColorSelector, gbc_flashbackColorSelector);
 		
 		final JLabel lblFlashbackDuration = new JLabel("Flashback Duration");
@@ -756,7 +775,7 @@ public class MainFrame extends JFrame {
 		gbc_lblFlashbackDuration.anchor = GridBagConstraints.EAST;
 		gbc_lblFlashbackDuration.insets = new Insets(0, 0, 0, 5);
 		gbc_lblFlashbackDuration.gridx = 0;
-		gbc_lblFlashbackDuration.gridy = 16;
+		gbc_lblFlashbackDuration.gridy = 17;
 		tabContentPanel.add(lblFlashbackDuration, gbc_lblFlashbackDuration);
 		
 		flashbackDurationSpinner = new JSpinner();
@@ -766,7 +785,7 @@ public class MainFrame extends JFrame {
 		final GridBagConstraints gbc_flashbackDurationSpinner = new GridBagConstraints();
 		gbc_flashbackDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_flashbackDurationSpinner.gridx = 1;
-		gbc_flashbackDurationSpinner.gridy = 16;
+		gbc_flashbackDurationSpinner.gridy = 17;
 		tabContentPanel.add(flashbackDurationSpinner, gbc_flashbackDurationSpinner);
 		
 		final GridBagConstraints gbc_button = new GridBagConstraints();

@@ -94,6 +94,8 @@ public final class CommandLineConfigurationFactory {
 					cfg.fontSize(Integer.parseInt(args[++i]));
 				} else if (arg.equals("--tms-url-template")) {
 					cfg.tmsUrlTemplate(args[++i]);
+				} else if (arg.equals("--attribution")) {
+					cfg.attribution(args[++i]);
 				} else if (arg.equals("--background-map-visibility")) {
 					cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
 				} else if (arg.equals("--total-time")) {
