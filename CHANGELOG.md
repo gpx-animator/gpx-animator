@@ -1,3 +1,8 @@
+version 1.2.0 (2014-02-03)
+--------------------------
+* preparation for interactive map view configuration
+* fixed bug in computing video dimensions
+
 version 1.1.0 (2013-06-24)
 --------------------------
 * configurable map attribution

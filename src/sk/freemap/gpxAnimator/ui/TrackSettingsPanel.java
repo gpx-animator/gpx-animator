@@ -235,7 +235,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(final PropertyChangeEvent evt) {
-				TrackSettingsPanel.this.firePropertyChange("trackConfiguration", null, null); // TODO old and new value
+				configurationChanged();
 			}
 		};
 		inputGpxFileSelector.addPropertyChangeListener("filename", propertyChangeListener);

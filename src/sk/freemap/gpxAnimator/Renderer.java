@@ -55,7 +55,7 @@ public class Renderer {
 	private FontMetrics fontMetrics;
 	
 	private long minTime = Long.MAX_VALUE;
-	private double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE, minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
+	private double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY, minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
 
 	private double speedup;
 
@@ -182,10 +182,10 @@ public class Renderer {
 		
 		// align width and height to 2 for videos
 		if (realWidth % 2 == 1 && !userSpecifiedWidth && !toImages) {
-			realWidth ++;
+			realWidth++;
 		}
 		if (realHeight % 2 == 1 && cfg.getHeight() == null && !toImages) {
-			realHeight ++;
+			realHeight++;
 		}
 		
 		final BufferedImage bi = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_3BYTE_BGR);
@@ -195,6 +195,8 @@ public class Renderer {
 				: new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), realWidth, realHeight);
 				
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
+		
+		System.out.println(realWidth + "x" + realHeight + ";" + scale);
 		
 		if (cfg.getTmsUrlTemplate() == null) {
 			ga.setColor(Color.white);

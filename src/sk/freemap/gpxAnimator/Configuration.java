@@ -217,7 +217,7 @@ public class Configuration {
 		private Long flashbackDuration = 250l;
 		
 		private String output = "video.mp4"; // frame%08d.png
-		private String attribution = "Created by GPX Animator 1.1.0\n%MAP_ATTRIBUTION%";
+		private String attribution = "Created by GPX Animator 1.2.0\n%MAP_ATTRIBUTION%";
 		
 		private int fontSize = 12;
 		private Double markerSize = 8.0;
