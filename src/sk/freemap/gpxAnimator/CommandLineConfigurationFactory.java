@@ -110,7 +110,7 @@ public final class CommandLineConfigurationFactory {
 					final String s = args[++i];
 					cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s));
 				} else if (arg.equals("--help")) {
-					System.out.println("GPX Animator 1.2.0");
+					System.out.println("GPX Animator 1.2.1");
 					System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
 					System.out.println();
 					System.out.println("Usage:");

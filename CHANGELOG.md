@@ -1,3 +1,7 @@
+version 1.2.1 (2015-01-11)
+--------------------------
+* handle all ISO 8601 dates
+
 version 1.2.0 (2014-02-03)
 --------------------------
 * preparation for interactive map view configuration

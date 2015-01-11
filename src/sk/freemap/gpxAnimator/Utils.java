@@ -17,37 +17,12 @@ package sk.freemap.gpxAnimator;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 final class Utils {
-
-	// NOTE: SimpleDateFormat uses GMT[-+]hh:mm for the TZ which breaks
-	// things a bit. Before we go on we have to repair this.
-	private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
-	private static final SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
-
-	static Date parseISO8601(String input) throws ParseException {
-		// this is zero time so we need to add that TZ indicator for
-		if (input.endsWith("Z")) {
-			input = input.substring(0, input.length() - 1) + "GMT-00:00";
-		} else {
-			final int inset = 6;
 	
-			final String s0 = input.substring(0, input.length() - inset);
-			final String s1 = input.substring(input.length() - inset, input.length());
-	
-			input = s0 + "GMT" + s1;
-		}
-	
-		try {
-			return df.parse(input);
-		} catch (final ParseException e) {
-			return df1.parse(input);
-		}
+	private Utils() {
+		throw new AssertionError();
 	}
-	
 
 	static BufferedImage deepCopy(final BufferedImage bi) {
 		final ColorModel cm = bi.getColorModel();
@@ -55,6 +30,5 @@ final class Utils {
 		final WritableRaster raster = bi.copyData(null);
 		return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
-
 
 }

@@ -14,10 +14,10 @@
  */
 package sk.freemap.gpxAnimator;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -75,11 +75,7 @@ final class GpxContentHandler extends DefaultHandler {
 		} else if (ELEM_WPT.equals(qName)) {
 			waypointList.add(new Waypoint(lat, lon, time, name));
 		} else if (ELEM_TIME.equals(qName)) {
-			try {
-				time = Utils.parseISO8601(sb.toString()).getTime();
-			} catch (final ParseException e) {
-				throw new SAXException(e);
-			}
+			time = new DateTime(sb.toString()).getMillis();
 			sb = null;
 		} else if (ELEM_NAME.equals(qName)) {
 			name = sb.toString();
