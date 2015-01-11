@@ -474,15 +474,18 @@ public class Renderer {
 		final String[] lines = text.split("\n");
 		float yy = y - (lines.length - 1) * height;
 		for (final String line : lines) {
-			final TextLayout tl = new TextLayout(line, font, frc);
-			final Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(x, yy));
-			g2.setColor(Color.white);
-			g2.fill(sha);
-			g2.draw(sha);
+			if (!line.isEmpty()) {
+				final TextLayout tl = new TextLayout(line, font, frc);
+				final Shape sha = tl.getOutline(AffineTransform.getTranslateInstance(x, yy));
+				g2.setColor(Color.white);
+				g2.fill(sha);
+				g2.draw(sha);
+				
+				g2.setFont(font);
+				g2.setColor(Color.black);
+				g2.drawString(line, x, yy);
+			}
 			
-			g2.setFont(font);
-			g2.setColor(Color.black);
-			g2.drawString(line, x, yy);
 			yy += height;
 		}
 	}
