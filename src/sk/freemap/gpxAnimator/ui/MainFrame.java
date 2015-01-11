@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -45,6 +46,8 @@ import sk.freemap.gpxAnimator.UserException;
 
 public class MainFrame extends JFrame {
 
+	static final String PREF_LAST_CWD = "lastCWD";
+
 	private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
 
 	private static final String TITLE = "GPX Animator 1.2.1";
@@ -67,7 +70,9 @@ public class MainFrame extends JFrame {
 	
 
 	private GeneralSettingsPanel generalSettingsPanel;
-	
+
+	private final Preferences prefs = Preferences.userRoot().node("app");
+
 	
 	public Configuration createConfiguration() throws UserException {
 		final Configuration.Builder b = Configuration.createBuilder();
@@ -154,8 +159,12 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(final ActionEvent e) {
 				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					
+					final String lastCwd = prefs.get(PREF_LAST_CWD, null);
+					fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
 					if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
 						final File file = fileChooser.getSelectedFile();
+						prefs.put(PREF_LAST_CWD, file.getParent());
+						
 						try {
 							final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
 							final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -477,8 +486,13 @@ public class MainFrame extends JFrame {
 	}
 	
 	private void saveAs() {
+		final String lastCwd = prefs.get(PREF_LAST_CWD, null);
+		fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
+		fileChooser.setSelectedFile(new File("")); // to forget previous file name
 		if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
+			prefs.put(PREF_LAST_CWD, file.toString());
+
 			if (!file.getName().endsWith(".ga.xml")) {
 				file = new File(file.getPath() + ".ga.xml");
 			}
