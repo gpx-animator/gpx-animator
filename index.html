@@ -38,8 +38,7 @@
 <p>GPX Animator generates video from GPX files.</p>
 
 <p>
-You can build it from sources or download <a href="downloads/GpxAnimator-1.2.0.jar">latest version</a> or (<a href="downloads/GpxAnimator-1.1.0.jar">previous version</a>).
-Older, commandline-only version is also <a href="downloads/GpxAnimator-0.8.jar">available</a>.
+You can build it from sources or download <a href="downloads/GpxAnimator-1.2.1.jar">latest version</a> or (<a href="downloads/GpxAnimator-1.2.0.jar">previous version</a>).
 </p>
 
 <h2>Features</h2>
@@ -65,7 +64,12 @@ Older, commandline-only version is also <a href="downloads/GpxAnimator-0.8.jar">
 
 <h2>FAQ</h2>
 <h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
-<p>Your GPX trace covers probably too big area. Try to specify lower zoom, width and/or height.</p>
+<p>
+	Increase java heap memory: <code>java -Xmx1024m -jar GpxAnimator.jar</code>.
+	If the problem persists, try higher value or check if your GPX trace doesn't cover too big area.
+	If it does then try to specify lower zoom, width and/or height.
+</p>
+
 <h3>Does it run on Linux, Windows, WhateverOS?</h3>
 <p>Application will run on any platform where you can run Java.</p>
 
