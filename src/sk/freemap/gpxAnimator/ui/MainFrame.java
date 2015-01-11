@@ -39,6 +39,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import sk.freemap.gpxAnimator.Configuration;
+import sk.freemap.gpxAnimator.FileXmlAdapter;
 import sk.freemap.gpxAnimator.Renderer;
 import sk.freemap.gpxAnimator.RenderingContext;
 import sk.freemap.gpxAnimator.TrackConfiguration;
@@ -47,6 +48,8 @@ import sk.freemap.gpxAnimator.UserException;
 public class MainFrame extends JFrame {
 
 	static final String PREF_LAST_CWD = "lastCWD";
+	
+	private static final String PROJECT_FILENAME_SUFFIX = ".ga.xml";
 
 	private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
 
@@ -118,7 +121,7 @@ public class MainFrame extends JFrame {
 			
 			@Override
 			public boolean accept(final File f) {
-				return f.isDirectory() || f.getName().endsWith(".ga.xml");
+				return f.isDirectory() || f.getName().endsWith(PROJECT_FILENAME_SUFFIX);
 			}
 		});
 
@@ -168,6 +171,7 @@ public class MainFrame extends JFrame {
 						try {
 							final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
 							final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+							unmarshaller.setAdapter(new FileXmlAdapter(file.getParentFile()));
 							setConfiguration((Configuration) unmarshaller.unmarshal(file));
 							MainFrame.this.file = file;
 						} catch (final JAXBException e1) {
@@ -491,10 +495,10 @@ public class MainFrame extends JFrame {
 		fileChooser.setSelectedFile(new File("")); // to forget previous file name
 		if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
-			prefs.put(PREF_LAST_CWD, file.toString());
+			prefs.put(PREF_LAST_CWD, file.getParent());
 
-			if (!file.getName().endsWith(".ga.xml")) {
-				file = new File(file.getPath() + ".ga.xml");
+			if (!file.getName().endsWith(PROJECT_FILENAME_SUFFIX)) {
+				file = new File(file.getPath() + PROJECT_FILENAME_SUFFIX);
 			}
 			save(file);
 		}
@@ -502,13 +506,16 @@ public class MainFrame extends JFrame {
 
 	private void save(final File file) {
 		try {
-			final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
-			final Marshaller marshaller = jaxbContext.createMarshaller();
-			marshaller.marshal(createConfiguration(), file);
-			MainFrame.this.file = file;
-			changed(false);
-		} catch (final JAXBException e) {
-			JOptionPane.showMessageDialog(this, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			try {
+				final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
+				final Marshaller marshaller = jaxbContext.createMarshaller();
+				marshaller.setAdapter(new FileXmlAdapter(file.getParentFile()));
+				marshaller.marshal(createConfiguration(), file);
+				MainFrame.this.file = file;
+				changed(false);
+			} catch (final JAXBException e) {
+				throw new UserException(e.getMessage(), e);
+			}
 		} catch (final UserException e) {
 			JOptionPane.showMessageDialog(this, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}

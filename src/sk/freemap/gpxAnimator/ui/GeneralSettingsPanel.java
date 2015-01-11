@@ -8,6 +8,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -591,7 +592,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		attributionTextArea.setText(c.getAttribution());
 		skipIdleCheckBox.setSelected(c.isSkipIdle());
 		flashbackColorSelector.setColor(c.getFlashbackColor());
-		outputFileSelector.setFilename(c.getOutput());
+		outputFileSelector.setFilename(c.getOutput().toString());
 		fontSizeSpinner.setValue(c.getFontSize());
 		markerSizeSpinner.setValue(c.getMarkerSize());
 		waypointSizeSpinner.setValue(c.getWaypointSize());
@@ -617,7 +618,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		b.skipIdle(skipIdleCheckBox.isSelected());
 		b.flashbackColor(flashbackColorSelector.getColor());
 		b.flashbackDuration((Long) flashbackDurationSpinner.getValue());
-		b.output(outputFileSelector.getFilename());
+		b.output(new File(outputFileSelector.getFilename()));
 		b.fontSize((Integer) fontSizeSpinner.getValue());
 		b.markerSize((Double) markerSizeSpinner.getValue());
 		b.waypointSize((Double) waypointSizeSpinner.getValue());

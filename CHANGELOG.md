@@ -1,6 +1,8 @@
 version 1.2.1 (2015-01-11)
 --------------------------
-* handle all ISO 8601 dates
+* handle all ISO 8601 date formats in GPX
+* remember directory in file dialogs
+* store relative paths in project XML file
 
 version 1.2.0 (2014-02-03)
 --------------------------

@@ -15,6 +15,7 @@
 package sk.freemap.gpxAnimator;
 
 import java.awt.Color;
+import java.io.File;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -23,7 +24,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TrackConfiguration {
 
-	private String inputGpx;
+	@XmlJavaTypeAdapter(FileXmlAdapter.class)
+	private File inputGpx;
+	
 	private String label;
 	
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
@@ -39,7 +42,7 @@ public class TrackConfiguration {
 	}
 	
 	
-	private TrackConfiguration(final String inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final float lineWidth) {
+	private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final float lineWidth) {
 		this.inputGpx = inputGpx;
 		this.label = label;
 		this.color = color;
@@ -49,7 +52,7 @@ public class TrackConfiguration {
 	}
 
 
-	public String getInputGpx() {
+	public File getInputGpx() {
 		return inputGpx;
 	}
 	
@@ -86,7 +89,7 @@ public class TrackConfiguration {
 	
 	public static class Builder {
 		
-		private String inputGpx;
+		private File inputGpx;
 		private String label;
 		
 		@XmlJavaTypeAdapter(ColorXmlAdapter.class)
@@ -106,7 +109,7 @@ public class TrackConfiguration {
 		}
 		
 		
-		public Builder inputGpx(final String inputGpx) {
+		public Builder inputGpx(final File inputGpx) {
 			this.inputGpx = inputGpx;
 			return this;
 		}

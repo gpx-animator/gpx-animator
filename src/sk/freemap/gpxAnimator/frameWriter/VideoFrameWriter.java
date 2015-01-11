@@ -15,6 +15,7 @@
 package sk.freemap.gpxAnimator.frameWriter;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import com.xuggle.mediatool.IMediaWriter;
@@ -26,8 +27,8 @@ public final class VideoFrameWriter implements FrameWriter {
 	private int frame;
 	private final double interval;
 	
-	public VideoFrameWriter(final String fileName, final double fps, final int width, final int height) {
-		writer = ToolFactory.makeWriter(fileName);
+	public VideoFrameWriter(final File file, final double fps, final int width, final int height) {
+		writer = ToolFactory.makeWriter(file.toString());
 		writer.addVideoStream(0, 0, IRational.make(fps), width, height);
 		interval = 1000d / fps;
 	}

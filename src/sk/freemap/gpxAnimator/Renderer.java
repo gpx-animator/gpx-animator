@@ -172,7 +172,7 @@ public class Renderer {
 			}
 		}
 
-		final String frameFilePattern = cfg.getOutput();
+		final String frameFilePattern = cfg.getOutput().toString();
 		final int dot = frameFilePattern.lastIndexOf('.');
 		final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1);
 		final boolean toImages = "png".equalsIgnoreCase(ext) || "jpg".equalsIgnoreCase(ext);

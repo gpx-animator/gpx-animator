@@ -278,7 +278,7 @@ abstract class TrackSettingsPanel extends JPanel {
 	public TrackConfiguration createConfiguration() throws UserException {
 		final Builder b = TrackConfiguration.createBuilder();
 		
-		b.inputGpx(inputGpxFileSelector.getFilename());
+		b.inputGpx(new File(inputGpxFileSelector.getFilename()));
 		b.label(labelTextField.getText());
 		b.color(colorSelector.getColor());
 		b.lineWidth((Float) lineWidthSpinner.getValue());
@@ -290,7 +290,7 @@ abstract class TrackSettingsPanel extends JPanel {
 	
 	
 	public void setConfiguration(final TrackConfiguration c) {
-		inputGpxFileSelector.setFilename(c.getInputGpx());
+		inputGpxFileSelector.setFilename(c.getInputGpx().toString());
 		labelTextField.setText(c.getLabel());
 		colorSelector.setColor(c.getColor());
 		lineWidthSpinner.setValue(c.getLineWidth());

@@ -14,6 +14,7 @@
  */
 package sk.freemap.gpxAnimator;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +29,7 @@ import org.xml.sax.SAXException;
 
 class GpxParser {
 
-	static void parseGpx(final String inputGpx, final GpxContentHandler dh) throws UserException {
+	static void parseGpx(final File inputGpx, final GpxContentHandler dh) throws UserException {
 		final SAXParser saxParser;
 		try {
 			saxParser = SAXParserFactory.newInstance().newSAXParser();

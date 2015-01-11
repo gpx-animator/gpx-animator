@@ -16,6 +16,7 @@ package sk.freemap.gpxAnimator;
 
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public final class CommandLineConfigurationFactory {
 // TODO				} else if (arg.equals("--configuration")) {
 //					args[++i];
 				} else if (arg.equals("--output")) {
-					cfg.output(args[++i]);
+					cfg.output(new File(args[++i]));
 				} else if (arg.equals("--label")) {
 					labelList.add(args[++i]);
 				} else if (arg.equals("--color")) {
@@ -133,7 +134,7 @@ public final class CommandLineConfigurationFactory {
 		
 		for (int i = 0, n = inputGpxList.size(); i < n; i++) {
 			final TrackConfiguration.Builder tcb = TrackConfiguration.createBuilder();
-			tcb.inputGpx(inputGpxList.get(i));
+			tcb.inputGpx(new File(inputGpxList.get(i)));
 			tcb.color(colorList.get(i));
 			tcb.lineWidth(lineWidthList.get(i));
 			tcb.label(i < labelList.size() ? labelList.get(i) : "");

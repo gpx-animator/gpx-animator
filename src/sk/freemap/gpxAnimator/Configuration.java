@@ -15,6 +15,7 @@
 package sk.freemap.gpxAnimator;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +50,8 @@ public class Configuration {
 	private Color flashbackColor;
 	private Long flashbackDuration;
 	
-	private String output;
+	@XmlJavaTypeAdapter(FileXmlAdapter.class)
+	private File output;
 	private String attribution;
 	
 	private int fontSize;
@@ -73,7 +75,7 @@ public class Configuration {
 			final Double speedup, final long tailDuration, final double fps, final Long totalTime,
 			final float backgroundMapVisibility, final String tmsUrlTemplate,
 			final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
-			final String output, final String attribution,
+			final File output, final String attribution,
 			final int fontSize, final Double markerSize, final Double waypointSize,
 			final List<TrackConfiguration> trackConfigurationList) {
 		this.margin = margin;
@@ -163,7 +165,7 @@ public class Configuration {
 	}
 	
 	
-	public String getOutput() {
+	public File getOutput() {
 		return output;
 	}
 	
@@ -216,7 +218,7 @@ public class Configuration {
 		private Color flashbackColor = Color.white;
 		private Long flashbackDuration = 250l;
 		
-		private String output = "video.mp4"; // frame%08d.png
+		private File output = new File("video.mp4"); // frame%08d.png
 		private String attribution = "Created by GPX Animator 1.2.1\n%MAP_ATTRIBUTION%";
 		
 		private int fontSize = 12;
@@ -304,7 +306,7 @@ public class Configuration {
 			return this;
 		}
 
-		public Builder output(final String output) {
+		public Builder output(final File output) {
 			this.output = output;
 			return this;
 		}
