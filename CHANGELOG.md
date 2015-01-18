@@ -1,3 +1,7 @@
+version 1.2.2 (2015-01-18)
+--------------------------
+* fixed NPE when adding new track
+
 version 1.2.1 (2015-01-11)
 --------------------------
 * handle all ISO 8601 date formats in GPX

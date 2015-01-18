@@ -290,7 +290,7 @@ abstract class TrackSettingsPanel extends JPanel {
 	
 	
 	public void setConfiguration(final TrackConfiguration c) {
-		inputGpxFileSelector.setFilename(c.getInputGpx().toString());
+		inputGpxFileSelector.setFilename(c.getInputGpx() == null ? null : c.getInputGpx().toString());
 		labelTextField.setText(c.getLabel());
 		colorSelector.setColor(c.getColor());
 		lineWidthSpinner.setValue(c.getLineWidth());
