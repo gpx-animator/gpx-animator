@@ -130,7 +130,6 @@ public class MainFrame extends JFrame {
 					while (hue >= 1f) {
 						hue -= 1f;
 					}
-					System.out.println(hue);
 				} catch (final UserException ex) {
 					throw new RuntimeException(ex);
 				}
