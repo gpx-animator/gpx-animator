@@ -1,6 +1,7 @@
 version 1.2.2 (2015-01-18)
 --------------------------
 * fixed NPE when adding new track
+* preselect different color to newly added tracks
 
 version 1.2.1 (2015-01-11)
 --------------------------

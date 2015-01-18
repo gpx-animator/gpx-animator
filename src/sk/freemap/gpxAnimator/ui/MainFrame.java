@@ -1,5 +1,6 @@
 package sk.freemap.gpxAnimator.ui;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,6 +13,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.prefs.Preferences;
@@ -76,6 +78,8 @@ public class MainFrame extends JFrame {
 
 	private final Preferences prefs = Preferences.userRoot().node("app");
 
+	private final ActionListener addTrackActionListener;
+
 	
 	public Configuration createConfiguration() throws UserException {
 		final Configuration.Builder b = Configuration.createBuilder();
@@ -112,6 +116,27 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		addTrackActionListener = new ActionListener() {
+			float hue = new Random().nextFloat();
+			
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				try {
+					addTrackSettingsTab(TrackConfiguration
+							.createBuilder()
+							.color(Color.getHSBColor(hue, 0.8f, 0.8f))
+							.build());
+					hue += 0.275f;
+					while (hue >= 1f) {
+						hue -= 1f;
+					}
+					System.out.println(hue);
+				} catch (final UserException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+		};
+
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(new FileFilter() {
 			@Override
@@ -221,16 +246,7 @@ public class MainFrame extends JFrame {
 		menuBar.add(mnTrack);
 		
 		final JMenuItem mntmAddTrack = new JMenuItem("Add");
-		mntmAddTrack.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				try {
-					addTrackSettingsTab(TrackConfiguration.createBuilder().build());
-				} catch (final UserException e1) {
-					throw new RuntimeException(e1);
-				}
-			}
-		});
+		mntmAddTrack.addActionListener(addTrackActionListener);
 		mnTrack.add(mntmAddTrack);
 		
 		final JMenuItem mntmRemoveTrack = new JMenuItem("Remove");
@@ -341,16 +357,7 @@ public class MainFrame extends JFrame {
 		gbc_addTrackButton.gridx = 1;
 		gbc_addTrackButton.gridy = 0;
 		panel.add(addTrackButton, gbc_addTrackButton);
-		addTrackButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				try {
-					addTrackSettingsTab(TrackConfiguration.createBuilder().build());
-				} catch (final UserException e1) {
-					throw new RuntimeException(e1);
-				}
-			}
-		});
+		addTrackButton.addActionListener(addTrackActionListener);
 		
 		startButton = new JButton("Start");
 		startButton.setEnabled(false);
