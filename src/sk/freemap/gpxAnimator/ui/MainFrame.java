@@ -157,7 +157,7 @@ public class MainFrame extends JFrame {
 				)
 		);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 681, 647);
+		setBounds(100, 100, 800, 647);
 		
 		final JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);

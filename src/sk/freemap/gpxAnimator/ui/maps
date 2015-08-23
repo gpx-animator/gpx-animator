@@ -1,16 +1,22 @@
 # generated with xmlstarlet sel -N x=http://josm.openstreetmap.de/maps-1.0 -t -m "//x:entry" -i "x:type='tms'" -v x:name -nl -v x:url -nl maps.xml
 # where maps.xml is obtained from http://josm.openstreetmap.de/maps
 
-MapBox Satellite
-http://{switch:a,b,c}.tiles.mapbox.com/v3/openstreetmap.map-4wvf9l0l/{zoom}/{x}/{y}.png
+HDM (Humanitarian OpenStreetMap Team)
+http://{switch:a,b,c}.tile.openstreetmap.fr/hot/{zoom}/{x}/{y}.png
+Mapbox Satellite
+http://{switch:a,b,c}.tiles.mapbox.com/v4/openstreetmap.map-inh7ifmo/{zoom}/{x}/{y}.png?access_token=pk.eyJ1Ijoib3BlbnN0cmVldG1hcCIsImEiOiJncjlmd0t3In0.DmZsIeOW-3x-C5eX-wAqTw
 MapQuest Open Aerial
 http://oatile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/sat/{zoom}/{x}/{y}.png
+OpenStreetMap GPS Traces
+https://gps-{switch:a,b,c}.tile.openstreetmap.org/lines/{zoom}/{x}/{y}.png
 OpenStreetMap (Mapnik)
-http://tile.openstreetmap.org/{zoom}/{x}/{y}.png
-OpenStreetMap (Mapnik Black & White)
+https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png
+skobbler
+http://tiles{switch:1,2,3,4}-4001b3692e229e3215c9b7a73e528198.skobblermaps.com/TileService/tiles/2.0/00021210101/0/{zoom}/{x}/{y}.png
+OpenStreetMap (Mapnik Black &amp; White)
 http://{switch:a,b,c}.www.toolserver.org/tiles/bw-mapnik/{zoom}/{x}/{y}.png
-Skobbler
-http://tiles{switch:1,2,3,4}.skobbler.net/osm_tiles2/{zoom}/{x}/{y}.png
+OpenStreetMap (Mapnik, no labels)
+http://www.toolserver.org/tiles/osm-no-labels/{zoom}/{x}/{y}.png
 OpenCycleMap
 http://tile.opencyclemap.org/cycle/{zoom}/{x}/{y}.png
 MapQuest OSM
@@ -19,80 +25,148 @@ Public Transport (ÖPNV)
 http://tile.memomaps.de/tilegen/{zoom}/{x}/{y}.png
 OpenStreetMap (German Style)
 http://{switch:a,b,c,d}.tile.openstreetmap.de/tiles/osmde/{zoom}/{x}/{y}.png
-Hike & Bike
-http://toolserver.org/tiles/hikebike/{zoom}/{x}/{y}.png
-OpenStreetMap (Sorbian Language)
-http://toolserver.org/tiles/osm-locale-hsb/{zoom}/{x}/{y}.png
-OpenStreetMap (German Language)
-http://toolserver.org/tiles/osm-locale-de/{zoom}/{x}/{y}.png
+Cambodia, Laos, Thailand, Vietnam bilingual
+http://{switch:a,b,c,d}.tile.osm-tools.org/osm_then/{zoom}/{x}/{y}.png
+osmfr
+http://{switch:a,b,c}.tile.openstreetmap.fr/osmfr/{zoom}/{x}/{y}.png
 OpenPT Map (overlay)
 http://openptmap.de/tiles/{zoom}/{x}/{y}.png
+Strava cycling heatmap
+http://globalheat.strava.com/tiles/cycling/color2/{zoom}/{x}/{y}.png
+Strava running heatmap
+http://globalheat.strava.com/tiles/running/color2/{zoom}/{x}/{y}.png
+Locator Overlay
+http://{switch:a,b,c}.tiles.mapbox.com/v4/openstreetmap.map-inh76ba2/{zoom}/{x}/{y}.png?access_token=pk.eyJ1Ijoib3BlbnN0cmVldG1hcCIsImEiOiJncjlmd0t3In0.DmZsIeOW-3x-C5eX-wAqTw
+QA No Address
+http://tile3.poole.ch/noaddress/{zoom}/{x}/{y}.png
+Waymarked Trails: Hiking
+http://tile.waymarkedtrails.org/hiking/{zoom}/{x}/{y}.png
+Waymarked Trails: Cycling
+http://tile.waymarkedtrails.org/cycling/{zoom}/{x}/{y}.png
+Waymarked Trails: MTB
+http://tile.waymarkedtrails.org/mtb/{zoom}/{x}/{y}.png
+Waymarked Trails: Skating
+http://tile.waymarkedtrails.org/skating/{zoom}/{x}/{y}.png
+Waymarked Trails: Horse Riding
+http://tile.waymarkedtrails.org/riding/{zoom}/{x}/{y}.png
+Waymarked Trails: Winter Sports
+http://tile.waymarkedtrails.org/slopemap/{zoom}/{x}/{y}.png
+OSM Inspector: Geometry
+http://tools.geofabrik.de/osmi/tiles/geometry/{zoom}/{x}/{y}.png
+OSM Inspector: Tagging
+http://tools.geofabrik.de/osmi/tiles/tagging/{zoom}/{x}/{y}.png
+OSM Inspector: Places
+http://tools.geofabrik.de/osmi/tiles/places/{zoom}/{x}/{y}.png
+OSM Inspector: Highways
+http://tools.geofabrik.de/osmi/tiles/highways/{zoom}/{x}/{y}.png
+OSM Inspector: Multipolygon
+http://tools.geofabrik.de/osmi/tiles/multipolygon/{zoom}/{x}/{y}.png
+OSM Inspector: Routing
+http://tools.geofabrik.de/osmi/tiles/routing/{zoom}/{x}/{y}.png
+OSM Inspector: Addresses
+http://tools.geofabrik.de/osmi/tiles/addresses/{zoom}/{x}/{y}.png
+OSM Inspector: Boundaries (EU)
+http://tools.geofabrik.de/osmi/tiles/boundaries/{zoom}/{x}/{y}.png
+AGRI black-and-white 2.5m
+http://agri.openstreetmap.org/{zoom}/{x}/{y}.png
+basemap.at
+http://maps.wien.gv.at/basemap/bmaphidpi/normal/google3857/{zoom}/{y}/{x}.jpeg
+basemap.at Orthofoto
+http://maps.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{zoom}/{y}/{x}.jpeg
 Vienna: Mehrzweckkarte (general purpose)
 http://www.wien.gv.at/wmts/fmzk/pastell/google3857/{zoom}/{y}/{x}.jpeg
 Vienna: Beschriftungen (annotations)
 http://www.wien.gv.at/wmts/beschriftung/normal/google3857/{zoom}/{y}/{x}.png
 Vienna: Orthofoto (aerial image)
 http://www.wien.gv.at/wmts/lb/farbe/google3857/{zoom}/{y}/{x}.jpeg
-Kanton Aargau 25cm (AGIS 2011)
-http://tiles.poole.ch/AGIS/OF2011/{zoom}/{x}/{y}.png
-Stadt Uster Orthophoto 2008 10cm
-http://mapproxy.sosm.ch:8080/tiles/uster/EPSG900913/{zoom}/{x}/{y}.png?origin=nw
-Stadtplan Zürich
-http://mapproxy.sosm.ch:8080/tiles/zh_stadtplan/EPSG900913/{zoom}/{x}/{y}.png?origin=nw
+IBGE Mapa de Setores Urbanos
+http://{switch:a,b,c}.tiles.mapbox.com/v3/tmpsantos.hgda0m6h/{zoom}/{x}/{y}.png
+IBGE Mapa de Setores Rurais
+http://{switch:a,b,c}.tiles.mapbox.com/v3/tmpsantos.i00mo1kj/{zoom}/{x}/{y}.png
 British Columbia Mosaic
 http://{switch:a,b,c,d}.imagery.paulnorman.ca/tiles/bc_mosaic/{zoom}/{x}/{y}.png
-USGS Scanned Topographic Maps
-http://{switch:a,b,c}.tile.openstreetmap.us/usgs_scanned_topos/{zoom}/{x}/{y}.png
-USGS Large Scale Imagery
-http://{switch:a,b,c}.tile.openstreetmap.us/usgs_large_scale/{zoom}/{x}/{y}.jpg
-OSM US TIGER 2012 Roads Overlay
-http://{switch:a,b,c}.tile.openstreetmap.us/tiger2012_roads_expanded/{zoom}/{x}/{y}.png
-7th Series (OS7)
-http://ooc.openstreetmap.org/os7/{zoom}/{x}/{y}.jpg
-OS New Popular Edition historic
-http://ooc.openstreetmap.org/npe/{zoom}/{x}/{y}.png
-OS OpenData StreetView
-http://os.openstreetmap.org/sv/{zoom}/{x}/{y}.png
-OS OpenData Locator
-http://tiles.itoworld.com/os_locator/{zoom}/{x}/{y}.png
-Surrey Air Survey
-http://gravitystorm.dev.openstreetmap.org/surrey/{zoom}/{x}/{y}.png
-NLS - OS 6-inch Scotland 1842-82
-http://geo.nls.uk/maps/os/six_inch/{zoom}/{x}/{-y}.png
-NLS - OS 1:25k 1st Series 1937-61
-http://geo.nls.uk/mapdata2/os/25000/{zoom}/{x}/{-y}.png
-NLS - OS 1-inch 7th Series 1955-61
-http://geo.nls.uk/mapdata2/os/seventh/{zoom}/{x}/{-y}.png
-Ireland British War Office One-Inch 1941-43 GSGS 4136
-http://geo.nls.uk/maps/ireland/gsgs4136/{zoom}/{x}/{-y}.png
-Ireland Bartholomew Quarter-Inch 1940
-http://geo.nls.uk/maps/ireland/bartholomew/{zoom}/{x}/{-y}.png
-Ireland EEA GMES Urban Atlas
-http://a.tile.openstreetmap.ie/tiles/urbanatlas/{zoom}/{x}/{y}.png
-Ireland EEA CORINE 2006
-http://a.tile.openstreetmap.ie/tiles/corine/{zoom}/{x}/{y}.png
-Toulouse - Orthophotoplan 2011
-http://wms.openstreetmap.fr/tms/1.0.0/toulouse_ortho2011/{zoom}/{x}/{y}
-Toulouse - Orthophotoplan 2007
-http://wms.openstreetmap.fr/tms/1.0.0/toulouse_ortho2007/{zoom}/{x}/{y}
-Tours - Orthophotos 2008-2010
-http://wms.openstreetmap.fr/tms/1.0.0/tours/{zoom}/{x}/{y}
-Tours - Orthophotos 2008
-http://tms.mapspot.ge/tms/2/nonstandard/{zoom}/{x}/{y}.jpeg
-Fugro (Denmark)
-http://{switch:a,b,c}.tile.openstreetmap.dk/fugro2005/{zoom}/{x}/{y}.png
+Kelowna 2012
+http://{switch:a,b,c,d}.tile.paulnorman.ca/kelowna2012/{zoom}/{x}/{y}.png
+Kelowna Roads overlay
+http://{switch:a,b,c,d}.tile.paulnorman.ca/kelowna_overlay/{zoom}/{x}/{y}.png
+Czech RUIAN budovy
+http://tile.poloha.net/budovy/{zoom}/{x}/{y}.png
+Czech RUIAN parcely
+http://tile.poloha.net/parcely/{zoom}/{x}/{y}.png
+Geodatastyrelsen (Denmark)
+http://mapproxy.gpweb.dk/tiles/1.0.0/kortforsyningen_ortoforaar/EPSG3857/{zoom}/{x}/{y}.jpeg
 Stevns (Denmark)
 http://{switch:a,b,c}.tile.openstreetmap.dk/stevns/2009/{zoom}/{x}/{y}.png
 Vejmidte (Denmark)
 http://{switch:a,b,c}.tile.openstreetmap.dk/danmark/vejmidte/{zoom}/{x}/{y}.png
-Pangasinán/Bulacan (Phillipines HiRes)
-http://gravitystorm.dev.openstreetmap.org/imagery/philippines/{zoom}/{x}/{y}.png
-Cambodia, Laos, Thailand, Vietnam bilingual
-http://{switch:a,b,c,d}.tile.osm-tools.org/osm_then/{zoom}/{x}/{y}.png
+BANO
+http://{switch:a,b,c}.layers.openstreetmap.fr/bano/{zoom}/{x}/{y}.png
+BD Carthage
+http://{switch:a,b,c}.tile.openstreetmap.fr/route500hydro/{zoom}/{x}/{y}.png
+Bordeaux - 2012
+http://wms.openstreetmap.fr/tms/1.0.0/bordeaux_2012/{zoom}/{x}/{y}
+Cadastre
+http://tms.cadastre.openstreetmap.fr/*/tout/{z}/{x}/{y}.png
+CRAIG - Auvergne 2013 - 25 cm
+http://tiles.craig.fr/osm/tms/1.0.0/ortho_2013/webmercator/{zoom-1}/{x}/{-y}.jpeg
+CRIGE PACA Alpes-Maritimes 2009 - 40 cm
+http://wms.openstreetmap.fr/tms/1.0.0/alpesmaritimes06_2009/{zoom}/{x}/{y}
+GrandNancy Orthophotographie 2012
+http://wms.openstreetmap.fr/tms/1.0.0/nancy_2012/{zoom}/{x}/{y}
+Loire-Atlantique - Orthophotos 2012 - 20 cm
+http://{switch:a,b,c,d,e,f,g,h}.tiles.cg44.makina-corpus.net/ortho-2012/{zoom}/{x}/{-y}.jpg
+Route 500™©®
+http://{switch:a,b,c}.tile.openstreetmap.fr/route500/{zoom}/{x}/{y}.png
+Toulouse - Orthophotoplan 2013
+http://wms.openstreetmap.fr/tms/1.0.0/toulouse_2013/{zoom}/{x}/{y}
+Toulouse - Orthophotoplan 2011
+http://wms.openstreetmap.fr/tms/1.0.0/toulouse_ortho2011/{zoom}/{x}/{y}
+Toulouse - Orthophotoplan 2007
+http://wms.openstreetmap.fr/tms/1.0.0/toulouse_ortho2007/{zoom}/{x}/{y}
+Tours - Orthophotos 2013
+http://wms.openstreetmap.fr/tms/1.0.0/tours_2013/{zoom}/{x}/{y}
+Tours - Orthophotos 2008-2010
+http://wms.openstreetmap.fr/tms/1.0.0/tours/{zoom}/{x}/{y}
+Tours - Orthophotos 2008
+http://tms.mapspot.ge/tms/2/nonstandard/{zoom}/{x}/{y}.jpeg
+Vercors - Réserve naturelle des Hauts-Plateaux du Vercors - Orthophotos 1999 - 1 m
+http://wms.openstreetmap.fr/tms/1.0.0/PNRVercors-RHP-1999/{zoom}/{x}/{y}
+Hike &amp; Bike
+http://{switch:a,b,c}.tiles.wmflabs.org/hikebike/{zoom}/{x}/{y}.png
+OpenStreetMap (Sorbian Language)
+http://map.dgpsonline.eu/osmsb/{zoom}/{x}/{y}.png
+Drone Imagery (Haiti)
+http://wms.openstreetmap.fr/tms/1.0.0/iomhaiti/{zoom}/{x}/{y}
+Drone Imagery 2014 (Haiti)
+http://wms.openstreetmap.fr/tms/1.0.0/haiti_2014/{zoom}/{x}/{y}
+Ireland British War Office 1:25k GSGS 3906
+http://mapwarper.net/layers/tile/101/{zoom}/{x}/{y}.png
+Ireland British War Office One-Inch 1941-43 GSGS 4136
+http://geo.nls.uk/maps/ireland/gsgs4136/{zoom}/{x}/{-y}.png
+Ireland Bartholomew Quarter-Inch 1940
+http://geo.nls.uk/maps/ireland/bartholomew/{zoom}/{x}/{-y}.png
+Ireland Civil Parishes and Baronies - Memorial Atlas
+http://mapwarper.net/layers/tile/295/{zoom}/{x}/{y}.png
+OSMIE Townlands
+http://tile.openstreetmap.ie/townland/{zoom}/{x}/{y}.png
+OSMIE EDs
+http://tile.openstreetmap.ie/ed/{zoom}/{x}/{y}.png
+OSMIE Civil Parishes
+http://tile.openstreetmap.ie/civilparish/{zoom}/{x}/{y}.png
+OSMIE Baronies
+http://tile.openstreetmap.ie/barony/{zoom}/{x}/{y}.png
+OSMIE Political
+http://tile.openstreetmap.ie/political/{zoom}/{x}/{y}.png
+ORT10LT (Lithuania)
+http://mapproxy.openmap.lt/ort10lt/g/{zoom}/{x}/{y}.jpeg
 Niger Delta Oct 2012 Landsat
 http://pnorman.dev.openstreetmap.org/imagery/niger_oct_2012_321/{zoom}/{x}/{y}.png
-South Africa CD:NGI Aerial
-http://{switch:a,b,c}.aerial.openstreetmap.org.za/ngi-aerial/{zoom}/{x}/{y}.jpg
+Gaza Strip - Pléiades - 2014/07/06
+http://imagery.openstreetmap.fr/tms/1.0.0/gaza_pleiades_20140706/{zoom}/{x}/{y}
+Gaza Strip - Pléiades - 2014/07/06 (NIR)
+http://imagery.openstreetmap.fr/tms/1.0.0/gaza_pleiades_20140706_nir/{zoom}/{x}/{y}
+Pangasinán/Bulacan (Phillipines HiRes)
+http://gravitystorm.dev.openstreetmap.org/imagery/philippines/{zoom}/{x}/{y}.png
 Freemap.sk Car
 http://t{switch:1,2,3,4}.freemap.sk/A/{zoom}/{x}/{y}.jpeg
 Freemap.sk Hiking
@@ -111,13 +185,225 @@ Slovakia EEA CORINE 2006
 http://www.freemap.sk/tms/clc/{zoom}/{x}/{y}.png
 Slovakia Historic Maps
 http://tms.freemap.sk/historicke/{zoom}/{x}/{y}.png
-AGRI black-and-white 2.5m
-http://agri.openstreetmap.org/{zoom}/{x}/{y}.png
-OSM - Tiger Edited Map
-http://tiger-osm.mapquest.com/tiles/1.0.0/tiger/{zoom}/{x}/{y}.png
-OS 1:25k historic (OSM)
+RABA-KGZ: Slovenia farmland use
+RABA-KGZ: Raba kmetijskih zemljišč
+http://wms.openstreetmap.de/tms/RABA/{zoom}/{x}/{y}.png
+RABA-KGZ: Slovenia built-up areas
+RABA-KGZ: Pozidana zemljišča
+http://wms.openstreetmap.de/tms/RABA3000/{zoom}/{x}/{y}.png
+South Africa CD:NGI Aerial
+http://{switch:a,b,c}.aerial.openstreetmap.org.za/ngi-aerial/{zoom}/{x}/{y}.jpg
+Kanton Aargau 25cm (AGIS 2011)
+http://tiles.poole.ch/AGIS/OF2011/{zoom}/{x}/{y}.png
+Kanton Aargau 25cm (AGIS 2014)
+http://mapproxy.osm.ch:8080/tiles/AGIS2014/EPSG900913/{zoom}/{x}/{y}.png?origin=nw
+Stadt Uster Orthophoto 2008 10cm
+http://mapproxy.sosm.ch:8080/tiles/uster/EPSG900913/{zoom}/{x}/{y}.png?origin=nw
+Stadtplan Zürich
+http://mapproxy.sosm.ch:8080/tiles/zh_stadtplan/EPSG900913/{zoom}/{x}/{y}.png?origin=nw
+Stadt Bern 10cm/25cm (2012)
+http://mapproxy.osm.ch:8080/tiles/bern2012/EPSG900913/{zoom}/{x}/{y}.png?origin=nw
+Ville de Nyon - Orthophoto 2010 HD 5cm/pi
+http://osmdata.asitvd.ch/tiles/nyon2010/{zoom}/{x}/{y}.png
+Cartoriviera - Orthophoto 2012
+http://osmdata.asitvd.ch/tiles/cartoriviera2012/{zoom}/{x}/{y}.png
+SIGIP - Orthophoto 2012
+http://osmdata.asitvd.ch/tiles/sigip2012/{zoom}/{x}/{y}.png
+Lausanne - Orthophoto technique 2012
+http://osmdata.asitvd.ch/tiles/lausanne2012/{zoom}/{x}/{y}.png
+Bonvillars Orthophoto 2013
+http://osmdata.asitvd.ch/tiles/bonvillars2013/{zoom}/{x}/{y}.png
+Fiez Orthophoto 2013
+http://osmdata.asitvd.ch/tiles/fiez2013/{zoom}/{x}/{y}.png 
+USGS Topographic Maps
+http://{switch:a,b,c}.tile.openstreetmap.us/usgs_scanned_topos/{zoom}/{x}/{y}.png
+USGS Large Scale Imagery
+http://{switch:a,b,c}.tile.openstreetmap.us/usgs_large_scale/{zoom}/{x}/{y}.jpg
+TIGER 2012 Roads Overlay
+http://{switch:a,b,c}.tile.openstreetmap.us/tiger2012_roads_expanded/{zoom}/{x}/{y}.png
+New &amp; Misaligned TIGER Roads (2014)
+http://{switch:a,b,c}.tiles.mapbox.com/v4/enf.e0b8291e/{zoom}/{x}/{y}.png?access_token=pk.eyJ1Ijoib3BlbnN0cmVldG1hcCIsImEiOiJhNVlHd29ZIn0.ti6wATGDWOmCnCYen-Ip7Q
+MassGIS L3 Parcels
+http://tile.osm.osuosl.org/tiles/massgis_parcels/{zoom}/{x}/{y}.png
+U.S. Forest Service roads
+http://osm.cycle.travel/forest/{zoom}/{x}/{y}.png
+Ukraine - Orthophotomaps 2012
+http://212.26.144.110/tile2/orto_10000/{zoom}/{x}/{-y}.jpg
+7th Series (OS7)
+http://ooc.openstreetmap.org/os7/{zoom}/{x}/{y}.jpg
+OS New Popular Edition historic
+http://ooc.openstreetmap.org/npe/{zoom}/{x}/{y}.png
+OS OpenData StreetView
+http://os.openstreetmap.org/sv/{zoom}/{x}/{y}.png
+OS OpenData Locator
+http://tiles.itoworld.com/os_locator/{zoom}/{x}/{y}.png
+Surrey Air Survey
+http://gravitystorm.dev.openstreetmap.org/surrey/{zoom}/{x}/{y}.png
+NLS - OS 6-inch Scotland 1842-82
+http://geo.nls.uk/maps/os/six_inch/{zoom}/{x}/{-y}.png
+NLS - OS 1:25k 1st Series 1937-61
+http://geo.nls.uk/mapdata2/os/25000/{zoom}/{x}/{-y}.png
+NLS - OS 1-inch 7th Series 1955-61
+http://geo.nls.uk/mapdata2/os/seventh/{zoom}/{x}/{-y}.png
+OS 1:25k historic (OSM-Best)
+http://faffy.openstreetmap.org/os1-2013/{zoom}/{x}/{y}.png
+OS 1:25k historic (OSM-Limited)
 http://ooc.openstreetmap.org/os1/{zoom}/{x}/{y}.jpg
 OS Scottish Popular historic
 http://ooc.openstreetmap.org/npescotland/tiles/{zoom}/{x}/{y}.jpg
-2u
-http://{switch:a,b,c}.layers.openstreetmap.fr/2u/{zoom}/{x}/{y}.png
+NLS - Bartholomew Half Inch, 1897-1907
+http://geo.nls.uk/mapdata2/bartholomew/great_britain/{zoom}/{x}/{-y}.png
+OS Town Plans, Aberdeen 1866-1867 (NLS)
+http://geo.nls.uk/maps/towns/aberdeen/{zoom}/{x}/{-y}.png
+OS Town Plans, Airdrie 1858 (NLS)
+http://geo.nls.uk/maps/towns/airdrie/{zoom}/{x}/{-y}.png
+OS Town Plans, Alexandria 1859 (NLS)
+http://geo.nls.uk/maps/towns/alexandria/{zoom}/{x}/{-y}.png
+OS Town Plans, Alloa 1861-1862 (NLS)
+http://geo.nls.uk/maps/towns/alloa/{zoom}/{x}/{-y}.png
+OS Town Plans, Annan 1859 (NLS)
+http://geo.nls.uk/maps/towns/annan/{zoom}/{x}/{-y}.png
+OS Town Plans, Arbroath 1858 (NLS)
+http://geo.nls.uk/maps/towns/arbroath/{zoom}/{x}/{-y}.png
+OS Town Plans, Ayr 1855 (NLS)
+http://geo.nls.uk/maps/towns/ayr/{zoom}/{x}/{-y}.png
+OS Town Plans, Berwick-upon-Tweed 1852 (NLS)
+http://geo.nls.uk/maps/towns/berwick/{zoom}/{x}/{-y}.png
+OS Town Plans, Brechin 1862 (NLS)
+http://geo.nls.uk/maps/towns/brechin/{zoom}/{x}/{-y}.png
+OS Town Plans, Burntisland 1894 (NLS)
+http://geo.nls.uk/maps/towns/burntisland/{zoom}/{x}/{-y}.png
+OS Town Plans, Campbelton 1865 (NLS)
+http://geo.nls.uk/maps/towns/campbeltown/{zoom}/{x}/{-y}.png
+OS Town Plans, Coatbridge 1858 (NLS)
+http://geo.nls.uk/maps/towns/coatbridge/{zoom}/{x}/{-y}.png
+OS Town Plans, Cupar 1854 (NLS)
+http://geo.nls.uk/maps/towns/cupar1854/{zoom}/{x}/{-y}.png
+OS Town Plans, Cupar 1893-1894 (NLS)
+http://geo.nls.uk/maps/towns/cupar1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Dalkeith 1852 (NLS)
+http://geo.nls.uk/maps/towns/dalkeith1852/{zoom}/{x}/{-y}.png
+OS Town Plans, Dalkeith 1893 (NLS)
+http://geo.nls.uk/maps/towns/dalkeith1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Dumbarton 1859 (NLS)
+http://geo.nls.uk/maps/towns/dumbarton/{zoom}/{x}/{-y}.png
+OS Town Plans, Dumfries 1850 (NLS)
+http://geo.nls.uk/maps/towns/dumfries1850/{zoom}/{x}/{-y}.png
+OS Town Plans, Dumfries 1893 (NLS)
+http://geo.nls.uk/maps/towns/dumfries1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Dundee 1857-1858 (NLS)
+http://geo.nls.uk/maps/towns/dundee1857/{zoom}/{x}/{-y}.png
+OS Town Plans, Dundee 1870-1872 (NLS)
+http://geo.nls.uk/maps/towns/dundee1870/{zoom}/{x}/{-y}.png
+OS Town Plans, Dunfermline 1854 (NLS)
+http://geo.nls.uk/maps/towns/dunfermline1854/{zoom}/{x}/{-y}.png
+OS Town Plans, Dunfermline 1894 (NLS)
+http://geo.nls.uk/maps/towns/dunfermline1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Edinburgh 1849-1851 (NLS)
+http://geo.nls.uk/maps/towns/edinburgh1849/{zoom}/{x}/{-y}.png
+OS Town Plans, Edinburgh 1876-1877 (NLS)
+http://geo.nls.uk/maps/towns/edinburgh1876/{zoom}/{x}/{-y}.png
+OS Town Plans, Edinburgh 1893-1894 (NLS)
+http://geo.nls.uk/maps/towns/edinburgh1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Elgin 1868 (NLS)
+http://geo.nls.uk/maps/towns/elgin/{zoom}/{x}/{-y}.png
+OS Town Plans, Falkirk 1858-1859 (NLS)
+http://geo.nls.uk/maps/towns/falkirk/{zoom}/{x}/{-y}.png
+OS Town Plans, Forfar 1860-1861 (NLS)
+http://geo.nls.uk/maps/towns/forfar/{zoom}/{x}/{-y}.png
+OS Town Plans, Forres 1868 (NLS)
+http://geo.nls.uk/maps/towns/forres/{zoom}/{x}/{-y}.png
+OS Town Plans, Galashiels 1858 (NLS)
+http://geo.nls.uk/maps/towns/galashiels/{zoom}/{x}/{-y}.png
+OS Town Plans, Girvan 1857 (NLS)
+http://geo.nls.uk/maps/towns/girvan/{zoom}/{x}/{-y}.png
+OS Town Plans, Glasgow 1857-1858 (NLS)
+http://geo.nls.uk/maps/towns/glasgow1857/{zoom}/{x}/{-y}.png
+OS Town Plans, Glasgow 1892-1894 (NLS)
+http://geo.nls.uk/maps/towns/glasgow1894/{zoom}/{x}/{-y}.png
+OS Town Plans, Greenock 1857 (NLS)
+http://geo.nls.uk/maps/towns/greenock/{zoom}/{x}/{-y}.png
+OS Town Plans, Haddington 1853 (NLS)
+http://geo.nls.uk/maps/towns/haddington1853/{zoom}/{x}/{-y}.png
+OS Town Plans, Haddington 1893 (NLS)
+http://geo.nls.uk/maps/towns/haddington1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Hamilton 1858 (NLS)
+http://geo.nls.uk/maps/towns/hamilton/{zoom}/{x}/{-y}.png
+OS Town Plans, Hawick 1857-1858 (NLS)
+http://geo.nls.uk/maps/towns/hawick/{zoom}/{x}/{-y}.png
+OS Town Plans, Inverness 1867-1868 (NLS)
+http://geo.nls.uk/maps/towns/inverness/{zoom}/{x}/{-y}.png
+OS Town Plans, Irvine 1859 (NLS)
+http://geo.nls.uk/maps/towns/irvine/{zoom}/{x}/{-y}.png
+OS Town Plans, Jedburgh 1858 (NLS)
+http://geo.nls.uk/maps/towns/jedburgh/{zoom}/{x}/{-y}.png
+OS Town Plans, Kelso 1857 (NLS)
+http://geo.nls.uk/maps/towns/kelso/{zoom}/{x}/{-y}.png
+OS Town Plans, Kilmarnock 1857-1859 (NLS)
+http://geo.nls.uk/maps/towns/kilmarnock/{zoom}/{x}/{-y}.png
+OS Town Plans, Kirkcaldy 1855 (NLS)
+http://geo.nls.uk/maps/towns/kirkcaldy1855/{zoom}/{x}/{-y}.png
+OS Town Plans, Kirkcaldy 1894 (NLS)
+http://geo.nls.uk/maps/towns/kirkcaldy1894/{zoom}/{x}/{-y}.png
+OS Town Plans, Kirkcudbright 1850 (NLS)
+http://geo.nls.uk/maps/towns/kirkcudbright1850/{zoom}/{x}/{-y}.png
+OS Town Plans, Kirkcudbright 1893 (NLS)
+http://geo.nls.uk/maps/towns/kirkcudbright1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Kirkintilloch 1859 (NLS)
+http://geo.nls.uk/maps/towns/kirkintilloch/{zoom}/{x}/{-y}.png
+OS Town Plans, Kirriemuir 1861 (NLS)
+http://geo.nls.uk/maps/towns/kirriemuir/{zoom}/{x}/{-y}.png
+OS Town Plans, Lanark 1858 (NLS)
+http://geo.nls.uk/maps/towns/lanark/{zoom}/{x}/{-y}.png
+OS Town Plans, Linlithgow 1856 (NLS)
+http://geo.nls.uk/maps/towns/linlithgow/{zoom}/{x}/{-y}.png
+OS Town Plans, Mayole 1856-1857 (NLS)
+http://geo.nls.uk/maps/towns/maybole/{zoom}/{x}/{-y}.png
+OS Town Plans, Montrose 1861-1862 (NLS)
+http://geo.nls.uk/maps/towns/montrose/{zoom}/{x}/{-y}.png
+OS Town Plans, Musselburgh 1853 (NLS)
+http://geo.nls.uk/maps/towns/musselburgh1853/{zoom}/{x}/{-y}.png
+OS Town Plans, Musselburgh 1893 (NLS)
+http://geo.nls.uk/maps/towns/musselburgh1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Nairn 1867-1868 (NLS)
+http://geo.nls.uk/maps/towns/nairn/{zoom}/{x}/{-y}.png
+OS Town Plans, Oban 1867-1868 (NLS)
+http://geo.nls.uk/maps/towns/oban/{zoom}/{x}/{-y}.png
+OS Town Plans, Peebles 1856 (NLS)
+http://geo.nls.uk/maps/towns/peebles/{zoom}/{x}/{-y}.png
+OS Town Plans, Perth 1860 (NLS)
+http://geo.nls.uk/maps/towns/perth/{zoom}/{x}/{-y}.png
+OS Town Plans, Peterhead 1868 (NLS)
+http://geo.nls.uk/maps/towns/peterhead/{zoom}/{x}/{-y}.png
+OS Town Plans, Port Glasgow 1856-1857 (NLS)
+http://geo.nls.uk/maps/towns/portglasgow/{zoom}/{x}/{-y}.png
+OS Town Plans, Portobello 1893-1894 (NLS)
+http://geo.nls.uk/maps/towns/portobello/{zoom}/{x}/{-y}.png
+OS Town Plans, Rothesay 1862-1863 (NLS)
+http://geo.nls.uk/maps/towns/rothesay/{zoom}/{x}/{-y}.png
+OS Town Plans, Selkirk 1865 (NLS)
+http://geo.nls.uk/maps/towns/selkirk/{zoom}/{x}/{-y}.png
+OS Town Plans, St Andrews 1854 (NLS)
+http://geo.nls.uk/maps/towns/standrews1854/{zoom}/{x}/{-y}.png
+OS Town Plans, St Andrews 1893 (NLS)
+http://geo.nls.uk/maps/towns/standrews1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Stirling 1858 (NLS)
+http://geo.nls.uk/maps/towns/stirling/{zoom}/{x}/{-y}.png
+OS Town Plans, Stonehaven 1864 (NLS)
+http://geo.nls.uk/maps/towns/stonehaven/{zoom}/{x}/{-y}.png
+OS Town Plans, Stranraer 1847 (NLS)
+http://geo.nls.uk/maps/towns/stranraer1847/{zoom}/{x}/{-y}.png
+OS Town Plans, Stranraer 1863-1877 (NLS)
+http://geo.nls.uk/maps/towns/stranraer1867/{zoom}/{x}/{-y}.png
+OS Town Plans, Stranraer 1893 (NLS)
+http://geo.nls.uk/maps/towns/stranraer1893/{zoom}/{x}/{-y}.png
+OS Town Plans, Strathaven 1858 (NLS)
+http://geo.nls.uk/maps/towns/strathaven/{zoom}/{x}/{-y}.png
+OS Town Plans, Wick 1872 (NLS)
+http://geo.nls.uk/maps/towns/wick/{zoom}/{x}/{-y}.png
+OS Town Plans, Wigtown 1848 (NLS)
+http://geo.nls.uk/maps/towns/wigtown1848/{zoom}/{x}/{-y}.png
+OS Town Plans, Wigtown 1894 (NLS)
+http://geo.nls.uk/maps/towns/wigtown1894/{zoom}/{x}/{-y}.png
+Landsat 233055
+http://{switch:a,b,c,d}.tile.paulnorman.ca/landsat_233055/{zoom}/{x}/{y}.png
