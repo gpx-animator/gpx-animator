@@ -1,3 +1,10 @@
+version 1.2.3 (2015-08-23)
+--------------------------
+* fixed NPE on empty attribution
+* fixed not showing marker when tail was empty or zero
+* updated maps
+* removed unused --debug option
+
 version 1.2.2 (2015-01-18)
 --------------------------
 * fixed NPE when adding new track
