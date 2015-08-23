@@ -106,7 +106,6 @@ public class Help {
 		w.writeOptionHelp("skip-idle", null, HELP_SKIP_IDLE, false, cfg.isSkipIdle());
 		w.writeOptionHelp("flashback-color", "ARGBcolor", HELP_FLASHBACK_COLOR, false, "opaque white - #ffffffff"); // TODO cfg.getFlashbackColor()
 		w.writeOptionHelp("flashback-duration", "duration", HELP_FLASHBACK_DURATION, false, cfg.getFlashbackDuration());
-		w.writeOptionHelp("debug", null, "toggle debugging", false, null);
 	}
 	
 	public interface OptionHelpWriter {
