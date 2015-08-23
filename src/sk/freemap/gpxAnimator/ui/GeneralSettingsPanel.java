@@ -624,7 +624,8 @@ abstract class GeneralSettingsPanel extends JPanel {
 		b.waypointSize((Double) waypointSizeSpinner.getValue());
 		
 		b.attribution(attributionTextArea.getText().replace("%MAP_ATTRIBUTION%",
-				tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getAttributionText() : "").trim());
+				tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
+				? ((MapTemplate) tmsItem).getAttributionText() : "").trim());
 	}
 
 	protected abstract void configurationChanged();
