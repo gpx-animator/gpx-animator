@@ -55,7 +55,7 @@ public class MainFrame extends JFrame {
 
 	private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
 
-	private static final String TITLE = "GPX Animator 1.2.2";
+	private static final String TITLE = "GPX Animator 1.2.3";
 
 	private static int FIXED_TABS = 1; // TODO set to 2 for MapPanel
 
