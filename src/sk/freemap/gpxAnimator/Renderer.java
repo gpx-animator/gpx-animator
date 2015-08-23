@@ -377,7 +377,7 @@ public class Renderer {
 				}
 				
 				final Point2D p = floorEntry.getValue();
-				if (t2 - floorEntry.getKey() < cfg.getTailDuration()) { // TODO make configurable
+				if (t2 - floorEntry.getKey() <= cfg.getTailDuration()) { // TODO make configurable
 					g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 					final Ellipse2D.Double marker = new Ellipse2D.Double(
 							p.getX() - markerSize / 2.0,
