@@ -44,7 +44,7 @@ public final class FileFrameWriter implements FrameWriter {
 	    try {
 			ImageIO.write(bi, imageType, outputfile);
 		} catch (final IOException e) {
-			throw new UserException("error writing frame to " + outputfile);
+			throw new UserException("error writing frame to " + outputfile, e);
 		}
 	}
 

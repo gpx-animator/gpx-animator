@@ -199,6 +199,7 @@ public class MainFrame extends JFrame {
 							setConfiguration((Configuration) unmarshaller.unmarshal(file));
 							MainFrame.this.file = file;
 						} catch (final JAXBException e1) {
+							e1.printStackTrace();
 							JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 						}
 					}
@@ -523,6 +524,7 @@ public class MainFrame extends JFrame {
 				throw new UserException(e.getMessage(), e);
 			}
 		} catch (final UserException e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}

@@ -1,3 +1,7 @@
+version 1.2.4 (2015-11-02)
+--------------------------
+* fixed #18 (error saving configuration)
+
 version 1.2.3 (2015-08-23)
 --------------------------
 * fixed NPE on empty attribution
