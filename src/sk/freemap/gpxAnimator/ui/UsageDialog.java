@@ -32,6 +32,7 @@ import javax.swing.border.EtchedBorder;
 
 import sk.freemap.gpxAnimator.Help;
 import sk.freemap.gpxAnimator.Help.OptionHelpWriter;
+import sk.freemap.gpxAnimator.Option;
 
 public class UsageDialog extends JDialog {
 
@@ -60,10 +61,10 @@ public class UsageDialog extends JDialog {
 			pw.println("<dl>");
 			Help.printHelp(new OptionHelpWriter() {
 				@Override
-				public void writeOptionHelp(final String option, final String argument, final String description, final boolean track, final Object defaultValue) {
+				public void writeOptionHelp(final Option option, final String argument, final boolean track, final Object defaultValue) {
 					// TODO html escape
 					pw.print("<dt><b>--");
-					pw.print(option);
+					pw.print(option.getName());
 					if (argument != null) {
 						pw.print(" &lt;");
 						pw.print(argument);
@@ -71,7 +72,7 @@ public class UsageDialog extends JDialog {
 					}
 					pw.println("</b></dt>");
 					pw.print("<dd>");
-					pw.print(description);
+					pw.print(option.getHelp());
 					if (track) {
 						pw.print("; can be specified multiple times if multiple tracks are provided");
 					}

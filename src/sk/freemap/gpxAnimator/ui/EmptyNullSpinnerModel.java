@@ -20,12 +20,13 @@ public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
 	private static final long serialVersionUID = -8064362052986633347L;
 	
+	private final boolean zeroEmpty;
 	private Number value;
 	private final Number stepSize;
 	private final Comparable minimum, maximum;
 	private Object object = new Object();
 
-	
+
 	@Override
 	public void setValue(final Object o) {
 		if (object == null && o == null || object != null && object.equals(o)) {
@@ -35,7 +36,7 @@ public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 		
 		if (o == null && object != null || o != null && !o.equals(object)) {
 			object = o;
-			Object newValue = o == null || ((Number) o).doubleValue() == 0.0 ? null : o;
+			Object newValue = o == null || ((Number) o).doubleValue() == 0.0 && zeroEmpty ? null : o;
 			if (newValue != null) {
 				if ((maximum != null) && (maximum.compareTo(newValue) < 0)) {
 					newValue = maximum;
@@ -61,14 +62,19 @@ public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 		return value == null ? 0 : incrValue(-1);
 	}
 
-
 	public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize) {
-		if ((value == null) || (stepSize == null)) {
+		this(value, minimum, maximum, stepSize, true);
+	}
+
+
+	public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize, final boolean zeroEmpty) {
+		if (stepSize == null) {
 			throw new IllegalArgumentException("value and stepSize must be non-null");
 		}
-		if (!(((minimum == null) || (minimum.compareTo(value) <= 0)) && ((maximum == null) || (maximum.compareTo(value) >= 0)))) {
+		if (value != null && !((minimum == null || minimum.compareTo(value) <= 0) && (maximum == null || maximum.compareTo(value) >= 0))) {
 			throw new IllegalArgumentException("(minimum <= value <= maximum) is false");
 		}
+		this.zeroEmpty = zeroEmpty;
 		this.value = value;
 		this.minimum = minimum;
 		this.maximum = maximum;

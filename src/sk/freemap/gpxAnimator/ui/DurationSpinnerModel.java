@@ -18,6 +18,8 @@ import javax.swing.AbstractSpinnerModel;
 
 public class DurationSpinnerModel extends AbstractSpinnerModel {
 
+	private static final long serialVersionUID = 7220186634453532297L;
+	
 	private Long duration;
 	
 	

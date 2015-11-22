@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
 	
 	private final JPanel contentPane;
 	private final JTabbedPane tabbedPane;
-	private final JButton startButton;
+	private final JButton renderButton;
 	
 	private SwingWorker<Void, String> swingWorker;
 	
@@ -334,9 +334,9 @@ public class MainFrame extends JFrame {
 		gbc_panel.gridy = 1;
 		contentPane.add(panel, gbc_panel);
 		final GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{174, 49, 32, 0};
+		gbl_panel.columnWidths = new int[]{174, 49, 0, 32, 0};
 		gbl_panel.rowHeights = new int[]{27, 0};
-		gbl_panel.columnWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
@@ -359,14 +359,29 @@ public class MainFrame extends JFrame {
 		panel.add(addTrackButton, gbc_addTrackButton);
 		addTrackButton.addActionListener(addTrackActionListener);
 		
-		startButton = new JButton("Start");
-		startButton.setEnabled(false);
+		final JButton btnComputeBbox = new JButton("Compute BBox");
+		final GridBagConstraints gbc_btnComputeBbox = new GridBagConstraints();
+		gbc_btnComputeBbox.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnComputeBbox.insets = new Insets(0, 0, 0, 5);
+		gbc_btnComputeBbox.gridx = 2;
+		gbc_btnComputeBbox.gridy = 0;
+		panel.add(btnComputeBbox, gbc_btnComputeBbox);
+		btnComputeBbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		renderButton = new JButton("Render");
+		renderButton.setEnabled(false);
 		final GridBagConstraints gbc_startButton = new GridBagConstraints();
 		gbc_startButton.anchor = GridBagConstraints.NORTHWEST;
-		gbc_startButton.gridx = 2;
+		gbc_startButton.gridx = 3;
 		gbc_startButton.gridy = 0;
-		panel.add(startButton, gbc_startButton);
-		startButton.addActionListener(new ActionListener() {
+		panel.add(renderButton, gbc_startButton);
+		renderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				if (swingWorker != null) {
@@ -405,7 +420,7 @@ public class MainFrame extends JFrame {
 					protected void done() {
 						swingWorker = null;
 						progressBar.setVisible(false);
-						startButton.setText("Start");
+						renderButton.setText("Start");
 
 						try {
 							get();
@@ -431,7 +446,7 @@ public class MainFrame extends JFrame {
 				});
 				
 				progressBar.setVisible(true);
-				startButton.setText("Cancel");
+				renderButton.setText("Cancel");
 				swingWorker.execute();
 			}
 		});
@@ -484,14 +499,14 @@ public class MainFrame extends JFrame {
 		tabbedPane.setSelectedComponent(trackScrollPane);
 		trackSettingsPanel.setConfiguration(tc);
 		
-		startButton.setEnabled(true);
+		renderButton.setEnabled(true);
 		
 		changed(true);
 	}
 	
 	private void afterRemove() {
 		if (tabbedPane.getTabCount() == 1) {
-			startButton.setEnabled(false);
+			renderButton.setEnabled(false);
 		}
 		changed(true);
 	}

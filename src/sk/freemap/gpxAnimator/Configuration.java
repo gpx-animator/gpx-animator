@@ -58,6 +58,10 @@ public class Configuration {
 	private Double markerSize;
 	private Double waypointSize;
 
+	private Double minLon;
+	private Double maxLon;
+	private Double minLat;
+	private Double maxLat;
 
 	@XmlElementWrapper
 	@XmlElement(name = "trackConfiguration")
@@ -77,7 +81,9 @@ public class Configuration {
 			final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
 			final File output, final String attribution,
 			final int fontSize, final Double markerSize, final Double waypointSize,
+			final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
 			final List<TrackConfiguration> trackConfigurationList) {
+		
 		this.margin = margin;
 		this.width = width;
 		this.height = height;
@@ -97,6 +103,10 @@ public class Configuration {
 		this.markerSize = markerSize;
 		this.waypointSize = waypointSize;
 		this.trackConfigurationList = trackConfigurationList;
+		this.minLon = minLon;
+		this.maxLon = maxLon;
+		this.minLat = minLat;
+		this.maxLat = maxLat;
 	}
 
 
@@ -189,6 +199,25 @@ public class Configuration {
 		return waypointSize;
 	}
 
+	public Double getMinLon() {
+		return minLon;
+	}
+
+
+	public Double getMaxLon() {
+		return maxLon;
+	}
+
+
+	public Double getMinLat() {
+		return minLat;
+	}
+
+
+	public Double getMaxLat() {
+		return maxLat;
+	}
+
 	
 	public List<TrackConfiguration> getTrackConfigurationList() {
 		return trackConfigurationList;
@@ -225,6 +254,11 @@ public class Configuration {
 		private Double markerSize = 8.0;
 		private Double waypointSize = 6.0;
 
+		private Double minLon;
+		private Double maxLon;
+		private Double minLat;
+		private Double maxLat;
+
 		private final List<TrackConfiguration> trackConfigurationList = new ArrayList<TrackConfiguration>();
 		
 
@@ -236,6 +270,8 @@ public class Configuration {
 					skipIdle, flashbackColor, flashbackDuration,
 					output, attribution,
 					fontSize, markerSize, waypointSize,
+					minLon,	maxLon,	minLat,	maxLat,
+
 					Collections.unmodifiableList(trackConfigurationList)
 			);
 		}
@@ -331,6 +367,26 @@ public class Configuration {
 			return this;
 		}
 
+		public Builder minLat(final Double minLat) {
+			this.minLat = minLat;
+			return this;
+		}
+
+		public Builder maxLat(final Double maxLat) {
+			this.maxLat = maxLat;
+			return this;
+		}
+
+		public Builder minLon(final Double minLon) {
+			this.minLon = minLon;
+			return this;
+		}
+
+		public Builder maxLon(final Double maxLon) {
+			this.maxLon = maxLon;
+			return this;
+		}
+
 		public Builder addTrackConfiguration(final TrackConfiguration trackConfiguration) {
 			this.trackConfigurationList.add(trackConfiguration);
 			return this;
@@ -359,6 +415,5 @@ public class Configuration {
 				+ ", trackConfigurationList=" + trackConfigurationList
 				+ "]";
 	}
-	
 
 }

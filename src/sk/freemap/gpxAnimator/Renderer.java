@@ -304,14 +304,41 @@ public class Renderer {
 		final TrackConfiguration trackConfiguration = cfg.getTrackConfigurationList().get(i);
 
 		final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
+
+		final Double minLon = cfg.getMinLon();
+		final Double maxLon = cfg.getMaxLon();
+		final Double minLat = cfg.getMinLat();
+		final Double maxLat = cfg.getMaxLat();
+		
+		if (minLon != null) {
+			minX = lonToX(minLon);
+		}
+		if (maxLon != null) {
+			maxX = lonToX(maxLon);
+		}
+		if (maxLat != null) {
+			minY = latToY(maxLat);
+		}
+		if (minLat != null) {
+			maxY = latToY(minLat);
+		}
+		
 		for (final LatLon latLon : latLonList) {
-			final double x = Math.toRadians(latLon.getLon());
-			final double y = Math.log(Math.tan(Math.PI / 4 + Math.toRadians(latLon.getLat()) / 2));
+			final double x = lonToX(latLon.getLon());
+			final double y = latToY(latLon.getLat());
 			
-			minX = Math.min(x, minX);
-			minY = Math.min(y, minY);
-			maxX = Math.max(x, maxX);
-			maxY = Math.max(y, maxY);
+			if (minLon == null) {
+				minX = Math.min(x, minX);
+			}
+			if (maxLat == null) {
+				minY = Math.min(y, minY);
+			}
+			if (maxLon == null) {
+				maxX = Math.max(x, maxX);
+			}
+			if (minLat == null) {
+				maxY = Math.max(y, maxY);
+			}
 
 			long time;
 			final Long forcedPointInterval = trackConfiguration.getForcedPointInterval();
@@ -340,11 +367,22 @@ public class Renderer {
 		}
 		return timePointMap;
 	}
+
+
+	private static double lonToX(final Double maxLon) {
+		return Math.toRadians(maxLon);
+	}
+
+
+	private static double latToY(final double lat) {
+		return Math.log(Math.tan(Math.PI / 4 + Math.toRadians(lat) / 2));
+	}
 	
 
 	private void drawTime(final BufferedImage bi, final int frame) {
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
-		printText(getGraphics(bi), dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+		printText(getGraphics(bi), dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
+				bi.getHeight() - cfg.getMargin());
 	}
 	
 	

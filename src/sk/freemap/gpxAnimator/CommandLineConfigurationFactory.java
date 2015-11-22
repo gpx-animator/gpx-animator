@@ -50,77 +50,123 @@ public final class CommandLineConfigurationFactory {
 			final String arg = args[i];
 			
 			try {
-				if (arg.equals("--gui")) {
-					if (GraphicsEnvironment.isHeadless()) {
-						throw new UserException("graphics is not supported in this environment");
-					}
-					forceGui = true;
-				} else if (arg.equals("--input")) {
-					inputGpxList.add(args[++i]);
-// TODO				} else if (arg.equals("--configuration")) {
-//					args[++i];
-				} else if (arg.equals("--output")) {
-					cfg.output(new File(args[++i]));
-				} else if (arg.equals("--label")) {
-					labelList.add(args[++i]);
-				} else if (arg.equals("--color")) {
-					colorList.add(Color.decode(args[++i]));
-				} else if (arg.equals("--margin")) {
-					cfg.margin(Integer.parseInt(args[++i]));
-				} else if (arg.equals("--time-offset")) {
-					final String s = args[++i].trim();
-					timeOffsetList.add(s.isEmpty() ? null : Long.valueOf(s));
-				} else if (arg.equals("--forced-point-time-interval")) {
-					final String s = args[++i].trim();
-					forcedPointIntervalList.add(s.isEmpty() ? null : Long.valueOf(s));
-				} else if (arg.equals("--speedup")) {
-					cfg.speedup(Double.parseDouble(args[++i]));
-				} else if (arg.equals("--line-width")) {
-					lineWidthList.add(Float.valueOf(args[++i]));
-				} else if (arg.equals("--tail-duration")) {
-					cfg.tailDuration(Long.parseLong(args[++i]));
-				} else if (arg.equals("--fps")) {
-					cfg.fps(Double.parseDouble(args[++i]));
-				} else if (arg.equals("--marker-size")) {
-					cfg.markerSize(Double.parseDouble(args[++i]));
-				} else if (arg.equals("--waypoint-size")) {
-					cfg.waypointSize(Double.parseDouble(args[++i]));
-				} else if (arg.equals("--width")) {
-					cfg.width(Integer.valueOf(args[++i]));
-				} else if (arg.equals("--height")) {
-					cfg.height(Integer.valueOf(args[++i]));
-				} else if (arg.equals("--zoom")) {
-					cfg.zoom(Integer.parseInt(args[++i]));
-				} else if (arg.equals("--font-size")) {
-					cfg.fontSize(Integer.parseInt(args[++i]));
-				} else if (arg.equals("--tms-url-template")) {
-					cfg.tmsUrlTemplate(args[++i]);
-				} else if (arg.equals("--attribution")) {
-					cfg.attribution(args[++i]);
-				} else if (arg.equals("--background-map-visibility")) {
-					cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
-				} else if (arg.equals("--total-time")) {
-					final String s = args[++i].trim();
-					cfg.totalTime(s.isEmpty() ? null : Long.valueOf(s));
-				} else if (arg.equals("--keep-idle")) {
-					cfg.skipIdle(false);
-				} else if (arg.equals("--flashback-color")) {
-					final long lv = Long.decode(args[++i]).longValue();
-					cfg.flashbackColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
-				} else if (arg.equals("--flashback-duration")) {
-					final String s = args[++i];
-					cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s));
-				} else if (arg.equals("--help")) {
-					System.out.println("GPX Animator 1.2.4");
-					System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
-					System.out.println();
-					System.out.println("Usage:");
-					final PrintWriter pw = new PrintWriter(System.out);
-					Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
-					pw.flush();
-					System.exit(0);
+				final Option option = arg.startsWith("--") ? Option.fromName(arg.substring(2)) : null;
+				
+				if (option == null) {
+					throw new UserException("unrecognised option " + arg
+							+ "\nrun program with --help option to print help");
 				} else {
-					throw new UserException("unrecognised option " + arg + "\nrun program with --help option to print help");
+					switch (option) {
+					case ATTRIBUTION:
+						cfg.attribution(args[++i]);
+						break;
+					case BACKGROUND_MAP_VISIBILITY:
+						cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
+						break;
+					case COLOR:
+						colorList.add(Color.decode(args[++i]));
+						break;
+					case FLASHBACK_COLOR:
+						final long lv = Long.decode(args[++i]).longValue();
+						cfg.flashbackColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
+						break;
+					case FLASHBACK_DURATION:
+						final String s = args[++i];
+						cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s));
+						break;
+					case FONT_SIZE:
+						cfg.fontSize(Integer.parseInt(args[++i]));
+						break;
+					case FORCED_POINT_TIME_INTERVAL:
+						final String s1 = args[++i].trim();
+						forcedPointIntervalList.add(s1.isEmpty() ? null : Long.valueOf(s1));
+						break;
+					case FPS:
+						cfg.fps(Double.parseDouble(args[++i]));
+						break;
+					case GUI:
+						if (GraphicsEnvironment.isHeadless()) {
+							throw new UserException("graphics is not supported in this environment");
+						}
+						forceGui = true;
+						break;
+					case HEIGHT:
+						cfg.height(Integer.valueOf(args[++i]));
+						break;
+					case HELP:
+						System.out.println("GPX Animator 1.2.4");
+						System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
+						System.out.println();
+						System.out.println("Usage:");
+						final PrintWriter pw = new PrintWriter(System.out);
+						Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
+						pw.flush();
+						System.exit(0);
+						break;
+					case INPUT:
+						inputGpxList.add(args[++i]);
+						break;
+					case KEEP_IDLE:
+						cfg.skipIdle(false);
+						break;
+					case LABEL:
+						labelList.add(args[++i]);
+						break;
+					case LINE_WIDTH:
+						lineWidthList.add(Float.valueOf(args[++i]));
+						break;
+					case MARGIN:
+						cfg.margin(Integer.parseInt(args[++i]));
+						break;
+					case MARKER_SIZE:
+						cfg.markerSize(Double.parseDouble(args[++i]));
+						break;
+					case MAX_LAT:
+						cfg.maxLat(Double.parseDouble(args[++i]));
+						break;
+					case MAX_LON:
+						cfg.maxLon(Double.parseDouble(args[++i]));
+						break;
+					case MIN_LAT:
+						cfg.minLat(Double.parseDouble(args[++i]));
+						break;
+					case MIN_LON:
+						cfg.minLon(Double.parseDouble(args[++i]));
+						break;
+					case OUTPUT:
+						cfg.output(new File(args[++i]));
+						break;
+					case SPEEDUP:
+						cfg.speedup(Double.parseDouble(args[++i]));
+						break;
+					case TAIL_DURATION:
+						cfg.tailDuration(Long.parseLong(args[++i]));
+						break;
+					case TIME_OFFSET:
+						final String s2 = args[++i].trim();
+						timeOffsetList.add(s2.isEmpty() ? null : Long.valueOf(s2));
+						break;
+					case TMS_URL_TEMPLATE:
+						cfg.tmsUrlTemplate(args[++i]);
+						break;
+					case TOTAL_TIME:
+						final String s3 = args[++i].trim();
+						cfg.totalTime(s3.isEmpty() ? null : Long.valueOf(s3));
+						break;
+					case WAYPOINT_SIZE:
+						cfg.waypointSize(Double.parseDouble(args[++i]));
+						break;
+					case WIDTH:
+						cfg.width(Integer.valueOf(args[++i]));
+						break;
+					case ZOOM:
+						cfg.zoom(Integer.parseInt(args[++i]));
+						break;
+					default:
+						throw new AssertionError();
+					}
+					
+// TODO				--configuration : args[++i];
 				}
 			} catch (final NumberFormatException e) {
 				throw new UserException("invalid number for option " + arg);
