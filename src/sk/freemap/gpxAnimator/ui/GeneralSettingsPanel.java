@@ -243,7 +243,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		minLonSpinner = new JSpinner();
 		minLonSpinner.setToolTipText(Option.MIN_LON.getHelp());
 		minLonSpinner.setEditor(new EmptyZeroNumberEditor(minLonSpinner, Double.class));
-		minLonSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-90.0), Double.valueOf(90.0), Double.valueOf(1.0), false));
+		minLonSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(0.0), Double.valueOf(180.0), Double.valueOf(0.1), false));
 		final GridBagConstraints gbc_minLonSpinner = new GridBagConstraints();
 		gbc_minLonSpinner.insets = new Insets(0, 0, 5, 5);
 		gbc_minLonSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -255,7 +255,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		maxLatSpinner = new JSpinner();
 		maxLatSpinner.setToolTipText(Option.MAX_LAT.getHelp());
 		maxLatSpinner.setEditor(new EmptyZeroNumberEditor(maxLatSpinner, Double.class));
-		maxLatSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(0.0), Double.valueOf(180.0), Double.valueOf(1.0), false));
+		maxLatSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-90.0), Double.valueOf(90.0), Double.valueOf(0.1), false));
 		final GridBagConstraints gbc_maxLatSpinner = new GridBagConstraints();
 		gbc_maxLatSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_maxLatSpinner.anchor = GridBagConstraints.NORTH;
@@ -284,7 +284,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		minLatSpinner = new JSpinner();
 		minLatSpinner.setToolTipText(Option.MIN_LAT.getHelp());
 		minLatSpinner.setEditor(new EmptyZeroNumberEditor(minLatSpinner, Double.class));
-		minLatSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-90.0), Double.valueOf(90.0), Double.valueOf(1.0), false));
+		minLatSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-90.0), Double.valueOf(90.0), Double.valueOf(0.1), false));
 		final GridBagConstraints gbc_minLatSpinner = new GridBagConstraints();
 		gbc_minLatSpinner.insets = new Insets(0, 0, 0, 5);
 		gbc_minLatSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -296,7 +296,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		maxLonSpinner = new JSpinner();
 		maxLonSpinner.setToolTipText(Option.MAX_LON.getHelp());
 		maxLonSpinner.setEditor(new EmptyZeroNumberEditor(maxLonSpinner, Double.class));
-		maxLonSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(0.0), Double.valueOf(180.0), Double.valueOf(1.0), false));
+		maxLonSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(0.0), Double.valueOf(180.0), Double.valueOf(0.1), false));
 		final GridBagConstraints gbc_maxLonSpinner = new GridBagConstraints();
 		gbc_maxLonSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_maxLonSpinner.fill = GridBagConstraints.HORIZONTAL;

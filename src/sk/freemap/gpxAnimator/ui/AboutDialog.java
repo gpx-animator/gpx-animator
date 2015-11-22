@@ -28,6 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
+import sk.freemap.gpxAnimator.Constants;
+
 public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 8374270428933983176L;
@@ -49,7 +51,8 @@ public class AboutDialog extends JDialog {
 			dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 			dtrpngpxNavigator.setEditable(false);
 			dtrpngpxNavigator.setContentType("text/html");
-			dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. 1.2.4<br/>\n&copy; 2014 <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n"
+			dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. " + Constants.VERSION
+					+ "<br/>\n&copy; " + Constants.YEAR + " <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n"
 					+ "<p>GPX Animator generates video from GPX files.</p>"
 					+ "<p>More information can be found at <a href=\"http://zdila.github.com/gpx-animator/\">http://zdila.github.com/gpx-animator/</a>.</p>\n");
 

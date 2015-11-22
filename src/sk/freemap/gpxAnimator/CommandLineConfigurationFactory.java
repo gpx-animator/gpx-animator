@@ -94,8 +94,8 @@ public final class CommandLineConfigurationFactory {
 						cfg.height(Integer.valueOf(args[++i]));
 						break;
 					case HELP:
-						System.out.println("GPX Animator 1.2.4");
-						System.out.println("Copyright 2013 Martin Ždila, Freemap Slovakia");
+						System.out.println("GPX Animator " + Constants.VERSION);
+						System.out.println("Copyright " + Constants.YEAR + " Martin Ždila, Freemap Slovakia");
 						System.out.println();
 						System.out.println("Usage:");
 						final PrintWriter pw = new PrintWriter(System.out);

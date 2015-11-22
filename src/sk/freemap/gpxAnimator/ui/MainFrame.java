@@ -41,6 +41,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import sk.freemap.gpxAnimator.Configuration;
+import sk.freemap.gpxAnimator.Constants;
 import sk.freemap.gpxAnimator.FileXmlAdapter;
 import sk.freemap.gpxAnimator.Renderer;
 import sk.freemap.gpxAnimator.RenderingContext;
@@ -55,7 +56,7 @@ public class MainFrame extends JFrame {
 
 	private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
 
-	private static final String TITLE = "GPX Animator 1.2.4";
+	private static final String TITLE = "GPX Animator " + Constants.VERSION;
 
 	private static int FIXED_TABS = 1; // TODO set to 2 for MapPanel
 
@@ -157,7 +158,7 @@ public class MainFrame extends JFrame {
 				)
 		);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 800, 647);
+		setBounds(100, 100, 800, 750);
 		
 		final JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -359,20 +360,20 @@ public class MainFrame extends JFrame {
 		panel.add(addTrackButton, gbc_addTrackButton);
 		addTrackButton.addActionListener(addTrackActionListener);
 		
-		final JButton btnComputeBbox = new JButton("Compute BBox");
-		final GridBagConstraints gbc_btnComputeBbox = new GridBagConstraints();
-		gbc_btnComputeBbox.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnComputeBbox.insets = new Insets(0, 0, 0, 5);
-		gbc_btnComputeBbox.gridx = 2;
-		gbc_btnComputeBbox.gridy = 0;
-		panel.add(btnComputeBbox, gbc_btnComputeBbox);
-		btnComputeBbox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+//		final JButton btnComputeBbox = new JButton("Compute BBox");
+//		final GridBagConstraints gbc_btnComputeBbox = new GridBagConstraints();
+//		gbc_btnComputeBbox.anchor = GridBagConstraints.NORTHWEST;
+//		gbc_btnComputeBbox.insets = new Insets(0, 0, 0, 5);
+//		gbc_btnComputeBbox.gridx = 2;
+//		gbc_btnComputeBbox.gridy = 0;
+//		panel.add(btnComputeBbox, gbc_btnComputeBbox);
+//		btnComputeBbox.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(final ActionEvent e) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
 		
 		renderButton = new JButton("Render");
 		renderButton.setEnabled(false);

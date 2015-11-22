@@ -1,3 +1,7 @@
+version 1.3.0 (2015-11-22)
+--------------------------
+* configurable bounding box
+
 version 1.2.4 (2015-11-02)
 --------------------------
 * fixed #18 (error saving configuration)
