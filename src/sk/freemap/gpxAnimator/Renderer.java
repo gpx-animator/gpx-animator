@@ -48,18 +48,18 @@ public class Renderer {
 	private static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
 	private final Configuration cfg;
-	
+
 	private final List<List<TreeMap<Long, Point2D>>> timePointMapListList = new ArrayList<List<TreeMap<Long,Point2D>>>();
 
 	private Font font;
 	private FontMetrics fontMetrics;
-	
+
 	private long minTime = Long.MAX_VALUE;
 	private double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY, minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
 
 	private double speedup;
 
-	
+
 	public Renderer(final Configuration cfg) throws UserException {
 		this.cfg = cfg;
 	}
@@ -67,19 +67,19 @@ public class Renderer {
 
 	public void render(final RenderingContext rc) throws UserException {
 		final List<Long[]> spanList = new ArrayList<Long[]>();
-		
+
 		final TreeMap<Long, Point2D> wpMap = new TreeMap<Long, Point2D>();
-		
+
 		int i = -1;
 		for (final TrackConfiguration trackConfiguration : cfg.getTrackConfigurationList()) {
 			i++;
-			
+
 			final GpxContentHandler gch = new GpxContentHandler();
-			
+
 			GpxParser.parseGpx(trackConfiguration.getInputGpx(), gch);
-			
+
 			final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long, Point2D>>();
-						
+
 			for (final List<LatLon> latLonList : gch.getPointLists()) {
 				final TreeMap<Long, Point2D> timePointMap = toTimePointMap(i, latLonList);
 				timePointMapList.add(timePointMap);
@@ -95,7 +95,7 @@ public class Renderer {
 							// swallowed
 							break test;
 						}
-						
+
 						if (t0 < span[0] && t1 > span[1]) {
 							// swallows
 							iter.remove();
@@ -107,19 +107,19 @@ public class Renderer {
 							iter.remove();
 						}
 					}
-					
+
 					spanList.add(new Long[] { t0, t1 });
 				}
 			}
 			Collections.reverse(timePointMapList); // reversing because of last known location drawing
 			timePointMapListList.add(timePointMapList);
 		}
-		
+
 		final boolean userSpecifiedWidth = cfg.getWidth() != null;
 		final int width = userSpecifiedWidth ? cfg.getWidth() : 800;
-		
+
 		final Integer zoom;
-		
+
 		if (cfg.getTmsUrlTemplate() != null && cfg.getZoom() == null) {
 			// force using computed zoom
 			zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
@@ -127,16 +127,16 @@ public class Renderer {
 		} else {
 			zoom = cfg.getZoom();
 		}
-		
+
 		final double scale = zoom == null
 				? (width - cfg.getMargin() * 2) / (maxX - minX)
 				: (128.0 * (1 << zoom)) / Math.PI;
-		
+
 		minX -= cfg.getMargin() / scale;
 		maxX += cfg.getMargin() / scale;
 		minY -= cfg.getMargin() / scale;
 		maxY += cfg.getMargin() / scale;
-		
+
 		if (userSpecifiedWidth) {
 			final double ww = width - (maxX - minX) * scale;
 			minX -= ww / scale / 2.0;
@@ -156,17 +156,17 @@ public class Renderer {
 			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
 				maxTime = Math.max(maxTime, timePointMap.lastKey());
 				minTime = Math.min(minTime, timePointMap.firstKey());
-				
+
 				for (final Point2D point : timePointMap.values()) {
 					point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
 				}
 			}
 		}
-		
+
 		if (!wpMap.isEmpty()) {
 			maxTime = Math.max(maxTime, wpMap.lastKey());
 			minTime = Math.min(minTime, wpMap.firstKey());
-			
+
 			for (final Point2D point : wpMap.values()) {
 				point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
 			}
@@ -179,7 +179,7 @@ public class Renderer {
 
 		int realWidth = (int) Math.round(((maxX - minX) * scale));
 		int realHeight = (int) Math.round(((maxY - minY) * scale));
-		
+
 		// align width and height to 2 for videos
 		if (realWidth % 2 == 1 && !userSpecifiedWidth && !toImages) {
 			realWidth++;
@@ -187,24 +187,24 @@ public class Renderer {
 		if (realHeight % 2 == 1 && cfg.getHeight() == null && !toImages) {
 			realHeight++;
 		}
-		
+
 		final BufferedImage bi = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_3BYTE_BGR);
 
 		final FrameWriter frameWriter = toImages
 				? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
 				: new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), realWidth, realHeight);
-				
+
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
-		
+
 		System.out.println(realWidth + "x" + realHeight + ";" + scale);
-		
+
 		if (cfg.getTmsUrlTemplate() == null) {
 			ga.setColor(Color.white);
 			ga.fillRect(0, 0, realWidth, realHeight);
 		} else {
 			Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
 		}
-		
+
 		if (cfg.getFontSize() > 0) {
 			font = new Font(Font.MONOSPACED, Font.PLAIN, cfg.getFontSize());
 			fontMetrics = ga.getFontMetrics(font);
@@ -213,13 +213,13 @@ public class Renderer {
 		speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / cfg.getTotalTime();
 
 		final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
-		
+
 		float skip = -1f;
 		for (int frame = 1; frame < frames; frame++) {
 			if (rc.isCancelled1()) {
 				return;
 			}
-			
+
 			final Long time = getTime(frame);
 			skip: if (cfg.isSkipIdle()) {
 				for (final Long[] span : spanList) {
@@ -231,24 +231,24 @@ public class Renderer {
 				skip = 1f;
 				continue;
 			}
-			
+
 			rc.setProgress1((int) (100.0 * frame / frames), "Rendering Frame: " + frame + "/" + (frames - 1));
 
 			paint(bi, frame, 0);
-			
+
 			final BufferedImage bi2 = Utils.deepCopy(bi);
-			
+
 			paint(bi2, frame, cfg.getTailDuration());
-			
+
 			drawWaypoints(bi2, frame, wpMap);
-			
+
 			drawMarker(bi2, frame);
 
 			if (font != null) {
 				drawTime(bi2, frame);
 				drawAttribution(bi2, cfg.getAttribution());
 			}
-			
+
 			final Color flashbackColor = cfg.getFlashbackColor();
 			if (skip > 0f && flashbackColor.getAlpha() > 0 && cfg.getFlashbackDuration() != null && cfg.getFlashbackDuration() > 0) {
 				final Graphics2D g2 = (Graphics2D) bi2.getGraphics();
@@ -256,12 +256,12 @@ public class Renderer {
 				g2.fillRect(0, 0, bi2.getWidth(), bi2.getHeight());
 				skip -= 1000f / cfg.getFlashbackDuration() / cfg.getFps();
 			}
-			
+
 			frameWriter.addFrame(bi2);
 		}
-		
+
 		frameWriter.close();
-		
+
 		System.out.println("Done.");
 	}
 
@@ -271,12 +271,12 @@ public class Renderer {
 		if (waypointSize == null || waypointSize.doubleValue() == 0.0 || wpMap.isEmpty()) {
 			return;
 		}
-		
+
 		final Graphics2D g2 = getGraphics(bi);
-		
+
 		final long t2 = getTime(frame);
-		
-		
+
+
 		if (t2 >= wpMap.firstKey()) {
 			for (final Point2D p : wpMap.subMap(wpMap.firstKey(), t2).values()) {
 				g2.setColor(Color.white);
@@ -285,7 +285,7 @@ public class Renderer {
 				g2.fill(marker);
 				g2.setColor(Color.black);
 				g2.draw(marker);
-				
+
 				printText(g2, ((NamedPoint) p).name, (float) p.getX() + 8f, (float) p.getY() + 4f);
 			}
 		}
@@ -296,11 +296,11 @@ public class Renderer {
 		private static final long serialVersionUID = 4011941819652468006L;
 		String name;
 	}
-	
-	
+
+
 	private TreeMap<Long, Point2D> toTimePointMap(final int i, final List<LatLon> latLonList) throws UserException {
 		long forcedTime = 0;
-		
+
 		final TrackConfiguration trackConfiguration = cfg.getTrackConfigurationList().get(i);
 
 		final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
@@ -309,7 +309,7 @@ public class Renderer {
 		final Double maxLon = cfg.getMaxLon();
 		final Double minLat = cfg.getMinLat();
 		final Double maxLat = cfg.getMaxLat();
-		
+
 		if (minLon != null) {
 			minX = lonToX(minLon);
 		}
@@ -322,11 +322,11 @@ public class Renderer {
 		if (minLat != null) {
 			maxY = latToY(minLat);
 		}
-		
+
 		for (final LatLon latLon : latLonList) {
 			final double x = lonToX(latLon.getLon());
 			final double y = latToY(latLon.getLat());
-			
+
 			if (minLon == null) {
 				minX = Math.min(x, minX);
 			}
@@ -351,11 +351,11 @@ public class Renderer {
 					throw new UserException("missing time for point; specify --forced-point-time-interval option");
 				}
 			}
-		
+
 			if (trackConfiguration.getTimeOffset() != null) {
 				time += trackConfiguration.getTimeOffset();
 			}
-			
+
 			if (latLon instanceof Waypoint) {
 				final NamedPoint namedPoint = new NamedPoint();
 				namedPoint.setLocation(x, y);
@@ -377,15 +377,15 @@ public class Renderer {
 	private static double latToY(final double lat) {
 		return Math.log(Math.tan(Math.PI / 4 + Math.toRadians(lat) / 2));
 	}
-	
+
 
 	private void drawTime(final BufferedImage bi, final int frame) {
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
 		printText(getGraphics(bi), dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
 				bi.getHeight() - cfg.getMargin());
 	}
-	
-	
+
+
 	private void drawAttribution(final BufferedImage bi, final String attribution) {
 		printText(getGraphics(bi), attribution, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
 	}
@@ -395,15 +395,15 @@ public class Renderer {
 		if (cfg.getMarkerSize() == null || cfg.getMarkerSize().doubleValue() == 0.0) {
 			return;
 		}
-		
+
 		final Graphics2D g2 = getGraphics(bi);
-		
+
 		final long t2 = getTime(frame);
-		
+
 		final double markerSize = cfg.getMarkerSize();
-		
+
 		final List<TrackConfiguration> trackConfigurationList = cfg.getTrackConfigurationList();
-		
+
 		int i = 0;
 		outer: for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
 			final TrackConfiguration trackConfiguration = trackConfigurationList.get(i++);
@@ -413,7 +413,7 @@ public class Renderer {
 				if (floorEntry == null) {
 					continue;
 				}
-				
+
 				final Point2D p = floorEntry.getValue();
 				if (t2 - floorEntry.getKey() <= cfg.getTailDuration()) { // TODO make configurable
 					g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
@@ -426,41 +426,41 @@ public class Renderer {
 					g2.fill(marker);
 					g2.setColor(Color.black);
 					g2.draw(marker);
-					
+
 					final String label = trackConfiguration.getLabel();
 					if (!label.isEmpty()) {
 						printText(g2, label, (float) p.getX() + 8f, (float) p.getY() + 4f);
 					}
 				}
-				
+
 				continue outer;
 			}
 		}
 	}
-	
+
 
 	private void paint(final BufferedImage bi, final int frame, final long backTime) {
 		final Graphics2D g2 = getGraphics(bi);
-        
+
 		final long time = getTime(frame);
-		
+
 		final List<TrackConfiguration> trackConfigurationList = cfg.getTrackConfigurationList();
 
 		int i = 0;
 		for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
 			final TrackConfiguration trackConfiguration = trackConfigurationList.get(i++);
-			
+
 			for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
 				g2.setStroke(new BasicStroke(trackConfiguration.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-				
+
 				final Long toTime = timePointMap.floorKey(time);
-				
+
 				if (toTime == null) {
 					continue;
 				}
-				
+
 				Point2D prevPoint = null;
-	
+
 				if (backTime == 0) {
 					final long prevTime =  getTime(frame - 1);
 					Long fromTime = timePointMap.floorKey(prevTime);
@@ -471,7 +471,7 @@ public class Renderer {
 					if (fromTime == null) {
 						continue;
 					}
-					
+
 					g2.setPaint(trackConfiguration.getColor());
 					for (final Entry<Long, Point2D> entry: timePointMap.subMap(fromTime, true, toTime, true).entrySet()) {
 						if (prevPoint != null) {
@@ -502,14 +502,14 @@ public class Renderer {
 	private long getTime(final int frame) {
 		return (long) Math.floor(minTime + frame / cfg.getFps() * MS * speedup);
 	}
-	
-	
+
+
 	private void printText(final Graphics2D g2, final String text, final float x, final float y) {
 		final FontRenderContext frc = g2.getFontRenderContext();
 		g2.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		final int height = g2.getFontMetrics(font).getHeight();
-		
-		final String[] lines = text.split("\n");
+
+		final String[] lines = text == null ? new String[0] : text.split("\n");
 		float yy = y - (lines.length - 1) * height;
 		for (final String line : lines) {
 			if (!line.isEmpty()) {
@@ -518,12 +518,12 @@ public class Renderer {
 				g2.setColor(Color.white);
 				g2.fill(sha);
 				g2.draw(sha);
-				
+
 				g2.setFont(font);
 				g2.setColor(Color.black);
 				g2.drawString(line, x, yy);
 			}
-			
+
 			yy += height;
 		}
 	}
