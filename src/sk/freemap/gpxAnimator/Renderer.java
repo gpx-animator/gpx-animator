@@ -81,10 +81,11 @@ public class Renderer {
 			final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long, Point2D>>();
 
 			for (final List<LatLon> latLonList : gch.getPointLists()) {
-				final TreeMap<Long, Point2D> timePointMap = toTimePointMap(i, latLonList);
+				final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long,Point2D>();
+				toTimePointMap(timePointMap, i, latLonList);
 				timePointMapList.add(timePointMap);
 
-				wpMap.putAll(toTimePointMap(i, gch.getWaypointList()));
+				toTimePointMap(wpMap, i, gch.getWaypointList());
 
 				Long t0 = timePointMap.firstKey();
 				Long t1 = timePointMap.lastKey() + cfg.getTailDuration();
@@ -298,12 +299,10 @@ public class Renderer {
 	}
 
 
-	private TreeMap<Long, Point2D> toTimePointMap(final int i, final List<LatLon> latLonList) throws UserException {
+	private void toTimePointMap(final TreeMap<Long, Point2D> timePointMap, final int i, final List<LatLon> latLonList) throws UserException {
 		long forcedTime = 0;
 
 		final TrackConfiguration trackConfiguration = cfg.getTrackConfigurationList().get(i);
-
-		final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
 
 		final Double minLon = cfg.getMinLon();
 		final Double maxLon = cfg.getMaxLon();
@@ -356,16 +355,23 @@ public class Renderer {
 				time += trackConfiguration.getTimeOffset();
 			}
 
+			final Point2D point;
 			if (latLon instanceof Waypoint) {
 				final NamedPoint namedPoint = new NamedPoint();
 				namedPoint.setLocation(x, y);
 				namedPoint.name = ((Waypoint) latLon).getName();
-				timePointMap.put(time, namedPoint);
+				point = namedPoint;
 			} else {
-				timePointMap.put(time, new Point2D.Double(x, y));
+				point = new Point2D.Double(x, y);
 			}
+
+			// hack to prevent overwriting existing (way)point with same time
+			long freeTime = time;
+			while (timePointMap.containsKey(freeTime)) {
+				freeTime++;
+			}
+			timePointMap.put(freeTime, point);
 		}
-		return timePointMap;
 	}
 
 
