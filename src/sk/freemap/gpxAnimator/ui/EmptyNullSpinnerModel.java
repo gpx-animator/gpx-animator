@@ -19,7 +19,7 @@ import javax.swing.AbstractSpinnerModel;
 public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
 	private static final long serialVersionUID = -8064362052986633347L;
-	
+
 	private final boolean zeroEmpty;
 	private Number value;
 	private final Number stepSize;
@@ -33,7 +33,7 @@ public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 			// no change
 			return;
 		}
-		
+
 		if (o == null && object != null || o != null && !o.equals(object)) {
 			object = o;
 			Object newValue = o == null || ((Number) o).doubleValue() == 0.0 && zeroEmpty ? null : o;
@@ -50,12 +50,12 @@ public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 		}
 	}
 
-	
+
 	@Override
 	public Object getNextValue() {
 		return value == null ? /*minimum +*/ stepSize : incrValue(+1);
 	}
-	
+
 
 	@Override
 	public Object getPreviousValue() {
@@ -80,28 +80,28 @@ public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 		this.maximum = maximum;
 		this.stepSize = stepSize;
 	}
-	
+
 
 	private Number incrValue(final int dir) {
 		final Number newValue;
 		if ((value instanceof Float) || (value instanceof Double)) {
 			final double v = value.doubleValue() + (stepSize.doubleValue() * dir);
 			if (value instanceof Double) {
-				newValue = new Double(v);
+				newValue = Double.valueOf(v);
 			} else {
-				newValue = new Float(v);
+				newValue = Float.valueOf((float) v);
 			}
 		} else {
 			final long v = value.longValue() + (stepSize.longValue() * dir);
 
 			if (value instanceof Long) {
-				newValue = new Long(v);
+				newValue = Long.valueOf(v);
 			} else if (value instanceof Integer) {
-				newValue = new Integer((int) v);
+				newValue = Integer.valueOf((int) v);
 			} else if (value instanceof Short) {
-				newValue = new Short((short) v);
+				newValue = Short.valueOf((short) v);
 			} else {
-				newValue = new Byte((byte) v);
+				newValue = Byte.valueOf((byte) v);
 			}
 		}
 
@@ -114,7 +114,7 @@ public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 			return newValue;
 		}
 	}
-	
+
 
 	@Override
 	public Object getValue() {
