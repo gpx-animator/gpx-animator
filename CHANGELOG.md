@@ -1,3 +1,7 @@
+version 1.3.1 (2018-07-31)
+--------------------------
+* fixed some issues and added compatibility for Java 9+
+
 version 1.3.0 (2015-11-22)
 --------------------------
 * configurable bounding box
@@ -40,13 +44,13 @@ version 1.1.0 (2013-06-24)
 * fixed parsing of GPX dates with milliseconds
 
 version 1.0.0 (2013-03-23)
--------------------------- 
+--------------------------
 * added configuration GUI
 * direct video rendering support
 * minor rendering improvements
 
 version 0.8 (2013-02-09)
------------------------- 
+------------------------
 * added waypoint support
 
 version 0.7 (2013-02-05)
