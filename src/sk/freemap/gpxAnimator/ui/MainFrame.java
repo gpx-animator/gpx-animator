@@ -377,11 +377,11 @@ public class MainFrame extends JFrame {
 		
 		renderButton = new JButton("Render");
 		renderButton.setEnabled(false);
-		final GridBagConstraints gbc_startButton = new GridBagConstraints();
-		gbc_startButton.anchor = GridBagConstraints.NORTHWEST;
-		gbc_startButton.gridx = 3;
-		gbc_startButton.gridy = 0;
-		panel.add(renderButton, gbc_startButton);
+		final GridBagConstraints gbc_renderButton = new GridBagConstraints();
+		gbc_renderButton.anchor = GridBagConstraints.NORTHWEST;
+		gbc_renderButton.gridx = 3;
+		gbc_renderButton.gridy = 0;
+		panel.add(renderButton, gbc_renderButton);
 		renderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -421,7 +421,7 @@ public class MainFrame extends JFrame {
 					protected void done() {
 						swingWorker = null;
 						progressBar.setVisible(false);
-						renderButton.setText("Start");
+						renderButton.setText("Render");
 
 						try {
 							get();
