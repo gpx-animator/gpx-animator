@@ -153,8 +153,8 @@ public class MainFrame extends JFrame {
 		setTitle(TITLE);
 		setIconImages(
 				Arrays.asList(
-						new ImageIcon(MainFrame.class.getResource("icon_16.png")).getImage(),
-						new ImageIcon(MainFrame.class.getResource("icon_32.png")).getImage()
+						new ImageIcon(getClass().getResource("/icon_16.png")).getImage(),
+						new ImageIcon(getClass().getResource("/icon_32.png")).getImage()
 				)
 		);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
