@@ -155,8 +155,8 @@ public class MainFrame extends JFrame {
 		setTitle(TITLE);
 		setIconImages(
 				Arrays.asList(
-						new ImageIcon(MainFrame.class.getResource("icon_16.png")).getImage(),
-						new ImageIcon(MainFrame.class.getResource("icon_32.png")).getImage()
+						new ImageIcon(getClass().getResource("/icon_16.png")).getImage(),
+						new ImageIcon(getClass().getResource("/icon_32.png")).getImage()
 				)
 		);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -424,11 +424,11 @@ public class MainFrame extends JFrame {
 		
 		renderButton = new JButton("Render");
 		renderButton.setEnabled(false);
-		final GridBagConstraints gbc_startButton = new GridBagConstraints();
-		gbc_startButton.anchor = GridBagConstraints.NORTHWEST;
-		gbc_startButton.gridx = 3;
-		gbc_startButton.gridy = 0;
-		panel.add(renderButton, gbc_startButton);
+		final GridBagConstraints gbc_renderButton = new GridBagConstraints();
+		gbc_renderButton.anchor = GridBagConstraints.NORTHWEST;
+		gbc_renderButton.gridx = 3;
+		gbc_renderButton.gridy = 0;
+		panel.add(renderButton, gbc_renderButton);
 		renderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -436,11 +436,27 @@ public class MainFrame extends JFrame {
 					swingWorker.cancel(false);
 					return;
 				}
+
+				final Configuration cfg;
+				try {
+					cfg = createConfiguration();
+					if (cfg.getOutput().exists()) {
+						final String message = String.format("A file with the name \"%s\" already exists.\nDo you really want to overwrite this file?", cfg.getOutput());
+						final int result = JOptionPane.showConfirmDialog(MainFrame.this, message, "Warning", JOptionPane.YES_NO_OPTION);
+						if (result == JOptionPane.NO_OPTION) {
+							return;
+						}
+					}
+				} catch (final UserException ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(MainFrame.this, "Configuration error:\n" + ex.getCause().getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				} 
 				
 				swingWorker = new SwingWorker<Void, String>() {
 					@Override
 					protected Void doInBackground() throws Exception {
-						new Renderer(createConfiguration()).render(new RenderingContext() {
+						new Renderer(cfg).render(new RenderingContext() {
 							@Override
 							public void setProgress1(final int pct, final String message) {
 								System.out.printf("[%3d%%] %s\n", pct, message);
@@ -468,7 +484,7 @@ public class MainFrame extends JFrame {
 					protected void done() {
 						swingWorker = null;
 						progressBar.setVisible(false);
-						renderButton.setText("Start");
+						renderButton.setText("Render");
 
 						try {
 							get();

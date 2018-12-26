@@ -622,7 +622,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
 		final List<MapTemplate> labeledItems = new ArrayList<MapTemplate>();
 
-		final InputStream is = MainFrame.class.getResourceAsStream("maps.xml");
+		final InputStream is = getClass().getResourceAsStream("/maps.xml");
 
 		try {
 			try {
