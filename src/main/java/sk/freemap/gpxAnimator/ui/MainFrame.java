@@ -389,11 +389,27 @@ public class MainFrame extends JFrame {
 					swingWorker.cancel(false);
 					return;
 				}
+
+				final Configuration cfg;
+				try {
+					cfg = createConfiguration();
+					if (cfg.getOutput().exists()) {
+						final String message = String.format("A file with the name \"%s\" already exists.\nDo you really want to overwrite this file?", cfg.getOutput());
+						final int result = JOptionPane.showConfirmDialog(MainFrame.this, message, "Warning", JOptionPane.YES_NO_OPTION);
+						if (result == JOptionPane.NO_OPTION) {
+							return;
+						}
+					}
+				} catch (final UserException ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(MainFrame.this, "Configuration error:\n" + ex.getCause().getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				} 
 				
 				swingWorker = new SwingWorker<Void, String>() {
 					@Override
 					protected Void doInBackground() throws Exception {
-						new Renderer(createConfiguration()).render(new RenderingContext() {
+						new Renderer(cfg).render(new RenderingContext() {
 							@Override
 							public void setProgress1(final int pct, final String message) {
 								System.out.printf("[%3d%%] %s\n", pct, message);
