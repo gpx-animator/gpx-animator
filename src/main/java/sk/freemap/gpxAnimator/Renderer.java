@@ -215,6 +215,8 @@ public class Renderer {
 
 		final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
 
+		final boolean keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame().longValue() > 0;
+
 		float skip = -1f;
 		for (int frame = 1; frame < frames; frame++) {
 			if (rc.isCancelled1()) {
@@ -259,6 +261,18 @@ public class Renderer {
 			}
 
 			frameWriter.addFrame(bi2);
+
+			if (keepLastFrame && frame == frames - 1) { // last frame
+				final long ms = cfg.getKeepLastFrame().longValue();
+				final long fps = Double.valueOf(cfg.getFps()).longValue();
+				final long stillFrames = ms / 1_000 * fps;
+				for (long stillFrame = 0; stillFrame < stillFrames; stillFrame++) {
+					frameWriter.addFrame(bi2);
+					if (rc.isCancelled1()) {
+						return;
+					}
+				}
+			}
 		}
 
 		frameWriter.close();

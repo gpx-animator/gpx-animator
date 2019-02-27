@@ -49,7 +49,9 @@ public class Configuration {
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color flashbackColor;
 	private Long flashbackDuration;
-	
+
+	private Long keepLastFrame;
+
 	@XmlJavaTypeAdapter(FileXmlAdapter.class)
 	private File output;
 	private String attribution;
@@ -79,7 +81,7 @@ public class Configuration {
 			final Double speedup, final long tailDuration, final double fps, final Long totalTime,
 			final float backgroundMapVisibility, final String tmsUrlTemplate,
 			final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
-			final File output, final String attribution,
+			final Long keepLastFrame, final File output, final String attribution,
 			final int fontSize, final Double markerSize, final Double waypointSize,
 			final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
 			final List<TrackConfiguration> trackConfigurationList) {
@@ -97,6 +99,7 @@ public class Configuration {
 		this.skipIdle = skipIdle;
 		this.flashbackColor = flashbackColor;
 		this.flashbackDuration = flashbackDuration;
+		this.keepLastFrame = keepLastFrame;
 		this.output = output;
 		this.attribution = attribution;
 		this.fontSize = fontSize;
@@ -148,8 +151,8 @@ public class Configuration {
 	public Long getTotalTime() {
 		return totalTime;
 	}
-	
-	
+
+
 	public float getBackgroundMapVisibility() {
 		return backgroundMapVisibility;
 	}
@@ -172,6 +175,11 @@ public class Configuration {
 	
 	public Long getFlashbackDuration() {
 		return flashbackDuration;
+	}
+	
+	
+	public Long getKeepLastFrame() {
+		return keepLastFrame;
 	}
 	
 	
@@ -246,7 +254,9 @@ public class Configuration {
 		private boolean skipIdle = true;
 		private Color flashbackColor = Color.white;
 		private Long flashbackDuration = 250l;
-		
+
+		private Long keepLastFrame;
+
 		private File output = new File("video.mp4"); // frame%08d.png
 		private String attribution = "Created by GPX Animator " + Constants.VERSION + "\n%MAP_ATTRIBUTION%";
 		
@@ -268,7 +278,7 @@ public class Configuration {
 					speedup, tailDuration, fps, totalTime,
 					backgroundMapVisibility, tmsUrlTemplate,
 					skipIdle, flashbackColor, flashbackDuration,
-					output, attribution,
+					keepLastFrame, output, attribution,
 					fontSize, markerSize, waypointSize,
 					minLon,	maxLon,	minLat,	maxLat,
 
@@ -339,6 +349,11 @@ public class Configuration {
 
 		public Builder flashbackDuration(final Long flashbackDuration) {
 			this.flashbackDuration = flashbackDuration;
+			return this;
+		}
+
+		public Builder keepLastFrame(final Long keepLastFrame) {
+			this.keepLastFrame = keepLastFrame;
 			return this;
 		}
 
