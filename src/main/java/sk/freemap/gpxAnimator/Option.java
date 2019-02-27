@@ -34,6 +34,7 @@ public enum Option {
 	KEEP_IDLE("keep-idle", "keep parts where no movement is present"),
 	FLASHBACK_COLOR("flashback-color", "transition color between non-idle parts"),
 	FLASHBACK_DURATION("flashback-duration", "color of the idle-skipping flashback effect in #AARRGGBB representation"),
+	KEEP_LAST_FRAME("keep-last-frame", "time to repeat the last rendered frame in milliseconds; complementary to total time"),
 	SKIP_IDLE("skip-idle", "idle-skipping flashback effect duration in milliseconds; set to empty for no flashback"),
 	HELP("help", "this help");
 	

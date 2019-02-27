@@ -61,6 +61,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 	private final JCheckBox skipIdleCheckBox;
 	private final ColorSelector flashbackColorSelector;
 	private final JSpinner flashbackDurationSpinner;
+	private final JSpinner keepLastFrameSpinner;
 	private final JSpinner totalTimeSpinner;
 	private JTextArea attributionTextArea;
 
@@ -90,9 +91,9 @@ abstract class GeneralSettingsPanel extends JPanel {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		final GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{91, 100, 0, 0};
-		gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 0};
+		gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 20, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 
 						final JLabel lblOutput = new JLabel("Output");
@@ -607,6 +608,25 @@ abstract class GeneralSettingsPanel extends JPanel {
 		gbc_flashbackDurationSpinner.gridy = 18;
 		add(flashbackDurationSpinner, gbc_flashbackDurationSpinner);
 		flashbackDurationSpinner.addChangeListener(changeListener);
+
+		final JLabel lblKeepLastFrame = new JLabel("Keep Last Frame");
+		final GridBagConstraints gbc_lblKeepLastFrame = new GridBagConstraints();
+		gbc_lblKeepLastFrame.anchor = GridBagConstraints.EAST;
+		gbc_lblKeepLastFrame.insets = new Insets(0, 0, 0, 5);
+		gbc_lblKeepLastFrame.gridx = 0;
+		gbc_lblKeepLastFrame.gridy = 19;
+		add(lblKeepLastFrame, gbc_lblKeepLastFrame);
+
+		keepLastFrameSpinner = new JSpinner();
+		keepLastFrameSpinner.setToolTipText(Option.KEEP_LAST_FRAME.getHelp());
+		keepLastFrameSpinner.setModel(new DurationSpinnerModel());
+		keepLastFrameSpinner.setEditor(new DurationEditor(keepLastFrameSpinner));
+		final GridBagConstraints gbc_keepLastFrameSpinner = new GridBagConstraints();
+		gbc_keepLastFrameSpinner.fill = GridBagConstraints.HORIZONTAL;
+		gbc_keepLastFrameSpinner.gridx = 1;
+		gbc_keepLastFrameSpinner.gridy = 19;
+		add(keepLastFrameSpinner, gbc_keepLastFrameSpinner);
+		keepLastFrameSpinner.addChangeListener(changeListener);
 	}
 
 	private List<MapTemplate> readMaps() {
@@ -723,6 +743,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		b.tailDuration(td == null ? 0l : td.longValue());
 		b.fps((Double) fpsSpinner.getValue());
 		b.totalTime((Long) totalTimeSpinner.getValue());
+		b.keepLastFrame((Long) keepLastFrameSpinner.getValue());
 		b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
 		final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
 		final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
