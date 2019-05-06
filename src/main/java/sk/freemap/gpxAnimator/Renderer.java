@@ -14,13 +14,11 @@
  */
 package sk.freemap.gpxAnimator;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import sk.freemap.gpxAnimator.frameWriter.FileFrameWriter;
+import sk.freemap.gpxAnimator.frameWriter.FrameWriter;
+import sk.freemap.gpxAnimator.frameWriter.VideoFrameWriter;
+
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
@@ -29,17 +27,9 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
-
-import sk.freemap.gpxAnimator.frameWriter.FileFrameWriter;
-import sk.freemap.gpxAnimator.frameWriter.FrameWriter;
-import sk.freemap.gpxAnimator.frameWriter.VideoFrameWriter;
 
 
 public class Renderer {
@@ -217,6 +207,8 @@ public class Renderer {
 
 		final boolean keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame().longValue() > 0;
 
+		final Photos photos = new Photos(cfg.getPhotos());
+
 		float skip = -1f;
 		for (int frame = 1; frame < frames; frame++) {
 			if (rc.isCancelled1()) {
@@ -235,7 +227,8 @@ public class Renderer {
 				continue;
 			}
 
-			rc.setProgress1((int) (100.0 * frame / frames), "Rendering Frame: " + frame + "/" + (frames - 1));
+			final int pct = (int) (100.0 * frame / frames);
+			rc.setProgress1(pct, "Rendering Frame: " + frame + "/" + (frames - 1));
 
 			paint(bi, frame, 0);
 
@@ -261,6 +254,8 @@ public class Renderer {
 			}
 
 			frameWriter.addFrame(bi2);
+
+			photos.render(time, cfg, bi2, frameWriter, rc, pct);
 
 			if (keepLastFrame && frame == frames - 1) { // last frame
 				final long ms = cfg.getKeepLastFrame().longValue();
