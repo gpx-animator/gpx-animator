@@ -1,5 +1,18 @@
 package sk.freemap.gpxAnimator.ui;
 
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+import sk.freemap.gpxAnimator.Configuration;
+import sk.freemap.gpxAnimator.Option;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,30 +29,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
-import sk.freemap.gpxAnimator.Configuration;
-import sk.freemap.gpxAnimator.Option;
+import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
+import static javax.swing.JFileChooser.FILES_ONLY;
 
 abstract class GeneralSettingsPanel extends JPanel {
 
@@ -64,6 +55,8 @@ abstract class GeneralSettingsPanel extends JPanel {
 	private final JSpinner keepLastFrameSpinner;
 	private final JSpinner totalTimeSpinner;
 	private JTextArea attributionTextArea;
+	private final FileSelector photosDirectorySelector;
+	private final JSpinner photoTimeSpinner;
 
 	private List<MapTemplate> mapTamplateList;
 
@@ -91,9 +84,9 @@ abstract class GeneralSettingsPanel extends JPanel {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		final GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{91, 100, 0, 0};
-		gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 20, 0};
+		gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 20, 20, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 
 						final JLabel lblOutput = new JLabel("Output");
@@ -104,7 +97,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 						gbc_lblOutput.gridy = 0;
 						add(lblOutput, gbc_lblOutput);
 
-				outputFileSelector = new FileSelector() {
+				outputFileSelector = new FileSelector(FILES_ONLY) {
 					private static final long serialVersionUID = 7372002778976603239L;
 
 					@Override
@@ -627,6 +620,52 @@ abstract class GeneralSettingsPanel extends JPanel {
 		gbc_keepLastFrameSpinner.gridy = 19;
 		add(keepLastFrameSpinner, gbc_keepLastFrameSpinner);
 		keepLastFrameSpinner.addChangeListener(changeListener);
+
+		final JLabel lblPhotosDirectorySelector = new JLabel("Photo Directory");
+		final GridBagConstraints gbc_lblPhotosDirectorySelector = new GridBagConstraints();
+		gbc_lblPhotosDirectorySelector.anchor = GridBagConstraints.EAST;
+		gbc_lblPhotosDirectorySelector.insets = new Insets(0, 0, 0, 5);
+		gbc_lblPhotosDirectorySelector.gridx = 0;
+		gbc_lblPhotosDirectorySelector.gridy = 20;
+		add(lblPhotosDirectorySelector, gbc_lblPhotosDirectorySelector);
+
+		photosDirectorySelector = new FileSelector(DIRECTORIES_ONLY) {
+			private static final long serialVersionUID = 7372002778976603240L;
+
+			@Override
+			protected Type configure(final JFileChooser outputFileChooser) {
+				return Type.OPEN;
+			}
+		};
+
+		photosDirectorySelector.setToolTipText(Option.PHOTOS.getHelp());
+		final GridBagConstraints gbc_photosDirectorySelector = new GridBagConstraints();
+		gbc_photosDirectorySelector.fill = GridBagConstraints.BOTH;
+		gbc_photosDirectorySelector.insets = new Insets(0, 0, 5, 0);
+		gbc_photosDirectorySelector.gridx = 1;
+		gbc_photosDirectorySelector.gridy = 20;
+		add(photosDirectorySelector, gbc_photosDirectorySelector);
+
+		photosDirectorySelector.addPropertyChangeListener("filename", propertyChangeListener);
+
+		final JLabel lblPhotoTime = new JLabel("Show photos for");
+		final GridBagConstraints gbc_lblPhotoTime = new GridBagConstraints();
+		gbc_lblPhotoTime.anchor = GridBagConstraints.EAST;
+		gbc_lblPhotoTime.insets = new Insets(0, 0, 0, 5);
+		gbc_lblPhotoTime.gridx = 0;
+		gbc_lblPhotoTime.gridy = 21;
+		add(lblPhotoTime, gbc_lblPhotoTime);
+
+		photoTimeSpinner = new JSpinner();
+		photoTimeSpinner.setToolTipText(Option.PHOTO_TIME.getHelp());
+		photoTimeSpinner.setModel(new DurationSpinnerModel());
+		photoTimeSpinner.setEditor(new DurationEditor(photoTimeSpinner));
+		final GridBagConstraints gbc_photoTimeSpinner = new GridBagConstraints();
+		gbc_photoTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
+		gbc_photoTimeSpinner.gridx = 1;
+		gbc_photoTimeSpinner.gridy = 21;
+		add(photoTimeSpinner, gbc_photoTimeSpinner);
+		photoTimeSpinner.addChangeListener(changeListener);
 	}
 
 	private List<MapTemplate> readMaps() {
@@ -705,6 +744,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		fpsSpinner.setValue(c.getFps());
 		totalTimeSpinner.setValue(c.getTotalTime());
 		backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
+		photoTimeSpinner.setValue(c.getPhotoTime());
 
 		final String tmsUrlTemplate = c.getTmsUrlTemplate();
 		found: {
@@ -755,7 +795,8 @@ abstract class GeneralSettingsPanel extends JPanel {
 		b.fontSize((Integer) fontSizeSpinner.getValue());
 		b.markerSize((Double) markerSizeSpinner.getValue());
 		b.waypointSize((Double) waypointSizeSpinner.getValue());
-
+		b.photos(new File(photosDirectorySelector.getFilename()));
+		b.photoTime((Long) photoTimeSpinner.getValue());
 		b.attribution(attributionTextArea.getText().replace("%MAP_ATTRIBUTION%",
 				tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
 				? ((MapTemplate) tmsItem).getAttributionText() : "").trim());

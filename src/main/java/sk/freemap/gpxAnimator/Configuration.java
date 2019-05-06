@@ -14,18 +14,13 @@
  */
 package sk.freemap.gpxAnimator;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -65,6 +60,9 @@ public class Configuration {
 	private Double minLat;
 	private Double maxLat;
 
+	private File photos;
+	private Long photoTime;
+
 	@XmlElementWrapper
 	@XmlElement(name = "trackConfiguration")
 	private List<TrackConfiguration> trackConfigurationList;
@@ -84,6 +82,7 @@ public class Configuration {
 			final Long keepLastFrame, final File output, final String attribution,
 			final int fontSize, final Double markerSize, final Double waypointSize,
 			final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
+			final File photos, final Long photoTime,
 			final List<TrackConfiguration> trackConfigurationList) {
 		
 		this.margin = margin;
@@ -110,6 +109,8 @@ public class Configuration {
 		this.maxLon = maxLon;
 		this.minLat = minLat;
 		this.maxLat = maxLat;
+		this.photos = photos;
+		this.photoTime = photoTime;
 	}
 
 
@@ -226,7 +227,17 @@ public class Configuration {
 		return maxLat;
 	}
 
-	
+
+	public File getPhotos() {
+		return photos;
+	}
+
+
+	public Long getPhotoTime() {
+		return photoTime;
+	}
+
+
 	public List<TrackConfiguration> getTrackConfigurationList() {
 		return trackConfigurationList;
 	}
@@ -236,7 +247,7 @@ public class Configuration {
 		return new Builder();
 	}
 
-	
+
 	public static class Builder {
 		private int margin = 20;
 		private Integer height;
@@ -269,6 +280,9 @@ public class Configuration {
 		private Double minLat;
 		private Double maxLat;
 
+		private File photos;
+		private Long photoTime = 3_000L;
+
 		private final List<TrackConfiguration> trackConfigurationList = new ArrayList<TrackConfiguration>();
 		
 
@@ -281,6 +295,7 @@ public class Configuration {
 					keepLastFrame, output, attribution,
 					fontSize, markerSize, waypointSize,
 					minLon,	maxLon,	minLat,	maxLat,
+					photos, photoTime,
 
 					Collections.unmodifiableList(trackConfigurationList)
 			);
@@ -402,6 +417,16 @@ public class Configuration {
 			return this;
 		}
 
+		public Builder photos(final File photos) {
+			this.photos = photos;
+			return this;
+		}
+
+		public Builder photoTime(final Long photoTime) {
+			this.photoTime = photoTime;
+			return this;
+		}
+
 		public Builder addTrackConfiguration(final TrackConfiguration trackConfiguration) {
 			this.trackConfigurationList.add(trackConfiguration);
 			return this;
@@ -427,6 +452,8 @@ public class Configuration {
 				+ ", fontSize=" + fontSize
 				+ ", markerSize=" + markerSize
 				+ ", waypointSize=" + waypointSize
+				+ ", photos=" + photos
+				+ ", photoTime=" + photoTime
 				+ ", trackConfigurationList=" + trackConfigurationList
 				+ "]";
 	}

@@ -1,5 +1,18 @@
 package sk.freemap.gpxAnimator.ui;
 
+import sk.freemap.gpxAnimator.Option;
+import sk.freemap.gpxAnimator.TrackConfiguration;
+import sk.freemap.gpxAnimator.TrackConfiguration.Builder;
+import sk.freemap.gpxAnimator.UserException;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,25 +22,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import sk.freemap.gpxAnimator.Option;
-import sk.freemap.gpxAnimator.TrackConfiguration;
-import sk.freemap.gpxAnimator.TrackConfiguration.Builder;
-import sk.freemap.gpxAnimator.UserException;
+import static javax.swing.JFileChooser.FILES_ONLY;
 
 abstract class TrackSettingsPanel extends JPanel {
 
@@ -63,7 +58,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		gbc_lblGpx.gridy = 0;
 		add(lblGpx, gbc_lblGpx);
 		
-		inputGpxFileSelector = new FileSelector() {
+		inputGpxFileSelector = new FileSelector(FILES_ONLY) {
 			private static final long serialVersionUID = -7085193817022374995L;
 
 			@Override

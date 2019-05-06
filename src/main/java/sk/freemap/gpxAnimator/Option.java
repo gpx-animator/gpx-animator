@@ -36,6 +36,8 @@ public enum Option {
 	FLASHBACK_DURATION("flashback-duration", "color of the idle-skipping flashback effect in #AARRGGBB representation"),
 	KEEP_LAST_FRAME("keep-last-frame", "time to repeat the last rendered frame in milliseconds; complementary to total time"),
 	SKIP_IDLE("skip-idle", "idle-skipping flashback effect duration in milliseconds; set to empty for no flashback"),
+	PHOTOS("photos", "a directory containing photos to be added to the animation (must contain EXIF information with date and time of photo taken)"),
+	PHOTO_TIME("photo-time", "the amount of time, a photo should be shown above the map"),
 	HELP("help", "this help");
 	
 	private static java.util.Map<String, Option> map = new HashMap<String, Option>();

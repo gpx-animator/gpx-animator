@@ -14,21 +14,15 @@
  */
 package sk.freemap.gpxAnimator.ui;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.prefs.Preferences;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 public abstract class FileSelector extends JPanel {
 	private static final long serialVersionUID = 3157365691996396016L;
@@ -46,7 +40,7 @@ public abstract class FileSelector extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public FileSelector() {
+	public FileSelector(final int fileSelectionMode) {
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
 		fileTextField = new JTextField();
@@ -88,6 +82,8 @@ public abstract class FileSelector extends JPanel {
 				if (fileChooser == null) {
 					fileChooser = new JFileChooser();
 				}
+
+				fileChooser.setFileSelectionMode(fileSelectionMode);
 				
 				final Preferences prefs = Preferences.userRoot().node("app");
 				final String lastCwd = prefs.get(MainFrame.PREF_LAST_CWD, null);
