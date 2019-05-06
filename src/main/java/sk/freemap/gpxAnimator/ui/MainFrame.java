@@ -239,7 +239,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					MainFrame.this.dispose();
+					System.exit(0);
 				}
 			}
 		});
