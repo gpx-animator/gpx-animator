@@ -294,7 +294,7 @@ public class MainFrame extends JFrame {
 		mntmFAQ.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				final String url = "https://zdila.github.com/gpx-animator/#faq";
+				final String url = "https://gpx-animator.app/#faq";
 				try {
 					final String os = System.getProperty("os.name").toLowerCase();
 					final Runtime rt = Runtime.getRuntime();
