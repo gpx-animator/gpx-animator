@@ -54,7 +54,7 @@ public class AboutDialog extends JDialog {
 			dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. " + Constants.VERSION
 					+ "<br/>\n&copy; " + Constants.YEAR + " <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n"
 					+ "<p>GPX Animator generates video from GPX files.</p>"
-					+ "<p>More information can be found at <a href=\"http://zdila.github.com/gpx-animator/\">http://zdila.github.com/gpx-animator/</a>.</p>\n");
+					+ "<p>More information can be found at <a href=\"https://gpx-animator.app\">https://gpx-animator.app</a>.</p>\n");
 
 			{
 				final JScrollPane scrollPane = new JScrollPane(dtrpngpxNavigator);
