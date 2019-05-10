@@ -24,3 +24,6 @@ $RECYCLE.BIN
 [Dd]esktop.ini
 Thumbs.db
 *.lnk
+
+# Default animation output
+video.mp4
