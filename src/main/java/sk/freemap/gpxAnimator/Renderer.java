@@ -238,10 +238,10 @@ public class Renderer {
 
 			drawWaypoints(bi2, frame, wpMap);
 
-			drawMarker(bi2, frame);
+			final Point2D marker = drawMarker(bi2, frame);
 
 			if (font != null) {
-				drawTime(bi2, frame);
+				drawInfo(bi2, frame, marker);
 				drawAttribution(bi2, cfg.getAttribution());
 			}
 
@@ -371,7 +371,7 @@ public class Renderer {
 				namedPoint.name = ((Waypoint) latLon).getName();
 				point = namedPoint;
 			} else {
-				point = new Point2D.Double(x, y);
+				point = new GpxPoint(x, y, latLon);
 			}
 
 			// hack to prevent overwriting existing (way)point with same time
@@ -394,10 +394,25 @@ public class Renderer {
 	}
 
 
-	private void drawTime(final BufferedImage bi, final int frame) {
+	private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) {
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
-		printText(getGraphics(bi), dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
+		final String latLongString = getLatLonString(marker);
+		final Graphics2D graphics = getGraphics(bi);
+		printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
 				bi.getHeight() - cfg.getMargin());
+		printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
+				bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
+	}
+
+
+	private String getLatLonString(final Point2D point) {
+		if (point instanceof GpxPoint) {
+			final GpxPoint gpxPoint = (GpxPoint) point;
+			final LatLon latLon = gpxPoint.getLatLon();
+			return String.format("%.4f, %.4f", latLon.getLat(), latLon.getLon());
+		} else {
+			return "";
+		}
 	}
 
 
@@ -406,9 +421,10 @@ public class Renderer {
 	}
 
 
-	private void drawMarker(final BufferedImage bi, final int frame) {
+	private Point2D drawMarker(final BufferedImage bi, final int frame) {
+		Point2D point = null;
 		if (cfg.getMarkerSize() == null || cfg.getMarkerSize().doubleValue() == 0.0) {
-			return;
+			return point;
 		}
 
 		final Graphics2D g2 = getGraphics(bi);
@@ -429,12 +445,12 @@ public class Renderer {
 					continue;
 				}
 
-				final Point2D p = floorEntry.getValue();
+				point = floorEntry.getValue();
 				if (t2 - floorEntry.getKey() <= cfg.getTailDuration()) { // TODO make configurable
 					g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 					final Ellipse2D.Double marker = new Ellipse2D.Double(
-							p.getX() - markerSize / 2.0,
-							p.getY() - markerSize / 2.0,
+							point.getX() - markerSize / 2.0,
+							point.getY() - markerSize / 2.0,
 							markerSize,
 							markerSize);
 					g2.setStroke(new BasicStroke(1f));
@@ -444,13 +460,14 @@ public class Renderer {
 
 					final String label = trackConfiguration.getLabel();
 					if (!label.isEmpty()) {
-						printText(g2, label, (float) p.getX() + 8f, (float) p.getY() + 4f);
+						printText(g2, label, (float) point.getX() + 8f, (float) point.getY() + 4f);
 					}
 				}
 
 				continue outer;
 			}
 		}
+		return point;
 	}
 
 

@@ -1,6 +1,7 @@
 version 1.4 (???)
 --------------------------
 * adding photos to the animation
+* adding coordinates to the animation
 * asking before overwriting an existing output file
 * adding link to the FAQ in the help menu
 * GPX-Animator now has a custom domain: https://gpx-animator.app
