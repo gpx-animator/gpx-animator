@@ -1,3 +1,12 @@
+version 1.4 (???)
+--------------------------
+* adding photos to the animation
+* adding coordinates to the animation
+* asking before overwriting an existing output file
+* adding link to the FAQ in the help menu
+* GPX-Animator now has a custom domain: https://gpx-animator.app
+* fixed some issues
+
 version 1.3.1 (2018-07-31)
 --------------------------
 * fixed some issues and added compatibility for Java 9+

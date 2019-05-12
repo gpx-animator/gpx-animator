@@ -55,7 +55,9 @@ public class Photos {
                 photos = new HashMap<>();
             }
         } else {
-            System.err.println(String.format("'%s' is not a directory!", directory));
+            if (!directory.getAbsolutePath().isEmpty()) {
+                System.err.println(String.format("'%s' is not a directory!", directory));
+            }
             photos = new HashMap<>();
         }
     }
