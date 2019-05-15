@@ -2,7 +2,7 @@
 
 ## Version 1.4
 
-Release date: 2019-??-??
+Release date: not yet released
 
 * adding photos to the animation
 * adding coordinates to the animation
