@@ -1,5 +1,9 @@
-version 1.4 (???)
---------------------------
+# Changelog
+
+## Version 1.4
+
+Release date: 2019-??-??
+
 * adding photos to the animation
 * adding coordinates to the animation
 * asking before overwriting an existing output file
@@ -7,43 +11,59 @@ version 1.4 (???)
 * GPX-Animator now has a custom domain: https://gpx-animator.app
 * fixed some issues
 
-version 1.3.1 (2018-07-31)
---------------------------
+## Version 1.3.1
+
+Release date: 2018-07-31
+
 * fixed some issues and added compatibility for Java 9+
 
-version 1.3.0 (2015-11-22)
---------------------------
+## Version 1.3.0
+
+Release date: 2015-11-22
+
 * configurable bounding box
 
-version 1.2.4 (2015-11-02)
---------------------------
+## Version 1.2.4
+
+Release date: 2015-11-02
+
 * fixed #18 (error saving configuration)
 
-version 1.2.3 (2015-08-23)
---------------------------
+## Version 1.2.3
+
+Release date: 2015-08-23
+
 * fixed NPE on empty attribution
 * fixed not showing marker when tail was empty or zero
 * updated maps
 * removed unused --debug option
 
-version 1.2.2 (2015-01-18)
---------------------------
+## Version 1.2.2
+
+Release date: 2015-01-18
+
 * fixed NPE when adding new track
 * preselect different color to newly added tracks
 
-version 1.2.1 (2015-01-11)
---------------------------
+## Version 1.2.1
+
+Release date: 2015-01-11
+
 * handle all ISO 8601 date formats in GPX
 * remember directory in file dialogs
 * store relative paths in project XML file
 
-version 1.2.0 (2014-02-03)
---------------------------
+## Version 1.2.0
+
+Release date: 2014-02-03
+
 * preparation for interactive map view configuration
 * fixed bug in computing video dimensions
 
-version 1.1.0 (2013-06-24)
---------------------------
+## Version 1.1.0
+
+Release date: 2013-06-24
+
 * configurable map attribution
 * display track label in GUI tab title
 * hide inactive marker after tail timeout
@@ -52,45 +72,61 @@ version 1.1.0 (2013-06-24)
 * fixed alpha channel interpolation for tail
 * fixed parsing of GPX dates with milliseconds
 
-version 1.0.0 (2013-03-23)
---------------------------
+## Version 1.0.0
+
+Release date: 2013-03-23
+
 * added configuration GUI
 * direct video rendering support
 * minor rendering improvements
 
-version 0.8 (2013-02-09)
-------------------------
+## Version 0.8
+
+Release date: 2013-02-09
+
 * added waypoint support
 
-version 0.7 (2013-02-05)
-------------------------
+## Version 0.7
+
+Release date: 2013-02-05
+
 * added support for forced time intervals of GPS points
 * configurable flashback color and duration
 
-version 0.6 (2013-02-04)
-------------------------
+## Version 0.6
+
+Release date: 2013-02-04
+
 * added video dimension settings
 * added track offset support (per track)
 * skipping idle video frames
 
-version 0.5 (2013-02-03)
-------------------------
+## Version 0.5
+
+Release date: 2013-02-03
+
 * outlining texts
 * improved user experience ;-)
 * fixing some indexed PNG background map tiles
 
-version 0.4 (2013-02-03)
-------------------------
+## Version 0.4
+
+Release date: 2013-02-03
+
 * indicate inactive locations
 * track multisegment support
 * direct color specification
 
-version 0.3 (2013-02-03)
-------------------------
+## Version 0.3
+
+Release date: 2013-02-03
+
 * background map support
 
-version 0.2 (2013-02-02)
-------------------------
+## Version 0.2
+
+Release date: 2013-02-02
+
 * configurable hues
 * more parameters to configure
 * marker labels
@@ -98,7 +134,8 @@ version 0.2 (2013-02-02)
 * improved tail highlighting - now based on time
 * customizable tail length
 
-version 0.1 (2013-01-31)
-------------------------
-* initial version
+## Version 0.1
 
+Release date: 2013-01-31
+
+* initial version
