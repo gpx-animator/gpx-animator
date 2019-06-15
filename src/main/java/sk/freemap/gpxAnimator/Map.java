@@ -78,6 +78,9 @@ public class Map {
 				final BufferedImage tile;
 				try {
 					tile = ImageIO.read(new URL(url));
+					if (tile == null) {
+						throw new UserException("could not read tile " + url);
+					}
 				} catch (final IOException e) {
 					throw new UserException("error reading tile " + url, e);
 				}

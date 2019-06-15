@@ -38,7 +38,7 @@
         <name>HDM (Humanitarian OpenStreetMap Team)</name>
         <id>HDM_HOT</id>
         <type>tms</type>
-        <url>http://{switch:a,b,c}.tile.openstreetmap.fr/hot/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.tile.openstreetmap.fr/hot/{zoom}/{x}/{y}.png</url>
         <max-zoom>20</max-zoom>
         <attribution-text mandatory="true">© OpenStreetMap contributors, tiles courtesy of Humanitarian OpenStreetMap Team</attribution-text>
         <attribution-url>http://hot.openstreetmap.org/</attribution-url>
@@ -151,7 +151,7 @@
         <name>OpenStreetMap (German Style)</name>
         <id>osm-mapnik-german_style</id>
         <type>tms</type>
-        <url>http://{switch:a,b,c,d}.tile.openstreetmap.de/tiles/osmde/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c,d}.tile.openstreetmap.de/tiles/osmde/{zoom}/{x}/{y}.png</url>
         <max-zoom>18</max-zoom>
         <attribution-text>© OpenStreetMap contributors, CC-BY-SA</attribution-text>
         <attribution-url>https://openstreetmap.org/</attribution-url>
@@ -171,7 +171,7 @@
         <name>osmfr</name>
         <id>osmfr</id>
         <type>tms</type>
-        <url>http://{switch:a,b,c}.tile.openstreetmap.fr/osmfr/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.tile.openstreetmap.fr/osmfr/{zoom}/{x}/{y}.png</url>
         <max-zoom>20</max-zoom>
         <attribution-text mandatory="true">Tiles © cquest@Openstreetmap France, data © OpenStreetMap contributors, ODBL</attribution-text>
         <attribution-url>https://openstreetmap.org/</attribution-url>
@@ -7518,7 +7518,7 @@
         <name>Stevns (Denmark)</name>
         <id>Stevns_Denmark</id>
         <type>tms</type>
-        <url>http://{switch:a,b,c}.tile.openstreetmap.dk/stevns/2009/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.tile.openstreetmap.dk/stevns/2009/{zoom}/{x}/{y}.png</url>
         <max-zoom>20</max-zoom>
         <bounds min-lat="55.2340267" min-lon="12.0913942" max-lat="55.4364665" max-lon="12.4707413">
             <shape>
@@ -7561,7 +7561,7 @@
         <name>Vejmidte (Denmark)</name>
         <id>Vejmidte_Denmark</id>
         <type>tms</type>
-        <url>http://{switch:a,b,c}.tile.openstreetmap.dk/danmark/vejmidte/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.tile.openstreetmap.dk/danmark/vejmidte/{zoom}/{x}/{y}.png</url>
         <max-zoom>20</max-zoom>
         <bounds min-lat="54.4681655" min-lon="8.0185123" max-lat="57.8228945" max-lon="15.3099250">
             <shape>
@@ -8657,7 +8657,7 @@
         <type>tms</type>
         <id>route500hydro</id>
         <min-zoom>6</min-zoom>
-        <url>http://{switch:a,b,c}.tile.openstreetmap.fr/route500hydro/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.tile.openstreetmap.fr/route500hydro/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="41.3136241" min-lon="-5.3525496" max-lat="51.1761675" max-lon="9.6356823">
             <shape>
                 <point lat="49.0891892" lon="8.3247852" />
@@ -11633,7 +11633,7 @@
         <type>tms</type>
         <id>route500</id>
         <min-zoom>12</min-zoom>
-        <url>http://{switch:a,b,c}.tile.openstreetmap.fr/route500/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.tile.openstreetmap.fr/route500/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="41.3136241" min-lon="-5.3525496" max-lat="51.1761675" max-lon="9.6356823">
             <shape>
                 <point lat="49.0891892" lon="8.3247852" />
@@ -17123,7 +17123,7 @@
         <id>osmie_tds</id>
         <country-code>IE</country-code>
         <type>tms</type>
-        <url>http://tile.openstreetmap.ie/townland/{zoom}/{x}/{y}.png</url>
+        <url>https://tile.openstreetmap.ie/townland/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="51.3091083" min-lon="-10.6702376" max-lat="55.4530757" max-lon="-5.3614762">
             <shape>
                 <point lat="55.3963337" lon="-8.8312773" />
@@ -17176,7 +17176,7 @@
         <id>osmie_eds</id>
         <country-code>IE</country-code>
         <type>tms</type>
-        <url>http://tile.openstreetmap.ie/ed/{zoom}/{x}/{y}.png</url>
+        <url>https://tile.openstreetmap.ie/ed/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="51.3091083" min-lon="-10.6702376" max-lat="55.4530757" max-lon="-5.3614762">
             <shape>
                 <point lat="55.3963337" lon="-8.8312773" />
@@ -17229,7 +17229,7 @@
         <id>osmie_cps</id>
         <country-code>IE</country-code>
         <type>tms</type>
-        <url>http://tile.openstreetmap.ie/civilparish/{zoom}/{x}/{y}.png</url>
+        <url>https://tile.openstreetmap.ie/civilparish/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="51.3091083" min-lon="-10.6702376" max-lat="55.4530757" max-lon="-5.3614762">
             <shape>
                 <point lat="55.3963337" lon="-8.8312773" />
@@ -17282,7 +17282,7 @@
         <id>osmie_barony</id>
         <country-code>IE</country-code>
         <type>tms</type>
-        <url>http://tile.openstreetmap.ie/barony/{zoom}/{x}/{y}.png</url>
+        <url>https://tile.openstreetmap.ie/barony/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="51.3091083" min-lon="-10.6702376" max-lat="55.4530757" max-lon="-5.3614762">
             <shape>
                 <point lat="55.3963337" lon="-8.8312773" />
@@ -17335,7 +17335,7 @@
         <id>osmie_political</id>
         <country-code>IE</country-code>
         <type>tms</type>
-        <url>http://tile.openstreetmap.ie/political/{zoom}/{x}/{y}.png</url>
+        <url>https://tile.openstreetmap.ie/political/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="51.3091083" min-lon="-10.6702376" max-lat="55.4530757" max-lon="-5.3614762">
             <shape>
                 <point lat="55.3963337" lon="-8.8312773" />
@@ -29313,7 +29313,7 @@
         <name>USGS Topographic Maps</name>
         <id>USGS-Scanned_Topographic</id>
         <type>tms</type>
-        <url>http://{switch:a,b,c}.tile.openstreetmap.us/usgs_scanned_topos/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.tile.openstreetmap.us/usgs_scanned_topos/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="18.9023432" min-lon="-178.0000970" max-lat="71.9983391" max-lon="-65.9892568">
             <shape>
                 <point lat="48.9962416" lon="-125.9901730" />
@@ -29531,7 +29531,7 @@
         <name>USGS Large Scale Imagery</name>
         <id>USGS-Large_Scale</id>
         <type>tms</type>
-        <url>http://{switch:a,b,c}.tile.openstreetmap.us/usgs_large_scale/{zoom}/{x}/{y}.jpg</url>
+        <url>https://{switch:a,b,c}.tile.openstreetmap.us/usgs_large_scale/{zoom}/{x}/{y}.jpg</url>
         <min-zoom>12</min-zoom>
         <max-zoom>20</max-zoom>
         <bounds min-lat="24.4962940" min-lon="-124.8185282" max-lat="49.4425264" max-lon="-66.9311098">
@@ -30589,7 +30589,7 @@
         <name>TIGER 2012 Roads Overlay</name>
         <id>OSM-US-TIGER-Roads_Overlay-2012</id>
         <type>tms</type>
-        <url>http://{switch:a,b,c}.tile.openstreetmap.us/tiger2012_roads_expanded/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.tile.openstreetmap.us/tiger2012_roads_expanded/{zoom}/{x}/{y}.png</url>
         <min-zoom>16</min-zoom>
         <max-zoom>19</max-zoom>
         <icon>data:image/png;base64,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</icon>
