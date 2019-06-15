@@ -75,7 +75,7 @@ public class Photos {
             final ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString,
                     DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x"));
             return zonedDateTime.toEpochSecond() * 1_000;
-        } catch (ImageProcessingException | IOException e) {
+        } catch (ImageProcessingException | IOException | NullPointerException e) {
             System.err.println(String.format("Error processing file '%s': %s",
                     file.getAbsolutePath(), e.getMessage()));
             return 0L;
