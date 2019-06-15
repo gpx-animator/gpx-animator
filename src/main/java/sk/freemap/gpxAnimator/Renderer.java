@@ -331,6 +331,8 @@ public class Renderer {
 			maxY = latToY(minLat);
 		}
 
+		GpxPoint lastPoint = null;
+
 		for (final LatLon latLon : latLonList) {
 			final double x = lonToX(latLon.getLon());
 			final double y = latToY(latLon.getLat());
@@ -371,7 +373,9 @@ public class Renderer {
 				namedPoint.name = ((Waypoint) latLon).getName();
 				point = namedPoint;
 			} else {
-				point = new GpxPoint(x, y, latLon);
+				double speed = calculateSpeed(lastPoint, latLon, time);
+				lastPoint = new GpxPoint(x, y, latLon, time, speed);
+				point = lastPoint;
 			}
 
 			// hack to prevent overwriting existing (way)point with same time
@@ -383,6 +387,40 @@ public class Renderer {
 		}
 	}
 
+
+	private static double calculateSpeed(final GpxPoint lastPoint, final LatLon latLon, final long time) {
+		if (lastPoint == null) {
+			return 0;
+		}
+		
+		double dist = calculateDistance(lastPoint, latLon);
+		double timeDiff = time - lastPoint.getTime();
+
+		return (3_600_000 * dist) / timeDiff;
+	}
+	private static double calculateDistance(final GpxPoint lastPoint, final LatLon latLon) {
+		if (lastPoint == null) {
+			return 0;
+		}
+
+		double lat1 = lastPoint.getLatLon().getLat();
+		double lon1 = lastPoint.getLatLon().getLon();
+		double lat2 = latLon.getLat();
+		double lon2 = latLon.getLon();
+		
+		if ((lat1 == lat2) && (lon1 == lon2)) {
+			return 0;
+		} else {
+			double theta = lon1 - lon2;
+			double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
+					+ Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
+			dist = Math.acos(dist);
+			dist = Math.toDegrees(dist);
+			dist = dist * 60 * 1.1515; // miles
+			dist = dist * 1.609344; // kilometers
+			return dist;
+		}
+	}
 
 	private static double lonToX(final Double maxLon) {
 		return Math.toRadians(maxLon);
@@ -397,11 +435,25 @@ public class Renderer {
 	private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) {
 		final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
 		final String latLongString = getLatLonString(marker);
+		final String speedString = getSpeedString(marker);
 		final Graphics2D graphics = getGraphics(bi);
 		printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
 				bi.getHeight() - cfg.getMargin());
 		printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
 				bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
+		printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(),
+				bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+	}
+
+
+	private String getSpeedString(final Point2D point) {
+		if (point instanceof GpxPoint) {
+			final GpxPoint gpxPoint = (GpxPoint) point;
+			final double speed = gpxPoint.getSpeed();
+			return String.format("%.0f km/h", speed);
+		} else {
+			return "";
+		}
 	}
 
 
