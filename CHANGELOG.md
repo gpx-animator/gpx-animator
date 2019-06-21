@@ -4,6 +4,7 @@
 
 Release date: not yet released
 
+* showing speed in animation
 * adding photos to the animation
 * adding coordinates to the animation
 * asking before overwriting an existing output file
