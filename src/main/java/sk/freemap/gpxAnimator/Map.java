@@ -76,6 +76,7 @@ public class Map {
 				rc.setProgress1((int) (100.0 * i / total), "Reading Map Tile: " + i + "/" + total);
 				
 				final BufferedImage tile;
+				System.setProperty("http.agent", "GPX Animator " + Constants.VERSION);
 				try {
 					tile = ImageIO.read(new URL(url));
 					if (tile == null) {
