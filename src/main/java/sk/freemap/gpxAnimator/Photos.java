@@ -27,7 +27,10 @@ import javax.imageio.stream.ImageInputStream;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -39,6 +42,14 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.groupingBy;
 
 public class Photos {
+
+    private static final String SYSTEM_ZONE_OFFSET;
+
+    static {
+        final ZonedDateTime dateTime = ZonedDateTime.now();
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("x");
+        SYSTEM_ZONE_OFFSET = dateTime.format(formatter);
+    }
 
     private final Map<Long, List<Photo>> photos;
 
@@ -70,8 +81,9 @@ public class Photos {
         try {
             final Metadata metadata = ImageMetadataReader.readMetadata(file);
             final ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
+            final String zoneOffset = directory.getString(36881) != null ? directory.getString(36881) : SYSTEM_ZONE_OFFSET;
             final String dateTimeString = directory.getString(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)
-                    + " " + directory.getString(36881).replace(":", "");
+                    + " " + zoneOffset.replace(":", "");
             final ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString,
                     DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x"));
             return zonedDateTime.toEpochSecond() * 1_000;
