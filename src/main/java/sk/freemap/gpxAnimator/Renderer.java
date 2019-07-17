@@ -113,7 +113,15 @@ public class Renderer {
 
 		if (cfg.getTmsUrlTemplate() != null && cfg.getZoom() == null) {
 			// force using computed zoom
-			zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
+			final boolean userSpecifiedHeight = cfg.getHeight() != null;
+			if (userSpecifiedHeight) {
+				final int height = cfg.getHeight();
+				final Integer zoom1 = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
+				final Integer zoom2 = (int) Math.floor(Math.log(Math.PI / 128.0 * (height - cfg.getMargin() * 2) / (maxY - minY)) / Math.log(2));
+				zoom = (int) Math.min(zoom1, zoom2);
+			} else {
+				zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
+			}
 			rc.setProgress1(0, "computed zoom is " + zoom);
 		} else {
 			zoom = cfg.getZoom();
