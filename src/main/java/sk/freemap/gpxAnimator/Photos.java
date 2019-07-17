@@ -53,23 +53,27 @@ public class Photos {
 
     private final Map<Long, List<Photo>> photos;
 
-    public Photos(@NotNull final File directory) {
-        if (directory.isDirectory()) {
-            final File[] files = directory.listFiles((dir, name) -> {
-                final String lowerCaseName = name.toLowerCase();
-                return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png");
-            });
-            if (files != null) {
-                photos = Arrays.stream(files).map(Photos::toPhoto).filter(photo -> photo.getEpochSeconds() > 0)
-                        .collect(groupingBy(Photo::getEpochSeconds));
+    public Photos(final File directory) {
+        if (directory == null) {
+            photos = new HashMap<>();
+        } else {
+            if (directory.isDirectory()) {
+                final File[] files = directory.listFiles((dir, name) -> {
+                    final String lowerCaseName = name.toLowerCase();
+                    return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png");
+                });
+                if (files != null) {
+                    photos = Arrays.stream(files).map(Photos::toPhoto).filter(photo -> photo.getEpochSeconds() > 0)
+                            .collect(groupingBy(Photo::getEpochSeconds));
+                } else {
+                    photos = new HashMap<>();
+                }
             } else {
+                if (!directory.getAbsolutePath().isEmpty()) {
+                    System.err.println(String.format("'%s' is not a directory!", directory));
+                }
                 photos = new HashMap<>();
             }
-        } else {
-            if (!directory.getAbsolutePath().isEmpty()) {
-                System.err.println(String.format("'%s' is not a directory!", directory));
-            }
-            photos = new HashMap<>();
         }
     }
 
