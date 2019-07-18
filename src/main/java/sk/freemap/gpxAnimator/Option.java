@@ -1,5 +1,6 @@
 package sk.freemap.gpxAnimator;
 
+import java.awt.*;
 import java.util.HashMap;
 
 public enum Option {
@@ -38,9 +39,10 @@ public enum Option {
 	SKIP_IDLE("skip-idle", "idle-skipping flashback effect duration in milliseconds; set to empty for no flashback"),
 	PHOTOS("photos", "a directory containing photos to be added to the animation (must contain EXIF information with date and time of photo taken)"),
 	PHOTO_TIME("photo-time", "the amount of time, a photo should be shown above the map"),
-	HELP("help", "this help");
-	
-	private static java.util.Map<String, Option> map = new HashMap<String, Option>();
+	HELP("help", "this help"),
+	TAIL_COLOR("tail-color", "highlighted tail color");
+
+    private static java.util.Map<String, Option> map = new HashMap<String, Option>();
 	
 	static {
 		for (final Option option : Option.values()) {
