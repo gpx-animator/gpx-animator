@@ -20,6 +20,17 @@ Basic usage
 java -jar GpxAnimator.jar --input track.gpx
 ```
 
+Build
+-----------
+
+GPX Animator uses the [Maven](https://maven.apache.org/) build system to create the JAR file. You need to have Maven installed on your system. If you don't have Maven installed, consider using [SDKMAN](https://sdkman.io/) to install it, first.
+
+```
+mvn clean package
+```
+
+After a successful build, the JAR file can be found in the `target` directory.
+
 Features
 --------
 * supports multiple GPX tracks with multiple track segments
