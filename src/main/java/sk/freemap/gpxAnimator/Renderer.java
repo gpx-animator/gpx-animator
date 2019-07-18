@@ -238,11 +238,10 @@ public class Renderer {
 			final int pct = (int) (100.0 * frame / frames);
 			rc.setProgress1(pct, "Rendering Frame: " + frame + "/" + (frames - 1));
 
-			paint(bi, frame, 0);
+			paint(bi, frame, 0, null);
 
 			final BufferedImage bi2 = Utils.deepCopy(bi);
-
-			paint(bi2, frame, cfg.getTailDuration());
+			paint(bi2, frame, cfg.getTailDuration(), cfg.getTailColor());
 
 			drawWaypoints(bi2, frame, wpMap);
 
@@ -531,7 +530,7 @@ public class Renderer {
 	}
 
 
-	private void paint(final BufferedImage bi, final int frame, final long backTime) {
+	private void paint(final BufferedImage bi, final int frame, final long backTime, Color overrideColor) {
 		final Graphics2D g2 = getGraphics(bi);
 
 		final long time = getTime(frame);
@@ -576,10 +575,7 @@ public class Renderer {
 						if (prevPoint != null) {
 							final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
 							if (ratio > 0) {
-								final Color color = trackConfiguration.getColor();
-								final float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), new float[3]);
-								final Color c = Color.getHSBColor(hsb[0], hsb[1], (1f - ratio) * hsb[2]);
-								g2.setPaint(new Color(c.getRed(), c.getGreen(), c.getBlue(), (int) (ratio * (255 - color.getAlpha()) + color.getAlpha())));
+								g2.setPaint(overrideColor);
 								g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
 							}
 						}
