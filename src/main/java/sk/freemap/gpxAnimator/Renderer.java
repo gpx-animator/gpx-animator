@@ -515,7 +515,7 @@ public class Renderer {
 							markerSize);
 					g2.setStroke(new BasicStroke(1f));
 					g2.fill(marker);
-					g2.setColor(Color.black);
+					g2.setColor(cfg.getTailColor());
 					g2.draw(marker);
 
 					final String label = trackConfiguration.getLabel();
