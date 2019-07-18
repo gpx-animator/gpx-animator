@@ -33,6 +33,7 @@ public class Configuration {
 	
 	private Double speedup;
 	private long tailDuration;
+	private Color tailColor;
 	private double fps;
 	private Long totalTime;
 	
@@ -76,7 +77,7 @@ public class Configuration {
 	
 	public Configuration(
 			final int margin, final Integer width, final Integer height, final Integer zoom,
-			final Double speedup, final long tailDuration, final double fps, final Long totalTime,
+			final Double speedup, final long tailDuration, Color tailColor, final double fps, final Long totalTime,
 			final float backgroundMapVisibility, final String tmsUrlTemplate,
 			final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
 			final Long keepLastFrame, final File output, final String attribution,
@@ -91,6 +92,7 @@ public class Configuration {
 		this.zoom = zoom;
 		this.speedup = speedup;
 		this.tailDuration = tailDuration;
+		this.tailColor = tailColor;
 		this.fps = fps;
 		this.totalTime = totalTime;
 		this.backgroundMapVisibility = backgroundMapVisibility;
@@ -142,13 +144,16 @@ public class Configuration {
 	public long getTailDuration() {
 		return tailDuration;
 	}
-	
-	
+
+	public Color getTailColor() {
+		return tailColor;
+	}
+
 	public double getFps() {
 		return fps;
 	}
-	
-	
+
+
 	public Long getTotalTime() {
 		return totalTime;
 	}
@@ -157,53 +162,53 @@ public class Configuration {
 	public float getBackgroundMapVisibility() {
 		return backgroundMapVisibility;
 	}
-	
-	
+
+
 	public String getTmsUrlTemplate() {
 		return tmsUrlTemplate;
 	}
-	
-	
+
+
 	public boolean isSkipIdle() {
 		return skipIdle;
 	}
-	
-	
+
+
 	public Color getFlashbackColor() {
 		return flashbackColor;
 	}
-	
-	
+
+
 	public Long getFlashbackDuration() {
 		return flashbackDuration;
 	}
-	
-	
+
+
 	public Long getKeepLastFrame() {
 		return keepLastFrame;
 	}
-	
-	
+
+
 	public File getOutput() {
 		return output;
 	}
-	
-	
+
+
 	public String getAttribution() {
 		return attribution;
 	}
-	
-	
+
+
 	public int getFontSize() {
 		return fontSize;
 	}
-	
-	
+
+
 	public Double getMarkerSize() {
 		return markerSize;
 	}
-	
-	
+
+
 	public Double getWaypointSize() {
 		return waypointSize;
 	}
@@ -241,55 +246,57 @@ public class Configuration {
 	public List<TrackConfiguration> getTrackConfigurationList() {
 		return trackConfigurationList;
 	}
-	
-	
+
+
+
 	public static Builder createBuilder() {
 		return new Builder();
 	}
 
 
 	public static class Builder {
+
 		private int margin = 20;
 		private Integer height;
 		private Integer width;
 		private Integer zoom;
-		
 		private Double speedup = 1000.0;
+
 		private long tailDuration = 3600000;
+		private Color tailColor = Color.BLACK;
 		private double fps = 30.0;
 		private Long totalTime;
-		
 		private float backgroundMapVisibility = 0.5f;
-		private String tmsUrlTemplate;
 
+		private String tmsUrlTemplate;
 		private boolean skipIdle = true;
+
 		private Color flashbackColor = Color.white;
 		private Long flashbackDuration = 250l;
-
 		private Long keepLastFrame;
 
 		private File output = new File("video.mp4"); // frame%08d.png
+
 		private String attribution = "Created by GPX Animator " + Constants.VERSION + "\n%MAP_ATTRIBUTION%";
-		
 		private int fontSize = 12;
+
 		private Double markerSize = 8.0;
 		private Double waypointSize = 6.0;
-
 		private Double minLon;
+
 		private Double maxLon;
 		private Double minLat;
 		private Double maxLat;
-
 		private File photos;
-		private Long photoTime = 3_000L;
 
+		private Long photoTime = 3_000L;
 		private final List<TrackConfiguration> trackConfigurationList = new ArrayList<TrackConfiguration>();
-		
+
 
 		public Configuration build() throws UserException {
 			return new Configuration(
 					margin, width, height, zoom,
-					speedup, tailDuration, fps, totalTime,
+					speedup, tailDuration, tailColor, fps, totalTime,
 					backgroundMapVisibility, tmsUrlTemplate,
 					skipIdle, flashbackColor, flashbackDuration,
 					keepLastFrame, output, attribution,
@@ -311,32 +318,37 @@ public class Configuration {
 			this.height = height;
 			return this;
 		}
-		
+
 		public Builder width(final Integer width) {
 			this.width = width;
 			return this;
 		}
-		
+
 		public Builder zoom(final Integer zoom) {
 			this.zoom = zoom;
 			return this;
 		}
-		
+
 		public Builder speedup(final Double speedup) {
 			this.speedup = speedup;
 			return this;
 		}
-		
+
 		public Builder tailDuration(final long tailDuration) {
 			this.tailDuration = tailDuration;
 			return this;
 		}
-		
+
+		public Builder tailColor(Color tailColor) {
+			this.tailColor = tailColor;
+			return this;
+		}
+
 		public Builder fps(final double fps) {
 			this.fps = fps;
 			return this;
 		}
-		
+
 		public Builder totalTime(final Long totalTime) {
 			this.totalTime = totalTime;
 			return this;
@@ -376,7 +388,7 @@ public class Configuration {
 			this.output = output;
 			return this;
 		}
-		
+
 		public Builder attribution(final String attribution) {
 			this.attribution = attribution;
 			return this;
