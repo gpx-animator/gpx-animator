@@ -541,6 +541,7 @@ public class MainFrame extends JFrame {
       unmarshaller.setAdapter(new FileXmlAdapter(file.getParentFile()));
       setConfiguration((Configuration) unmarshaller.unmarshal(file));
       MainFrame.this.file = file;
+      addRecentFile(file);
     } catch (final JAXBException e1) {
       e1.printStackTrace();
       JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
