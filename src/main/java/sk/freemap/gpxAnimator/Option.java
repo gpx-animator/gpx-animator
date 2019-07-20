@@ -38,6 +38,8 @@ public enum Option {
 	SKIP_IDLE("skip-idle", "idle-skipping flashback effect duration in milliseconds; set to empty for no flashback"),
 	PHOTOS("photos", "a directory containing photos to be added to the animation (must contain EXIF information with date and time of photo taken)"),
 	PHOTO_TIME("photo-time", "the amount of time, a photo should be shown above the map"),
+	TILE_CACHE_PATH("tile-cache-path", "path to a directory to use for caching map tiles"),
+	TILE_CACHE_AGE_LIMIT("tile-cache-timeout", "number of hours a cached map tile is valid"),
 	HELP("help", "this help");
 	
 	private static java.util.Map<String, Option> map = new HashMap<String, Option>();
