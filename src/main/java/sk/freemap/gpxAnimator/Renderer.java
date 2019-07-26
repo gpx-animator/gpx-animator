@@ -514,7 +514,7 @@ public class Renderer {
 							markerSize);
 					g2.setStroke(new BasicStroke(1f));
 					g2.fill(marker);
-					g2.setColor(cfg.getTailColor());
+					g2.setColor(Color.black);
 					g2.draw(marker);
 
 					final String label = trackConfiguration.getLabel();
@@ -575,7 +575,7 @@ public class Renderer {
 						if (prevPoint != null) {
 							final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
 							if (ratio > 0) {
-								g2.setPaint(overrideColor);
+								g2.setPaint(blendTailColor(trackConfiguration.getColor(), overrideColor, ratio));
 								g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
 							}
 						}
@@ -584,6 +584,15 @@ public class Renderer {
 				}
 			}
 		}
+	}
+
+	private static Color blendTailColor(Color tailColor, Color trackColor, float ratio) {
+		double r = ((double) (1 - ratio)) * tailColor.getRed() + (double) ratio * trackColor.getRed();
+		double g = ((double) (1 - ratio)) * tailColor.getGreen() + (double) ratio * trackColor.getGreen();
+		double b = ((double) (1 - ratio)) * tailColor.getBlue() + (double) ratio * trackColor.getBlue();
+		double a = Math.max(tailColor.getAlpha(), trackColor.getAlpha());
+
+		return new Color((int) r, (int) g, (int) b, (int) a);
 	}
 
 
