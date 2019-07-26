@@ -454,6 +454,7 @@ public class Configuration {
 				+ ", zoom=" + zoom
 				+ ", speedup=" + speedup
 				+ ", tailDuration=" + tailDuration
+				+ ", tailColor=" + tailColor
 				+ ", fps=" + fps + ", totalTime=" + totalTime
 				+ ", backgroundMapVisibility=" + backgroundMapVisibility
 				+ ", tmsUrlTemplate=" + tmsUrlTemplate
