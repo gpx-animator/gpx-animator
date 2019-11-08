@@ -86,15 +86,17 @@ public class TileCache {
         String path = tileCachePath + File.separator + filename;
         File cacheFile = new File(path);
         
-        // Age out old file if needed
-        if (cacheFile.isFile()){
-            Date fileDate = new Date(cacheFile.lastModified());
+        // Age out all old files in cache directory.
+        // Our cache age is in seconds while the file times are in milliseconds
+        File cacheDir = new File(tileCachePath);
+        if (!cacheDir.exists())
+            cacheDir.mkdirs();
+
+        for (File cacheEntry : cacheDir.listFiles()) {
+            Date fileDate = new Date(cacheEntry.lastModified());
             long msBetweenDates = new Date().getTime() - fileDate.getTime();
             if ((msBetweenDates/1000) > tileCacheTimeLimit) {
-                if (!cacheFile.delete()) {
-                    // Treat as non-fatal after notifying user.
-                    System.out.println("Error: Failed to delete cache entry for " + url + " (" + path + ")");
-                } 
+                cacheEntry.delete();
             }
         }
         
