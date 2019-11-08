@@ -128,6 +128,15 @@
         <attribution-url>https://openstreetmap.org/</attribution-url>
     </entry>
     <entry>
+        <name>OpenTopoMap</name>
+        <id>opentopomap</id>
+        <type>tms</type>
+        <url>https://{switch:a,b,c}.tile.opentopomap.org/{zoom}/{x}/{y}.png</url>
+        <max-zoom>17</max-zoom>
+        <attribution-text mandatory="true">Map data: OpenStreetMap contributors, SRTM | Map view: © OpenTopoMap (CC-BY-SA)</attribution-text>
+        <attribution-url>https://opentopomap.org/</attribution-url>
+    </entry>
+    <entry>
         <name>MapQuest OSM</name>
         <id>mapquest-osm</id>
         <type>tms</type>
