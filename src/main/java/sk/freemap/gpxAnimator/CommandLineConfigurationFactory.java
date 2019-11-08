@@ -151,7 +151,7 @@ public final class CommandLineConfigurationFactory {
 					case TILE_CACHE_PATH:
 						cfg.tileCachePath(args[++i]);
 						break;
-					case TILE_CACHE_AGE_LIMIT:
+					case TILE_CACHE_TIME_LIMIT:
 						cfg.tileCacheTimeLimit(Long.parseLong(args[++i]));
 						break;
 					case TIME_OFFSET:

@@ -64,7 +64,7 @@ public class Configuration {
 	private Long photoTime;
 	
 	private String tileCachePath;
-	private Long tileCacheTimeLimit;
+	private Long tileCacheTimeLimit;    // Time limit is in seconds
 
 	@XmlElementWrapper
 	@XmlElement(name = "trackConfiguration")
@@ -86,7 +86,7 @@ public class Configuration {
 			final int fontSize, final Double markerSize, final Double waypointSize,
 			final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
 			final File photos, final Long photoTime,
-			final String cachePath, final Long cacheTimeLimit,
+			final String tileCachePath, final Long tileCacheTimeLimit,
 			final List<TrackConfiguration> trackConfigurationList) {
 		
 		this.margin = margin;
@@ -115,8 +115,8 @@ public class Configuration {
 		this.maxLat = maxLat;
 		this.photos = photos;
 		this.photoTime = photoTime;
-		this.tileCachePath = cachePath;
-		this.tileCacheTimeLimit = cacheTimeLimit;
+		this.tileCachePath = tileCachePath;
+		this.tileCacheTimeLimit = tileCacheTimeLimit;
 	}
 
 
@@ -300,7 +300,7 @@ public class Configuration {
 		private Long photoTime = 3_000L;
 		
 		private String tileCachePath;
-		private long tileCacheTimeLimit = 12L * 60L * 60L; // seconds
+		private long tileCacheTimeLimit = 12L * 60L * 60L; // Default is 12 hours
 
 		private final List<TrackConfiguration> trackConfigurationList = new ArrayList<TrackConfiguration>();
 		

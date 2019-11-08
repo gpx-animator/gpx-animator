@@ -91,52 +91,52 @@ abstract class GeneralSettingsPanel extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 
-		final JLabel lblOutput = new JLabel("Output");
-		final GridBagConstraints gbc_lblOutput = new GridBagConstraints();
-		gbc_lblOutput.anchor = GridBagConstraints.EAST;
-		gbc_lblOutput.insets = new Insets(0, 0, 5, 5);
-		gbc_lblOutput.gridx = 0;
-		gbc_lblOutput.gridy = 0;
-		add(lblOutput, gbc_lblOutput);
+						final JLabel lblOutput = new JLabel("Output");
+						final GridBagConstraints gbc_lblOutput = new GridBagConstraints();
+						gbc_lblOutput.anchor = GridBagConstraints.EAST;
+						gbc_lblOutput.insets = new Insets(0, 0, 5, 5);
+						gbc_lblOutput.gridx = 0;
+						gbc_lblOutput.gridy = 0;
+						add(lblOutput, gbc_lblOutput);
 
-		outputFileSelector = new FileSelector(FILES_ONLY) {
-			private static final long serialVersionUID = 7372002778976603239L;
+				outputFileSelector = new FileSelector(FILES_ONLY) {
+					private static final long serialVersionUID = 7372002778976603239L;
 
-			@Override
-			protected Type configure(final JFileChooser outputFileChooser) {
-				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
-				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Image Frames", "png"));
-				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("H.264 Encoded Video Files (*.mp4, *.mov, *.mkv)", "mp4", "mov", "mkv"));
-				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-1 Encoded Video Files (*.mpg)", "mpg"));
-				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Encoded Video Files (*.avi)", "avi"));
-				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MS MPEG-4 Encoded Video Files (*.wmv, *.asf)", "wmv", "asf"));
-				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Theora Encoded Video Files (*.ogv)", "ogv"));
-				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("FLV Encoded Video Files (*.flv)", "flv"));
-				outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("RV10 Encoded Video Files (*.rm)", "rm"));
-				return Type.SAVE;
-			}
+					@Override
+					protected Type configure(final JFileChooser outputFileChooser) {
+						outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
+						outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Image Frames", "png"));
+						outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("H.264 Encoded Video Files (*.mp4, *.mov, *.mkv)", "mp4", "mov", "mkv"));
+						outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-1 Encoded Video Files (*.mpg)", "mpg"));
+						outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Encoded Video Files (*.avi)", "avi"));
+						outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MS MPEG-4 Encoded Video Files (*.wmv, *.asf)", "wmv", "asf"));
+						outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Theora Encoded Video Files (*.ogv)", "ogv"));
+						outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("FLV Encoded Video Files (*.flv)", "flv"));
+						outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("RV10 Encoded Video Files (*.rm)", "rm"));
+						return Type.SAVE;
+					}
 
-			@Override
-			protected String transformFilename(final String filename) {
-				if ((filename.toLowerCase().endsWith(".png") || filename.toLowerCase().endsWith(".jpg"))
-						&& String.format(filename, 100).equals(String.format(filename, 200))) {
-					final int n = filename.lastIndexOf('.');
-					return filename.substring(0, n) + "%08d" + filename.substring(n);
-				} else {
-					return filename;
-				}
-			}
-		};
+					@Override
+					protected String transformFilename(final String filename) {
+						if ((filename.toLowerCase().endsWith(".png") || filename.toLowerCase().endsWith(".jpg"))
+								&& String.format(filename, 100).equals(String.format(filename, 200))) {
+							final int n = filename.lastIndexOf('.');
+							return filename.substring(0, n) + "%08d" + filename.substring(n);
+						} else {
+							return filename;
+						}
+					}
+				};
 
-		outputFileSelector.setToolTipText(Option.OUTPUT.getHelp());
-		final GridBagConstraints gbc_outputFileSelector = new GridBagConstraints();
-		gbc_outputFileSelector.fill = GridBagConstraints.BOTH;
-		gbc_outputFileSelector.insets = new Insets(0, 0, 5, 0);
-		gbc_outputFileSelector.gridx = 1;
-		gbc_outputFileSelector.gridy = 0;
-		add(outputFileSelector, gbc_outputFileSelector);
+				outputFileSelector.setToolTipText(Option.OUTPUT.getHelp());
+				final GridBagConstraints gbc_outputFileSelector = new GridBagConstraints();
+				gbc_outputFileSelector.fill = GridBagConstraints.BOTH;
+				gbc_outputFileSelector.insets = new Insets(0, 0, 5, 0);
+				gbc_outputFileSelector.gridx = 1;
+				gbc_outputFileSelector.gridy = 0;
+				add(outputFileSelector, gbc_outputFileSelector);
 
-		outputFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
+				outputFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
 
 		final JLabel lblWidth = new JLabel("Width");
 		final GridBagConstraints gbc_lblWidth = new GridBagConstraints();
@@ -696,7 +696,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
 		tileCachePathSelector.addPropertyChangeListener("filename", propertyChangeListener);
 
-		final JLabel lblTileCacheTimeLimit = new JLabel("Tile cache age limit");
+		final JLabel lblTileCacheTimeLimit = new JLabel("Tile cache time limit");
 		final GridBagConstraints gbc_lblTileCacheTimeLimit = new GridBagConstraints();
 		gbc_lblTileCacheTimeLimit.anchor = GridBagConstraints.EAST;
 		gbc_lblTileCacheTimeLimit.insets = new Insets(0, 0, 0, 5);
@@ -705,7 +705,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		add(lblTileCacheTimeLimit, gbc_lblTileCacheTimeLimit);
 
 		tileCacheTimeLimitSpinner = new JSpinner();
-		tileCacheTimeLimitSpinner.setToolTipText(Option.TILE_CACHE_AGE_LIMIT.getHelp());
+		tileCacheTimeLimitSpinner.setToolTipText(Option.TILE_CACHE_TIME_LIMIT.getHelp());
 		tileCacheTimeLimitSpinner.setModel(new DurationSpinnerModel());
 		tileCacheTimeLimitSpinner.setEditor(new DurationEditor(tileCacheTimeLimitSpinner));
 		final GridBagConstraints gbc_tileCacheTimeLimitSpinner = new GridBagConstraints();
@@ -795,7 +795,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		totalTimeSpinner.setValue(c.getTotalTime());
 		backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
 		photoTimeSpinner.setValue(c.getPhotoTime());
-		tileCacheTimeLimitSpinner.setValue(1000L*c.getTileCacheTimeLimit());
+		tileCacheTimeLimitSpinner.setValue(1000L*c.getTileCacheTimeLimit()); // Spinner is in ms, limit is in second
 		tileCachePathSelector.setFilename(c.getTileCachePath());
 
 		final String tmsUrlTemplate = c.getTmsUrlTemplate();

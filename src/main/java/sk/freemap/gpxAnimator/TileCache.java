@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Martin Ždila, Freemap Slovakia
+ *  Copyright 2019 Martin Ždila, Freemap Slovakia
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -45,68 +45,91 @@ import org.apache.commons.io.FileUtils;
 
 public class TileCache {
 
-    public static BufferedImage getTile( String url, String cachePath, Long cacheTimeLimit ) throws UserException {
+    private static MessageDigest messageDigest = null;
+    private static final String cachedFileType = "png";
 
-        if (cachePath == null) {
-            //System.out.println("No cache path defined, downloading " + url);
+    public static BufferedImage getTile( final String url, final String tileCachePath, final Long tileCacheTimeLimit ) throws UserException {
+
+        BufferedImage image;
+        
+        if (tileCachePath == null) {
             return unCachedGetTile( url );
         }
 
-        //System.out.println("Caching enabled " + url);
-        return cachedGetTile( url, cachePath, cacheTimeLimit );
+        try {
+            image = cachedGetTile( url, tileCachePath, tileCacheTimeLimit );
+        } catch (final UserException e) {
+            image = unCachedGetTile( url );
+        }
+        return image;
     }
 
-    private static BufferedImage unCachedGetTile( String url ) throws UserException {
+    private static BufferedImage unCachedGetTile( final String url ) throws UserException {
         BufferedImage mapTile;
         
         System.setProperty("http.agent", "GPX Animator " + Constants.VERSION);
         try {
             mapTile = ImageIO.read(new URL(url));
         } catch (final IOException e) {
-            throw new UserException("error reading tile " + url, e);
+            throw new UserException("error getting tile " + url, e);
         }
         if (mapTile == null) {
-            throw new UserException("could not read tile " + url);
+            throw new UserException("could not get tile " + url);
         }
         
         return mapTile;
     }
     
-    private static BufferedImage cachedGetTile( String url, String cachePath, Long cacheTimeLimit ) throws UserException {
-        BufferedImage mapTile;
-        String fname = hashName(url);
-        String path = cachePath + File.separator + fname;
-        File f = new File(path);
+    private static BufferedImage cachedGetTile( final String url, final String tileCachePath, final Long tileCacheTimeLimit ) throws UserException {
+        BufferedImage mapTile = null;
+        String filename = hashName(url) + "." + cachedFileType;
+        String path = tileCachePath + File.separator + filename;
+        File cacheFile = new File(path);
         
         // Age out old file if needed
-        if (f.isFile()){
-            Date fileDate = new Date(f.lastModified());
+        if (cacheFile.isFile()){
+            Date fileDate = new Date(cacheFile.lastModified());
             long msBetweenDates = new Date().getTime() - fileDate.getTime();
-            if ((msBetweenDates/1000) > cacheTimeLimit) {
-                System.out.println("Removing cache entry for " + url); 
-                if (!f.delete()) {
-                    throw new UserException("failed to delete cache entry for " + url);
+            if ((msBetweenDates/1000) > tileCacheTimeLimit) {
+                if (!cacheFile.delete()) {
+                    // Treat as non-fatal after notifying user.
+                    System.out.println("Error: Failed to delete cache entry for " + url + " (" + path + ")");
                 } 
             }
         }
         
-        // If map tile is not in cache, then download it.
-        if (!f.isFile()) {
-            System.out.println("Cache miss for:" + path);
+        // If map tile is in cache, then return it.
+        if (cacheFile.isFile()) {
             try {
-                FileUtils.copyURLToFile(new URL(url), f, 5000, 10000);
+                mapTile = ImageIO.read(cacheFile);
             } catch (final IOException e) {
-                throw new UserException("error downloading tile " + url, e);
+                // Treat as non-fatal, we will notify the user then attempt to
+                // remove the file we could not read.
+
+                System.out.println("Error: Failed to read cached tile  " + url + "(" + path + ")");
+                mapTile = null;
+                cacheFile.delete();
             }
         }
         
-        // At this point a current map tile should be in our cache, so
-        // load it for the 
-        try {
-            mapTile = ImageIO.read(f);
-        } catch (final IOException e) {
-            throw new UserException("error reading tile " + url, e);
+        //
+        // If we have been successful in reading our cached map tile then mapTile
+        // will be non-null. If it is null, then we need to download the image
+        // tile from the server and then write it into our cache.
+        //
+        if (mapTile == null) {          // Map tile doesn't exist or we could not read it
+            mapTile = unCachedGetTile( url );
+            try {
+                ImageIO.write(mapTile, cachedFileType, cacheFile);
+            } catch (final IOException e) {
+                // Treat as non-fatal. This should revert the behavior to the same
+                // as running without a cache.
+                System.out.println("Error reading cached tile  " + url + "(" + path + ")");
+            }
         }
+                
+        // At this point a current map tile should be in our cache.
+        
         if (mapTile == null) {
             throw new UserException("could not read tile " + url);
         }
@@ -114,20 +137,24 @@ public class TileCache {
         return mapTile;
     }
     
-    private static String hashName(String url) throws UserException {
+    private static String hashName(final String url) throws UserException {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return bytesToHex(digest.digest(url.getBytes(StandardCharsets.UTF_8)));
+            if (messageDigest == null)
+                messageDigest = MessageDigest.getInstance("SHA-256");
+
+            return bytesToHex(messageDigest.digest(url.getBytes(StandardCharsets.UTF_8)));
         } catch (final NoSuchAlgorithmException e) {
             throw new UserException("error creating hash name " + url, e);
         }
     }
     
-    private static String bytesToHex(byte[] hash) {
+    private static String bytesToHex(final byte[] hash) {
         StringBuffer hexString = new StringBuffer();
         for (int i = 0; i < hash.length; i++) {
-        String hex = Integer.toHexString(0xff & hash[i]);
-        if(hex.length() == 1) hexString.append('0');
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
             hexString.append(hex);
         }
         return hexString.toString();

@@ -99,7 +99,7 @@
 			<artifactId>imgscalr-lib</artifactId>
 			<version>4.2</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<artifactId>commons-io</artifactId>
 			<groupId>commons-io</groupId>
 			<scope>compile</scope>
