@@ -60,6 +60,12 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.5.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>xuggle</groupId>
 			<artifactId>xuggle-xuggler</artifactId>
 			<version>5.4</version>
@@ -98,12 +104,6 @@
 			<groupId>org.imgscalr</groupId>
 			<artifactId>imgscalr-lib</artifactId>
 			<version>4.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.5.2</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<artifactId>commons-io</artifactId>
