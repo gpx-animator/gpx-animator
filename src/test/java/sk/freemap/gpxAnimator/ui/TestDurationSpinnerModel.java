@@ -1,25 +1,57 @@
 package sk.freemap.gpxAnimator.ui;
 
-import org.junit.Test;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestDurationSpinnerModel {
-  
 
-  @Test
-  public void sampleTest() {
-  	System.out.println("This is a sample Test.");
-  }
+    private static List<Long> edgeCases = new ArrayList<>();
 
-  @Test
-  public void testTest() {
-  	DurationSpinnerModel d = new DurationSpinnerModel();
+    @BeforeAll
+    public static void Setup(){
+        edgeCases.add(Long.MIN_VALUE);
+        edgeCases.add(Long.MIN_VALUE);
+        edgeCases.add(-1L);
+        edgeCases.add(0L);
+        edgeCases.add(100L);
+        edgeCases.add(null);
+    }
 
-  	d.setValue(-100000L);
+    @Test
+    public void DurationSpinnerModelSetGetTest() {
 
-  	System.out.println(d.getValue());
+        DurationSpinnerModel d = new DurationSpinnerModel();
 
-  }
+        for (Long edgeCase : edgeCases) {
+            d.setValue(edgeCase);
+            assertEquals(edgeCase, d.getValue());
+        }
+    }
 
-    	
+    @Test
+    public void DurationSpinnerModelFieldTest() {
+
+        DurationSpinnerModel d = new DurationSpinnerModel();
+
+        assertEquals(DurationSpinnerModel.Field.MILLISECOND, DurationSpinnerModel.Field.fromUnit("ms"));
+
+        try{
+            d.getField();
+            assert(false);
+        }catch(AssertionError e){
+            // assertion error expected
+        }
+
+        d.setField(DurationSpinnerModel.Field.MILLISECOND);
+        assertEquals(DurationSpinnerModel.Field.MILLISECOND,d.getField());
+
+    }
+    
+
 }
