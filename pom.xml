@@ -104,6 +104,12 @@
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>5.5.2</version>
 			<scope>test</scope>
+    </dependency>
+    <dependency>
+			<artifactId>commons-io</artifactId>
+			<groupId>commons-io</groupId>
+			<scope>compile</scope>
+			<version>2.6</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -148,6 +148,12 @@ public final class CommandLineConfigurationFactory {
 					case TAIL_DURATION:
 						cfg.tailDuration(Long.parseLong(args[++i]));
 						break;
+					case TILE_CACHE_PATH:
+						cfg.tileCachePath(args[++i]);
+						break;
+					case TILE_CACHE_TIME_LIMIT:
+						cfg.tileCacheTimeLimit(Long.parseLong(args[++i]));
+						break;
 					case TIME_OFFSET:
 						final String s2 = args[++i].trim();
 						timeOffsetList.add(s2.isEmpty() ? null : Long.valueOf(s2));
