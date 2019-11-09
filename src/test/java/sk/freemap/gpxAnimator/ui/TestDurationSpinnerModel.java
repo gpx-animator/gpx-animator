@@ -14,7 +14,7 @@ public class TestDurationSpinnerModel {
     private static List<Long> edgeCases = new ArrayList<>();
 
     @BeforeAll
-    public static void Setup(){
+    public static void setup(){
         edgeCases.add(Long.MIN_VALUE);
         edgeCases.add(Long.MIN_VALUE);
         edgeCases.add(-1L);
@@ -24,7 +24,7 @@ public class TestDurationSpinnerModel {
     }
 
     @Test
-    public void DurationSpinnerModelSetGetTest() {
+    public void durationSpinnerModelSetGetTest() {
 
         DurationSpinnerModel d = new DurationSpinnerModel();
 
@@ -35,7 +35,7 @@ public class TestDurationSpinnerModel {
     }
 
     @Test
-    public void DurationSpinnerModelFieldTest() {
+    public void durationSpinnerModelFieldTest() {
 
         DurationSpinnerModel d = new DurationSpinnerModel();
 
