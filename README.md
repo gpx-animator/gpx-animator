@@ -31,6 +31,15 @@ mvn clean package
 
 After a successful build, the JAR file can be found in the `target` directory.
 
+Test
+-----------
+
+In the directory `src/test/` tests are located that can be run with the following command:
+
+```
+mvn test
+```
+
 Features
 --------
 * supports multiple GPX tracks with multiple track segments
