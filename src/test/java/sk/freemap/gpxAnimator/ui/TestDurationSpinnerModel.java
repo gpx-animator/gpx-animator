@@ -26,30 +26,24 @@ public class TestDurationSpinnerModel {
     @ParameterizedTest
     @MethodSource("testDataProvider")
     public void durationSpinnerModelSetGetTest(final Long value) {
-
-        DurationSpinnerModel d = new DurationSpinnerModel();
-
-        d.setValue(value);
-        assertEquals(value, d.getValue());
+        final DurationSpinnerModel testee = new DurationSpinnerModel();
+        testee.setValue(value);
+        assertEquals(value, testee.getValue());
     }
 
     @Test
     public void durationSpinnerModelFieldTest() {
-
-        DurationSpinnerModel d = new DurationSpinnerModel();
-
+        final DurationSpinnerModel testee = new DurationSpinnerModel();
         assertEquals(DurationSpinnerModel.Field.MILLISECOND, DurationSpinnerModel.Field.fromUnit("ms"));
 
         try {
-            d.getField();
+            testee.getField();
             assert (false);
-        } catch (AssertionError e) {
+        } catch (final AssertionError e) {
             // assertion error expected
         }
 
-        d.setField(DurationSpinnerModel.Field.MILLISECOND);
-        assertEquals(DurationSpinnerModel.Field.MILLISECOND, d.getField());
-
+        testee.setField(DurationSpinnerModel.Field.MILLISECOND);
+        assertEquals(DurationSpinnerModel.Field.MILLISECOND, testee.getField());
     }
-
 }
