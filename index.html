@@ -79,7 +79,11 @@
 <p>No problem. Add --forced-point-time-interval option.</p>
 
 <h3>Video is very short or long</h3>
-<p>Fine-tune speedup or specify exact total time in seconds.
+<p>Fine-tune speedup or specify exact total time in seconds.</p>
+
+<h3>The UI is too small on a high DPI screen</h3>
+<p>Some (older) Java versions have problems with the resolution of a high DPI screen. Until we find a solution to do it programmatically, you can force Java to double the size of the UI using this command:</p>
+<pre><code>GDK_SCALE=2 java -jar target/GpxAnimator.jar</code></pre>
 
 <h3>I have some other problem</h3>
 <p>Feel free to write me at martin.zdila<span>@</span>freemap.sk.</p>
