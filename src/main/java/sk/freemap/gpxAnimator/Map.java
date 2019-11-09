@@ -30,7 +30,9 @@ public class Map {
 
 	
 	public static void drawMap(final BufferedImage bi, final String tmsUrlTemplate, final float backgroundMapVisibility, final int zoom,
-			final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc) throws UserException {
+			final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc,
+			String tileCachePath, Long tileCacheTimeLimit) throws UserException {
+		
 		final Graphics2D ga = (Graphics2D) bi.getGraphics();
 
 		final double tileDblX = xToTileX(zoom, minX);
@@ -75,16 +77,7 @@ public class Map {
 				
 				rc.setProgress1((int) (100.0 * i / total), "Reading Map Tile: " + i + "/" + total);
 				
-				final BufferedImage tile;
-				System.setProperty("http.agent", "GPX Animator " + Constants.VERSION);
-				try {
-					tile = ImageIO.read(new URL(url));
-					if (tile == null) {
-						throw new UserException("could not read tile " + url);
-					}
-				} catch (final IOException e) {
-					throw new UserException("error reading tile " + url, e);
-				}
+				final BufferedImage tile = TileCache.getTile(url, tileCachePath, tileCacheTimeLimit);
 				
 				// convert to RGB format
 				final BufferedImage tile1 = new BufferedImage(tile.getWidth(), tile.getHeight(), BufferedImage.TYPE_INT_RGB);
