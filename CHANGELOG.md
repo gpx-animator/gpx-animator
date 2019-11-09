@@ -9,8 +9,12 @@ Release date: not yet released
 * adding coordinates to the animation
 * asking before overwriting an existing output file
 * adding link to the FAQ in the help menu
+* adding "Open Recent File" menu
+* adding new map source: OpenTopoMap
+* adding map tile cache to reduce download size
 * GPX-Animator now has a custom domain: https://gpx-animator.app
-* fixed some issues
+* fixed incorrect zoom factor calculation
+* fixed some minor issues
 
 ## Version 1.3.1
 
