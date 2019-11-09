@@ -1,6 +1,5 @@
 package sk.freemap.gpxAnimator.ui;
 
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,7 @@ public class TestDurationSpinnerModel {
     private static List<Long> edgeCases = new ArrayList<>();
 
     @BeforeAll
-    public static void setup(){
+    public static void setup() {
         edgeCases.add(Long.MIN_VALUE);
         edgeCases.add(Long.MIN_VALUE);
         edgeCases.add(-1L);
@@ -41,17 +40,16 @@ public class TestDurationSpinnerModel {
 
         assertEquals(DurationSpinnerModel.Field.MILLISECOND, DurationSpinnerModel.Field.fromUnit("ms"));
 
-        try{
+        try {
             d.getField();
-            assert(false);
-        }catch(AssertionError e){
+            assert (false);
+        } catch (AssertionError e) {
             // assertion error expected
         }
 
         d.setField(DurationSpinnerModel.Field.MILLISECOND);
-        assertEquals(DurationSpinnerModel.Field.MILLISECOND,d.getField());
+        assertEquals(DurationSpinnerModel.Field.MILLISECOND, d.getField());
 
     }
-    
 
 }
