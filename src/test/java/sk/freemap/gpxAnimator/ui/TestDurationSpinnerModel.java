@@ -1,36 +1,36 @@
 package sk.freemap.gpxAnimator.ui;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Test;
+
 public class TestDurationSpinnerModel {
 
-    private static List<Long> edgeCases = new ArrayList<>();
-
-    @BeforeAll
-    public static void setup() {
-        edgeCases.add(Long.MIN_VALUE);
-        edgeCases.add(Long.MIN_VALUE);
-        edgeCases.add(-1L);
-        edgeCases.add(0L);
-        edgeCases.add(100L);
-        edgeCases.add(null);
+    private static Stream<Arguments> testDataProvider() {
+        return Stream.of(
+                Arguments.of(Long.MIN_VALUE),
+                Arguments.of(Long.MAX_VALUE),
+                Arguments.of(1L),
+                Arguments.of(0L),
+                Arguments.of(100L),
+                Arguments.of((Long) null)
+        );
     }
 
-    @Test
-    public void durationSpinnerModelSetGetTest() {
+    @ParameterizedTest
+    @MethodSource("testDataProvider")
+    public void durationSpinnerModelSetGetTest(final Long value) {
 
         DurationSpinnerModel d = new DurationSpinnerModel();
 
-        for (Long edgeCase : edgeCases) {
-            d.setValue(edgeCase);
-            assertEquals(edgeCase, d.getValue());
-        }
+        d.setValue(value);
+        assertEquals(value, d.getValue());
     }
 
     @Test
