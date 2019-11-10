@@ -52,7 +52,7 @@ public class TileCache {
 
         BufferedImage image;
         
-        if (tileCachePath == null) {
+        if ((tileCachePath == null) || (tileCachePath.trim().length() < 1)) {
             return unCachedGetTile( url );
         }
 
