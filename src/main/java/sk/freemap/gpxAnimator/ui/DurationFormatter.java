@@ -26,11 +26,11 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
         }
 
         final Pattern pattern = Pattern.compile("\\s*" +
-                "(?:(\\d+)\\s*d\\s*)?" +
-                "(?:(\\d+)\\s*h\\s*)?" +
-                "(?:(\\d+)\\s*m\\s*)?" +
-                "(?:(\\d+)\\s*s\\s*)?" +
-                "(?:(\\d+)\\s*ms\\s*)?");
+                "-?(?:(\\d+)\\s*d\\s*)?" +
+                "-?(?:(\\d+)\\s*h\\s*)?" +
+                "-?(?:(\\d+)\\s*m\\s*)?" +
+                "-?(?:(\\d+)\\s*s\\s*)?" +
+                "-?(?:(\\d+)\\s*ms\\s*)?");
 
         final Matcher matcher = pattern.matcher(text);
 

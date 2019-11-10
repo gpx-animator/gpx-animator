@@ -15,7 +15,7 @@ public class TestDurationSpinnerModel {
     @BeforeAll
     public static void setup() {
         edgeCases.add(Long.MIN_VALUE);
-        edgeCases.add(Long.MIN_VALUE);
+        edgeCases.add(Long.MAX_VALUE);
         edgeCases.add(-1L);
         edgeCases.add(0L);
         edgeCases.add(100L);
