@@ -26,11 +26,11 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
         }
 
         final Pattern pattern = Pattern.compile("\\s*" +
-                "-?(?:(\\d+)\\s*d\\s*)?" +
-                "-?(?:(\\d+)\\s*h\\s*)?" +
-                "-?(?:(\\d+)\\s*m\\s*)?" +
-                "-?(?:(\\d+)\\s*s\\s*)?" +
-                "-?(?:(\\d+)\\s*ms\\s*)?");
+                "(?:(-?\\d+)\\s*d\\s*)?" +
+                "(?:(-?\\d+)\\s*h\\s*)?" +
+                "(?:(-?\\d+)\\s*m\\s*)?" +
+                "(?:(-?\\d+)\\s*s\\s*)?" +
+                "(?:(-?\\d+)\\s*ms\\s*)?");
 
         final Matcher matcher = pattern.matcher(text);
 
@@ -38,10 +38,10 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
             long result = 0;
             long mul = 1;
 
-            final long[] muls = new long[] { 1, 1000, 60, 60, 24 };
+            final long[] multiplier = new long[] { 1, 1000, 60, 60, 24 };
 
             for (int i = 5; i > 0; i--) {
-                mul *= muls[5 - i];
+                mul *= multiplier[5 - i];
                 if (matcher.group(i) != null) {
                     result += Long.parseLong(matcher.group(i)) * mul;
                 }
@@ -57,8 +57,6 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
     private boolean isValid(Object value) {
         boolean isValid=true;
         if (value == null) {
-            isValid=false;
-        }else if ((Long)value == 0) {
             isValid=false;
         }
         return isValid;

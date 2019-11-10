@@ -21,8 +21,9 @@ class DurationFormatterTest {
         edgeCases.put(Long.MIN_VALUE,"-106751991167d -7h -12m -55s -808ms");
         edgeCases.put(Long.MAX_VALUE,"106751991167d 7h 12m 55s 807ms");
         edgeCases.put(-1L,"0d 0h 0m 0s -1ms");
-        edgeCases.put(0L,"");
+        edgeCases.put(0L,"0d 0h 0m 0s 0ms");
         edgeCases.put(100L,"0d 0h 0m 0s 100ms");
+        edgeCases.put(-100L,"0d 0h 0m 0s -100ms");
         edgeCases.put(null,"");
 
     }
@@ -32,9 +33,9 @@ class DurationFormatterTest {
 
         for (Map.Entry<Long, String> edgeCase : edgeCases.entrySet()) {
             try {
-                df.stringToValue(edgeCase.getValue());
+                assertEquals(edgeCase.getKey(),df.stringToValue(edgeCase.getValue()));
             }catch(ParseException e){
-                System.out.println("could not parse "+edgeCase.getValue());
+                assert (false);
             }
         }
 
