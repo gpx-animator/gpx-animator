@@ -2,6 +2,7 @@ package sk.freemap.gpxAnimator.ui;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,9 +11,9 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
-public class TestDurationSpinnerModel {
+public class DurationSpinnerModelTest {
 
-    private static Stream<Arguments> testDataProvider() {
+    private static Stream<Arguments> generateGetterSetterTestData() {
         return Stream.of(
                 Arguments.of(Long.MIN_VALUE),
                 Arguments.of(Long.MAX_VALUE),
@@ -24,26 +25,23 @@ public class TestDurationSpinnerModel {
     }
 
     @ParameterizedTest
-    @MethodSource("testDataProvider")
-    public void durationSpinnerModelSetGetTest(final Long value) {
+    @MethodSource("generateGetterSetterTestData")
+    public void testValue(final Long value) {
         final DurationSpinnerModel testee = new DurationSpinnerModel();
         testee.setValue(value);
         assertEquals(value, testee.getValue());
     }
 
-    @Test
-    public void durationSpinnerModelFieldTest() {
+    @ParameterizedTest
+    @EnumSource(DurationSpinnerModel.Field.class)
+    public void testField(final DurationSpinnerModel.Field field) {
         final DurationSpinnerModel testee = new DurationSpinnerModel();
+        testee.setField(field);
+        assertEquals(field, testee.getField());
+    }
+
+    @Test
+    public void testFromUnit() {
         assertEquals(DurationSpinnerModel.Field.MILLISECOND, DurationSpinnerModel.Field.fromUnit("ms"));
-
-        try {
-            testee.getField();
-            assert (false);
-        } catch (final AssertionError e) {
-            // assertion error expected
-        }
-
-        testee.setField(DurationSpinnerModel.Field.MILLISECOND);
-        assertEquals(DurationSpinnerModel.Field.MILLISECOND, testee.getField());
     }
 }
