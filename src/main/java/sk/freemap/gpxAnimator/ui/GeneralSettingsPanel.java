@@ -650,7 +650,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
 		photosDirectorySelector.addPropertyChangeListener("filename", propertyChangeListener);
 
-		final JLabel lblPhotoTime = new JLabel("Show photos for");
+		final JLabel lblPhotoTime = new JLabel("Show Photos For");
 		final GridBagConstraints gbc_lblPhotoTime = new GridBagConstraints();
 		gbc_lblPhotoTime.anchor = GridBagConstraints.EAST;
 		gbc_lblPhotoTime.insets = new Insets(0, 0, 0, 5);
@@ -696,7 +696,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
 		tileCachePathSelector.addPropertyChangeListener("filename", propertyChangeListener);
 
-		final JLabel lblTileCacheTimeLimit = new JLabel("Tile cache time limit");
+		final JLabel lblTileCacheTimeLimit = new JLabel("Tile Cache Time Limit");
 		final GridBagConstraints gbc_lblTileCacheTimeLimit = new GridBagConstraints();
 		gbc_lblTileCacheTimeLimit.anchor = GridBagConstraints.EAST;
 		gbc_lblTileCacheTimeLimit.insets = new Insets(0, 0, 0, 5);
