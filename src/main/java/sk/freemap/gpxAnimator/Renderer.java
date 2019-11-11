@@ -52,6 +52,7 @@ public class Renderer {
 
 	public Renderer(final Configuration cfg) throws UserException {
 		this.cfg = cfg;
+		TileCache.ageCache(cfg.getTileCachePath(), cfg.getTileCacheTimeLimit());
 	}
 
 
@@ -507,7 +508,7 @@ public class Renderer {
 				}
 
 				point = floorEntry.getValue();
-				if (t2 - floorEntry.getKey() <= cfg.getTailDuration()) { // TODO make configurable
+				if (t2 - floorEntry.getKey() <= cfg.getTailDuration()) {
 					g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 					final Ellipse2D.Double marker = new Ellipse2D.Double(
 							point.getX() - markerSize / 2.0,

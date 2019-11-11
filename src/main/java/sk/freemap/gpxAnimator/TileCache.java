@@ -41,24 +41,52 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import javax.imageio.ImageIO;
-import org.apache.commons.io.FileUtils;
 
 public class TileCache {
 
     private static MessageDigest messageDigest = null;
     private static final String cachedFileType = "png";
+    private static final String cachedFileExtension = ".gpxac." + cachedFileType;
+
+    //
+    // Remove all old cached map tiles
+    //
+    // It is possible that the user has pointed our cache to a directory
+    // that holds other files. We will make a sanity check on files before
+    // we delete them.
+    //
+    // The sanity checks are very basic:
+    //  1. Is the length of the name what we expect?
+    //  2. Is the file extension (string suffix) correct?
+    //
+    // If either check fails, log a warning rather than delete the file.
+    //
+    public static void ageCache( final String tileCachePath, final Long tileCacheTimeLimit ) {
+        if (cachingEnabled(tileCachePath)) {
+            // Remove any cached tiles that are too old
+            File cacheDir = new File(tileCachePath);
+            for (File cacheEntry : cacheDir.listFiles()) {
+                String cacheFilename = cacheEntry.getName();
+                if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(cachedFileExtension))) {
+                    ageCacheFile(cacheEntry, tileCacheTimeLimit);
+                } else {
+                    System.out.println("Error: Unknown file in tile cache: " + cacheFilename );
+                }
+            }
+        }
+    }
 
     public static BufferedImage getTile( final String url, final String tileCachePath, final Long tileCacheTimeLimit ) throws UserException {
 
         BufferedImage image;
         
-        if (tileCachePath == null) {
-            return unCachedGetTile( url );
-        }
-
-        try {
-            image = cachedGetTile( url, tileCachePath, tileCacheTimeLimit );
-        } catch (final UserException e) {
+        if (cachingEnabled(tileCachePath)) {
+            try {
+                image = cachedGetTile( url, tileCachePath, tileCacheTimeLimit );
+            } catch (final UserException e) {
+                image = unCachedGetTile( url );
+            }
+        } else {
             image = unCachedGetTile( url );
         }
         return image;
@@ -82,23 +110,12 @@ public class TileCache {
     
     private static BufferedImage cachedGetTile( final String url, final String tileCachePath, final Long tileCacheTimeLimit ) throws UserException {
         BufferedImage mapTile = null;
-        String filename = hashName(url) + "." + cachedFileType;
+        String filename = hashName(url) + cachedFileExtension;
         String path = tileCachePath + File.separator + filename;
         File cacheFile = new File(path);
         
-        // Age out all old files in cache directory.
-        // Our cache age is in seconds while the file times are in milliseconds
-        File cacheDir = new File(tileCachePath);
-        if (!cacheDir.exists())
-            cacheDir.mkdirs();
-
-        for (File cacheEntry : cacheDir.listFiles()) {
-            Date fileDate = new Date(cacheEntry.lastModified());
-            long msBetweenDates = new Date().getTime() - fileDate.getTime();
-            if ((msBetweenDates/1000) > tileCacheTimeLimit) {
-                cacheEntry.delete();
-            }
-        }
+        // Age out old tile file in cache directory.
+        ageCacheFile( cacheFile, tileCacheTimeLimit );
         
         // If map tile is in cache, then return it.
         if (cacheFile.isFile()) {
@@ -139,6 +156,41 @@ public class TileCache {
         return mapTile;
     }
     
+    //
+    // Check for tile cache enabled.
+    //
+    // We consider caching enabled if:
+    //  1. The path is given (not null and not empty)
+    //  2. The cache path points to a directory
+    //
+    // If the cache path does not exist, then we will create it.
+    //
+    private static boolean cachingEnabled( final String tileCachePath ) {
+        boolean result = ((tileCachePath != null) && (tileCachePath.trim().length() > 0));
+        
+        if (result) {
+            // Create the cache directory if it doesn't exist
+            File cacheDir = new File(tileCachePath);
+            if (cacheDir.exists()) {
+                result = cacheDir.isDirectory();
+            } else {
+                cacheDir.mkdirs();
+            }
+        }
+        return result;
+    }
+
+    //
+    // Check age on a file and remove it if it is too old.
+    //
+    private static void ageCacheFile( final File cacheFile, final Long tileCacheTimeLimit ) {
+        Date fileDate = new Date(cacheFile.lastModified());
+        long msBetweenDates = new Date().getTime() - fileDate.getTime();
+        if ((msBetweenDates/1000) > tileCacheTimeLimit) {
+            cacheFile.delete();
+        }
+    }
+
     private static String hashName(final String url) throws UserException {
         try {
             if (messageDigest == null)
