@@ -52,6 +52,7 @@ public class Renderer {
 
 	public Renderer(final Configuration cfg) throws UserException {
 		this.cfg = cfg;
+		TileCache.ageCache(cfg.getTileCachePath(), cfg.getTileCacheTimeLimit());
 	}
 
 
