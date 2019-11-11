@@ -15,10 +15,11 @@
 
 package sk.freemap.gpxAnimator.ui;
 
-import javax.swing.*;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.JFormattedTextField;
 
 class DurationFormatter extends JFormattedTextField.AbstractFormatter {
 
