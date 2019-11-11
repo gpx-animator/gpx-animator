@@ -41,7 +41,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import javax.imageio.ImageIO;
-import org.apache.commons.io.FileUtils;
 
 public class TileCache {
 
