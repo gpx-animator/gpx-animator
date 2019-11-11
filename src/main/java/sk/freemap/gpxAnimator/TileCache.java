@@ -47,6 +47,7 @@ public class TileCache {
 
     private static MessageDigest messageDigest = null;
     private static final String cachedFileType = "png";
+    private static final String cachedFileExtension = ".gpxac." + cachedFileType;
 
     //
     // Remove all old cached map tiles
@@ -67,7 +68,7 @@ public class TileCache {
             File cacheDir = new File(tileCachePath);
             for (File cacheEntry : cacheDir.listFiles()) {
                 String cacheFilename = cacheEntry.getName();
-                if ((cacheFilename.length() == 68) && (cacheFilename.endsWith("."+cachedFileType))) {
+                if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(cachedFileExtension))) {
                     ageCacheFile(cacheEntry, tileCacheTimeLimit);
                 } else {
                     System.out.println("Error: Unknown file in tile cache: " + cacheFilename );
@@ -110,7 +111,7 @@ public class TileCache {
     
     private static BufferedImage cachedGetTile( final String url, final String tileCachePath, final Long tileCacheTimeLimit ) throws UserException {
         BufferedImage mapTile = null;
-        String filename = hashName(url) + "." + cachedFileType;
+        String filename = hashName(url) + cachedFileExtension;
         String path = tileCachePath + File.separator + filename;
         File cacheFile = new File(path);
         
