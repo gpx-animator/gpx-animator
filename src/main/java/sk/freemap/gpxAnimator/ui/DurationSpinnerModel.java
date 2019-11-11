@@ -15,6 +15,7 @@
 package sk.freemap.gpxAnimator.ui;
 
 import javax.swing.AbstractSpinnerModel;
+import java.util.Objects;
 
 public class DurationSpinnerModel extends AbstractSpinnerModel {
 
@@ -62,7 +63,7 @@ public class DurationSpinnerModel extends AbstractSpinnerModel {
 
 	@Override
 	public void setValue(final Object value) {
-		if (duration == null ? value != null : !duration.equals(value)) {
+		if (!Objects.equals(duration, value)) {
 			duration = (Long) value;
 			fireStateChanged();
 		}
@@ -78,7 +79,7 @@ public class DurationSpinnerModel extends AbstractSpinnerModel {
 	@Override
 	public Object getPreviousValue() {
 		final long prev = (duration == null ? 0 : duration) - getDiffMs();
-		return prev < 0 ? null : prev;
+		return prev;
 	}
 	
 	
