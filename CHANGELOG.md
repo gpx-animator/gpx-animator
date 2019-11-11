@@ -14,6 +14,7 @@ Release date: not yet released
 * adding map tile cache to reduce download size
 * GPX-Animator now has a custom domain: https://gpx-animator.app
 * fixed incorrect zoom factor calculation
+* fixed time offset problem with negative time offset values
 * fixed some minor issues
 
 ## Version 1.3.1
