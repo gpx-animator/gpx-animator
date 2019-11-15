@@ -515,8 +515,8 @@ public class Renderer {
 					g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 
 					try {
-						drawIconOnGraphics2D(g2, point);
-					} catch (IOException e) {
+						drawIconOnGraphics2D(point,g2);
+					} catch (final IOException e) {
 						drawSimpleCircleOnGraphics2D(point, g2);
 					}
 
@@ -532,7 +532,7 @@ public class Renderer {
 		return point;
 	}
 
-	private void drawSimpleCircleOnGraphics2D(Point2D point, Graphics2D g2) {
+	private void drawSimpleCircleOnGraphics2D(final Point2D point,final Graphics2D g2) {
 
 		final double markerSize = cfg.getMarkerSize();
 
@@ -547,12 +547,12 @@ public class Renderer {
 		g2.draw(marker);
 	}
 
-	private void drawIconOnGraphics2D(Graphics2D g2, Point2D point) throws IOException {
-			BufferedImage icon= ImageIO.read(getClass().getResource("/bicycleIcon_32.png"));
-			AffineTransform at = new AffineTransform();
-			at.translate((int)point.getX() + 8f,(int)point.getY() + 4f);
-			at.translate(-icon.getWidth()/2, -icon.getHeight()/2);
-			g2.drawImage(icon,at,null);
+	private void drawIconOnGraphics2D(final Point2D point,final Graphics2D g2) throws IOException {
+		final BufferedImage icon= ImageIO.read(getClass().getResource("/bicycleIcon_32.png"));
+		final AffineTransform at = new AffineTransform();
+		at.translate((int)point.getX() + 8f,(int)point.getY() + 4f);
+		at.translate(-icon.getWidth()/2, -icon.getHeight()/2);
+		g2.drawImage(icon,at,null);
 	}
 
 
