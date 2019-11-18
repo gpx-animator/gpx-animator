@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +76,8 @@ public class MainFrame extends JFrame {
   private final Preferences prefs = Preferences.userRoot().node("app");
 
   private final ActionListener addTrackActionListener;
+  private final ActionListener resetGeneralSettings;
+  private final ActionListener saveGeneralSettings;
 
 
   public Configuration createConfiguration() throws UserException {
@@ -92,7 +95,11 @@ public class MainFrame extends JFrame {
 
 
   public void setConfiguration(final Configuration c) {
-    generalSettingsPanel.setConfiguration(c);
+    try {
+      generalSettingsPanel.setConfiguration(c);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
     // remove all track tabs
     for (int i = tabbedPane.getTabCount() - 1; i >= FIXED_TABS; i--) {
@@ -400,6 +407,42 @@ public class MainFrame extends JFrame {
     panel.add(addTrackButton, gbc_addTrackButton);
     addTrackButton.addActionListener(addTrackActionListener);
 
+
+    resetGeneralSettings = e -> {
+      try {
+        generalSettingsPanel.updateProperty(8,30);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    };
+
+    saveGeneralSettings = e -> {
+      try {
+        generalSettingsPanel.updateProperty(-1,-1);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    };
+
+
+    final JButton resetSettings = new JButton("Reset settings");
+    final GridBagConstraints resetSettingsButton = new GridBagConstraints();
+    resetSettingsButton.anchor = GridBagConstraints.NORTHWEST;
+    resetSettingsButton.insets = new Insets(0, 0, 0, 5);
+    resetSettingsButton.gridx = 2;
+    resetSettingsButton.gridy = 0;
+    panel.add(resetSettings, resetSettingsButton);
+    addTrackButton.addActionListener(resetGeneralSettings);
+
+    final JButton saveSettings = new JButton("Save settings");
+    final GridBagConstraints saveSettingsButton = new GridBagConstraints();
+    saveSettingsButton.anchor = GridBagConstraints.NORTHWEST;
+    saveSettingsButton.insets = new Insets(0, 0, 0, 5);
+    saveSettingsButton.gridx = 3;
+    saveSettingsButton.gridy = 0;
+    panel.add(saveSettings, saveSettingsButton);
+    addTrackButton.addActionListener(saveGeneralSettings);
+
 //		final JButton btnComputeBbox = new JButton("Compute BBox");
 //		final GridBagConstraints gbc_btnComputeBbox = new GridBagConstraints();
 //		gbc_btnComputeBbox.anchor = GridBagConstraints.NORTHWEST;
@@ -419,7 +462,7 @@ public class MainFrame extends JFrame {
     renderButton.setEnabled(false);
     final GridBagConstraints gbc_renderButton = new GridBagConstraints();
     gbc_renderButton.anchor = GridBagConstraints.NORTHWEST;
-    gbc_renderButton.gridx = 3;
+    gbc_renderButton.gridx = 4;
     gbc_renderButton.gridy = 0;
     panel.add(renderButton, gbc_renderButton);
     renderButton.addActionListener(new ActionListener() {

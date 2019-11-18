@@ -21,13 +21,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 import static javax.swing.JFileChooser.FILES_ONLY;
@@ -780,7 +775,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 	}
 
 
-	public void setConfiguration(final Configuration c) {
+	public void setConfiguration(final Configuration c) throws IOException {
 		heightSpinner.setValue(c.getHeight());
 		widthSpinner.setValue(c.getWidth());
 		marginSpinner.setValue(c.getMargin());
@@ -791,7 +786,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		maxLonSpinner.setValue(c.getMaxLon());
 		speedupSpinner.setValue(c.getSpeedup());
 		tailDurationSpinner.setValue(c.getTailDuration());
-		fpsSpinner.setValue(c.getFps());
+		fpsSpinner.setValue(getPropertyFps());
 		totalTimeSpinner.setValue(c.getTotalTime());
 		backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
 		photoTimeSpinner.setValue(c.getPhotoTime());
@@ -814,7 +809,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 		flashbackColorSelector.setColor(c.getFlashbackColor());
 		outputFileSelector.setFilename(c.getOutput().toString());
 		fontSizeSpinner.setValue(c.getFontSize());
-		markerSizeSpinner.setValue(c.getMarkerSize());
+		markerSizeSpinner.setValue(getPropertySize());
 		waypointSizeSpinner.setValue(c.getWaypointSize());
 		flashbackColorSelector.setColor(c.getFlashbackColor());
 		flashbackDurationSpinner.setValue(c.getFlashbackDuration());
@@ -855,6 +850,38 @@ abstract class GeneralSettingsPanel extends JPanel {
 				tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
 				? ((MapTemplate) tmsItem).getAttributionText() : "").trim());
 	}
+
+	public  void updateProperty(final double size, final double fps) throws IOException {
+		FileInputStream in = new FileInputStream("src/config.properties");
+		Properties props = new Properties();
+		props.load(in);
+		in.close();
+
+		FileOutputStream out = new FileOutputStream("src/config.properties");
+		props.setProperty("fps", (fps == -1 ? String.valueOf(fpsSpinner.getValue()) : String.valueOf(fps)));
+		props.setProperty("size",(size == -1 ? String.valueOf(markerSizeSpinner.getValue()) : String.valueOf(size)));
+		props.store(out, null);
+		out.close();
+	}
+
+	private Double getPropertySize() throws IOException {
+		FileInputStream in = new FileInputStream("src/config.properties");
+		Properties props = new Properties();
+		props.load(in);
+		double size = Double.parseDouble(props.getProperty("size"));
+		in.close();
+		return size;
+	}
+
+	private Double getPropertyFps() throws IOException {
+		FileInputStream in = new FileInputStream("src/config.properties");
+		Properties props = new Properties();
+		props.load(in);
+		double fps = Double.parseDouble(props.getProperty("fps"));
+		in.close();
+		return fps;
+	}
+
 
 	protected abstract void configurationChanged();
 
