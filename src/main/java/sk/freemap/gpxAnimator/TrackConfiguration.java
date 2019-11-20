@@ -35,6 +35,7 @@ public class TrackConfiguration {
 	private Long timeOffset;
 	private Long forcedPointInterval;
 	private float lineWidth;
+	private boolean enableIcon;
 	
 	
 	// for JAXB
@@ -42,13 +43,14 @@ public class TrackConfiguration {
 	}
 	
 	
-	private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final float lineWidth) {
+	private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final float lineWidth,final boolean enableIcon) {
 		this.inputGpx = inputGpx;
 		this.label = label;
 		this.color = color;
 		this.timeOffset = timeOffset;
 		this.forcedPointInterval = forcedPointInterval;
 		this.lineWidth = lineWidth;
+		this.enableIcon= enableIcon;
 	}
 
 
@@ -98,6 +100,7 @@ public class TrackConfiguration {
 		private Long timeOffset;
 		private Long forcedPointInterval;
 		private float lineWidth = 2f;
+		private boolean enableIcon = true;
 		
 		
 		private Builder() {
@@ -105,7 +108,7 @@ public class TrackConfiguration {
 		
 		
 		public TrackConfiguration build() throws UserException {
-			return new TrackConfiguration(inputGpx, label, color, timeOffset, forcedPointInterval, lineWidth);
+			return new TrackConfiguration(inputGpx, label, color, timeOffset, forcedPointInterval, lineWidth,enableIcon);
 		}
 		
 		
@@ -141,6 +144,11 @@ public class TrackConfiguration {
 		
 		public Builder lineWidth(final float lineWidth) {
 			this.lineWidth = lineWidth;
+			return this;
+		}
+
+		public Builder enableIcon(final boolean enableIcon) {
+			this.enableIcon = enableIcon;
 			return this;
 		}
 		
