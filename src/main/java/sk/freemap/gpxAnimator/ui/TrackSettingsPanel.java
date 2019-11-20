@@ -284,6 +284,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		lineWidthSpinner.addChangeListener(changeListener);
 		timeOffsetSpinner.addChangeListener(changeListener);
 		forcedPointTimeIntervalSpinner.addChangeListener(changeListener);
+		enableIconCheckBox.addChangeListener(changeListener);
 	}
 
 
