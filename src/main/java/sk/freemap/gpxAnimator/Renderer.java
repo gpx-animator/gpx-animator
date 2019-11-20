@@ -18,6 +18,7 @@ import sk.freemap.gpxAnimator.frameWriter.FileFrameWriter;
 import sk.freemap.gpxAnimator.frameWriter.FrameWriter;
 import sk.freemap.gpxAnimator.frameWriter.VideoFrameWriter;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
@@ -26,6 +27,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.List;
 import java.util.*;
@@ -509,16 +511,14 @@ public class Renderer {
 
 				point = floorEntry.getValue();
 				if (t2 - floorEntry.getKey() <= cfg.getTailDuration()) {
+
 					g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
-					final Ellipse2D.Double marker = new Ellipse2D.Double(
-							point.getX() - markerSize / 2.0,
-							point.getY() - markerSize / 2.0,
-							markerSize,
-							markerSize);
-					g2.setStroke(new BasicStroke(1f));
-					g2.fill(marker);
-					g2.setColor(Color.black);
-					g2.draw(marker);
+
+					try {
+						drawIconOnGraphics2D(point,g2);
+					} catch (final IOException e) {
+						drawSimpleCircleOnGraphics2D(point, g2);
+					}
 
 					final String label = trackConfiguration.getLabel();
 					if (!label.isEmpty()) {
@@ -530,6 +530,29 @@ public class Renderer {
 			}
 		}
 		return point;
+	}
+
+	private void drawSimpleCircleOnGraphics2D(final Point2D point,final Graphics2D g2) {
+
+		final double markerSize = cfg.getMarkerSize();
+
+		final Ellipse2D.Double marker = new Ellipse2D.Double(
+				point.getX() - markerSize / 2.0,
+				point.getY() - markerSize / 2.0,
+				markerSize,
+				markerSize);
+		g2.setStroke(new BasicStroke(1f));
+		g2.fill(marker);
+		g2.setColor(Color.black);
+		g2.draw(marker);
+	}
+
+	private void drawIconOnGraphics2D(final Point2D point,final Graphics2D g2) throws IOException {
+		final BufferedImage icon= ImageIO.read(getClass().getResource("/bicycleIcon_32.png"));
+		final AffineTransform at = new AffineTransform();
+		at.translate((int)point.getX() + 8f,(int)point.getY() + 4f);
+		at.translate(-icon.getWidth()/2, -icon.getHeight()/2);
+		g2.drawImage(icon,at,null);
 	}
 
 

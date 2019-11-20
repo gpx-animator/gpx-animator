@@ -51,3 +51,10 @@ Features
 Tutorials
 --------
 - [GPS Tracks Animation mit "GPX Animator" (Marcus Bersheim)](https://www.youtube.com/watch?v=AtcBVrbB6bg) :de:
+
+
+Credits
+--------
+Icons included in application and their source:
+
+* Bicycle icon made by [Freepik](https://www.flaticon.com/authors/freepik) at [flaticon](https://www.flaticon.com/).
