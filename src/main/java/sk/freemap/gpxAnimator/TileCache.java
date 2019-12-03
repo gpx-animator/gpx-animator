@@ -65,12 +65,15 @@ public class TileCache {
         if (cachingEnabled(tileCachePath)) {
             // Remove any cached tiles that are too old
             File cacheDir = new File(tileCachePath);
-            for (File cacheEntry : cacheDir.listFiles()) {
-                String cacheFilename = cacheEntry.getName();
-                if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(cachedFileExtension))) {
-                    ageCacheFile(cacheEntry, tileCacheTimeLimit);
-                } else {
-                    System.out.println("Error: Unknown file in tile cache: " + cacheFilename );
+            final File[] files = cacheDir.listFiles();
+            if (files != null) {
+                for (File cacheEntry : files) {
+                    String cacheFilename = cacheEntry.getName();
+                    if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(cachedFileExtension))) {
+                        ageCacheFile(cacheEntry, tileCacheTimeLimit);
+                    } else {
+                        System.err.println("Error: Unknown file in tile cache: " + cacheFilename);
+                    }
                 }
             }
         }

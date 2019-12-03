@@ -23,7 +23,7 @@ java -jar GpxAnimator.jar --input track.gpx
 Build
 -----------
 
-GPX Animator uses the [Maven](https://maven.apache.org/) build system to create the JAR file. You need to have Maven installed on your system. If you don't have Maven installed, consider using [SDKMAN](https://sdkman.io/) to install it, first.
+GPX Animator uses the [Maven](https://maven.apache.org/) build system to create the JAR file. You don't need to have Maven installed on your system, this project makes use of the Maven Wrapper.
 
 ```
 ./mvnw clean package

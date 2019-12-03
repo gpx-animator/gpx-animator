@@ -250,7 +250,7 @@ public class Configuration {
 
 
     public Long getTileCacheTimeLimit() {
-        return tileCacheTimeLimit;
+        return tileCacheTimeLimit == null ? 0 : tileCacheTimeLimit;
     }
 
 
