@@ -35,6 +35,8 @@ public final class CommandLineConfigurationFactory {
 	
 	private final List<Float> lineWidthList = new ArrayList<Float>();
 
+	private final List<Boolean> iconEnableList = new ArrayList<Boolean>();
+
 	private final boolean gui;
 
 	
@@ -105,6 +107,9 @@ public final class CommandLineConfigurationFactory {
 						break;
 					case INPUT:
 						inputGpxList.add(args[++i]);
+						break;
+					case ICON_ENABLE:
+						iconEnableList.add(Boolean.valueOf(args[++i]));
 						break;
 					case KEEP_IDLE:
 						cfg.skipIdle(false);
@@ -198,6 +203,7 @@ public final class CommandLineConfigurationFactory {
 			tcb.label(i < labelList.size() ? labelList.get(i) : "");
 			tcb.timeOffset(i < timeOffsetList.size() ? timeOffsetList.get(i) : Long.valueOf(0));
 			tcb.forcedPointInterval(i < forcedPointIntervalList.size() ? forcedPointIntervalList.get(i) : null);
+			tcb.enableIcon(iconEnableList.get(i));
 			
 			cfg.addTrackConfiguration(tcb.build());
 		}
