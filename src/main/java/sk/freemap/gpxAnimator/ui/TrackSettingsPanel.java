@@ -215,7 +215,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		add(forcedPointTimeIntervalSpinner, gbc_forcedPointTimeIntervalSpinner);
 
 		enableIconCheckBox = new JCheckBox("");
-		enableIconCheckBox.setToolTipText(Option.SKIP_IDLE.getHelp());
+		enableIconCheckBox.setToolTipText(Option.ICON_ENABLE.getHelp());
 		final GridBagConstraints gbc_enableIconCheckBox = new GridBagConstraints();
 		gbc_enableIconCheckBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_enableIconCheckBox.anchor = GridBagConstraints.EAST;
@@ -300,7 +300,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		b.lineWidth((Float) lineWidthSpinner.getValue());
 		b.forcedPointInterval((Long) forcedPointTimeIntervalSpinner.getValue());
 		b.timeOffset((Long) timeOffsetSpinner.getValue());
-		
+		b.enableIcon(enableIconCheckBox.isSelected());
 		return b.build();
 	}
 	
@@ -312,6 +312,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		lineWidthSpinner.setValue(c.getLineWidth());
 		forcedPointTimeIntervalSpinner.setValue(c.getForcedPointInterval());
 		timeOffsetSpinner.setValue(c.getTimeOffset());
+		enableIconCheckBox.setEnabled(c.isEnableIcon());
 		labelChanged(c.getLabel());
 	}
 	

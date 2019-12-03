@@ -513,9 +513,13 @@ public class Renderer {
 
 					g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 
-					try {
-						drawIconOnGraphics2D(point,g2);
-					} catch (final IOException e) {
+					if (trackConfiguration.isEnableIcon()){
+						try {
+							drawIconOnGraphics2D(point, g2);
+						} catch (final IOException e) {
+							drawSimpleCircleOnGraphics2D(point, g2);
+						}
+					}else {
 						drawSimpleCircleOnGraphics2D(point, g2);
 					}
 

@@ -35,6 +35,11 @@ public class TrackConfiguration {
 	private Long timeOffset;
 	private Long forcedPointInterval;
 	private float lineWidth;
+
+	public boolean isEnableIcon() {
+		return enableIcon;
+	}
+
 	private boolean enableIcon;
 	
 	
