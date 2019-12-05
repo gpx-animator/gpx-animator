@@ -40,7 +40,8 @@ public enum Option {
 	PHOTO_TIME("photo-time", "the amount of time, a photo should be shown above the map"),
 	TILE_CACHE_PATH("tile-cache-path", "path to a directory to use for caching map tiles"),
 	TILE_CACHE_TIME_LIMIT("tile-cache-timeout", "time a cached map tile is valid"),
-	HELP("help", "this help");
+	HELP("help", "this help"),
+	ICON_ENABLE("ICON ENABLE","enables a bicycle icon that replaces a standard circle of the current position.");
 	
 	private static java.util.Map<String, Option> map = new HashMap<String, Option>();
 	

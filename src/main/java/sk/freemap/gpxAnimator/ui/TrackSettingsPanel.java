@@ -38,6 +38,8 @@ abstract class TrackSettingsPanel extends JPanel {
 	private final JLabel lblColor_1;
 	private final ColorSelector colorSelector;
 	private final FileSelector inputGpxFileSelector;
+	private final JCheckBox enableIconCheckBox;
+	private final JLabel lblEnableIcon;
 
 
 	public TrackSettingsPanel() {
@@ -47,7 +49,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
 		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0,0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gbl_contentPane);
 		
 		final JLabel lblGpx = new JLabel("Input GPX File");
@@ -211,7 +213,25 @@ abstract class TrackSettingsPanel extends JPanel {
 		gbc_forcedPointTimeIntervalSpinner.gridx = 1;
 		gbc_forcedPointTimeIntervalSpinner.gridy = 5;
 		add(forcedPointTimeIntervalSpinner, gbc_forcedPointTimeIntervalSpinner);
-		
+
+		enableIconCheckBox = new JCheckBox("");
+		enableIconCheckBox.setToolTipText(Option.ICON_ENABLE.getHelp());
+		final GridBagConstraints gbc_enableIconCheckBox = new GridBagConstraints();
+		gbc_enableIconCheckBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_enableIconCheckBox.anchor = GridBagConstraints.EAST;
+		gbc_enableIconCheckBox.insets = new Insets(0, 0, 5, 0);
+		gbc_enableIconCheckBox.gridx = 1;
+		gbc_enableIconCheckBox.gridy = 6;
+		add(enableIconCheckBox, gbc_enableIconCheckBox);
+
+		lblEnableIcon = new JLabel("Enable Icon");
+		final GridBagConstraints gbc_lblEnableIcon = new GridBagConstraints();
+		gbc_lblEnableIcon.anchor = GridBagConstraints.EAST;
+		gbc_lblEnableIcon.insets = new Insets(0, 0, 5, 5);
+		gbc_lblEnableIcon.gridx = 0;
+		gbc_lblEnableIcon.gridy = 6;
+		add(lblEnableIcon, gbc_lblEnableIcon);
+
 		final JButton btnNewButton = new JButton("Remove Track");
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
@@ -264,6 +284,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		lineWidthSpinner.addChangeListener(changeListener);
 		timeOffsetSpinner.addChangeListener(changeListener);
 		forcedPointTimeIntervalSpinner.addChangeListener(changeListener);
+		enableIconCheckBox.addChangeListener(changeListener);
 	}
 
 
@@ -279,7 +300,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		b.lineWidth((Float) lineWidthSpinner.getValue());
 		b.forcedPointInterval((Long) forcedPointTimeIntervalSpinner.getValue());
 		b.timeOffset((Long) timeOffsetSpinner.getValue());
-		
+		b.enableIcon(enableIconCheckBox.isSelected());
 		return b.build();
 	}
 	
@@ -291,6 +312,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		lineWidthSpinner.setValue(c.getLineWidth());
 		forcedPointTimeIntervalSpinner.setValue(c.getForcedPointInterval());
 		timeOffsetSpinner.setValue(c.getTimeOffset());
+		enableIconCheckBox.setEnabled(c.isEnableIcon());
 		labelChanged(c.getLabel());
 	}
 	

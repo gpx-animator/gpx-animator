@@ -41,6 +41,7 @@ public class Help {
 		w.writeOptionHelp(Option.HEIGHT, "height", false, cfg.getHeight());
 		w.writeOptionHelp(Option.HELP, null, false, null);
 		w.writeOptionHelp(Option.INPUT, "input", true, tc.getInputGpx());
+		w.writeOptionHelp(Option.ICON_ENABLE,"iconEnable",true,tc.isEnableIcon());
 		w.writeOptionHelp(Option.LABEL, "label", true, tc.getLabel());
 		w.writeOptionHelp(Option.LINE_WIDTH, "width", true, tc.getLineWidth());
 		w.writeOptionHelp(Option.MARGIN, "margin", false, cfg.getMargin());
