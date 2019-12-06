@@ -56,6 +56,7 @@ public class Help {
 		w.writeOptionHelp(Option.SKIP_IDLE, null, false, cfg.isSkipIdle());
 		w.writeOptionHelp(Option.SPEEDUP, "speedup", false, cfg.getSpeedup());
 		w.writeOptionHelp(Option.TAIL_DURATION, "time", false, cfg.getTailDuration());
+		w.writeOptionHelp(Option.TAIL_COLOR, "tail-color", false, cfg.getTailColor());
 		w.writeOptionHelp(Option.TILE_CACHE_TIME_LIMIT, "seconds", false, cfg.getTileCacheTimeLimit());
 		w.writeOptionHelp(Option.TILE_CACHE_PATH, "text", false, cfg.getTileCachePath());
 		w.writeOptionHelp(Option.TIME_OFFSET, "milliseconds", true, tc.getTimeOffset());

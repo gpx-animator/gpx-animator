@@ -153,6 +153,10 @@ public final class CommandLineConfigurationFactory {
 					case TAIL_DURATION:
 						cfg.tailDuration(Long.parseLong(args[++i]));
 						break;
+					case TAIL_COLOR:
+						final long lvTailColor = Long.decode(args[++i]).longValue();
+						cfg.tailColor(new Color(lvTailColor < Integer.MAX_VALUE ? (int) lvTailColor : (int) (0xffffffff00000000L | lvTailColor), true));
+						break;
 					case TILE_CACHE_PATH:
 						cfg.tileCachePath(args[++i]);
 						break;

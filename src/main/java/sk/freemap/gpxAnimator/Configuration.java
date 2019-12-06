@@ -33,6 +33,7 @@ public class Configuration {
 	
 	private Double speedup;
 	private long tailDuration;
+	private Color tailColor;
 	private double fps;
 	private Long totalTime;
 	
@@ -79,7 +80,7 @@ public class Configuration {
 	
 	public Configuration(
 			final int margin, final Integer width, final Integer height, final Integer zoom,
-			final Double speedup, final long tailDuration, final double fps, final Long totalTime,
+			final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
 			final float backgroundMapVisibility, final String tmsUrlTemplate,
 			final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
 			final Long keepLastFrame, final File output, final String attribution,
@@ -95,6 +96,7 @@ public class Configuration {
 		this.zoom = zoom;
 		this.speedup = speedup;
 		this.tailDuration = tailDuration;
+		this.tailColor = tailColor;
 		this.fps = fps;
 		this.totalTime = totalTime;
 		this.backgroundMapVisibility = backgroundMapVisibility;
@@ -147,6 +149,11 @@ public class Configuration {
 	
 	public long getTailDuration() {
 		return tailDuration;
+	}
+
+
+	public Color getTailColor() {
+		return tailColor;
 	}
 	
 	
@@ -272,6 +279,7 @@ public class Configuration {
 		
 		private Double speedup = 1000.0;
 		private long tailDuration = 3600000;
+		private Color tailColor = Color.BLACK;
 		private double fps = 30.0;
 		private Long totalTime;
 		
@@ -308,7 +316,7 @@ public class Configuration {
 		public Configuration build() throws UserException {
 			return new Configuration(
 					margin, width, height, zoom,
-					speedup, tailDuration, fps, totalTime,
+					speedup, tailDuration, tailColor, fps, totalTime,
 					backgroundMapVisibility, tmsUrlTemplate,
 					skipIdle, flashbackColor, flashbackDuration,
 					keepLastFrame, output, attribution,
@@ -349,6 +357,11 @@ public class Configuration {
 		
 		public Builder tailDuration(final long tailDuration) {
 			this.tailDuration = tailDuration;
+			return this;
+		}
+
+		public Builder tailColor(Color tailColor) {
+			this.tailColor = tailColor;
 			return this;
 		}
 		
@@ -472,6 +485,7 @@ public class Configuration {
 				+ ", zoom=" + zoom
 				+ ", speedup=" + speedup
 				+ ", tailDuration=" + tailDuration
+				+ ", tailColor=" + tailColor
 				+ ", fps=" + fps + ", totalTime=" + totalTime
 				+ ", backgroundMapVisibility=" + backgroundMapVisibility
 				+ ", tmsUrlTemplate=" + tmsUrlTemplate

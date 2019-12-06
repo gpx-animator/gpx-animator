@@ -16,6 +16,7 @@ public enum Option {
 	SPEEDUP("speedup", "speed multiplication of the real time; complementary to specifying total time"),
 	LINE_WIDTH("line-width", "track line width in pixels"),
 	TAIL_DURATION("tail-duration", "highlighted tail length in real time milliseconds"),
+	TAIL_COLOR("tail-color", "highlighted tail color"),
 	FPS("fps", "frames per second"),
 	MARKER_SIZE("marker-size", "marker size in pixels"),
 	WAYPOINT_SIZE("waypoint-size", "waypoint size in pixels; for no waypoints specify 0"),
