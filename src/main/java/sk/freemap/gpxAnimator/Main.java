@@ -14,51 +14,51 @@
  */
 package sk.freemap.gpxAnimator;
 
+import sk.freemap.gpxAnimator.ui.MainFrame;
+
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
-
-import sk.freemap.gpxAnimator.ui.MainFrame;
 
 
 public class Main {
 
-	public static void main(final String[] args) {
-		try {
-			final CommandLineConfigurationFactory cf = new CommandLineConfigurationFactory(args);
-			final Configuration configuration = cf.getConfiguration();
+    public static void main(final String[] args) {
+        try {
+            final CommandLineConfigurationFactory cf = new CommandLineConfigurationFactory(args);
+            final Configuration configuration = cf.getConfiguration();
 
-			new Thread(() -> TileCache.ageCache(configuration.getTileCachePath(), configuration.getTileCacheTimeLimit())).start();
+            new Thread(() -> TileCache.ageCache(configuration.getTileCachePath(), configuration.getTileCacheTimeLimit())).start();
 
-			if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
-				EventQueue.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							final MainFrame frame = new MainFrame();
-							frame.setVisible(true);
-							frame.setConfiguration(configuration);
-						} catch (final Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
-			} else {
-				new Renderer(configuration).render(new RenderingContext() {
-					@Override
-					public void setProgress1(final int pct, final String message) {
-						System.out.printf("%03d%% %s\n", pct, message);
-					}
+            if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
+                EventQueue.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final MainFrame frame = new MainFrame();
+                            frame.setVisible(true);
+                            frame.setConfiguration(configuration);
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } else {
+                new Renderer(configuration).render(new RenderingContext() {
+                    @Override
+                    public void setProgress1(final int pct, final String message) {
+                        System.out.printf("%03d%% %s\n", pct, message);
+                    }
 
-					@Override
-					public boolean isCancelled1() {
-						return false;
-					}
-				});
-			}
-		} catch (final UserException e) {
-			System.err.println(e.getMessage());
-			System.exit(1);
-		}
-	}
+                    @Override
+                    public boolean isCancelled1() {
+                        return false;
+                    }
+                });
+            }
+        } catch (final UserException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+    }
 
 }

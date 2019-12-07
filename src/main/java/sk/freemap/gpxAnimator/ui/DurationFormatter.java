@@ -15,11 +15,10 @@
 
 package sk.freemap.gpxAnimator.ui;
 
+import javax.swing.JFormattedTextField;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.JFormattedTextField;
 
 class DurationFormatter extends JFormattedTextField.AbstractFormatter {
 
@@ -28,7 +27,7 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
     @Override
     public String valueToString(final Object value) throws ParseException {
 
-        if(isValid(value)) {
+        if (isValid(value)) {
             long l = (Long) value;
             return getDurationAsText(l);
         }
@@ -54,7 +53,7 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
             long result = 0;
             long mul = 1;
 
-            final long[] multiplier = new long[] { 1, 1000, 60, 60, 24 };
+            final long[] multiplier = new long[]{1, 1000, 60, 60, 24};
 
             for (int i = 5; i > 0; i--) {
                 mul *= multiplier[5 - i];
@@ -71,9 +70,9 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
     }
 
     private boolean isValid(Object value) {
-        boolean isValid=true;
+        boolean isValid = true;
         if (value == null) {
-            isValid=false;
+            isValid = false;
         }
         return isValid;
     }

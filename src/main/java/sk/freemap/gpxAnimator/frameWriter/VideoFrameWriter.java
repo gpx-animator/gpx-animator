@@ -14,32 +14,32 @@
  */
 package sk.freemap.gpxAnimator.frameWriter;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import com.xuggle.xuggler.IRational;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+
 public final class VideoFrameWriter implements FrameWriter {
-	private final IMediaWriter writer;
-	private int frame;
-	private final double interval;
-	
-	public VideoFrameWriter(final File file, final double fps, final int width, final int height) {
-		writer = ToolFactory.makeWriter(file.toString());
-		writer.addVideoStream(0, 0, IRational.make(fps), width, height);
-		interval = 1000d / fps;
-	}
+    private final IMediaWriter writer;
+    private final double interval;
+    private int frame;
 
-	@Override
-	public void addFrame(final BufferedImage bi) {
-		writer.encodeVideo(0, bi, (int) (frame++ * interval), TimeUnit.MILLISECONDS);
-	}
+    public VideoFrameWriter(final File file, final double fps, final int width, final int height) {
+        writer = ToolFactory.makeWriter(file.toString());
+        writer.addVideoStream(0, 0, IRational.make(fps), width, height);
+        interval = 1000d / fps;
+    }
 
-	@Override
-	public void close() {
-		writer.close();
-	}
+    @Override
+    public void addFrame(final BufferedImage bi) {
+        writer.encodeVideo(0, bi, (int) (frame++ * interval), TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public void close() {
+        writer.close();
+    }
 }

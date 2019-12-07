@@ -13,15 +13,15 @@
  *  limitations under the License.
  */
 package sk.freemap.gpxAnimator.frameWriter;
-import java.awt.image.BufferedImage;
 
 import sk.freemap.gpxAnimator.UserException;
 
+import java.awt.image.BufferedImage;
 
 public interface FrameWriter {
 
-	void addFrame(BufferedImage bi) throws UserException;
+    void addFrame(BufferedImage bi) throws UserException;
 
-	void close() throws UserException;
+    void close() throws UserException;
 
 }

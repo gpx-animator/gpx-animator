@@ -19,16 +19,16 @@ import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 
 final class Utils {
-	
-	private Utils() {
-		throw new AssertionError();
-	}
 
-	static BufferedImage deepCopy(final BufferedImage bi) {
-		final ColorModel cm = bi.getColorModel();
-		final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-		final WritableRaster raster = bi.copyData(null);
-		return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
-	}
+    private Utils() {
+        throw new AssertionError();
+    }
+
+    static BufferedImage deepCopy(final BufferedImage bi) {
+        final ColorModel cm = bi.getColorModel();
+        final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        final WritableRaster raster = bi.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    }
 
 }

@@ -41,7 +41,7 @@ public class Photo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Photo photo = (Photo) o;
-        return epochSeconds.equals(photo.epochSeconds)  &&
+        return epochSeconds.equals(photo.epochSeconds) &&
                 file.equals(photo.file);
     }
 

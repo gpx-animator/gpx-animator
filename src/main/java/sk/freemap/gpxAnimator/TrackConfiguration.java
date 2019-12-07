@@ -14,175 +14,164 @@
  */
 package sk.freemap.gpxAnimator;
 
-import java.awt.Color;
-import java.io.File;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.awt.Color;
+import java.io.File;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TrackConfiguration {
 
-	@XmlJavaTypeAdapter(FileXmlAdapter.class)
-	private File inputGpx;
-	
-	private String label;
-	
-	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-	private Color color;
-	
-	private Long timeOffset;
-	private Long forcedPointInterval;
-	private Long trimGpxStart;
-	private Long trimGpxEnd;
-	private float lineWidth;
+    @XmlJavaTypeAdapter(FileXmlAdapter.class)
+    private File inputGpx;
 
-	public boolean isEnableIcon() {
-		return enableIcon;
-	}
+    private String label;
 
-	private boolean enableIcon;
-	
-	
-	// for JAXB
-	private TrackConfiguration() {
-	}
-	
-	
-	private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth,final boolean enableIcon) {
-		this.inputGpx = inputGpx;
-		this.label = label;
-		this.color = color;
-		this.timeOffset = timeOffset;
-		this.forcedPointInterval = forcedPointInterval;
-		this.trimGpxStart = trimGpxStart;
-		this.trimGpxEnd = trimGpxEnd;
-		this.lineWidth = lineWidth;
-		this.enableIcon= enableIcon;
-	}
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
+    private Color color;
+
+    private Long timeOffset;
+    private Long forcedPointInterval;
+    private Long trimGpxStart;
+    private Long trimGpxEnd;
+    private float lineWidth;
+    private boolean enableIcon;
+
+    // for JAXB
+    private TrackConfiguration() {
+    }
 
 
-	public File getInputGpx() {
-		return inputGpx;
-	}
-	
-	
-	public String getLabel() {
-		return label;
-	}
-	
-	
-	public Color getColor() {
-		return color;
-	}
-	
-	
-	public Long getTimeOffset() {
-		return timeOffset;
-	}
-	
-	
-	public Long getForcedPointInterval() {
-		return forcedPointInterval;
-	}
+    private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth, final boolean enableIcon) {
+        this.inputGpx = inputGpx;
+        this.label = label;
+        this.color = color;
+        this.timeOffset = timeOffset;
+        this.forcedPointInterval = forcedPointInterval;
+        this.trimGpxStart = trimGpxStart;
+        this.trimGpxEnd = trimGpxEnd;
+        this.lineWidth = lineWidth;
+        this.enableIcon = enableIcon;
+    }
+
+    public static Builder createBuilder() {
+        return new Builder();
+    }
+
+    public boolean isEnableIcon() {
+        return enableIcon;
+    }
+
+    public File getInputGpx() {
+        return inputGpx;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Long getTimeOffset() {
+        return timeOffset;
+    }
+
+    public Long getForcedPointInterval() {
+        return forcedPointInterval;
+    }
+
+    public Long getTrimGpxStart() {
+        return trimGpxStart;
+    }
+
+    public Long getTrimGpxEnd() {
+        return trimGpxEnd;
+    }
+
+    public float getLineWidth() {
+        return lineWidth;
+    }
+
+    public static class Builder {
+
+        private File inputGpx;
+        private String label;
+
+        @XmlJavaTypeAdapter(ColorXmlAdapter.class)
+        private Color color = Color.BLUE;
+
+        private Long timeOffset;
+        private Long forcedPointInterval;
+        private Long trimGpxStart;
+        private Long trimGpxEnd;
+        private float lineWidth = 2f;
+        private boolean enableIcon = true;
 
 
-	public Long getTrimGpxStart() {
-		return trimGpxStart;
-	}
-
-	public Long getTrimGpxEnd() {
-		return trimGpxEnd;
-	}
-
-	public float getLineWidth() {
-		return lineWidth;
-	}
-	
-	
-	public static Builder createBuilder() {
-		return new Builder();
-	}
-
-	
-	public static class Builder {
-		
-		private File inputGpx;
-		private String label;
-		
-		@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-		private Color color = Color.BLUE;
-		
-		private Long timeOffset;
-		private Long forcedPointInterval;
-		private Long trimGpxStart;
-		private Long trimGpxEnd;
-		private float lineWidth = 2f;
-		private boolean enableIcon = true;
-		
-		
-		private Builder() {
-		}
-		
-		
-		public TrackConfiguration build() throws UserException {
-			return new TrackConfiguration(inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth,enableIcon);
-		}
-		
-		
-		public Builder inputGpx(final File inputGpx) {
-			this.inputGpx = inputGpx;
-			return this;
-		}
-		
-		
-		public Builder label(final String label) {
-			this.label = label;
-			return this;
-		}
-		
-		
-		public Builder color(final Color color) {
-			this.color = color;
-			return this;
-		}
-		
-		
-		public Builder timeOffset(final Long timeOffset) {
-			this.timeOffset = timeOffset;
-			return this;
-		}
-		
-		
-		public Builder forcedPointInterval(final Long forcedPointInterval) {
-			this.forcedPointInterval = forcedPointInterval;
-			return this;
-		}
-		
-		
-		public Builder trimGpxStart(final Long trimGpxStart) {
-			this.trimGpxStart = trimGpxStart;
-			return this;
-		}
+        private Builder() {
+        }
 
 
-		public Builder trimGpxEnd(final Long trimGpxEnd) {
-			this.trimGpxEnd = trimGpxEnd;
-			return this;
-		}
+        public TrackConfiguration build() throws UserException {
+            return new TrackConfiguration(inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, enableIcon);
+        }
 
 
-		public Builder lineWidth(final float lineWidth) {
-			this.lineWidth = lineWidth;
-			return this;
-		}
+        public Builder inputGpx(final File inputGpx) {
+            this.inputGpx = inputGpx;
+            return this;
+        }
 
-		public Builder enableIcon(final boolean enableIcon) {
-			this.enableIcon = enableIcon;
-			return this;
-		}
-		
-	}
+
+        public Builder label(final String label) {
+            this.label = label;
+            return this;
+        }
+
+
+        public Builder color(final Color color) {
+            this.color = color;
+            return this;
+        }
+
+
+        public Builder timeOffset(final Long timeOffset) {
+            this.timeOffset = timeOffset;
+            return this;
+        }
+
+
+        public Builder forcedPointInterval(final Long forcedPointInterval) {
+            this.forcedPointInterval = forcedPointInterval;
+            return this;
+        }
+
+
+        public Builder trimGpxStart(final Long trimGpxStart) {
+            this.trimGpxStart = trimGpxStart;
+            return this;
+        }
+
+
+        public Builder trimGpxEnd(final Long trimGpxEnd) {
+            this.trimGpxEnd = trimGpxEnd;
+            return this;
+        }
+
+
+        public Builder lineWidth(final float lineWidth) {
+            this.lineWidth = lineWidth;
+            return this;
+        }
+
+        public Builder enableIcon(final boolean enableIcon) {
+            this.enableIcon = enableIcon;
+            return this;
+        }
+
+    }
 
 }

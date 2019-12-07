@@ -15,9 +15,9 @@
 package sk.freemap.gpxAnimator;
 
 public interface RenderingContext {
-	
-	void setProgress1(int pct, String message);
-	
-	boolean isCancelled1();
+
+    void setProgress1(int pct, String message);
+
+    boolean isCancelled1();
 
 }

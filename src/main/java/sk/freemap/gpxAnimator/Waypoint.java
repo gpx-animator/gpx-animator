@@ -16,15 +16,15 @@ package sk.freemap.gpxAnimator;
 
 public class Waypoint extends LatLon {
 
-	private final String name;
+    private final String name;
 
-	public Waypoint(final double lat, final double lon, final long time, final String name) {
-		super(lat, lon, time);
-		this.name = name;
-	}
-	
-	public String getName() {
-		return name;
-	}
+    public Waypoint(final double lat, final double lon, final long time, final String name) {
+        super(lat, lon, time);
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
 }

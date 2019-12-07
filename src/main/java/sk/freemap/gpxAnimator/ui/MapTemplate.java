@@ -16,33 +16,33 @@ package sk.freemap.gpxAnimator.ui;
 
 public class MapTemplate {
 
-	private final String name;
-	
-	private final String url;
+    private final String name;
 
-	private final String attributionText;
-	
+    private final String url;
 
-	public MapTemplate(final String name, final String url, final String attributionText) {
-		this.name = name;
-		this.url = url;
-		this.attributionText = attributionText;
-	}
-	
-	
-	public String getUrl() {
-		return url;
-	}
-	
-	
-	@Override
-	public String toString() {
-		return name;
-	}
-	
-	
-	public String getAttributionText() {
-		return attributionText;
-	}
-	
+    private final String attributionText;
+
+
+    public MapTemplate(final String name, final String url, final String attributionText) {
+        this.name = name;
+        this.url = url;
+        this.attributionText = attributionText;
+    }
+
+
+    public String getUrl() {
+        return url;
+    }
+
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+
+    public String getAttributionText() {
+        return attributionText;
+    }
+
 }

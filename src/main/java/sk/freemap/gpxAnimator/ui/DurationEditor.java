@@ -14,8 +14,7 @@
  */
 package sk.freemap.gpxAnimator.ui;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import sk.freemap.gpxAnimator.ui.DurationSpinnerModel.Field;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
@@ -26,76 +25,76 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.DefaultFormatterFactory;
-
-import sk.freemap.gpxAnimator.ui.DurationSpinnerModel.Field;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DurationEditor extends DefaultEditor {
-	
-	private static final long serialVersionUID = -3860212824757198990L;
 
-	
-	public DurationEditor(final JSpinner spinner) {
-		super(spinner);
+    private static final long serialVersionUID = -3860212824757198990L;
 
-		final JFormattedTextField ftf = getTextField();
-		
-		ftf.addCaretListener(new CaretListener() {
-			@Override
-			public void caretUpdate(final CaretEvent e) {
-				final SpinnerModel model = spinner.getModel();
-				if (!(model instanceof DurationSpinnerModel)) {
-					return;
-				}
-				
-				final DurationSpinnerModel dsm = (DurationSpinnerModel) model;
-				
-				// special hack to select number
-				if (!ftf.isValid()) {
-					final Field field = dsm.getField();
-					final Matcher matcher = Pattern.compile("(\\d+)\\s*" + field.getUnit() + "\\b").matcher(ftf.getText());
-					if (matcher.find()) {
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								ftf.setSelectionStart(matcher.start(1));
-								ftf.setSelectionEnd(matcher.end(1));
-							}
-						});
-					}
-					
-					return;
-				}
-				
-				final String text = ftf.getText();
-				final int n = text.length();
-						
-				int i = e.getDot();
-				
-				while (i < n && !Character.isLowerCase(text.charAt(i))) {
-					i++;
-				}
-				
-				while (i > 1 && Character.isLowerCase(text.charAt(i - 1))) {
-					i--;
-				}
-				
-				final StringBuilder sb = new StringBuilder();
-				for (; i < n && Character.isLowerCase(text.charAt(i)); i++) {
-					sb.append(text.charAt(i));
-				}
-				
-				final Field field = Field.fromUnit(sb.toString());
-				
-				if (field != null) {
-					dsm.setField(field);
-				}
-			}
-		});
-		
-		ftf.setEditable(true);
-		ftf.setFormatterFactory(new DefaultFormatterFactory(new DurationFormatter()));
-		
-		ftf.setHorizontalAlignment(JTextField.RIGHT);
-	}
+
+    public DurationEditor(final JSpinner spinner) {
+        super(spinner);
+
+        final JFormattedTextField ftf = getTextField();
+
+        ftf.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(final CaretEvent e) {
+                final SpinnerModel model = spinner.getModel();
+                if (!(model instanceof DurationSpinnerModel)) {
+                    return;
+                }
+
+                final DurationSpinnerModel dsm = (DurationSpinnerModel) model;
+
+                // special hack to select number
+                if (!ftf.isValid()) {
+                    final Field field = dsm.getField();
+                    final Matcher matcher = Pattern.compile("(\\d+)\\s*" + field.getUnit() + "\\b").matcher(ftf.getText());
+                    if (matcher.find()) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                ftf.setSelectionStart(matcher.start(1));
+                                ftf.setSelectionEnd(matcher.end(1));
+                            }
+                        });
+                    }
+
+                    return;
+                }
+
+                final String text = ftf.getText();
+                final int n = text.length();
+
+                int i = e.getDot();
+
+                while (i < n && !Character.isLowerCase(text.charAt(i))) {
+                    i++;
+                }
+
+                while (i > 1 && Character.isLowerCase(text.charAt(i - 1))) {
+                    i--;
+                }
+
+                final StringBuilder sb = new StringBuilder();
+                for (; i < n && Character.isLowerCase(text.charAt(i)); i++) {
+                    sb.append(text.charAt(i));
+                }
+
+                final Field field = Field.fromUnit(sb.toString());
+
+                if (field != null) {
+                    dsm.setField(field);
+                }
+            }
+        });
+
+        ftf.setEditable(true);
+        ftf.setFormatterFactory(new DefaultFormatterFactory(new DurationFormatter()));
+
+        ftf.setHorizontalAlignment(JTextField.RIGHT);
+    }
 
 }

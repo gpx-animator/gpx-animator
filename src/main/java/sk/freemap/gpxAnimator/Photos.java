@@ -97,21 +97,6 @@ public class Photos {
         }
     }
 
-    public void render(final Long gpsTime, final Configuration cfg, final BufferedImage bi,
-                       final FrameWriter frameWriter, final RenderingContext rc, final int pct) {
-        System.out.println("GPS time: " + gpsTime);
-        final List<Long> keys = photos.keySet().stream()
-                .filter(photoTime -> gpsTime >= photoTime)
-                .collect(Collectors.toList());
-        if (!keys.isEmpty()) {
-            keys.stream()
-                    .map(photos::get)
-                    .flatMap(List::stream).collect(Collectors.toList())
-                    .forEach(photo -> Photos.renderPhoto(photo, cfg, bi, frameWriter, rc, pct));
-            keys.forEach(photos::remove);
-        }
-    }
-
     private static void renderPhoto(final Photo photo, final Configuration cfg,
                                     final BufferedImage bi, final FrameWriter frameWriter,
                                     final RenderingContext rc, final int pct) {
@@ -135,7 +120,7 @@ public class Photos {
                     frameWriter.addFrame(bi2);
                 }
             } catch (final UserException e) {
-                System.err.println(String.format("Problem rendering photo '%s': %s", photo, e.getMessage() ));
+                System.err.println(String.format("Problem rendering photo '%s': %s", photo, e.getMessage()));
             }
         }
     }
@@ -150,7 +135,7 @@ public class Photos {
             final BufferedImage scaledImage = scaleImage(image, scaledWidth, scaledHeight);
             return addBorder(scaledImage);
         } catch (final IOException e) {
-            System.err.println(String.format("Problem reading photo '%s': %s", photo, e.getMessage() ));
+            System.err.println(String.format("Problem reading photo '%s': %s", photo, e.getMessage()));
         }
         return null;
     }
@@ -184,11 +169,26 @@ public class Photos {
     }
 
     private static byte[] getRawBytesFromFile(final File file) throws IOException {
-        final byte[] image = new byte[(int)file.length()];
+        final byte[] image = new byte[(int) file.length()];
         try (final FileInputStream fileInputStream = new FileInputStream(file)) {
             //noinspection ResultOfMethodCallIgnored
             fileInputStream.read(image);
         }
         return image;
+    }
+
+    public void render(final Long gpsTime, final Configuration cfg, final BufferedImage bi,
+                       final FrameWriter frameWriter, final RenderingContext rc, final int pct) {
+        System.out.println("GPS time: " + gpsTime);
+        final List<Long> keys = photos.keySet().stream()
+                .filter(photoTime -> gpsTime >= photoTime)
+                .collect(Collectors.toList());
+        if (!keys.isEmpty()) {
+            keys.stream()
+                    .map(photos::get)
+                    .flatMap(List::stream).collect(Collectors.toList())
+                    .forEach(photo -> Photos.renderPhoto(photo, cfg, bi, frameWriter, rc, pct));
+            keys.forEach(photos::remove);
+        }
     }
 }

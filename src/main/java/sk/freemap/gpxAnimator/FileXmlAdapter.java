@@ -14,27 +14,26 @@
  */
 package sk.freemap.gpxAnimator;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.File;
 import java.nio.file.Path;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 public class FileXmlAdapter extends XmlAdapter<String, File> {
 
-	private final Path base;
-	
-	public FileXmlAdapter(final File base) {
-		this.base = base.toPath();
-	}
-	
-	@Override
-	public File unmarshal(final String string) throws Exception {
-		return base.resolve(string).toFile();
-	}
+    private final Path base;
 
-	@Override
-	public String marshal(final File file) throws Exception {
-		return base.relativize(file.getAbsoluteFile().toPath()).toString();
-	}
+    public FileXmlAdapter(final File base) {
+        this.base = base.toPath();
+    }
+
+    @Override
+    public File unmarshal(final String string) throws Exception {
+        return base.resolve(string).toFile();
+    }
+
+    @Override
+    public String marshal(final File file) throws Exception {
+        return base.relativize(file.getAbsoluteFile().toPath()).toString();
+    }
 
 }

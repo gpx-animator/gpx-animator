@@ -16,14 +16,14 @@ package sk.freemap.gpxAnimator;
 
 public class UserException extends Exception {
 
-	private static final long serialVersionUID = 4742238182942265693L;
+    private static final long serialVersionUID = 4742238182942265693L;
 
-	public UserException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    public UserException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
-	public UserException(final String message) {
-		super(message);
-	}
+    public UserException(final String message) {
+        super(message);
+    }
 
 }

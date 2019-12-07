@@ -14,43 +14,43 @@
  */
 package sk.freemap.gpxAnimator.frameWriter;
 
+import sk.freemap.gpxAnimator.UserException;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import sk.freemap.gpxAnimator.UserException;
-
 public final class FileFrameWriter implements FrameWriter {
-	private final String frameFilePattern;
-	private final String imageType;
-	private int frame;
-	private final double fps;
 
-	public FileFrameWriter(final String frameFilePattern, final String imageType, final double fps) throws UserException {
-		if (String.format(frameFilePattern, 100).equals(String.format(frameFilePattern, 200))) {
-			throw new UserException("output must be pattern, for example frame%08d.png");
-		}
+    private final String frameFilePattern;
+    private final String imageType;
+    private final double fps;
+    private int frame;
 
-		this.frameFilePattern = frameFilePattern;
-		this.imageType = imageType;
-		this.fps = fps;
-	}
+    public FileFrameWriter(final String frameFilePattern, final String imageType, final double fps) throws UserException {
+        if (String.format(frameFilePattern, 100).equals(String.format(frameFilePattern, 200))) {
+            throw new UserException("output must be pattern, for example frame%08d.png");
+        }
 
-	@Override
-	public void addFrame(final BufferedImage bi) throws UserException {
-		final File outputfile = new File(String.format(frameFilePattern, ++frame));
-	    try {
-			ImageIO.write(bi, imageType, outputfile);
-		} catch (final IOException e) {
-			throw new UserException("error writing frame to " + outputfile, e);
-		}
-	}
+        this.frameFilePattern = frameFilePattern;
+        this.imageType = imageType;
+        this.fps = fps;
+    }
 
-	@Override
-	public void close() {
-		System.out.println("To encode generated frames you may run this command:");
-		System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 3000k -r " + fps + " video.avi");
-	}
+    @Override
+    public void addFrame(final BufferedImage bi) throws UserException {
+        final File outputfile = new File(String.format(frameFilePattern, ++frame));
+        try {
+            ImageIO.write(bi, imageType, outputfile);
+        } catch (final IOException e) {
+            throw new UserException("error writing frame to " + outputfile, e);
+        }
+    }
+
+    @Override
+    public void close() {
+        System.out.println("To encode generated frames you may run this command:");
+        System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 3000k -r " + fps + " video.avi");
+    }
 }

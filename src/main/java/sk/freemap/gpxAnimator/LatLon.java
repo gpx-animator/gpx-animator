@@ -16,28 +16,28 @@ package sk.freemap.gpxAnimator;
 
 public class LatLon {
 
-	private final double lat;
-	
-	private final double lon;
+    private final double lat;
 
-	private final long time;
+    private final double lon;
 
-	public LatLon(final double lat, final double lon, final long time) {
-		this.lat = lat;
-		this.lon = lon;
-		this.time = time;
-	}
-	
-	public double getLat() {
-		return lat;
-	}
-	
-	public double getLon() {
-		return lon;
-	}
-	
-	public long getTime() {
-		return time;
-	}
-	
+    private final long time;
+
+    public LatLon(final double lat, final double lon, final long time) {
+        this.lat = lat;
+        this.lon = lon;
+        this.time = time;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
 }
