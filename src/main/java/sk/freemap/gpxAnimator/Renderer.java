@@ -75,6 +75,7 @@ public class Renderer {
 			for (final List<LatLon> latLonList : gch.getPointLists()) {
 				final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long,Point2D>();
 				toTimePointMap(timePointMap, i, latLonList);
+				trimGpxData(timePointMap, trackConfiguration);
 				timePointMapList.add(timePointMap);
 
 				toTimePointMap(wpMap, i, gch.getWaypointList());
@@ -284,6 +285,21 @@ public class Renderer {
 		frameWriter.close();
 
 		System.out.println("Done.");
+	}
+
+	private void trimGpxData(final TreeMap<Long, Point2D> timePointMap, final TrackConfiguration trackConfiguration) {
+
+		final Long trimGpxStart = trackConfiguration.getTrimGpxStart();
+		if (trimGpxStart != null && trimGpxStart > 0 && timePointMap.size() > 0) {
+			final Long skipToTime = timePointMap.firstKey() + trimGpxStart;
+			timePointMap.entrySet().removeIf(e -> e.getKey() < skipToTime);
+		}
+
+		final Long trimGpxEnd = trackConfiguration.getTrimGpxEnd();
+		if (trimGpxEnd != null && trimGpxEnd > 0 && timePointMap.size() > 0) {
+			final Long skipAfterTime = timePointMap.lastKey() - trimGpxEnd;
+			timePointMap.entrySet().removeIf(e -> e.getKey() > skipAfterTime);
+		}
 	}
 
 
