@@ -367,7 +367,7 @@ abstract class TrackSettingsPanel extends JPanel {
         timeOffsetSpinner.setValue(c.getTimeOffset());
         trimGpxStartSpinner.setValue(c.getTrimGpxStart());
         trimGpxEndSpinner.setValue(c.getTrimGpxEnd());
-        enableIconCheckBox.setEnabled(c.isEnableIcon());
+        enableIconCheckBox.setSelected(c.isEnableIcon());
         labelChanged(c.getLabel());
     }
 
