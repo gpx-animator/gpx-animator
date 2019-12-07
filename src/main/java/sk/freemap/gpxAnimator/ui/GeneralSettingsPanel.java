@@ -830,7 +830,9 @@ abstract class GeneralSettingsPanel extends JPanel {
 
 		attributionTextArea.setText(c.getAttribution());
 		skipIdleCheckBox.setSelected(c.isSkipIdle());
-		tailColorSelector.setColor(c.getTailColor());
+		if (c.getTailColor() != null) { // old saved files may not include this setting
+			tailColorSelector.setColor(c.getTailColor());
+		}
 		outputFileSelector.setFilename(c.getOutput().toString());
 		fontSizeSpinner.setValue(c.getFontSize());
 		markerSizeSpinner.setValue(c.getMarkerSize());
