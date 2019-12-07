@@ -38,6 +38,10 @@ abstract class TrackSettingsPanel extends JPanel {
 	private final JLabel lblColor_1;
 	private final ColorSelector colorSelector;
 	private final FileSelector inputGpxFileSelector;
+	private final JLabel lblTrimGpxStart;
+	private final JSpinner trimGpxStartSpinner;
+	private final JLabel lblTrimGpxEnd;
+	private final JSpinner trimGpxEndSpinner;
 	private final JCheckBox enableIconCheckBox;
 	private final JLabel lblEnableIcon;
 
@@ -47,9 +51,9 @@ abstract class TrackSettingsPanel extends JPanel {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		final GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0,0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0,0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gbl_contentPane);
 		
 		final JLabel lblGpx = new JLabel("Input GPX File");
@@ -214,6 +218,44 @@ abstract class TrackSettingsPanel extends JPanel {
 		gbc_forcedPointTimeIntervalSpinner.gridy = 5;
 		add(forcedPointTimeIntervalSpinner, gbc_forcedPointTimeIntervalSpinner);
 
+		lblTrimGpxStart = new JLabel("Trim Start of GPX File");
+		final GridBagConstraints gbc_lblTrimGpxStart = new GridBagConstraints();
+		gbc_lblTrimGpxStart.anchor = GridBagConstraints.EAST;
+		gbc_lblTrimGpxStart.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTrimGpxStart.gridx = 0;
+		gbc_lblTrimGpxStart.gridy = 6;
+		add(lblTrimGpxStart, gbc_lblTrimGpxStart);
+
+		trimGpxStartSpinner = new JSpinner();
+		trimGpxStartSpinner.setToolTipText(Option.TRIM_GPX_START.getHelp());
+		trimGpxStartSpinner.setModel(new DurationSpinnerModel());
+		trimGpxStartSpinner.setEditor(new DurationEditor(trimGpxStartSpinner));
+		final GridBagConstraints gbc_trimGpxStartSpinner = new GridBagConstraints();
+		gbc_trimGpxStartSpinner.fill = GridBagConstraints.HORIZONTAL;
+		gbc_trimGpxStartSpinner.insets = new Insets(0, 0, 5, 0);
+		gbc_trimGpxStartSpinner.gridx = 1;
+		gbc_trimGpxStartSpinner.gridy = 6;
+		add(trimGpxStartSpinner, gbc_trimGpxStartSpinner);
+
+		lblTrimGpxEnd = new JLabel("Trim End of GPX File");
+		final GridBagConstraints gbc_lblTrimGpxEnd = new GridBagConstraints();
+		gbc_lblTrimGpxEnd.anchor = GridBagConstraints.EAST;
+		gbc_lblTrimGpxEnd.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTrimGpxEnd.gridx = 0;
+		gbc_lblTrimGpxEnd.gridy = 7;
+		add(lblTrimGpxEnd, gbc_lblTrimGpxEnd);
+
+		trimGpxEndSpinner = new JSpinner();
+		trimGpxEndSpinner.setToolTipText(Option.TRIM_GPX_END.getHelp());
+		trimGpxEndSpinner.setModel(new DurationSpinnerModel());
+		trimGpxEndSpinner.setEditor(new DurationEditor(trimGpxEndSpinner));
+		final GridBagConstraints gbc_trimGpxEndSpinner = new GridBagConstraints();
+		gbc_trimGpxEndSpinner.fill = GridBagConstraints.HORIZONTAL;
+		gbc_trimGpxEndSpinner.insets = new Insets(0, 0, 5, 0);
+		gbc_trimGpxEndSpinner.gridx = 1;
+		gbc_trimGpxEndSpinner.gridy = 7;
+		add(trimGpxEndSpinner, gbc_trimGpxEndSpinner);
+
 		enableIconCheckBox = new JCheckBox("");
 		enableIconCheckBox.setToolTipText(Option.ICON_ENABLE.getHelp());
 		final GridBagConstraints gbc_enableIconCheckBox = new GridBagConstraints();
@@ -221,7 +263,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		gbc_enableIconCheckBox.anchor = GridBagConstraints.EAST;
 		gbc_enableIconCheckBox.insets = new Insets(0, 0, 5, 0);
 		gbc_enableIconCheckBox.gridx = 1;
-		gbc_enableIconCheckBox.gridy = 6;
+		gbc_enableIconCheckBox.gridy = 8;
 		add(enableIconCheckBox, gbc_enableIconCheckBox);
 
 		lblEnableIcon = new JLabel("Enable Icon");
@@ -229,7 +271,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		gbc_lblEnableIcon.anchor = GridBagConstraints.EAST;
 		gbc_lblEnableIcon.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEnableIcon.gridx = 0;
-		gbc_lblEnableIcon.gridy = 6;
+		gbc_lblEnableIcon.gridy = 8;
 		add(lblEnableIcon, gbc_lblEnableIcon);
 
 		final JButton btnNewButton = new JButton("Remove Track");
@@ -244,7 +286,7 @@ abstract class TrackSettingsPanel extends JPanel {
 		gbc_btnNewButton.gridwidth = 3;
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton.gridx = 0;
-		gbc_btnNewButton.gridy = 7;
+		gbc_btnNewButton.gridy = 9;
 		add(btnNewButton, gbc_btnNewButton);
 	
 		final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
@@ -284,6 +326,8 @@ abstract class TrackSettingsPanel extends JPanel {
 		lineWidthSpinner.addChangeListener(changeListener);
 		timeOffsetSpinner.addChangeListener(changeListener);
 		forcedPointTimeIntervalSpinner.addChangeListener(changeListener);
+		trimGpxStartSpinner.addChangeListener(changeListener);
+		trimGpxEndSpinner.addChangeListener(changeListener);
 		enableIconCheckBox.addChangeListener(changeListener);
 	}
 
@@ -300,6 +344,8 @@ abstract class TrackSettingsPanel extends JPanel {
 		b.lineWidth((Float) lineWidthSpinner.getValue());
 		b.forcedPointInterval((Long) forcedPointTimeIntervalSpinner.getValue());
 		b.timeOffset((Long) timeOffsetSpinner.getValue());
+		b.trimGpxStart((Long) trimGpxStartSpinner.getValue());
+		b.trimGpxEnd((Long) trimGpxEndSpinner.getValue());
 		b.enableIcon(enableIconCheckBox.isSelected());
 		return b.build();
 	}
@@ -312,6 +358,8 @@ abstract class TrackSettingsPanel extends JPanel {
 		lineWidthSpinner.setValue(c.getLineWidth());
 		forcedPointTimeIntervalSpinner.setValue(c.getForcedPointInterval());
 		timeOffsetSpinner.setValue(c.getTimeOffset());
+		trimGpxStartSpinner.setValue(c.getTrimGpxStart());
+		trimGpxEndSpinner.setValue(c.getTrimGpxEnd());
 		enableIconCheckBox.setEnabled(c.isEnableIcon());
 		labelChanged(c.getLabel());
 	}

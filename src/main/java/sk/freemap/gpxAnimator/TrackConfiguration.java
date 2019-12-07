@@ -34,6 +34,8 @@ public class TrackConfiguration {
 	
 	private Long timeOffset;
 	private Long forcedPointInterval;
+	private Long trimGpxStart;
+	private Long trimGpxEnd;
 	private float lineWidth;
 
 	public boolean isEnableIcon() {
@@ -48,12 +50,14 @@ public class TrackConfiguration {
 	}
 	
 	
-	private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final float lineWidth,final boolean enableIcon) {
+	private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth,final boolean enableIcon) {
 		this.inputGpx = inputGpx;
 		this.label = label;
 		this.color = color;
 		this.timeOffset = timeOffset;
 		this.forcedPointInterval = forcedPointInterval;
+		this.trimGpxStart = trimGpxStart;
+		this.trimGpxEnd = trimGpxEnd;
 		this.lineWidth = lineWidth;
 		this.enableIcon= enableIcon;
 	}
@@ -82,8 +86,16 @@ public class TrackConfiguration {
 	public Long getForcedPointInterval() {
 		return forcedPointInterval;
 	}
-	
-	
+
+
+	public Long getTrimGpxStart() {
+		return trimGpxStart;
+	}
+
+	public Long getTrimGpxEnd() {
+		return trimGpxEnd;
+	}
+
 	public float getLineWidth() {
 		return lineWidth;
 	}
@@ -104,6 +116,8 @@ public class TrackConfiguration {
 		
 		private Long timeOffset;
 		private Long forcedPointInterval;
+		private Long trimGpxStart;
+		private Long trimGpxEnd;
 		private float lineWidth = 2f;
 		private boolean enableIcon = true;
 		
@@ -113,7 +127,7 @@ public class TrackConfiguration {
 		
 		
 		public TrackConfiguration build() throws UserException {
-			return new TrackConfiguration(inputGpx, label, color, timeOffset, forcedPointInterval, lineWidth,enableIcon);
+			return new TrackConfiguration(inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth,enableIcon);
 		}
 		
 		
@@ -147,6 +161,18 @@ public class TrackConfiguration {
 		}
 		
 		
+		public Builder trimGpxStart(final Long trimGpxStart) {
+			this.trimGpxStart = trimGpxStart;
+			return this;
+		}
+
+
+		public Builder trimGpxEnd(final Long trimGpxEnd) {
+			this.trimGpxEnd = trimGpxEnd;
+			return this;
+		}
+
+
 		public Builder lineWidth(final float lineWidth) {
 			this.lineWidth = lineWidth;
 			return this;

@@ -11,6 +11,8 @@ public enum Option {
 	COLOR("color", "track color in #RRGGBB representation"),
 	MARGIN("margin", "margin in pixels"),
 	TIME_OFFSET("time-offset", "time offset for track in milliseconds"),
+	TRIM_GPX_START("trim-gpx-start", "trim the start of the GPX file in milliseconds"),
+	TRIM_GPX_END("trim-gpx-end", "trim the end of the GPX file in milliseconds"),
 	FORCED_POINT_TIME_INTERVAL("forced-point-time-interval", "interval between adjanced GPS points in milliseconds - useful for GPX files with missing point time information; " +
 			"if specified then time offset must be set representing absolute; empty for no forcing"),
 	SPEEDUP("speedup", "speed multiplication of the real time; complementary to specifying total time"),
