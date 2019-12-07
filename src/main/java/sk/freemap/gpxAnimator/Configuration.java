@@ -33,6 +33,7 @@ public class Configuration {
 	
 	private Double speedup;
 	private long tailDuration;
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color tailColor;
 	private double fps;
 	private Long totalTime;
