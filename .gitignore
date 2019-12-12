@@ -15,6 +15,9 @@
 /*.ipr
 /.idea
 
+# Theile project files
+/.theia
+
 # VS Code project files
 /.vscode
 
