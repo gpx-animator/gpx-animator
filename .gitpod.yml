@@ -4,6 +4,14 @@ image:
 tasks:
   - init: ./mvnw clean package
 
+ports:
+  - port: 6080
+    onOpen: open-preview
+  - port: 5900
+    onOpen: ignore
+  - port: 35900
+    onOpen: ignore
+
 github:
   prebuilds:
     # enable for the master/default branch (defaults to true)
