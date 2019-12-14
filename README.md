@@ -25,7 +25,7 @@ Contributing
 
 You can open this project in a preconfigured Gitpod online IDE based on Theia (Visual Studio Code) and edit, run, test, debug and commit directly from your browser.
 
-[Start Gitpod online IDE](https://gitpod.io/#https://github.com/zdila/gpx-animator)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/zdila/gpx-animator)
 
 Build
 -----------
