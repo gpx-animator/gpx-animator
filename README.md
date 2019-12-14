@@ -38,6 +38,17 @@ GPX Animator uses the [Maven](https://maven.apache.org/) build system to create 
 
 After a successful build, the JAR file can be found in the `target` directory.
 
+Run
+-----------
+
+To start GPX Animator from the sources, simply run the following command:
+
+```
+./mvnw exec:java
+```
+
+The artifact must have been created before (see [Build](#build) section).
+
 Test
 -----------
 
