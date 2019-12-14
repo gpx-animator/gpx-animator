@@ -6,7 +6,7 @@ import sk.freemap.gpxAnimator.TrackConfiguration.Builder;
 import sk.freemap.gpxAnimator.UserException;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +20,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -30,6 +31,7 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.Vector;
 
 import static javax.swing.JFileChooser.FILES_ONLY;
 
@@ -51,7 +53,7 @@ abstract class TrackSettingsPanel extends JPanel {
     private final JSpinner trimGpxStartSpinner;
     private final JLabel lblTrimGpxEnd;
     private final JSpinner trimGpxEndSpinner;
-    private final JCheckBox enableIconCheckBox;
+    private final JComboBox<TrackIcon> trackIconComboBox;
     private final JLabel lblEnableIcon;
 
 
@@ -265,17 +267,23 @@ abstract class TrackSettingsPanel extends JPanel {
         gbc_trimGpxEndSpinner.gridy = 7;
         add(trimGpxEndSpinner, gbc_trimGpxEndSpinner);
 
-        enableIconCheckBox = new JCheckBox("");
-        enableIconCheckBox.setToolTipText(Option.ICON_ENABLE.getHelp());
-        final GridBagConstraints gbc_enableIconCheckBox = new GridBagConstraints();
-        gbc_enableIconCheckBox.fill = GridBagConstraints.HORIZONTAL;
-        gbc_enableIconCheckBox.anchor = GridBagConstraints.EAST;
-        gbc_enableIconCheckBox.insets = new Insets(0, 0, 5, 0);
-        gbc_enableIconCheckBox.gridx = 1;
-        gbc_enableIconCheckBox.gridy = 8;
-        add(enableIconCheckBox, gbc_enableIconCheckBox);
+        final Vector<TrackIcon> trackIcons = new Vector<>();
+        trackIcons.add(new TrackIcon(""));
+        trackIcons.add(new TrackIcon("Bicycle"));
+        trackIcons.add(new TrackIcon("Trekking"));
 
-        lblEnableIcon = new JLabel("Enable Icon");
+        trackIconComboBox = new JComboBox<TrackIcon>(trackIcons);
+        trackIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
+        trackIconComboBox.setEditable(false);
+        final GridBagConstraints gbc_trackIconComboBox = new GridBagConstraints();
+        gbc_trackIconComboBox.fill = GridBagConstraints.HORIZONTAL;
+        gbc_trackIconComboBox.insets = new Insets(0, 0, 5, 0);
+        gbc_trackIconComboBox.gridx = 1;
+        gbc_trackIconComboBox.gridy = 8;
+        add(trackIconComboBox, gbc_trackIconComboBox);
+        trackIconComboBox.setPreferredSize(new Dimension(10, trackIconComboBox.getPreferredSize().height));
+
+        lblEnableIcon = new JLabel("Choose Icon");
         final GridBagConstraints gbc_lblEnableIcon = new GridBagConstraints();
         gbc_lblEnableIcon.anchor = GridBagConstraints.EAST;
         gbc_lblEnableIcon.insets = new Insets(0, 0, 5, 5);
@@ -337,7 +345,7 @@ abstract class TrackSettingsPanel extends JPanel {
         forcedPointTimeIntervalSpinner.addChangeListener(changeListener);
         trimGpxStartSpinner.addChangeListener(changeListener);
         trimGpxEndSpinner.addChangeListener(changeListener);
-        enableIconCheckBox.addItemListener(new ItemListener() {
+        trackIconComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(final ItemEvent e) {
                 configurationChanged();
@@ -360,7 +368,7 @@ abstract class TrackSettingsPanel extends JPanel {
         b.timeOffset((Long) timeOffsetSpinner.getValue());
         b.trimGpxStart((Long) trimGpxStartSpinner.getValue());
         b.trimGpxEnd((Long) trimGpxEndSpinner.getValue());
-        b.enableIcon(enableIconCheckBox.isSelected());
+        b.trackIcon((TrackIcon) trackIconComboBox.getSelectedItem());
         return b.build();
     }
 
@@ -374,7 +382,7 @@ abstract class TrackSettingsPanel extends JPanel {
         timeOffsetSpinner.setValue(c.getTimeOffset());
         trimGpxStartSpinner.setValue(c.getTrimGpxStart());
         trimGpxEndSpinner.setValue(c.getTrimGpxEnd());
-        enableIconCheckBox.setSelected(c.isEnableIcon());
+        trackIconComboBox.setSelectedItem(c.getTrackIcon());
         labelChanged(c.getLabel());
     }
 

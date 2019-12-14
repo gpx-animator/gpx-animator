@@ -17,6 +17,7 @@ package sk.freemap.gpxAnimator;
 import sk.freemap.gpxAnimator.frameWriter.FileFrameWriter;
 import sk.freemap.gpxAnimator.frameWriter.FrameWriter;
 import sk.freemap.gpxAnimator.frameWriter.VideoFrameWriter;
+import sk.freemap.gpxAnimator.ui.TrackIcon;
 
 import javax.imageio.ImageIO;
 import java.awt.BasicStroke;
@@ -540,14 +541,15 @@ public class Renderer {
 
                     g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 
-                    if (trackConfiguration.isEnableIcon()) {
+                    final TrackIcon trackIcon = trackConfiguration.getTrackIcon();
+                    if (trackIcon == null || trackIcon.getName().isEmpty()) {
+                        drawSimpleCircleOnGraphics2D(point, g2);
+                    } else {
                         try {
-                            drawIconOnGraphics2D(point, g2);
+                            drawIconOnGraphics2D(point, g2, trackIcon);
                         } catch (final IOException e) {
                             drawSimpleCircleOnGraphics2D(point, g2);
                         }
-                    } else {
-                        drawSimpleCircleOnGraphics2D(point, g2);
                     }
 
                     final String label = trackConfiguration.getLabel();
@@ -577,8 +579,8 @@ public class Renderer {
         g2.draw(marker);
     }
 
-    private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2) throws IOException {
-        final BufferedImage icon = ImageIO.read(getClass().getResource("/bicycleIcon_32.png"));
+    private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon) throws IOException {
+        final BufferedImage icon = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
         final AffineTransform at = new AffineTransform();
         at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
         at.translate(-icon.getWidth() / 2, -icon.getHeight() / 2);

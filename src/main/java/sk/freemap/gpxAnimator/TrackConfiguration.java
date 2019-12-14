@@ -14,6 +14,8 @@
  */
 package sk.freemap.gpxAnimator;
 
+import sk.freemap.gpxAnimator.ui.TrackIcon;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -36,14 +38,16 @@ public class TrackConfiguration {
     private Long trimGpxStart;
     private Long trimGpxEnd;
     private float lineWidth;
-    private boolean enableIcon;
+
+    @XmlJavaTypeAdapter(TrackIconXmlAdapter.class)
+    private TrackIcon trackIcon;
 
     // for JAXB
     private TrackConfiguration() {
     }
 
 
-    private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth, final boolean enableIcon) {
+    private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth, final TrackIcon trackIcon) {
         this.inputGpx = inputGpx;
         this.label = label;
         this.color = color;
@@ -52,15 +56,15 @@ public class TrackConfiguration {
         this.trimGpxStart = trimGpxStart;
         this.trimGpxEnd = trimGpxEnd;
         this.lineWidth = lineWidth;
-        this.enableIcon = enableIcon;
+        this.trackIcon = trackIcon;
     }
 
     public static Builder createBuilder() {
         return new Builder();
     }
 
-    public boolean isEnableIcon() {
-        return enableIcon;
+    public TrackIcon getTrackIcon() {
+        return trackIcon;
     }
 
     public File getInputGpx() {
@@ -108,7 +112,7 @@ public class TrackConfiguration {
         private Long trimGpxStart;
         private Long trimGpxEnd;
         private float lineWidth = 2f;
-        private boolean enableIcon = true;
+        private TrackIcon trackIcon = null;
 
 
         private Builder() {
@@ -116,7 +120,7 @@ public class TrackConfiguration {
 
 
         public TrackConfiguration build() throws UserException {
-            return new TrackConfiguration(inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, enableIcon);
+            return new TrackConfiguration(inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, trackIcon);
         }
 
 
@@ -167,8 +171,8 @@ public class TrackConfiguration {
             return this;
         }
 
-        public Builder enableIcon(final boolean enableIcon) {
-            this.enableIcon = enableIcon;
+        public Builder trackIcon(final TrackIcon trackIcon) {
+            this.trackIcon = trackIcon;
             return this;
         }
 

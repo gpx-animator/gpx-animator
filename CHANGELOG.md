@@ -12,7 +12,7 @@ Release date: not yet released
 * adding "Open Recent File" menu
 * adding new map source: OpenTopoMap
 * adding map tile cache to reduce download size
-* adding an icon to the current position (configuration option missing)
+* adding an icon to the current position
 * allow negative time offset for GPX tracks
 * UI consistency: Make all labels upper case words
 * GPX-Animator now has a custom domain: https://gpx-animator.app
