@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -49,6 +50,8 @@ public class Renderer {
 
     private static final double MS = 1000d;
     private static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
+
+    private static LinkedList<Double> speedValues = new LinkedList<>();
 
     private final Configuration cfg;
 
@@ -75,7 +78,16 @@ public class Renderer {
         double dist = calculateDistance(lastPoint, latLon);
         double timeDiff = time - lastPoint.getTime();
 
-        return (3_600_000 * dist) / timeDiff;
+        double speed = (3_600_000 * dist) / timeDiff;
+
+        speedValues.add(speed);
+        while (speedValues.size() > 30) {
+            speedValues.pop();
+        }
+
+        double avgSpeed = speedValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+
+        return avgSpeed;
     }
 
     private static double calculateDistance(final GpxPoint lastPoint, final LatLon latLon) {
