@@ -270,6 +270,7 @@ abstract class TrackSettingsPanel extends JPanel {
         final Vector<TrackIcon> trackIcons = new Vector<>();
         trackIcons.add(new TrackIcon(""));
         trackIcons.add(new TrackIcon("Bicycle"));
+        trackIcons.add(new TrackIcon("Jogging"));
         trackIcons.add(new TrackIcon("Trekking"));
 
         trackIconComboBox = new JComboBox<TrackIcon>(trackIcons);

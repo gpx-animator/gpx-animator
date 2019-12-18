@@ -76,4 +76,5 @@ Credits
 Icons included in application and their source:
 
 * Bicycle icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
+* Jogging icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
 * Trekking icon made by [monki](https://www.flaticon.com/authors/monkik) from [flaticon](https://www.flaticon.com/).
