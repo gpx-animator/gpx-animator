@@ -7,7 +7,8 @@
     <meta name="keywords" content="gpx,animate,animator,video,party render,map,openstreetmap,gps,track">
     <meta name="description" content="GPX Animator" />
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css" />
 
     <title>GPX Animator</title>
   </head>
@@ -21,11 +22,6 @@
 
           <h1 id="project_title">GPX Animator</h1>
           <h2 id="project_tagline">Advanced GPX to Video convertor</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/zdila/gpx-animator/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/zdila/gpx-animator/tarball/master">Download this project as a tar.gz file</a>
-            </section>
         </header>
     </div>
 
@@ -38,11 +34,6 @@
 
 <p>GPX Animator generates video from GPX files.</p>
 
-<ul>
-  <li>Download latest stable version (recommended): <a href="downloads/GpxAnimator-1.3.1.jar">v1.3.1</a></li>
-  <li>Download snapshot version (only for testing, may contain bugs): <a href="downloads/GpxAnimator-1.4-SNAPSHOT.jar">v1.4-SNAPSHOT</a></li>
-</ul>
-
 <h2 id="features">Features</h2>
 
 <ul>
@@ -53,21 +44,49 @@
 <li>background map from any public TMS server</li>
 </ul>
 
+<h2 id="downloads">Downloads</h2>
+
+<h3>Latest Stable Version</h3>
+
+<p>It is recommended, to download the latest stable version. As of today, this is v1.4, released on Dec. 20, 2019. In this release we closed 48 reported issues! Here is a summary of the most important ones:</p>
+
+<ul>
+  <li>showing speed in animation</li>
+  <li>adding photos to the animation</li>
+  <li>adding coordinates to the animation</li>
+  <li>asking before overwriting an existing output file</li>
+  <li>adding link to the FAQ in the help menu</li>
+  <li>adding "Open Recent File" menu</li>
+  <li>adding new map source: OpenTopoMap</li>
+  <li>adding optional map tile cache to reduce download size</li>
+  <li>adding optional icons to the current track position</li>
+  <li>allow negative time offset for GPX tracks</li>
+  <li>UI consistency: Make all labels upper case words</li>
+  <li>GPX-Animator now has a custom domain: https://gpx-animator.app</li>
+  <li>fixed incorrect zoom factor calculation</li>
+  <li>fixed time offset problem with negative time offset values</li>
+  <li>fixed a lot of minor issues</li>
+</ul>
+
+<p>
+  <a href="downloads/GpxAnimator-1.4.jar" download="GpxAnimator-1.4.jar"><button><i class="fa fa-download"></i> Download</button></a>
+</p>
+
 <h2 id="usage">Basic usage</h2>
 
 <p>For default GUI run:</p>
-<pre><code>java -jar GpxAnimator.jar</code></pre>
+<pre><code>java -jar GpxAnimator-1.4.jar</code></pre>
 
 <p>For program help run:</p>
-<pre><code>java -jar GpxAnimator.jar --help</code></pre>
+<pre><code>java -jar GpxAnimator-1.4.jar --help</code></pre>
 
 <p>For direct rendering run:</p>
-<pre><code>java -jar GpxAnimator.jar --input track.gpx</code></pre>
+<pre><code>java -jar GpxAnimator-1.4.jar --input track.gpx</code></pre>
 
 <h2 id="faq">FAQ</h2>
 <h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
 <p>
-	Increase java heap memory: <code>java -Xmx1024m -jar GpxAnimator.jar</code>.
+	Increase java heap memory: <code>java -Xmx1024m -jar GpxAnimator-1.4.jar</code>.
 	If the problem persists, try higher value or check if your GPX trace doesn't cover too big area.
 	If it does then try to specify lower zoom, width and/or height.
 </p>
@@ -83,10 +102,10 @@
 
 <h3>The UI is too small on a high DPI screen</h3>
 <p>Some (older) Java versions have problems with the resolution of a high DPI screen. Until we find a solution to do it programmatically, you can force Java to double the size of the UI using this command:</p>
-<pre><code>GDK_SCALE=2 java -jar target/GpxAnimator.jar</code></pre>
+<pre><code>GDK_SCALE=2 java -jar target/GpxAnimator-1.4.jar</code></pre>
 
 <h3>I have some other problem</h3>
-<p>Feel free to write me at martin.zdila<span>@</span>freemap.sk.</p>
+<p>Feel free to open an issue in the <a href="https://github.com/zdila/gpx-animator/issues">GitHub Issue Tracker</a> (preferred) or write me at martin.zdila<span>@</span>freemap.sk.</p>
 
 <h2 id="demos">Demos</h2>
 
