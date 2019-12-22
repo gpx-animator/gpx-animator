@@ -3,8 +3,8 @@ package sk.freemap.gpxAnimator;
 public enum Constants {
     ;
 
-    public static String VERSION = "1.4";
+    public static String VERSION = "1.5-SNAPSHOT";
 
-    public static String YEAR = "2019";
+    public static String YEAR = "2020";
 
 }

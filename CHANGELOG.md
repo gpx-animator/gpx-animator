@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.5
+
+Release date: not yet released
+
 ## Version 1.4
 
 Release date: 2019-12-20
