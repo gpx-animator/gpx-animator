@@ -1,0 +1,48 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id 'application'
+}
+
+version = '1.5-SNAPSHOT'
+group = 'app.gpx-animator'
+
+mainClassName = 'sk.freemap.gpxAnimator.Main'
+sourceCompatibility = '8'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://www.dcm4che.org/maven2/' }
+}
+
+configurations {
+    developmentOnly
+}
+
+dependencies {
+    implementation 'xuggle:xuggle-xuggler:5.4'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+    implementation 'javax.activation:activation:1.1.1'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'com.drewnoakes:metadata-extractor:2.11.0'
+    implementation 'org.imgscalr:imgscalr-lib:4.2'
+    implementation 'commons-io:commons-io:2.6'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
+}
+
+test.classpath += configurations.developmentOnly
+run.classpath += configurations.developmentOnly
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}

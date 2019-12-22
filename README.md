@@ -30,13 +30,13 @@ You can open this project in a preconfigured Gitpod online IDE based on Theia (V
 Build
 -----------
 
-GPX Animator uses the [Maven](https://maven.apache.org/) build system to create the JAR file. You don't need to have Maven installed on your system, this project makes use of the Maven Wrapper.
+GPX Animator uses the [Gradle](https://gradle.org/) build system to create the JAR file. You don't need to have Gradle installed on your system, this project makes use of the Gradle Wrapper.
 
 ```
-./mvnw clean package
+./gradlew assemble
 ```
 
-After a successful build, the JAR file can be found in the `target` directory.
+After a successful build, the JAR file can be found in the `build/libs` directory.
 
 Run
 -----------
@@ -44,10 +44,10 @@ Run
 To start GPX Animator from the sources, simply run the following command:
 
 ```
-./mvnw exec:java
+./gradlew run
 ```
 
-The artifact must have been created before (see [Build](#build) section).
+If not already done, the project will be compiled automatically.
 
 Test
 -----------
@@ -55,7 +55,7 @@ Test
 In the directory `src/test/` tests are located that can be run with the following command:
 
 ```
-./mvnw test
+./gradlew test
 ```
 
 Features

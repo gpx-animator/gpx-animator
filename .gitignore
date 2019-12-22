@@ -1,3 +1,6 @@
+# Gradle build system
+/.gradle
+
 # Build artefacts
 /bin
 /build

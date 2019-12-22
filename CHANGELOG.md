@@ -4,6 +4,8 @@
 
 Release date: not yet released
 
+* GPX-Animator now uses Gradle to build the project
+
 ## Version 1.4
 
 Release date: 2019-12-20
