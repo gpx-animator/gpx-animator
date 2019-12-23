@@ -33,3 +33,7 @@ Thumbs.db
 
 # Default animation output
 video.mp4
+
+# Install4J
+/install/install4j_images/
+/install/media/

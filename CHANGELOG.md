@@ -4,6 +4,7 @@
 
 Release date: not yet released
 
+* New installers for Windows, macOS and Linux systems
 * GPX-Animator now uses Gradle to build the project
 
 ## Version 1.4
