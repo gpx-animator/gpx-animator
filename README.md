@@ -1,5 +1,4 @@
-GPX Animator
-============
+![alt text](src/main/resources/gpx_animator_banner.png "GPX Animator Banner")
 
 Introduction
 ------------
