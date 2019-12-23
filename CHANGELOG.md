@@ -4,6 +4,7 @@
 
 Release date: not yet released
 
+* Fixed UI on HiDPI (high-resolution) displays
 * Default output directory is no longer the application directory
 * Tile cache now enabled by default (24 hour caching)
 * New application wide settings (_File > Preferences_)
