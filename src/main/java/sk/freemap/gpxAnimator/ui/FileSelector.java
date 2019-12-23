@@ -14,6 +14,8 @@
  */
 package sk.freemap.gpxAnimator.ui;
 
+import sk.freemap.gpxAnimator.Preferences;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.prefs.Preferences;
 
 public abstract class FileSelector extends JPanel {
     private static final long serialVersionUID = 3157365691996396016L;
@@ -86,8 +87,7 @@ public abstract class FileSelector extends JPanel {
 
                 fileChooser.setFileSelectionMode(fileSelectionMode);
 
-                final Preferences prefs = Preferences.userRoot().node("app");
-                final String lastCwd = prefs.get(MainFrame.PREF_LAST_CWD, null);
+                final String lastCwd = Preferences.getLastWorkingDir();
 
                 final String text = fileTextField.getText();
                 if (text.isEmpty()) {
@@ -101,7 +101,7 @@ public abstract class FileSelector extends JPanel {
 
                 final Type type = configure(fileChooser);
                 if ((type == Type.OPEN ? fileChooser.showOpenDialog(FileSelector.this) : fileChooser.showSaveDialog(FileSelector.this)) == JFileChooser.APPROVE_OPTION) {
-                    prefs.put(MainFrame.PREF_LAST_CWD, fileChooser.getSelectedFile().getParent());
+                    Preferences.setLastWorkingDir(fileChooser.getSelectedFile().getParent());
                     setFilename(transformFilename(fileChooser.getSelectedFile().toString()));
                 }
             }

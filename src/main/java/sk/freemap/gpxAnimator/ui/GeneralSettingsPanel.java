@@ -67,8 +67,6 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final JSpinner totalTimeSpinner;
     private final FileSelector photosDirectorySelector;
     private final JSpinner photoTimeSpinner;
-    private final FileSelector tileCachePathSelector;
-    private final JSpinner tileCacheTimeLimitSpinner;
     private final ChangeListener changeListener = new ChangeListener() {
         @Override
         public void stateChanged(final ChangeEvent e) {
@@ -94,9 +92,9 @@ abstract class GeneralSettingsPanel extends JPanel {
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[]{91, 100, 0, 0};
-        gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 20, 20, 0};
+        gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 0};
         gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         setLayout(gridBagLayout);
 
         final JLabel lblOutput = new JLabel("Output");
@@ -694,54 +692,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbc_photoTimeSpinner.gridy = 22;
         add(photoTimeSpinner, gbc_photoTimeSpinner);
         photoTimeSpinner.addChangeListener(changeListener);
-
-        final JLabel lblTileCachePathSelector = new JLabel("Tile Cache Directory");
-        final GridBagConstraints gbc_lblTileCachePathSelector = new GridBagConstraints();
-        gbc_lblTileCachePathSelector.anchor = GridBagConstraints.EAST;
-        gbc_lblTileCachePathSelector.insets = new Insets(0, 0, 0, 5);
-        gbc_lblTileCachePathSelector.gridx = 0;
-        gbc_lblTileCachePathSelector.gridy = 23;
-        add(lblTileCachePathSelector, gbc_lblTileCachePathSelector);
-
-        tileCachePathSelector = new FileSelector(DIRECTORIES_ONLY) {
-            private static final long serialVersionUID = 7372002778979993241L;
-
-            @Override
-            protected Type configure(final JFileChooser outputFileChooser) {
-                return Type.OPEN;
-            }
-        };
-
-        tileCachePathSelector.setToolTipText(Option.TILE_CACHE_PATH.getHelp());
-        final GridBagConstraints gbc_tileCachePathSelector = new GridBagConstraints();
-        gbc_tileCachePathSelector.fill = GridBagConstraints.BOTH;
-        gbc_tileCachePathSelector.insets = new Insets(0, 0, 5, 0);
-        gbc_tileCachePathSelector.gridx = 1;
-        gbc_tileCachePathSelector.gridy = 23;
-        add(tileCachePathSelector, gbc_tileCachePathSelector);
-
-        tileCachePathSelector.addPropertyChangeListener("filename", propertyChangeListener);
-
-        final JLabel lblTileCacheTimeLimit = new JLabel("Tile Cache Time Limit");
-        final GridBagConstraints gbc_lblTileCacheTimeLimit = new GridBagConstraints();
-        gbc_lblTileCacheTimeLimit.anchor = GridBagConstraints.EAST;
-        gbc_lblTileCacheTimeLimit.insets = new Insets(0, 0, 0, 5);
-        gbc_lblTileCacheTimeLimit.gridx = 0;
-        gbc_lblTileCacheTimeLimit.gridy = 24;
-        add(lblTileCacheTimeLimit, gbc_lblTileCacheTimeLimit);
-
-        tileCacheTimeLimitSpinner = new JSpinner();
-        tileCacheTimeLimitSpinner.setToolTipText(Option.TILE_CACHE_TIME_LIMIT.getHelp());
-        tileCacheTimeLimitSpinner.setModel(new DurationSpinnerModel());
-        tileCacheTimeLimitSpinner.setEditor(new DurationEditor(tileCacheTimeLimitSpinner));
-        final GridBagConstraints gbc_tileCacheTimeLimitSpinner = new GridBagConstraints();
-        gbc_tileCacheTimeLimitSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_tileCacheTimeLimitSpinner.gridx = 1;
-        gbc_tileCacheTimeLimitSpinner.gridy = 24;
-        add(tileCacheTimeLimitSpinner, gbc_tileCacheTimeLimitSpinner);
-        tileCacheTimeLimitSpinner.addChangeListener(changeListener);
-
-
     }
 
     private List<MapTemplate> readMaps() {
@@ -821,8 +771,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         totalTimeSpinner.setValue(c.getTotalTime());
         backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
         photoTimeSpinner.setValue(c.getPhotoTime());
-        tileCacheTimeLimitSpinner.setValue(1000L * c.getTileCacheTimeLimit()); // Spinner is in ms, limit is in second
-        tileCachePathSelector.setFilename(c.getTileCachePath());
 
         final String tmsUrlTemplate = c.getTmsUrlTemplate();
         found:
@@ -879,8 +827,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         b.waypointSize((Double) waypointSizeSpinner.getValue());
         b.photos(new File(photosDirectorySelector.getFilename()));
         b.photoTime((Long) photoTimeSpinner.getValue());
-        b.tileCachePath(tileCachePathSelector.getFilename());
-        b.tileCacheTimeLimit((((Long) tileCacheTimeLimitSpinner.getValue()) + 500) / 1000);
         b.attribution(attributionTextArea.getText().replace("%MAP_ATTRIBUTION%",
                 tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
                         ? ((MapTemplate) tmsItem).getAttributionText() : "").trim());

@@ -41,8 +41,6 @@ public enum Option {
     SKIP_IDLE("skip-idle", "idle-skipping flashback effect duration in milliseconds; set to empty for no flashback"),
     PHOTOS("photos", "a directory containing photos to be added to the animation (must contain EXIF information with date and time of photo taken)"),
     PHOTO_TIME("photo-time", "the amount of time, a photo should be shown above the map"),
-    TILE_CACHE_PATH("tile-cache-path", "path to a directory to use for caching map tiles"),
-    TILE_CACHE_TIME_LIMIT("tile-cache-timeout", "time a cached map tile is valid"),
     HELP("help", "this help"),
     TRACK_ICON("track-icon", "enables an icon that replaces the standard circle of the current position (valid values: Bicycle, Jogging, Trekking)");
 

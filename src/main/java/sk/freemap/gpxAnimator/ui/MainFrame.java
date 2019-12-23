@@ -3,6 +3,7 @@ package sk.freemap.gpxAnimator.ui;
 import sk.freemap.gpxAnimator.Configuration;
 import sk.freemap.gpxAnimator.Constants;
 import sk.freemap.gpxAnimator.FileXmlAdapter;
+import sk.freemap.gpxAnimator.Preferences;
 import sk.freemap.gpxAnimator.Renderer;
 import sk.freemap.gpxAnimator.RenderingContext;
 import sk.freemap.gpxAnimator.TrackConfiguration;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
@@ -47,15 +49,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.prefs.Preferences;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MainFrame extends JFrame {
 
-    public static final String RECENT_FILES = "recent_files";
-    public static final String RECENT_FILE_DELIMITER = ",";
-    static final String PREF_LAST_CWD = "lastCWD";
     private static final String PROJECT_FILENAME_SUFFIX = ".ga.xml";
     private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
     private static final String TITLE = "GPX Animator " + Constants.VERSION;
@@ -65,8 +61,8 @@ public class MainFrame extends JFrame {
     private final JTabbedPane tabbedPane;
     private final JButton renderButton;
     private final JMenu openRecent;
+    private final JMenuItem preferencesMenu;
     private final JFileChooser fileChooser = new JFileChooser();
-    private final Preferences prefs = Preferences.userRoot().node("app");
     private final ActionListener addTrackActionListener;
     private SwingWorker<Void, String> swingWorker;
     private File file;
@@ -148,11 +144,11 @@ public class MainFrame extends JFrame {
             public void actionPerformed(final ActionEvent e) {
                 if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
-                    final String lastCwd = prefs.get(PREF_LAST_CWD, null);
+                    final String lastCwd = Preferences.getLastWorkingDir();
                     fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
                     if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
                         final File file = fileChooser.getSelectedFile();
-                        prefs.put(PREF_LAST_CWD, file.getParent());
+                        Preferences.setLastWorkingDir(file.getParent());
 
                         openFile(file);
                     }
@@ -189,6 +185,13 @@ public class MainFrame extends JFrame {
             }
         });
         mnFile.add(mntmSaveAs);
+
+        mnFile.addSeparator();
+
+        preferencesMenu = new JMenuItem("Preferences");
+        preferencesMenu.addActionListener(e -> SwingUtilities.invokeLater(() -> new PreferencesDialog(this).setVisible(true)));
+        mnFile.add(preferencesMenu);
+
         mnFile.addSeparator();
 
         final JMenuItem mntmExit = new JMenuItem("Exit");
@@ -521,7 +524,7 @@ public class MainFrame extends JFrame {
 
     private void pupulateOpenRecentMenu() {
         openRecent.removeAll();
-        getRecentFiles().forEach(file -> {
+        Preferences.getRecentFiles().forEach(file -> {
                     JMenuItem item = new JMenuItem(file.getName());
                     openRecent.add(item);
                     item.addActionListener(e -> openFile(file));
@@ -545,27 +548,10 @@ public class MainFrame extends JFrame {
 
 
     private void addRecentFile(File file) {
-        final String result = Stream.concat(Stream.of(file), getRecentFiles().stream())
-                .distinct()
-                .limit(5)
-                .map(File::getAbsolutePath)
-                .collect(Collectors.joining(RECENT_FILE_DELIMITER));
-
-        getPreferences().put(RECENT_FILES, result);
-
+        Preferences.addRecentFile(file);
         pupulateOpenRecentMenu();
     }
 
-    private List<File> getRecentFiles() {
-        return Arrays.stream(getPreferences().get(RECENT_FILES, "").split(RECENT_FILE_DELIMITER))
-                .map(File::new)
-                .filter(File::exists)
-                .collect(Collectors.toList());
-    }
-
-    private Preferences getPreferences() {
-        return Preferences.userRoot().node("app/gpx-animator");
-    }
 
     private void changed(final boolean changed) {
         this.changed = changed;
@@ -612,12 +598,12 @@ public class MainFrame extends JFrame {
     }
 
     private void saveAs() {
-        final String lastCwd = prefs.get(PREF_LAST_CWD, null);
+        final String lastCwd = Preferences.getLastWorkingDir();
         fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
         fileChooser.setSelectedFile(new File("")); // to forget previous file name
         if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            prefs.put(PREF_LAST_CWD, file.getParent());
+            Preferences.setLastWorkingDir(file.getParent());
 
             if (!file.getName().endsWith(PROJECT_FILENAME_SUFFIX)) {
                 file = new File(file.getPath() + PROJECT_FILENAME_SUFFIX);

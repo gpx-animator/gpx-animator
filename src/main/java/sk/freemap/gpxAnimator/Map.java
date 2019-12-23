@@ -26,8 +26,7 @@ public class Map {
 
 
     public static void drawMap(final BufferedImage bi, final String tmsUrlTemplate, final float backgroundMapVisibility, final int zoom,
-                               final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc,
-                               String tileCachePath, Long tileCacheTimeLimit) throws UserException {
+                               final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc) throws UserException {
 
         final Graphics2D ga = (Graphics2D) bi.getGraphics();
 
@@ -47,6 +46,9 @@ public class Map {
 
         final Matcher m = SWITCH_PATTERN.matcher(tmsUrlTemplate); // note that only one switch in pattern is supported
         final String[] options = m.find() ? m.group(1).split(",") : null;
+
+        final String tileCacheDir = Preferences.getTileCacheDir();
+        final long tileCacheTimeLimit = Preferences.getTileCacheTimeLimit();
 
         for (int x = tileX; x <= maxXtile; x++) {
             for (int y = tileY; y >= maxYtile; y--) {
@@ -73,7 +75,7 @@ public class Map {
 
                 rc.setProgress1((int) (100.0 * i / total), "Reading Map Tile: " + i + "/" + total);
 
-                final BufferedImage tile = TileCache.getTile(url, tileCachePath, tileCacheTimeLimit);
+                final BufferedImage tile = TileCache.getTile(url, tileCacheDir, tileCacheTimeLimit);
 
                 // convert to RGB format
                 final BufferedImage tile1 = new BufferedImage(tile.getWidth(), tile.getHeight(), BufferedImage.TYPE_INT_RGB);

@@ -27,7 +27,7 @@ public class Main {
             final CommandLineConfigurationFactory cf = new CommandLineConfigurationFactory(args);
             final Configuration configuration = cf.getConfiguration();
 
-            new Thread(() -> TileCache.ageCache(configuration.getTileCachePath(), configuration.getTileCacheTimeLimit())).start();
+            new Thread(TileCache::ageCache).start();
 
             if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
                 EventQueue.invokeLater(new Runnable() {

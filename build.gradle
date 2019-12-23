@@ -28,6 +28,7 @@ dependencies {
     implementation 'com.drewnoakes:metadata-extractor:2.11.0'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
     implementation 'commons-io:commons-io:2.6'
+    implementation 'com.jgoodies:jgoodies-forms:1.9.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
 }

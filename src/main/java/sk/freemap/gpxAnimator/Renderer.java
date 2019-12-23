@@ -279,8 +279,7 @@ public class Renderer {
             ga.setColor(Color.white);
             ga.fillRect(0, 0, realWidth, realHeight);
         } else {
-            Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc,
-                    cfg.getTileCachePath(), cfg.getTileCacheTimeLimit());
+            Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
         }
 
         if (cfg.getFontSize() > 0) {

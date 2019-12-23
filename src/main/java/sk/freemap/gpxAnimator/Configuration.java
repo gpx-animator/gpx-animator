@@ -69,9 +69,6 @@ public class Configuration {
     private File photos;
     private Long photoTime;
 
-    private String tileCachePath;
-    private Long tileCacheTimeLimit;    // Time limit is in seconds
-
     @XmlElementWrapper
     @XmlElement(name = "trackConfiguration")
     private List<TrackConfiguration> trackConfigurationList;
@@ -92,7 +89,6 @@ public class Configuration {
             final int fontSize, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File photos, final Long photoTime,
-            final String tileCachePath, final Long tileCacheTimeLimit,
             final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
@@ -122,8 +118,6 @@ public class Configuration {
         this.maxLat = maxLat;
         this.photos = photos;
         this.photoTime = photoTime;
-        this.tileCachePath = tileCachePath;
-        this.tileCacheTimeLimit = tileCacheTimeLimit;
     }
 
     public static Builder createBuilder() {
@@ -234,14 +228,6 @@ public class Configuration {
         return photoTime;
     }
 
-    public String getTileCachePath() {
-        return tileCachePath;
-    }
-
-    public Long getTileCacheTimeLimit() {
-        return tileCacheTimeLimit == null ? 0 : tileCacheTimeLimit;
-    }
-
     public List<TrackConfiguration> getTrackConfigurationList() {
         return trackConfigurationList;
     }
@@ -267,8 +253,6 @@ public class Configuration {
                 + ", waypointSize=" + waypointSize
                 + ", photos=" + photos
                 + ", photoTime=" + photoTime
-                + ", tileCachePath=" + tileCachePath
-                + ", tileCacheTimeLimit=" + tileCacheTimeLimit
                 + ", trackConfigurationList=" + trackConfigurationList
                 + "]";
     }
@@ -301,8 +285,6 @@ public class Configuration {
         private Double maxLat;
         private File photos;
         private Long photoTime = 3_000L;
-        private String tileCachePath;
-        private long tileCacheTimeLimit = 12L * 60L * 60L; // Default is 12 hours
 
         public Configuration build() throws UserException {
             return new Configuration(
@@ -314,7 +296,6 @@ public class Configuration {
                     fontSize, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     photos, photoTime,
-                    tileCachePath, tileCacheTimeLimit,
 
                     Collections.unmodifiableList(trackConfigurationList)
             );
@@ -448,16 +429,6 @@ public class Configuration {
 
         public Builder photoTime(final Long photoTime) {
             this.photoTime = photoTime;
-            return this;
-        }
-
-        public Builder tileCachePath(final String tileCachePath) {
-            this.tileCachePath = tileCachePath;
-            return this;
-        }
-
-        public Builder tileCacheTimeLimit(final Long tileCacheTimeLimit) {
-            this.tileCacheTimeLimit = tileCacheTimeLimit;
             return this;
         }
 

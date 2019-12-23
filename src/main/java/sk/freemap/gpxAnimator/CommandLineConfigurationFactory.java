@@ -159,12 +159,6 @@ public final class CommandLineConfigurationFactory {
                             final long lvTailColor = Long.decode(args[++i]).longValue();
                             cfg.tailColor(new Color(lvTailColor < Integer.MAX_VALUE ? (int) lvTailColor : (int) (0xffffffff00000000L | lvTailColor), true));
                             break;
-                        case TILE_CACHE_PATH:
-                            cfg.tileCachePath(args[++i]);
-                            break;
-                        case TILE_CACHE_TIME_LIMIT:
-                            cfg.tileCacheTimeLimit(Long.parseLong(args[++i]));
-                            break;
                         case TIME_OFFSET:
                             final String s2 = args[++i].trim();
                             timeOffsetList.add(s2.isEmpty() ? null : Long.valueOf(s2));
