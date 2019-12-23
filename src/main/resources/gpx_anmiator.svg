@@ -18,26 +18,26 @@
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="gpx_anmiator.svg"
-   inkscape:export-filename="/Users/michael/Desktop/GPXLOGO.png"
+   inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
    inkscape:export-xdpi="182.60001"
    inkscape:export-ydpi="182.60001">
   <defs
      id="defs2">
     <linearGradient
        inkscape:collect="always"
-       id="linearGradient3110">
+       id="linearGradient1452">
       <stop
          style="stop-color:#000000;stop-opacity:1;"
          offset="0"
-         id="stop3106" />
+         id="stop1448" />
       <stop
          style="stop-color:#000000;stop-opacity:0;"
          offset="1"
-         id="stop3108" />
+         id="stop1450" />
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
-       id="linearGradient2787">
+       id="linearGradient2787-7">
       <stop
          style="stop-color:#5af109;stop-opacity:1;"
          offset="0"
@@ -134,7 +134,7 @@
     </filter>
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient2787"
+       xlink:href="#linearGradient2787-7"
        id="linearGradient2789"
        x1="50.577078"
        y1="108.36695"
@@ -143,164 +143,57 @@
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3112"
-       x1="61.627882"
-       y1="117.92851"
-       x2="63.43192"
-       y2="117.92851"
+       xlink:href="#linearGradient1452"
+       id="linearGradient1482"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,-6.5481036)" />
+       x1="77.185224"
+       y1="61.727181"
+       x2="128.6642"
+       y2="61.727181"
+       gradientTransform="translate(-0.853753,1.1386996)" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3114"
-       x1="59.735995"
-       y1="-117.92954"
-       x2="61.540033"
-       y2="-117.92954"
+       xlink:href="#linearGradient1452"
+       id="linearGradient1499"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
+       gradientTransform="matrix(1.306407,0,0,1.0405482,-49.509152,7.7994853)"
+       x1="77.185224"
+       y1="61.727181"
+       x2="128.6642"
+       y2="61.727181" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3116"
-       x1="57.849318"
-       y1="-117.9294"
-       x2="59.653356"
-       y2="-117.9294"
+       xlink:href="#linearGradient1452"
+       id="linearGradient1517"
+       x1="111.75189"
+       y1="68.954422"
+       x2="177.92941"
+       y2="68.954422"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
+       gradientTransform="translate(-25.069883,-1.4967094)" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1683"
+       x="-0.014330521"
+       width="1.028661"
+       y="-0.073788766"
+       height="1.1475775">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.39514934"
+         id="feGaussianBlur1685" />
+    </filter>
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3118"
-       x1="55.867896"
-       y1="-117.9294"
-       x2="57.671933"
-       y2="-117.9294"
+       xlink:href="#linearGradient1452"
+       id="linearGradient1695"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3120"
-       x1="53.886477"
-       y1="-117.9294"
-       x2="55.690515"
-       y2="-117.9294"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3122"
-       x1="51.905054"
-       y1="-117.9294"
-       x2="53.709092"
-       y2="-117.9294"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3124"
-       x1="49.923632"
-       y1="-117.9294"
-       x2="51.72767"
-       y2="-117.9294"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3126"
-       x1="47.942213"
-       y1="-117.9294"
-       x2="49.746251"
-       y2="-117.9294"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3128"
-       x1="61.604445"
-       y1="103.91626"
-       x2="63.408483"
-       y2="103.91626"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,-6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3130"
-       x1="59.712557"
-       y1="-103.91729"
-       x2="61.516595"
-       y2="-103.91729"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3132"
-       x1="57.82588"
-       y1="-103.91715"
-       x2="59.629918"
-       y2="-103.91715"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3134"
-       x1="55.844458"
-       y1="-103.91715"
-       x2="57.648496"
-       y2="-103.91715"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3136"
-       x1="53.863039"
-       y1="-103.91715"
-       x2="55.667077"
-       y2="-103.91715"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3138"
-       x1="49.900195"
-       y1="-103.91715"
-       x2="51.704232"
-       y2="-103.91715"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3140"
-       x1="47.918776"
-       y1="-103.91715"
-       x2="49.722814"
-       y2="-103.91715"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3110"
-       id="linearGradient3142"
-       x1="51.881617"
-       y1="-103.91715"
-       x2="53.685655"
-       y2="-103.91715"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(40.78533,6.5481036)" />
+       gradientTransform="translate(-24.882794,0.18708866)"
+       x1="111.75189"
+       y1="68.954422"
+       x2="177.92941"
+       y2="68.954422" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -309,9 +202,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4"
-     inkscape:cx="418.83515"
-     inkscape:cy="733.38371"
+     inkscape:zoom="1.28"
+     inkscape:cx="470.67865"
+     inkscape:cy="727.37282"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -329,7 +222,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -337,285 +230,15 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <rect
-       style="opacity:1;fill:#dd0400;fill-opacity:1;stroke:none;stroke-width:0.42304063;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect2836"
-       width="16.612"
-       height="16.612"
-       x="88.15818"
-       y="-112.64725"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239"
-       ry="2.03497"
-       transform="scale(1,-1)" />
-    <rect
-       y="110.04749"
-       x="88.15818"
-       height="2.5997548"
-       width="16.612001"
-       id="rect1156"
-       style="fill:#000000;fill-opacity:1;stroke-width:0.24833372"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       transform="scale(1,-1)"
-       ry="0.54921156"
-       y="-111.9305"
-       x="88.827217"
-       height="1.0984231"
-       width="1.6046711"
-       id="rect1133"
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3126);stroke-width:0.19936676"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3124);stroke-width:0.19936676"
-       id="rect1135"
-       width="1.6046711"
-       height="1.0984231"
-       x="90.808647"
-       y="-111.9305"
-       ry="0.54921156"
-       transform="scale(1,-1)"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3122);stroke-width:0.19936676"
-       id="rect1137"
-       width="1.6046711"
-       height="1.0984231"
-       x="92.790062"
-       y="-111.9305"
-       ry="0.54921156"
-       transform="scale(1,-1)"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       transform="scale(1,-1)"
-       ry="0.54921156"
-       y="-111.9305"
-       x="94.771492"
-       height="1.0984231"
-       width="1.6046711"
-       id="rect1139"
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3120);stroke-width:0.19936676"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       transform="scale(1,-1)"
-       ry="0.54921156"
-       y="-111.9305"
-       x="96.752907"
-       height="1.0984231"
-       width="1.6046711"
-       id="rect1141"
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3118);stroke-width:0.19936676"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3116);stroke-width:0.19936676"
-       id="rect1143"
-       width="1.6046711"
-       height="1.0984231"
-       x="98.734322"
-       y="-111.9305"
-       ry="0.54921156"
-       transform="scale(1,-1)"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3114);stroke-width:0.19936676"
-       id="rect1237"
-       width="1.6046711"
-       height="1.0984231"
-       x="100.62101"
-       y="-111.93065"
-       ry="0.54921156"
-       transform="scale(1,-1)"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       ry="0.54921156"
-       y="110.8312"
-       x="102.51289"
-       height="1.0984231"
-       width="1.6046711"
-       id="rect1239"
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3112);stroke-width:0.19936676"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       style="fill:#000000;fill-opacity:1;stroke-width:0.24815847"
-       id="rect1296"
-       width="16.588566"
-       height="2.5997543"
-       x="88.15818"
-       y="96.035248"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3140);stroke-width:0.19936676"
-       id="rect1298"
-       width="1.6046711"
-       height="1.0984231"
-       x="88.80378"
-       y="-97.918259"
-       ry="0.54921156"
-       transform="scale(1,-1)"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       transform="scale(1,-1)"
-       ry="0.54921156"
-       y="-97.918259"
-       x="90.78521"
-       height="1.0984231"
-       width="1.6046711"
-       id="rect1300"
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3138);stroke-width:0.19936676"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       transform="scale(1,-1)"
-       ry="0.54921156"
-       y="-97.918259"
-       x="92.766624"
-       height="1.0984231"
-       width="1.6046711"
-       id="rect1302"
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3142);stroke-width:0.19936676"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3136);stroke-width:0.19936676"
-       id="rect1304"
-       width="1.6046711"
-       height="1.0984231"
-       x="94.748055"
-       y="-97.918259"
-       ry="0.54921156"
-       transform="scale(1,-1)"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3134);stroke-width:0.19936676"
-       id="rect1306"
-       width="1.6046711"
-       height="1.0984231"
-       x="96.729469"
-       y="-97.918259"
-       ry="0.54921156"
-       transform="scale(1,-1)"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       transform="scale(1,-1)"
-       ry="0.54921156"
-       y="-97.918259"
-       x="98.710884"
-       height="1.0984231"
-       width="1.6046711"
-       id="rect1308"
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3132);stroke-width:0.19936676"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       transform="scale(1,-1)"
-       ry="0.54921156"
-       y="-97.918396"
-       x="100.59757"
-       height="1.0984231"
-       width="1.6046711"
-       id="rect1310"
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3130);stroke-width:0.19936676"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient3128);stroke-width:0.19936676"
-       id="rect1312"
-       width="1.6046711"
-       height="1.0984231"
-       x="102.48945"
-       y="96.818947"
-       ry="0.54921156"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
     <path
-       style="fill:#fe2323;fill-opacity:0.17314489;stroke:none;stroke-width:0.26458332000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 88.158189,98.635006 v 11.412484 c 0,0 0.15683,-6.35786 1.06847,-7.7046 0.91165,-1.34675 1.84401,-1.92688 2.98356,-2.17551 1.13955,-0.248634 12.536541,-1.532374 12.536541,-1.532374 z"
-       id="path1334"
+       style="opacity:0.1;fill:url(#linearGradient1499);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.30848411px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 51.326168,70.016871 8.10433,1.92974 c 0,0 15.642492,4.866869 26.152299,1.168048 10.50981,-3.698818 10.50981,-4.866869 15.398093,-5.256217 4.88827,-0.389349 17.59779,3.309472 17.59779,3.309472 l -4.88827,-0.194676 -9.04332,-1.752073 c 0,0 -9.776563,1.752073 -14.420423,3.893494 -9.75087,4.987391 -22.430606,3.705734 -32.507067,0.389352 -6.094922,-2.142115 -6.393432,-3.48714 -6.393432,-3.48714 z"
+       id="path1497"
        inkscape:connector-curvature="0"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <path
-       style="fill:#ffffff;fill-opacity:0.17314489;stroke:none;stroke-width:0.27623281px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 88.028409,102.16093 c 0.21631,-3.504294 4.36954,-3.525924 4.36954,-3.525924 l -4.17486,0.0216 -0.0649,-0.0216 z"
-       id="path1336"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <path
-       style="fill:#000000;fill-opacity:0.09540639;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 88.158189,110.04749 c 0,0 13.375641,0.10651 14.287281,-1.67534 0.91164,-1.78184 2.30129,-9.737144 2.30129,-9.737144 l 0.0234,11.412484 z"
-       id="path3144"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <ellipse
-       style="fill:#000000;fill-opacity:0.09540639;stroke:none;stroke-width:0.26458332;stroke-opacity:0.23674915"
-       id="path3146"
-       cx="88.492699"
-       cy="110.43977"
-       rx="0.33452034"
-       ry="0.39229202"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <path
-       style="fill:#e7e7e7;fill-opacity:0.25441697;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 88.158189,112.64725 v -2.59976 h 16.612001 c 0,0 -17.431841,-0.83266 -16.612001,2.59976 z"
-       id="path3148"
-       inkscape:connector-curvature="0"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.06583214px;line-height:1.25;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.32664195"
-       x="86.938774"
-       y="106.69317"
-       id="text1001"
-       inkscape:export-xdpi="299.70477"
-       inkscape:export-ydpi="299.70477"><tspan
-         sodipodi:role="line"
-         id="tspan999"
-         x="86.938774"
-         y="106.69317"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.06583214px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.32664195">g</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:18.44772339px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.461193"
-       x="97.792778"
-       y="109.27224"
-       id="text1047"
-       inkscape:export-xdpi="299.70477"
-       inkscape:export-ydpi="299.70477"><tspan
-         sodipodi:role="line"
-         id="tspan1045"
-         x="97.792778"
-         y="109.27224"
-         style="fill:#ffffff;fill-opacity:1;stroke-width:0.461193">x</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.23798656px;line-height:1.25;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.33094943"
-       x="92.936279"
-       y="106.87529"
-       id="text1051"
-       inkscape:export-xdpi="24.464239"
-       inkscape:export-ydpi="24.464239"><tspan
-         sodipodi:role="line"
-         id="tspan1049"
-         x="92.936279"
-         y="106.87529"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.23798656px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.33094943">p</tspan></text>
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       sodipodi:nodetypes="ccsscccccc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -626,32 +249,602 @@
          id="tspan1053"
          x="128.29002"
          y="108.91296"
-         style="stroke-width:0.26458332"></tspan></text>
+         style="stroke-width:0.26458332" /></text>
+    <rect
+       style="opacity:1;fill:#ff2f00;fill-opacity:1;stroke:none;stroke-width:0.36463416;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2836"
+       width="14.318489"
+       height="14.318489"
+       x="56.731655"
+       y="-63.296993"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       ry="1.7540151"
+       transform="matrix(0.98677676,0.16208524,0.16208524,-0.98677676,0,0)"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       ry="0.69212878"
+       y="49.612442"
+       x="56.835281"
+       height="1.3842576"
+       width="14.004605"
+       id="rect1324"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.23089896;stroke-opacity:0.5"
+       transform="rotate(9.2569136)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <path
+       style="fill:#090909;fill-opacity:1;stroke:none;stroke-width:0.3253583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 48.418725,59.569481 -0.527043,-0.09421 -0.1543,-0.01419 c 0.003,-0.857056 0.739855,-1.73073 1.876552,-1.683112 l 10.968545,1.806505 c 1.170445,0.193804 1.460857,1.339867 1.281945,2.168133 z"
+       id="path1354"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       transform="rotate(9.1858756)"
+       ry="0.47338551"
+       y="49.893845"
+       x="57.196018"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1286"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.69441509px;line-height:1.25;font-family:'Shree Devanagari 714';-inkscape-font-specification:'Shree Devanagari 714, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#9c9c9c;fill-opacity:1;stroke:none;stroke-width:0.34236115"
-       x="112.52997"
-       y="104.01156"
-       id="text1059"
-       inkscape:export-xdpi="299.70477"
-       inkscape:export-ydpi="299.70477"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.26191711px;line-height:1.25;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.28154463"
+       x="55.680584"
+       y="58.164928"
+       id="text1001"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       transform="rotate(9.3279516)"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"><tspan
          sodipodi:role="line"
-         x="112.52997"
-         y="104.01156"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.69441509px;font-family:'Shree Devanagari 714';-inkscape-font-specification:'Shree Devanagari 714, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#9c9c9c;fill-opacity:1;stroke-width:0.34236115"
-         id="tspan1073">anim</tspan></text>
+         id="tspan999"
+         x="55.680584"
+         y="58.164928"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.26191711px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.28154463">g</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:13.80470562px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#9c9c9c;fill-opacity:1;stroke:none;stroke-width:0.34511763"
-       x="112.39219"
-       y="112.73517"
-       id="text1104"
-       inkscape:export-xdpi="299.70477"
-       inkscape:export-ydpi="299.70477"><tspan
+       style="font-style:normal;font-weight:normal;font-size:15.10457516px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.37761432"
+       x="65.154251"
+       y="60.221394"
+       id="text1047"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       transform="rotate(9.3279516)"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"><tspan
          sodipodi:role="line"
-         id="tspan1102"
-         x="112.39219"
-         y="112.73517"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.80470562px;font-family:'Shree Devanagari 714';-inkscape-font-specification:'Shree Devanagari 714, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#9c9c9c;fill-opacity:1;stroke-width:0.34511763">ator</tspan></text>
+         id="tspan1045"
+         x="65.154251"
+         y="60.221394"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.37761432">x</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.41030502px;line-height:1.25;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.2852574"
+       x="60.850056"
+       y="58.32188"
+       id="text1051"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       transform="rotate(9.3279516)"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"><tspan
+         sodipodi:role="line"
+         id="tspan1049"
+         x="60.850056"
+         y="58.32188"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.41030502px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.2852574">p</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1288"
+       width="1.3831246"
+       height="0.94677103"
+       x="58.903881"
+       y="49.893845"
+       ry="0.47338551"
+       transform="rotate(9.1858756)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1290"
+       width="1.3831246"
+       height="0.94677103"
+       x="60.611736"
+       y="49.893845"
+       ry="0.47338551"
+       transform="rotate(9.1858756)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       transform="rotate(9.1858756)"
+       ry="0.47338551"
+       y="49.893845"
+       x="62.319599"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1292"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       transform="rotate(9.1858756)"
+       ry="0.47338551"
+       y="49.893845"
+       x="64.027443"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1294"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1296"
+       width="1.3831246"
+       height="0.94677103"
+       x="65.735298"
+       y="49.893845"
+       ry="0.47338551"
+       transform="rotate(9.1858756)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1298"
+       width="1.3831246"
+       height="0.94677103"
+       x="67.361481"
+       y="49.893703"
+       ry="0.47338551"
+       transform="rotate(9.1858756)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       ry="0.47338551"
+       y="-50.841423"
+       x="68.992188"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1300"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       transform="matrix(0.98717565,0.15963783,0.15963783,-0.98717565,0,0)"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.23089896;stroke-opacity:0.5"
+       id="rect1385"
+       width="14.004605"
+       height="1.3842576"
+       x="56.811302"
+       y="-62.828072"
+       ry="0.69212878"
+       transform="matrix(0.98697696,0.16086166,0.16086166,-0.98697696,0,0)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path1387"
+       d="m 46.717187,69.860311 -0.529682,-0.07802 -0.150821,-0.03555 c -0.269294,0.813656 0.151999,1.87609 1.244994,2.191874 l 10.974516,1.769868 c 1.17141,0.187882 1.810706,-0.806655 1.904055,-1.648866 z"
+       style="fill:#090909;fill-opacity:1;stroke:none;stroke-width:0.3253583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1389"
+       width="1.3831246"
+       height="0.94677103"
+       x="57.311459"
+       y="-62.546589"
+       ry="0.47338551"
+       transform="matrix(0.98677676,0.16208524,0.16208524,-0.98677676,0,0)"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="matrix(0.98677676,0.16208524,0.16208524,-0.98677676,0,0)"
+       ry="0.47338551"
+       y="-62.546589"
+       x="59.019321"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1391"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="matrix(0.98677676,0.16208524,0.16208524,-0.98677676,0,0)"
+       ry="0.47338551"
+       y="-62.546589"
+       x="60.727177"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1393"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1395"
+       width="1.3831246"
+       height="0.94677103"
+       x="62.43504"
+       y="-62.546589"
+       ry="0.47338551"
+       transform="matrix(0.98677676,0.16208524,0.16208524,-0.98677676,0,0)"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1397"
+       width="1.3831246"
+       height="0.94677103"
+       x="64.142876"
+       y="-62.546589"
+       ry="0.47338551"
+       transform="matrix(0.98677676,0.16208524,0.16208524,-0.98677676,0,0)"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="matrix(0.98677676,0.16208524,0.16208524,-0.98677676,0,0)"
+       ry="0.47338551"
+       y="-62.546589"
+       x="65.850731"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1399"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="matrix(0.98677676,0.16208524,0.16208524,-0.98677676,0,0)"
+       ry="0.47338551"
+       y="-62.546734"
+       x="67.476929"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1401"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <rect
+       transform="rotate(9.3279516)"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1403"
+       width="1.3831246"
+       height="0.94677103"
+       x="69.107643"
+       y="61.59901"
+       ry="0.47338551"
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png" />
+    <text
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       id="text1693"
+       y="71.869858"
+       x="69.374283"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.71639633px;line-height:1.25;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;opacity:1;fill:#0e0e0e;fill-opacity:1;stroke:none;stroke-width:0.54253513"
+       xml:space="preserve"><tspan
+         id="tspan1691"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.71639633px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#0e0e0e;fill-opacity:1;stroke-width:0.54253513"
+         y="71.869858"
+         x="69.374283"
+         sodipodi:role="line">animator</tspan></text>
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       transform="matrix(0.9999991,0.00134117,0.00134117,-0.9999991,0,0)"
+       ry="1.7540151"
+       inkscape:export-ydpi="85.062592"
+       inkscape:export-xdpi="85.062592"
+       y="-101.65521"
+       x="90.124718"
+       height="14.318489"
+       width="14.318489"
+       id="rect1860"
+       style="opacity:1;fill:#ff2f00;fill-opacity:1;stroke:none;stroke-width:0.36463416;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="rotate(0.00580511)"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.23089896;stroke-opacity:0.5"
+       id="rect1862"
+       width="14.004605"
+       height="1.3842576"
+       x="90.180786"
+       y="88.012032"
+       ry="0.69212878" />
+    <path
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path1864"
+       d="m 90.707048,89.413771 -0.535332,-0.008 -0.154568,0.0112 c -0.134821,-0.84639 0.451997,-1.82715 1.581563,-1.9629 l 11.116299,0.0197 c 1.18637,0.003 1.65726,1.0876 1.61382,1.93384 z"
+       style="fill:#090909;fill-opacity:1;stroke:none;stroke-width:0.3253583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1866"
+       width="1.3831246"
+       height="0.94677103"
+       x="90.493881"
+       y="88.334755"
+       ry="0.47338551"
+       transform="rotate(-0.06523289)" />
+    <text
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       transform="rotate(0.07684311)"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       id="text1870"
+       y="96.52314"
+       x="89.073654"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.26191711px;line-height:1.25;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.28154463"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.26191711px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.28154463"
+         y="96.52314"
+         x="89.073654"
+         id="tspan1868"
+         sodipodi:role="line">g</tspan></text>
+    <text
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       transform="rotate(0.07684311)"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       id="text1874"
+       y="98.579613"
+       x="98.547333"
+       style="font-style:normal;font-weight:normal;font-size:15.10457516px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.37761432"
+       xml:space="preserve"><tspan
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.37761432"
+         y="98.579613"
+         x="98.547333"
+         id="tspan1872"
+         sodipodi:role="line">x</tspan></text>
+    <text
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       transform="rotate(0.07684311)"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       id="text1878"
+       y="96.680092"
+       x="94.243118"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.41030502px;line-height:1.25;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.2852574"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.41030502px;font-family:'Trebuchet MS';-inkscape-font-specification:'Trebuchet MS, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.2852574"
+         y="96.680092"
+         x="94.243118"
+         id="tspan1876"
+         sodipodi:role="line">p</tspan></text>
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="rotate(-0.06523289)"
+       ry="0.47338551"
+       y="88.334755"
+       x="92.201744"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1880"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="rotate(-0.06523289)"
+       ry="0.47338551"
+       y="88.334755"
+       x="93.909607"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1882"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1884"
+       width="1.3831246"
+       height="0.94677103"
+       x="95.617462"
+       y="88.334755"
+       ry="0.47338551"
+       transform="rotate(-0.06523289)" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1886"
+       width="1.3831246"
+       height="0.94677103"
+       x="97.32531"
+       y="88.334755"
+       ry="0.47338551"
+       transform="rotate(-0.06523289)" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="rotate(-0.06523289)"
+       ry="0.47338551"
+       y="88.334755"
+       x="99.03315"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1888"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="rotate(-0.06523289)"
+       ry="0.47338551"
+       y="88.334602"
+       x="100.65934"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1890"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       transform="matrix(0.99999935,-0.00113853,-0.00113853,-0.99999935,0,0)"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1892"
+       width="1.3831246"
+       height="0.94677103"
+       x="102.29004"
+       y="-89.282318"
+       ry="0.47338551" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       transform="matrix(0.99999999,1.0132305e-4,1.0132305e-4,-0.99999999,0,0)"
+       ry="0.69212878"
+       y="-101.22767"
+       x="90.156799"
+       height="1.3842576"
+       width="14.004605"
+       id="rect1894"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.23089896;stroke-opacity:0.5" />
+    <path
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       inkscape:export-ydpi="127.11"
+       inkscape:export-xdpi="127.11"
+       style="fill:#090909;fill-opacity:1;stroke:none;stroke-width:0.3253583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 90.682012,99.844291 -0.535336,0.008 -0.154582,-0.0109 c -0.134987,0.846359 0.451626,1.827259 1.58117,1.963209 l 11.116296,-0.0174 c 1.18638,-0.003 1.65748,-1.08726 1.61422,-1.933519 z"
+       id="path1896"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       transform="matrix(0.9999991,0.00134117,0.00134117,-0.9999991,0,0)"
+       ry="0.47338551"
+       y="-100.9048"
+       x="90.704529"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1898"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1900"
+       width="1.3831246"
+       height="0.94677103"
+       x="92.412392"
+       y="-100.9048"
+       ry="0.47338551"
+       transform="matrix(0.9999991,0.00134117,0.00134117,-0.9999991,0,0)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1902"
+       width="1.3831246"
+       height="0.94677103"
+       x="94.120255"
+       y="-100.9048"
+       ry="0.47338551"
+       transform="matrix(0.9999991,0.00134117,0.00134117,-0.9999991,0,0)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       transform="matrix(0.9999991,0.00134117,0.00134117,-0.9999991,0,0)"
+       ry="0.47338551"
+       y="-100.9048"
+       x="95.82811"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1904"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       transform="matrix(0.9999991,0.00134117,0.00134117,-0.9999991,0,0)"
+       ry="0.47338551"
+       y="-100.9048"
+       x="97.53595"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1906"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1908"
+       width="1.3831246"
+       height="0.94677103"
+       x="99.243813"
+       y="-100.9048"
+       ry="0.47338551"
+       transform="matrix(0.9999991,0.00134117,0.00134117,-0.9999991,0,0)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       id="rect1910"
+       width="1.3831246"
+       height="0.94677103"
+       x="100.87001"
+       y="-100.90495"
+       ry="0.47338551"
+       transform="matrix(0.9999991,0.00134117,0.00134117,-0.9999991,0,0)"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11" />
+    <rect
+       inkscape:export-filename="/Volumes/data/5_github/gpx-animator/src/main/resources/gpx_animator_banner.png"
+       ry="0.47338551"
+       y="99.957222"
+       x="102.50073"
+       height="0.94677103"
+       width="1.3831246"
+       id="rect1912"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17184149"
+       inkscape:export-xdpi="127.11"
+       inkscape:export-ydpi="127.11"
+       transform="rotate(0.07684311)" />
   </g>
 </svg>
