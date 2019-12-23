@@ -7,7 +7,8 @@ version = '1.5-SNAPSHOT'
 group = 'app.gpx-animator'
 
 mainClassName = 'sk.freemap.gpxAnimator.Main'
-sourceCompatibility = '8'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 repositories {
     mavenCentral()

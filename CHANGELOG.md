@@ -9,6 +9,7 @@ Release date: not yet released
 * New application wide settings (_File > Preferences_)
 * New installers for Windows, macOS and Linux systems
 * GPX-Animator now uses Gradle to build the project
+* Default Java version for GPX Animator is now 11 LTS
 
 ## Version 1.4
 
