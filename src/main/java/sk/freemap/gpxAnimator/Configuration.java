@@ -274,7 +274,7 @@ public class Configuration {
         private Color flashbackColor = Color.white;
         private Long flashbackDuration = 250l;
         private Long keepLastFrame;
-        private File output = new File("video.mp4"); // frame%08d.png
+        private File output = new File(Preferences.getLastWorkingDir() + System.getProperty("file.separator") + "GPX-Animation.mp4");
         private String attribution = "Created by GPX Animator " + Constants.VERSION + "\n%MAP_ATTRIBUTION%";
         private int fontSize = 12;
         private Double markerSize = 8.0;

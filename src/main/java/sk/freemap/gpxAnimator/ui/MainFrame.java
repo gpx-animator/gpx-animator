@@ -599,7 +599,7 @@ public class MainFrame extends JFrame {
 
     private void saveAs() {
         final String lastCwd = Preferences.getLastWorkingDir();
-        fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
+        fileChooser.setCurrentDirectory(new File(lastCwd));
         fileChooser.setSelectedFile(new File("")); // to forget previous file name
         if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();

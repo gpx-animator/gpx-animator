@@ -17,7 +17,15 @@ public final class Preferences {
     private static final String TILE_CACHE_TIME_LIMIT = "tile_cache_time_limit";
 
     public static String getLastWorkingDir() {
-        return prefs.get(LAST_WORKING_DIR, null);
+       String lastWorkingDir = prefs.get(LAST_WORKING_DIR, null);
+        if (lastWorkingDir == null) {
+            lastWorkingDir = System.getProperty("user.home");
+            final String videosDir = lastWorkingDir + System.getProperty("file.separator") + "Videos";
+            if (new File(videosDir).exists()) {
+                lastWorkingDir = videosDir;
+            }
+        }
+       return lastWorkingDir;
     }
 
     public static void setLastWorkingDir(final String lastWorkingDir) {
