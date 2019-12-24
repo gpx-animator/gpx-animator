@@ -189,9 +189,9 @@ public class TileCache {
     // Check age on a file and remove it if it is too old.
     //
     private static void ageCacheFile(final File cacheFile, final Long tileCacheTimeLimit) {
-        Date fileDate = new Date(cacheFile.lastModified());
+        final Date fileDate = new Date(cacheFile.lastModified());
         long msBetweenDates = new Date().getTime() - fileDate.getTime();
-        if ((msBetweenDates / 1000) > tileCacheTimeLimit) {
+        if ((msBetweenDates) > tileCacheTimeLimit) {
             cacheFile.delete();
         }
     }
