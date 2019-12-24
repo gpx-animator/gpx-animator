@@ -66,13 +66,16 @@ public class PreferencesDialog extends JDialog {
         return FormBuilder.create()
                 .padding(new EmptyBorder(20, 20, 20, 20))
                 .columns("right:p, 5dlu, fill:[200dlu, pref]")
-                .rows("p, 5dlu, p, 5dlu, p")
+                .rows("p, 5dlu, p, 5dlu, p, 5dlu, p, 10dlu, p")
 
-                .add("Tile Cache Directory")  .xy(1, 1)
-                .add(tileCachePathSelector) .xy(3, 1)
-                .add("Tile Cache Time Limit") .xy(1, 3)
-                .add(tileCacheTimeLimitSpinner).xy(3, 3)
-                .addBar(cancelButton, saveButton).xyw(1, 5, 3, CellConstraints.RIGHT, CellConstraints.FILL)
+                .addSeparator("Caching Map Tiles").xyw(1, 1, 3)
+                .add("Tile Cache Directory").xy(1, 3)
+                .add(tileCachePathSelector).xy(3, 3)
+                .add("Tile Cache Time Limit").xy(1, 5)
+                .add(tileCacheTimeLimitSpinner).xy(3, 5)
+
+                .addSeparator("").xyw(1, 7, 3)
+                .addBar(cancelButton, saveButton).xyw(1, 9, 3, CellConstraints.RIGHT, CellConstraints.FILL)
                 .build();
     }
 
