@@ -314,6 +314,10 @@ public class MainFrame extends JFrame {
         });
         mnHelp.add(mntmFAQ);
 
+        final JMenuItem changelogMenu = new JMenuItem("Changelog");
+        changelogMenu.addActionListener(e -> SwingUtilities.invokeLater(this::showChangelog));
+        mnHelp.add(changelogMenu);
+
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -511,6 +515,7 @@ public class MainFrame extends JFrame {
         });
 
         SwingUtilities.invokeLater(this::loadDefaults);
+        SwingUtilities.invokeLater(this::showChangelogOnce);
     }
 
     public Configuration createConfiguration(final boolean includeTracks, final boolean replacePlaceholders) throws UserException {
@@ -696,6 +701,17 @@ public class MainFrame extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(MainFrame.this, "Can't reset default configuration!", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+
+    private void showChangelog() {
+        SwingUtilities.invokeLater(() -> new ChangelogDialog(this).setVisible(true));
+    }
+
+    private void showChangelogOnce() {
+        if (!Preferences.getChangelogVersion().equals(Constants.VERSION)) {
+            showChangelog();
+            Preferences.setChangelogVersion(Constants.VERSION);
         }
     }
 

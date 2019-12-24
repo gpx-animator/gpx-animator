@@ -11,6 +11,7 @@ public final class Preferences {
     private static final java.util.prefs.Preferences prefs =
             java.util.prefs.Preferences.userRoot().node("app/gpx-animator");
 
+    private static final String CHANGELOG_VERSION = "changelog_version";
     private static final String LAST_WORKING_DIR = "last_working_dir";
     private static final String RECENT_FILES = "recent_files";
     private static final String TILE_CACHE_DIR = "tile_cache_dir";
@@ -18,6 +19,14 @@ public final class Preferences {
 
     public static String getConfigurationDir() {
         return System.getProperty("user.home") + System.getProperty("file.separator") + ".gpx-animator";
+    }
+
+    public static String getChangelogVersion() {
+        return prefs.get(CHANGELOG_VERSION, "");
+    }
+
+    public static void setChangelogVersion(final String changelogVersion) {
+        prefs.put(CHANGELOG_VERSION, changelogVersion);
     }
 
     public static String getLastWorkingDir() {

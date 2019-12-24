@@ -30,6 +30,7 @@ dependencies {
     implementation 'org.imgscalr:imgscalr-lib:4.2'
     implementation 'commons-io:commons-io:2.6'
     implementation 'com.jgoodies:jgoodies-forms:1.9.0'
+    implementation 'com.vladsch.flexmark:flexmark-all:0.50.44'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
 }
@@ -48,3 +49,17 @@ shadowJar {
 tasks.withType(JavaCompile){
     options.encoding = "UTF-8"
 }
+
+task copyChangelog(type: Copy) {
+    from "."
+    include "CHANGELOG.md"
+    into "./src/main/resources"
+}
+
+assemble.dependsOn copyChangelog
+
+task deleteChangelog(type: Delete) {
+    delete "./src/main/resources/CHANGELOG.md"
+}
+
+clean.dependsOn deleteChangelog
