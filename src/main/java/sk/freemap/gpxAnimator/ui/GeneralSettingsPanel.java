@@ -798,7 +798,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     }
 
 
-    public void buildConfiguration(final Configuration.Builder b) {
+    public void buildConfiguration(final Configuration.Builder b, final boolean replacePlaceholders) {
         b.height((Integer) heightSpinner.getValue());
         b.width((Integer) widthSpinner.getValue());
         b.margin((Integer) marginSpinner.getValue());
@@ -827,9 +827,14 @@ abstract class GeneralSettingsPanel extends JPanel {
         b.waypointSize((Double) waypointSizeSpinner.getValue());
         b.photos(new File(photosDirectorySelector.getFilename()));
         b.photoTime((Long) photoTimeSpinner.getValue());
-        b.attribution(attributionTextArea.getText().replace("%MAP_ATTRIBUTION%",
-                tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
-                        ? ((MapTemplate) tmsItem).getAttributionText() : "").trim());
+
+        if (replacePlaceholders) {
+            b.attribution(attributionTextArea.getText().replace("%MAP_ATTRIBUTION%",
+                    tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
+                            ? ((MapTemplate) tmsItem).getAttributionText() : "").trim());
+        } else {
+            b.attribution(attributionTextArea.getText().trim());
+        }
     }
 
     protected abstract void configurationChanged();

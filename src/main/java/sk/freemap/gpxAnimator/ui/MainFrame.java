@@ -419,7 +419,7 @@ public class MainFrame extends JFrame {
 
                 final Configuration cfg;
                 try {
-                    cfg = createConfiguration(true);
+                    cfg = createConfiguration(true, true);
                     if (cfg.getOutput().exists()) {
                         final String message = String.format("A file with the name \"%s\" already exists.\nDo you really want to overwrite this file?", cfg.getOutput());
                         final int result = JOptionPane.showConfirmDialog(MainFrame.this, message, "Warning", JOptionPane.YES_NO_OPTION);
@@ -513,10 +513,10 @@ public class MainFrame extends JFrame {
         SwingUtilities.invokeLater(this::loadDefaults);
     }
 
-    public Configuration createConfiguration(final boolean includeTracks) throws UserException {
+    public Configuration createConfiguration(final boolean includeTracks, final boolean replacePlaceholders) throws UserException {
         final Configuration.Builder b = Configuration.createBuilder();
 
-        generalSettingsPanel.buildConfiguration(b);
+        generalSettingsPanel.buildConfiguration(b, replacePlaceholders);
 
         if (includeTracks) {
             for (int i = FIXED_TABS, n = tabbedPane.getTabCount(); i < n; i++) {
@@ -640,7 +640,7 @@ public class MainFrame extends JFrame {
                 final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
                 final Marshaller marshaller = jaxbContext.createMarshaller();
                 marshaller.setAdapter(new FileXmlAdapter(file.getParentFile()));
-                marshaller.marshal(createConfiguration(true), file);
+                marshaller.marshal(createConfiguration(true, false), file);
                 MainFrame.this.file = file;
                 changed(false);
                 addRecentFile(file);
@@ -659,7 +659,7 @@ public class MainFrame extends JFrame {
                 final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
                 final Marshaller marshaller = jaxbContext.createMarshaller();
                 marshaller.setAdapter(new FileXmlAdapter(new File("/")));
-                marshaller.marshal(createConfiguration(false), defaultConfigFile);
+                marshaller.marshal(createConfiguration(false, false), defaultConfigFile);
             } catch (final JAXBException e) {
                 throw new UserException(e.getMessage(), e);
             }
