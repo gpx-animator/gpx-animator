@@ -57,6 +57,8 @@ public class MainFrame extends JFrame {
     private static final String TITLE = "GPX Animator " + Constants.VERSION;
     private static final long serialVersionUID = 190371886979948114L;
     private static int FIXED_TABS = 1; // TODO set to 2 for MapPanel
+    private final File defaultConfigFile = new File(Preferences.getConfigurationDir()
+            + System.getProperty("file.separator") + "defaultConfig.ga.xml");
     private final JPanel contentPane;
     private final JTabbedPane tabbedPane;
     private final JButton renderButton;
@@ -128,11 +130,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    try {
-                        setConfiguration(Configuration.createBuilder().build());
-                    } catch (final UserException e1) {
-                        throw new RuntimeException(e1);
-                    }
+                    loadDefaults();
                 }
             }
         });
@@ -185,6 +183,26 @@ public class MainFrame extends JFrame {
             }
         });
         mnFile.add(mntmSaveAs);
+
+        mnFile.addSeparator();
+
+        final JMenuItem mntmSaveAsDefault = new JMenuItem("Save As Default");
+        mntmSaveAsDefault.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                saveAsDefault();
+            }
+        });
+        mnFile.add(mntmSaveAsDefault);
+
+        final JMenuItem mntmResetDefaults = new JMenuItem("Reset To Factory Defaults");
+        mntmResetDefaults.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                resetDefaults();
+            }
+        });
+        mnFile.add(mntmResetDefaults);
 
         mnFile.addSeparator();
 
@@ -401,7 +419,7 @@ public class MainFrame extends JFrame {
 
                 final Configuration cfg;
                 try {
-                    cfg = createConfiguration();
+                    cfg = createConfiguration(true);
                     if (cfg.getOutput().exists()) {
                         final String message = String.format("A file with the name \"%s\" already exists.\nDo you really want to overwrite this file?", cfg.getOutput());
                         final int result = JOptionPane.showConfirmDialog(MainFrame.this, message, "Warning", JOptionPane.YES_NO_OPTION);
@@ -491,16 +509,20 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+
+        SwingUtilities.invokeLater(this::loadDefaults);
     }
 
-    public Configuration createConfiguration() throws UserException {
+    public Configuration createConfiguration(final boolean includeTracks) throws UserException {
         final Configuration.Builder b = Configuration.createBuilder();
 
         generalSettingsPanel.buildConfiguration(b);
 
-        for (int i = FIXED_TABS, n = tabbedPane.getTabCount(); i < n; i++) {
-            final TrackSettingsPanel tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
-            b.addTrackConfiguration(tsp.createConfiguration());
+        if (includeTracks) {
+            for (int i = FIXED_TABS, n = tabbedPane.getTabCount(); i < n; i++) {
+                final TrackSettingsPanel tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
+                b.addTrackConfiguration(tsp.createConfiguration());
+            }
         }
 
         return b.build();
@@ -618,7 +640,7 @@ public class MainFrame extends JFrame {
                 final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
                 final Marshaller marshaller = jaxbContext.createMarshaller();
                 marshaller.setAdapter(new FileXmlAdapter(file.getParentFile()));
-                marshaller.marshal(createConfiguration(), file);
+                marshaller.marshal(createConfiguration(true), file);
                 MainFrame.this.file = file;
                 changed(false);
                 addRecentFile(file);
@@ -628,6 +650,52 @@ public class MainFrame extends JFrame {
         } catch (final UserException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void saveAsDefault() {
+        try {
+            try {
+                final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
+                final Marshaller marshaller = jaxbContext.createMarshaller();
+                marshaller.setAdapter(new FileXmlAdapter(new File("/")));
+                marshaller.marshal(createConfiguration(false), defaultConfigFile);
+            } catch (final JAXBException e) {
+                throw new UserException(e.getMessage(), e);
+            }
+        } catch (final UserException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving default configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void loadDefaults() {
+        if (defaultConfigFile == null || !defaultConfigFile.exists()) {
+            try {
+                setConfiguration(Configuration.createBuilder().build());
+                return;
+            } catch (final UserException e1) {
+                throw new RuntimeException(e1);
+            }
+        }
+        try {
+            final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
+            final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            unmarshaller.setAdapter(new FileXmlAdapter(new File("/")));
+            setConfiguration((Configuration) unmarshaller.unmarshal(defaultConfigFile));
+        } catch (final JAXBException e1) {
+            e1.printStackTrace();
+            JOptionPane.showMessageDialog(MainFrame.this, "Error loading default configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void resetDefaults() {
+        if (defaultConfigFile != null) {
+            if (defaultConfigFile.delete()) {
+                loadDefaults();
+            } else {
+                JOptionPane.showMessageDialog(MainFrame.this, "Can't reset default configuration!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

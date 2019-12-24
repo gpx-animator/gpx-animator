@@ -4,6 +4,7 @@
 
 Release date: not yet released
 
+* Saving a configuration as a default setting
 * Integration of automatic application updates
 * Fixed UI on HiDPI (high-resolution) displays
 * Default output directory is no longer the application directory

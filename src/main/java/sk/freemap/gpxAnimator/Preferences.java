@@ -16,6 +16,10 @@ public final class Preferences {
     private static final String TILE_CACHE_DIR = "tile_cache_dir";
     private static final String TILE_CACHE_TIME_LIMIT = "tile_cache_time_limit";
 
+    public static String getConfigurationDir() {
+        return System.getProperty("user.home") + System.getProperty("file.separator") + ".gpx-animator";
+    }
+
     public static String getLastWorkingDir() {
        String lastWorkingDir = prefs.get(LAST_WORKING_DIR, null);
         if (lastWorkingDir == null) {
@@ -50,8 +54,7 @@ public final class Preferences {
 
     public static String getTileCacheDir() {
         return prefs.get(TILE_CACHE_DIR,
-                System.getProperty("user.home")
-                        + System.getProperty("file.separator") + ".gpx-animator"
+                getConfigurationDir()
                         + System.getProperty("file.separator") + "caches"
                         + System.getProperty("file.separator") + "tiles");
     }
