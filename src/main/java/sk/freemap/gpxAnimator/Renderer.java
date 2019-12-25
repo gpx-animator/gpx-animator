@@ -592,7 +592,7 @@ public class Renderer {
         final BufferedImage icon = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
         final AffineTransform at = new AffineTransform();
         at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
-        at.translate(-icon.getWidth() / 2, -icon.getHeight() / 2);
+        at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
         g2.drawImage(icon, at, null);
     }
 
