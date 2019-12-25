@@ -6,6 +6,7 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import sk.freemap.gpxAnimator.Constants;
 
 import javax.swing.JButton;
@@ -63,6 +64,8 @@ public class ChangelogDialog extends JDialog {
         dispose();
     }
 
+    @SuppressFBWarnings(value = { "NP_LOAD_OF_KNOWN_NULL_VALUE", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE",
+            "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" }, justification = "Check for null exactly as needed")
     private String readChangelogAsMarkdown() throws IOException {
         final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         try (final InputStream is = classLoader.getResourceAsStream("CHANGELOG.md")) {
