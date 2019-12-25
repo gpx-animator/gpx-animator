@@ -23,17 +23,21 @@ public class FileXmlAdapter extends XmlAdapter<String, File> {
     private final Path base;
 
     public FileXmlAdapter(final File base) {
-        this.base = base.toPath();
+        this.base = base == null ? null : base.toPath();
     }
 
     @Override
     public File unmarshal(final String string) throws Exception {
-        return base.resolve(string).toFile();
+        return base != null
+                ? base.resolve(string).toFile()
+                : new File(string);
     }
 
     @Override
     public String marshal(final File file) throws Exception {
-        return base.relativize(file.getAbsoluteFile().toPath()).toString();
+        return base != null
+                ? base.relativize(file.getAbsoluteFile().toPath()).toString()
+                : file.getAbsolutePath();
     }
 
 }

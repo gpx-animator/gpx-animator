@@ -672,7 +672,7 @@ public class MainFrame extends JFrame {
             try {
                 final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
                 final Marshaller marshaller = jaxbContext.createMarshaller();
-                marshaller.setAdapter(new FileXmlAdapter(new File("/")));
+                marshaller.setAdapter(new FileXmlAdapter(null));
                 marshaller.marshal(createConfiguration(false, false), defaultConfigFile);
             } catch (final JAXBException e) {
                 throw new UserException(e.getMessage(), e);
@@ -699,7 +699,7 @@ public class MainFrame extends JFrame {
         try {
             final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
             final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            unmarshaller.setAdapter(new FileXmlAdapter(new File("/")));
+            unmarshaller.setAdapter(new FileXmlAdapter(null));
             setConfiguration((Configuration) unmarshaller.unmarshal(defaultConfigFile));
         } catch (final JAXBException e1) {
             e1.printStackTrace();
