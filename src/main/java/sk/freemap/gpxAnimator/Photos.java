@@ -140,10 +140,10 @@ public class Photos {
     }
 
     private static BufferedImage addBorder(final BufferedImage image) {
-        int borderWidth = Math.round(image.getWidth() / 15);
-        int borderHeight = Math.round(image.getHeight() / 15);
+        int borderWidth = image.getWidth() / 15;
+        int borderHeight = image.getHeight() / 15;
         int borderSize = borderWidth < borderHeight ? borderWidth : borderHeight;
-        int outerBorderSize = Math.round(borderSize / 5);
+        int outerBorderSize = borderSize / 5;
         final BufferedImage border = new BufferedImage(
                 image.getWidth() + 2 * borderSize,
                 image.getHeight() + 2 * borderSize,
