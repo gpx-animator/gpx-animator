@@ -49,13 +49,14 @@ import java.util.TreeMap;
 public class Renderer {
 
     private static final double MS = 1000d;
-    private static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
     private static LinkedList<Double> speedValues = new LinkedList<>();
 
     private final Configuration cfg;
 
     private final List<List<TreeMap<Long, Point2D>>> timePointMapListList = new ArrayList<List<TreeMap<Long, Point2D>>>();
+
+    private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
     private Font font;
     private FontMetrics fontMetrics;
@@ -64,7 +65,6 @@ public class Renderer {
     private double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY, minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
 
     private double speedup;
-
 
     public Renderer(final Configuration cfg) throws UserException {
         this.cfg = cfg;
@@ -482,7 +482,7 @@ public class Renderer {
     }
 
     private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) {
-        final String dateString = DATE_FORMAT.format(new Date(getTime(frame)));
+        final String dateString = dateFormat.format(new Date(getTime(frame)));
         final String latLongString = getLatLonString(marker);
         final String speedString = getSpeedString(marker);
         final Graphics2D graphics = getGraphics(bi);
