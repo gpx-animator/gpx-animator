@@ -67,7 +67,7 @@ public class MainFrame extends JFrame {
     private final JMenu openRecent;
     private final JMenuItem preferencesMenu;
     private final JFileChooser fileChooser = new JFileChooser();
-    private final ActionListener addTrackActionListener;
+    private final transient ActionListener addTrackActionListener;
     private SwingWorker<Void, String> swingWorker;
     private File file;
     private boolean changed;
