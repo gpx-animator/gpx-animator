@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 public class ChangelogDialog extends JDialog {
@@ -66,7 +67,7 @@ public class ChangelogDialog extends JDialog {
         final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         try (final InputStream is = classLoader.getResourceAsStream("CHANGELOG.md")) {
             if (is == null) return null;
-            try (final InputStreamReader isr = new InputStreamReader(is);
+            try (final InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
                  final BufferedReader reader = new BufferedReader(isr)) {
                 return reader.lines().collect(Collectors.joining(System.lineSeparator()));
             }
@@ -77,7 +78,7 @@ public class ChangelogDialog extends JDialog {
         try {
             final String md = readChangelogAsMarkdown();
             return convertMarkdownToHTML(md);
-        } catch (final IOException e) {
+        } catch (final IOException | NullPointerException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(ChangelogDialog.this, "Error loading changelog: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             SwingUtilities.invokeLater(this::closeDialog);

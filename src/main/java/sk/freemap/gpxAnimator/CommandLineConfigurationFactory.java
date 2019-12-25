@@ -19,7 +19,9 @@ import sk.freemap.gpxAnimator.ui.TrackIcon;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +104,7 @@ public final class CommandLineConfigurationFactory {
                             System.out.println("Copyright " + Constants.YEAR + " Martin Ždila, Freemap Slovakia");
                             System.out.println();
                             System.out.println("Usage:");
-                            final PrintWriter pw = new PrintWriter(System.out);
+                            final PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
                             Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
                             pw.flush();
                             System.exit(0);
