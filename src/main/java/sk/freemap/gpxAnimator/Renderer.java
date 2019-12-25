@@ -258,10 +258,10 @@ public class Renderer {
         int realHeight = (int) Math.round(((maxY - minY) * scale));
 
         // align width and height to 2 for videos
-        if (realWidth % 2 == 1 && !userSpecifiedWidth && !toImages) {
+        if (realWidth % 2 != 0 && !userSpecifiedWidth && !toImages) {
             realWidth++;
         }
-        if (realHeight % 2 == 1 && cfg.getHeight() == null && !toImages) {
+        if (realHeight % 2 != 0 && cfg.getHeight() == null && !toImages) {
             realHeight++;
         }
 
