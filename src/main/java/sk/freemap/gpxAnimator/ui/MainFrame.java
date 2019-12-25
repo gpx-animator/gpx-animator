@@ -428,7 +428,7 @@ public class MainFrame extends JFrame {
                 try {
                     cfg = createConfiguration(true, true);
                     if (cfg.getOutput().exists()) {
-                        final String message = String.format("A file with the name \"%s\" already exists.\nDo you really want to overwrite this file?", cfg.getOutput());
+                        final String message = String.format("A file with the name \"%s\" already exists.%nDo you really want to overwrite this file?", cfg.getOutput());
                         final int result = JOptionPane.showConfirmDialog(MainFrame.this, message, "Warning", JOptionPane.YES_NO_OPTION);
                         if (result == JOptionPane.NO_OPTION) {
                             return;
@@ -446,7 +446,7 @@ public class MainFrame extends JFrame {
                         new Renderer(cfg).render(new RenderingContext() {
                             @Override
                             public void setProgress1(final int pct, final String message) {
-                                System.out.printf("[%3d%%] %s\n", pct, message);
+                                System.out.printf("[%3d%%] %s%n", pct, message);
                                 setProgress(pct);
                                 publish(message + " (" + pct + "%)");
                             }

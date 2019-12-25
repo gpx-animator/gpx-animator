@@ -46,7 +46,7 @@ public class Main {
                 new Renderer(configuration).render(new RenderingContext() {
                     @Override
                     public void setProgress1(final int pct, final String message) {
-                        System.out.printf("%03d%% %s\n", pct, message);
+                        System.out.printf("%03d%% %s%n", pct, message);
                     }
 
                     @Override
