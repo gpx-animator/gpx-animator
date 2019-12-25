@@ -66,7 +66,7 @@ public class Configuration {
     private Double minLat;
     private Double maxLat;
 
-    private File photos;
+    private String photoDirectory;
     private Long photoTime;
 
     @XmlElementWrapper
@@ -88,7 +88,7 @@ public class Configuration {
             final Long keepLastFrame, final File output, final String attribution,
             final int fontSize, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
-            final File photos, final Long photoTime,
+            final String photoDirectory, final Long photoTime,
             final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
@@ -116,7 +116,7 @@ public class Configuration {
         this.maxLon = maxLon;
         this.minLat = minLat;
         this.maxLat = maxLat;
-        this.photos = photos;
+        this.photoDirectory = photoDirectory;
         this.photoTime = photoTime;
     }
 
@@ -220,8 +220,8 @@ public class Configuration {
         return maxLat;
     }
 
-    public File getPhotos() {
-        return photos;
+    public String getPhotoDirectory() {
+        return photoDirectory;
     }
 
     public Long getPhotoTime() {
@@ -251,7 +251,7 @@ public class Configuration {
                 + ", fontSize=" + fontSize
                 + ", markerSize=" + markerSize
                 + ", waypointSize=" + waypointSize
-                + ", photos=" + photos
+                + ", photoDirectory=" + photoDirectory
                 + ", photoTime=" + photoTime
                 + ", trackConfigurationList=" + trackConfigurationList
                 + "]";
@@ -283,7 +283,7 @@ public class Configuration {
         private Double maxLon;
         private Double minLat;
         private Double maxLat;
-        private File photos;
+        private String photoDirectory;
         private Long photoTime = 3_000L;
 
         public Configuration build() throws UserException {
@@ -295,7 +295,7 @@ public class Configuration {
                     keepLastFrame, output, attribution,
                     fontSize, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
-                    photos, photoTime,
+                    photoDirectory, photoTime,
 
                     Collections.unmodifiableList(trackConfigurationList)
             );
@@ -422,8 +422,8 @@ public class Configuration {
             return this;
         }
 
-        public Builder photos(final File photos) {
-            this.photos = photos;
+        public Builder photoDirectory(final String photoDirectory) {
+            this.photoDirectory = photoDirectory;
             return this;
         }
 

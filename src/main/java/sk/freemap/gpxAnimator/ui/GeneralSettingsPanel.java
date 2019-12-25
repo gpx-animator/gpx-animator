@@ -664,7 +664,7 @@ abstract class GeneralSettingsPanel extends JPanel {
             }
         };
 
-        photosDirectorySelector.setToolTipText(Option.PHOTOS.getHelp());
+        photosDirectorySelector.setToolTipText(Option.PHOTO_DIR.getHelp());
         final GridBagConstraints gbc_photosDirectorySelector = new GridBagConstraints();
         gbc_photosDirectorySelector.fill = GridBagConstraints.BOTH;
         gbc_photosDirectorySelector.insets = new Insets(0, 0, 5, 0);
@@ -825,7 +825,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         b.fontSize((Integer) fontSizeSpinner.getValue());
         b.markerSize((Double) markerSizeSpinner.getValue());
         b.waypointSize((Double) waypointSizeSpinner.getValue());
-        b.photos(new File(photosDirectorySelector.getFilename()));
+        b.photoDirectory(photosDirectorySelector.getFilename());
         b.photoTime((Long) photoTimeSpinner.getValue());
 
         if (replacePlaceholders) {

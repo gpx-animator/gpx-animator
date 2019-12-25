@@ -146,8 +146,8 @@ public final class CommandLineConfigurationFactory {
                         case OUTPUT:
                             cfg.output(new File(args[++i]));
                             break;
-                        case PHOTOS:
-                            cfg.photos(new File(args[++i]));
+                        case PHOTO_DIR:
+                            cfg.photoDirectory(args[++i]);
                             break;
                         case PHOTO_TIME:
                             cfg.photoTime(Long.parseLong(args[++i]));

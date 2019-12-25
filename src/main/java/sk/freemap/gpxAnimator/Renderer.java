@@ -293,7 +293,7 @@ public class Renderer {
 
         final boolean keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame().longValue() > 0;
 
-        final Photos photos = new Photos(cfg.getPhotos());
+        final Photos photos = new Photos(cfg.getPhotoDirectory());
 
         float skip = -1f;
         for (int frame = 1; frame < frames; frame++) {

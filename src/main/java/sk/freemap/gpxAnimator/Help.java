@@ -52,7 +52,7 @@ public class Help {
         w.writeOptionHelp(Option.MIN_LON, "longitude", false, cfg.getMinLon());
         w.writeOptionHelp(Option.OUTPUT, "output", false, cfg.getOutput());
         w.writeOptionHelp(Option.PHOTO_TIME, "milliseconds", false, cfg.getPhotoTime());
-        w.writeOptionHelp(Option.PHOTOS, "directory", false, cfg.getPhotos());
+        w.writeOptionHelp(Option.PHOTO_DIR, "directory", false, cfg.getPhotoDirectory());
         w.writeOptionHelp(Option.SKIP_IDLE, null, false, cfg.isSkipIdle());
         w.writeOptionHelp(Option.SPEEDUP, "speedup", false, cfg.getSpeedup());
         w.writeOptionHelp(Option.TAIL_DURATION, "time", false, cfg.getTailDuration());

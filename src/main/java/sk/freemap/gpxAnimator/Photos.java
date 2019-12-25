@@ -52,10 +52,11 @@ public class Photos {
 
     private final Map<Long, List<Photo>> photos;
 
-    public Photos(final File directory) {
-        if (directory == null) {
+    public Photos(final String dirname) {
+        if (dirname == null || dirname.isBlank()) {
             photos = new HashMap<>();
         } else {
+            final File directory = new File(dirname);
             if (directory.isDirectory()) {
                 final File[] files = directory.listFiles((dir, name) -> {
                     final String lowerCaseName = name.toLowerCase();
@@ -68,9 +69,7 @@ public class Photos {
                     photos = new HashMap<>();
                 }
             } else {
-                if (!directory.getAbsolutePath().isEmpty()) {
-                    System.err.println(String.format("'%s' is not a directory!", directory));
-                }
+                System.err.println(String.format("'%s' is not a directory!", directory));
                 photos = new HashMap<>();
             }
         }
