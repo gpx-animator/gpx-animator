@@ -14,6 +14,7 @@ Release date: not yet released
 * New installers for Windows, macOS and Linux systems
 * GPX-Animator now uses Gradle to build the project
 * Integrating Spotbugs to search for potential bugs automatically
+* Integrating PMD to search for potential bugs automatically
 * Default Java version for GPX Animator is now 11 LTS
 
 ## Version 1.4
