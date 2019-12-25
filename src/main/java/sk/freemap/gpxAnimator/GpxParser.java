@@ -62,8 +62,8 @@ class GpxParser {
     public static InputStream decompressStream(final InputStream input) throws IOException {
         final PushbackInputStream pb = new PushbackInputStream(input, 2);
         final byte[] signature = new byte[2];
-        pb.read(signature);
-        pb.unread(signature);
+        final int numBytesRead = pb.read(signature);
+        pb.unread(signature, 0, numBytesRead);
         return signature[0] == (byte) 0x1f && signature[1] == (byte) 0x8b ? new GZIPInputStream(pb) : pb;
     }
 
