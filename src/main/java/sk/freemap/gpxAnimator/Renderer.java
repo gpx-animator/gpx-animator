@@ -532,8 +532,6 @@ public class Renderer {
 
         final long t2 = getTime(frame);
 
-        final double markerSize = cfg.getMarkerSize();
-
         final List<TrackConfiguration> trackConfigurationList = cfg.getTrackConfigurationList();
 
         int i = 0;
