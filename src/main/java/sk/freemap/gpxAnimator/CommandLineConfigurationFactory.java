@@ -14,6 +14,7 @@
  */
 package sk.freemap.gpxAnimator;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import sk.freemap.gpxAnimator.ui.TrackIcon;
 
 import java.awt.Color;
@@ -107,7 +108,7 @@ public final class CommandLineConfigurationFactory {
                             final PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
                             Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
                             pw.flush();
-                            System.exit(0);
+                            exit();
                             break;
                         case INPUT:
                             inputGpxList.add(args[++i]);
@@ -213,6 +214,11 @@ public final class CommandLineConfigurationFactory {
         gui = args.length == 0 || forceGui;
 
         configuration = cfg.build();
+    }
+
+    @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit after printing command line help message")
+    private void exit() {
+        System.exit(0);
     }
 
     private void normalizeColors() {

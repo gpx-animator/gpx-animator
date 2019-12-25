@@ -1,5 +1,6 @@
 package sk.freemap.gpxAnimator.ui;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import sk.freemap.gpxAnimator.Configuration;
 import sk.freemap.gpxAnimator.Constants;
 import sk.freemap.gpxAnimator.FileXmlAdapter;
@@ -216,6 +217,7 @@ public class MainFrame extends JFrame {
         final JMenuItem mntmExit = new JMenuItem("Exit");
         mntmExit.addActionListener(new ActionListener() {
             @Override
+            @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request")
             public void actionPerformed(final ActionEvent e) {
                 if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     System.exit(0);
