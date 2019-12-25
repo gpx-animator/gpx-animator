@@ -179,7 +179,6 @@ public class Photos {
 
     public void render(final Long gpsTime, final Configuration cfg, final BufferedImage bi,
                        final FrameWriter frameWriter, final RenderingContext rc, final int pct) {
-        System.out.println("GPS time: " + gpsTime);
         final List<Long> keys = photos.keySet().stream()
                 .filter(photoTime -> gpsTime >= photoTime)
                 .collect(Collectors.toList());
