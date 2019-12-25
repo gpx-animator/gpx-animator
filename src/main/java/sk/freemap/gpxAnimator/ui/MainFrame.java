@@ -56,7 +56,8 @@ public class MainFrame extends JFrame {
     private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
     private static final String TITLE = "GPX Animator " + Constants.VERSION;
     private static final long serialVersionUID = 190371886979948114L;
-    private static int FIXED_TABS = 1; // TODO set to 2 for MapPanel
+    private static final int FIXED_TABS = 1; // TODO set to 2 for MapPanel
+    private final Random random = new Random();
     private final File defaultConfigFile = new File(Preferences.getConfigurationDir()
             + System.getProperty("file.separator") + "defaultConfig.ga.xml");
     private final JPanel contentPane;
@@ -77,7 +78,7 @@ public class MainFrame extends JFrame {
      */
     public MainFrame() {
         addTrackActionListener = new ActionListener() {
-            float hue = new Random().nextFloat();
+            float hue = random.nextFloat();
 
             @Override
             public void actionPerformed(final ActionEvent e) {
