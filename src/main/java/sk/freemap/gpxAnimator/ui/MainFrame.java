@@ -44,7 +44,9 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -305,7 +307,7 @@ public class MainFrame extends JFrame {
                         }
                         rt.exec(new String[]{"sh", "-c", cmd.toString()});
                     }
-                } catch (final Exception exception) {
+                } catch (final IOException | URISyntaxException ex) {
                     JOptionPane.showMessageDialog(
                             null,
                             "I was not able to start a web browser for the FAQ:\n" + url,
