@@ -132,7 +132,9 @@ public class TileCache {
 
                 System.out.println("Error: Failed to read cached tile  " + url + "(" + path + ")");
                 mapTile = null;
-                cacheFile.delete();
+                if (!cacheFile.delete()) {
+                    System.err.println("Can't delete tile cache file: " + cacheFile);
+                }
             }
         }
 
@@ -175,11 +177,15 @@ public class TileCache {
 
         if (result) {
             // Create the cache directory if it doesn't exist
-            File cacheDir = new File(tileCachePath);
+            final File cacheDir = new File(tileCachePath);
             if (cacheDir.exists()) {
                 result = cacheDir.isDirectory();
             } else {
-                cacheDir.mkdirs();
+                if (!cacheDir.mkdirs()) {
+                    System.err.println("Can't create tile cache directory: " + cacheDir);
+                    System.err.println("Fallback to not caching the tiles!");
+                    result = false;
+                }
             }
         }
         return result;
@@ -192,7 +198,9 @@ public class TileCache {
         final Date fileDate = new Date(cacheFile.lastModified());
         long msBetweenDates = new Date().getTime() - fileDate.getTime();
         if ((msBetweenDates) > tileCacheTimeLimit) {
-            cacheFile.delete();
+            if (!cacheFile.delete()) {
+                System.err.println("Can't delete tile cache file: " + cacheFile);
+            }
         }
     }
 
