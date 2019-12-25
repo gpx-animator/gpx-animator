@@ -1,6 +1,9 @@
+import com.github.spotbugs.SpotBugsTask
+
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.0.0'
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id 'com.github.spotbugs' version '3.0.0'
 }
 
 version = '1.5-SNAPSHOT'
@@ -63,3 +66,10 @@ task deleteChangelog(type: Delete) {
 }
 
 clean.dependsOn deleteChangelog
+
+tasks.withType(SpotBugsTask) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
