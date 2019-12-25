@@ -567,6 +567,7 @@ public class MainFrame extends JFrame {
             setConfiguration((Configuration) unmarshaller.unmarshal(file));
             MainFrame.this.file = file;
             addRecentFile(file);
+            changed(false);
         } catch (final JAXBException e1) {
             e1.printStackTrace();
             JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -582,7 +583,12 @@ public class MainFrame extends JFrame {
 
     private void changed(final boolean changed) {
         this.changed = changed;
-        setTitle(TITLE + (changed ? " (*)" : ""));
+        updateTitle();
+    }
+
+    private void updateTitle() {
+        final String filename = file != null ? file.getName() : "[unnamed]";
+        setTitle(TITLE + " - " + filename + (changed ? " (*)" : ""));
     }
 
     private void addTrackSettingsTab(final TrackConfiguration tc) {
@@ -675,6 +681,9 @@ public class MainFrame extends JFrame {
     }
 
     private void loadDefaults() {
+        file = null;
+        changed(false);
+
         if (defaultConfigFile == null || !defaultConfigFile.exists()) {
             try {
                 setConfiguration(Configuration.createBuilder().build());
@@ -683,6 +692,7 @@ public class MainFrame extends JFrame {
                 throw new RuntimeException(e1);
             }
         }
+
         try {
             final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
             final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
