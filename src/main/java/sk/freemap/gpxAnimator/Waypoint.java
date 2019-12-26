@@ -16,6 +16,8 @@ package sk.freemap.gpxAnimator;
 
 public class Waypoint extends LatLon {
 
+    private static final long serialVersionUID = -5247395863022008558L;
+
     private final String name;
 
     public Waypoint(final double lat, final double lon, final long time, final String name) {

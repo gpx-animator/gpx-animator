@@ -16,6 +16,8 @@ import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 
 public class PreferencesDialog extends JDialog {
 
+    private static final long serialVersionUID = -8767146323054030406L;
+
     public PreferencesDialog(final JFrame owner) {
         super(owner, true);
         setTitle("Preferences");

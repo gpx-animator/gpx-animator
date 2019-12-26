@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 
 public class ChangelogDialog extends JDialog {
 
+    private static final long serialVersionUID = 1629914924489696463L;
+
     public ChangelogDialog(final JFrame owner) {
         super(owner, true);
         setTitle("Changelog for GPX Animator " + Constants.VERSION);
