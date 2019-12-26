@@ -32,15 +32,15 @@ public class LatLon implements Serializable {
         this.time = time;
     }
 
-    public double getLat() {
+    public final double getLat() {
         return lat;
     }
 
-    public double getLon() {
+    public final double getLon() {
         return lon;
     }
 
-    public long getTime() {
+    public final long getTime() {
         return time;
     }
 

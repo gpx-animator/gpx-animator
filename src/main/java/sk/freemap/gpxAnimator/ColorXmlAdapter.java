@@ -17,7 +17,7 @@ package sk.freemap.gpxAnimator;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.awt.Color;
 
-public class ColorXmlAdapter extends XmlAdapter<String, Color> {
+public final class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
     @Override
     public Color unmarshal(final String string) throws Exception {

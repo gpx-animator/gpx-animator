@@ -26,46 +26,42 @@ import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.util.zip.GZIPInputStream;
 
-class GpxParser {
+public final class GpxParser {
+
+    private GpxParser() throws InstantiationException {
+        throw new InstantiationException("Utility classes can't be instantiated!");
+    }
 
     static void parseGpx(final File inputGpx, final GpxContentHandler dh) throws UserException {
         final SAXParser saxParser;
         try {
             saxParser = SAXParserFactory.newInstance().newSAXParser();
-        } catch (final ParserConfigurationException e) {
-            throw new RuntimeException("can't create XML parser", e);
-        } catch (final SAXException e) {
+        } catch (final ParserConfigurationException | SAXException e) {
             throw new RuntimeException("can't create XML parser", e);
         }
 
         try {
-            final InputStream is = new FileInputStream(inputGpx);
-            try {
-                final InputStream dis = decompressStream(is);
-                try {
+            try (InputStream is = new FileInputStream(inputGpx)) {
+                try (InputStream dis = decompressStream(is)) {
                     saxParser.parse(dis, dh);
                 } catch (final SAXException e) {
                     throw new UserException("error parsing input GPX file", e);
                 } catch (final RuntimeException e) {
                     throw new RuntimeException("internal error when parsing GPX file", e);
-                } finally {
-                    dis.close();
                 }
-            } finally {
-                is.close();
             }
         } catch (final IOException e) {
             throw new UserException("error reading input file", e);
         }
     }
 
+    @SuppressWarnings("PMD.CloseResource") // The returned stream will be used and closed in a try-with-resources block
     public static InputStream decompressStream(final InputStream input) throws IOException {
-        try (final PushbackInputStream pb = new PushbackInputStream(input, 2)) {
-            final byte[] signature = new byte[2];
-            final int numBytesRead = pb.read(signature);
-            pb.unread(signature, 0, numBytesRead);
-            return signature[0] == (byte) 0x1f && signature[1] == (byte) 0x8b ? new GZIPInputStream(pb) : pb;
-        }
+        final PushbackInputStream pb = new PushbackInputStream(input, 2);
+        final byte[] signature = new byte[2];
+        final int numBytesRead = pb.read(signature);
+        pb.unread(signature, 0, numBytesRead);
+        return signature[0] == (byte) 0x1f && signature[1] == (byte) 0x8b ? new GZIPInputStream(pb) : pb;
     }
 
 }

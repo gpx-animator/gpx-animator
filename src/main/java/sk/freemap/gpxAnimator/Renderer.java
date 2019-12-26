@@ -46,7 +46,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
-public class Renderer {
+public final class Renderer {
 
     private static final double MS = 1000d;
 
@@ -62,7 +62,10 @@ public class Renderer {
     private FontMetrics fontMetrics;
 
     private long minTime = Long.MAX_VALUE;
-    private double minX = Double.POSITIVE_INFINITY, maxX = Double.NEGATIVE_INFINITY, minY = Double.POSITIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
+    private double minX = Double.POSITIVE_INFINITY;
+    private double maxX = Double.NEGATIVE_INFINITY;
+    private double minY = Double.POSITIVE_INFINITY;
+    private double maxY = Double.NEGATIVE_INFINITY;
 
     private double speedup;
 
@@ -131,6 +134,7 @@ public class Renderer {
         return new Color((int) r, (int) g, (int) b, (int) a);
     }
 
+    @SuppressWarnings("checkstyle:MethodLength") // TODO This method needs to be refactored! It is not only too long, it is hard to understand.
     public void render(final RenderingContext rc) throws UserException {
         final List<Long[]> spanList = new ArrayList<Long[]>();
 
@@ -158,7 +162,7 @@ public class Renderer {
                 Long t1 = timePointMap.lastKey() + cfg.getTailDuration();
                 test:
                 { // code in the block merges connected spans; it is currently not important to do this
-                    for (final Iterator<Long[]> iter = spanList.iterator(); iter.hasNext(); ) {
+                    for (final Iterator<Long[]> iter = spanList.iterator(); iter.hasNext();) {
                         final Long[] span = iter.next();
                         if (t0 > span[0] && t1 < span[1]) {
                             // swallowed
@@ -335,7 +339,8 @@ public class Renderer {
             final Color flashbackColor = cfg.getFlashbackColor();
             if (skip > 0f && flashbackColor.getAlpha() > 0 && cfg.getFlashbackDuration() != null && cfg.getFlashbackDuration() > 0) {
                 final Graphics2D g2 = (Graphics2D) bi2.getGraphics();
-                g2.setColor(new Color(flashbackColor.getRed(), flashbackColor.getGreen(), flashbackColor.getBlue(), (int) (flashbackColor.getAlpha() * skip)));
+                g2.setColor(new Color(flashbackColor.getRed(), flashbackColor.getGreen(), flashbackColor.getBlue(),
+                        (int) (flashbackColor.getAlpha() * skip)));
                 g2.fillRect(0, 0, bi2.getWidth(), bi2.getHeight());
                 skip -= 1000f / cfg.getFlashbackDuration() / cfg.getFps();
             }
@@ -391,13 +396,14 @@ public class Renderer {
         if (t2 >= wpMap.firstKey()) {
             for (final Point2D p : wpMap.subMap(wpMap.firstKey(), t2).values()) {
                 g2.setColor(Color.white);
-                final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - waypointSize / 2.0, p.getY() - waypointSize / 2.0, waypointSize, waypointSize);
+                final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - waypointSize / 2.0, p.getY() - waypointSize / 2.0,
+                        waypointSize, waypointSize);
                 g2.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 g2.fill(marker);
                 g2.setColor(Color.black);
                 g2.draw(marker);
 
-                printText(g2, ((NamedPoint) p).name, (float) p.getX() + 8f, (float) p.getY() + 4f);
+                printText(g2, ((NamedPoint) p).getName(), (float) p.getX() + 8f, (float) p.getY() + 4f);
             }
         }
     }
@@ -464,7 +470,7 @@ public class Renderer {
             if (latLon instanceof Waypoint) {
                 final NamedPoint namedPoint = new NamedPoint();
                 namedPoint.setLocation(x, y);
-                namedPoint.name = ((Waypoint) latLon).getName();
+                namedPoint.setName(((Waypoint) latLon).getName());
                 point = namedPoint;
             } else {
                 double speed = calculateSpeed(lastPoint, latLon, time);
@@ -694,7 +700,16 @@ public class Renderer {
 
     private static class NamedPoint extends Point2D.Double {
         private static final long serialVersionUID = 4011941819652468006L;
-        String name;
+
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(final String name) {
+            this.name = name;
+        }
     }
 
 }

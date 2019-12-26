@@ -45,38 +45,32 @@ public class AboutDialog extends JDialog {
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-        {
-            final JEditorPane dtrpngpxNavigator = new JEditorPane();
-            dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-            dtrpngpxNavigator.setEditable(false);
-            dtrpngpxNavigator.setContentType("text/html");
-            dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. " + Constants.VERSION
-                    + "<br/>\n&copy; " + Constants.YEAR + " <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n"
-                    + "<p>GPX Animator generates video from GPX files.</p>"
-                    + "<p>More information can be found at <a href=\"https://gpx-animator.app\">https://gpx-animator.app</a>.</p>\n");
 
-            {
-                final JScrollPane scrollPane = new JScrollPane(dtrpngpxNavigator);
-                contentPanel.add(scrollPane);
+        final JEditorPane dtrpngpxNavigator = new JEditorPane();
+        dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        dtrpngpxNavigator.setEditable(false);
+        dtrpngpxNavigator.setContentType("text/html");
+        dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. " + Constants.VERSION
+                + "<br/>\n&copy; " + Constants.YEAR + " <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n"
+                + "<p>GPX Animator generates video from GPX files.</p>"
+                + "<p>More information can be found at <a href=\"https://gpx-animator.app\">https://gpx-animator.app</a>.</p>\n");
+
+        final JScrollPane scrollPane = new JScrollPane(dtrpngpxNavigator);
+        contentPanel.add(scrollPane);
+
+        final JPanel buttonPane = new JPanel();
+        buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
+        getContentPane().add(buttonPane, BorderLayout.SOUTH);
+
+        final JButton okButton = new JButton("OK");
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                AboutDialog.this.dispose();
             }
-        }
-        {
-            final JPanel buttonPane = new JPanel();
-            buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
-            getContentPane().add(buttonPane, BorderLayout.SOUTH);
-            {
-                final JButton okButton = new JButton("OK");
-                okButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        AboutDialog.this.dispose();
-                    }
-                });
-                okButton.setActionCommand("OK");
-                buttonPane.add(okButton);
-                getRootPane().setDefaultButton(okButton);
-            }
-        }
+        });
+        okButton.setActionCommand("OK");
+        buttonPane.add(okButton);
+        getRootPane().setDefaultButton(okButton);
     }
-
 }

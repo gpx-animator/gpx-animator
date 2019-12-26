@@ -20,13 +20,19 @@ import java.awt.image.RescaleOp;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Map {
+public final class Map {
+
+    private Map() throws InstantiationException {
+        throw new InstantiationException("Utility classes can't be instantiated!");
+    }
 
     private static final Pattern SWITCH_PATTERN = Pattern.compile("\\{switch:([^}]*)\\}");
 
 
+    @SuppressWarnings("checkstyle:ParameterNumber") // TODO This is too much and just a temporary solution not to break the build...
     public static void drawMap(final BufferedImage bi, final String tmsUrlTemplate, final float backgroundMapVisibility, final int zoom,
-                               final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc) throws UserException {
+                               final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc)
+            throws UserException {
 
         final Graphics2D ga = (Graphics2D) bi.getGraphics();
 

@@ -17,9 +17,8 @@ package sk.freemap.gpxAnimator;
 import sk.freemap.gpxAnimator.ui.TrackIcon;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.awt.Color;
 
-public class TrackIconXmlAdapter extends XmlAdapter<String, TrackIcon> {
+public final class TrackIconXmlAdapter extends XmlAdapter<String, TrackIcon> {
 
     @Override
     public TrackIcon unmarshal(final String name) throws Exception {

@@ -24,7 +24,7 @@ import java.io.File;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable, it uses XML transformation
-public class TrackConfiguration {
+public final class TrackConfiguration {
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File inputGpx;
@@ -48,7 +48,9 @@ public class TrackConfiguration {
     }
 
 
-    private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth, final TrackIcon trackIcon) {
+    @SuppressWarnings("checkstyle:ParameterNumber") // TODO This is too much and just a temporary solution not to break the build...
+    private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval,
+                               final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth, final TrackIcon trackIcon) {
         this.inputGpx = inputGpx;
         this.label = label;
         this.color = color;
@@ -100,8 +102,8 @@ public class TrackConfiguration {
         return lineWidth;
     }
 
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName") // This is okay for the builder pattern
-    public static class Builder {
+    @SuppressWarnings({ "PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField" }) // This is okay for the builder pattern
+    public static final class Builder {
 
         private File inputGpx;
         private String label;

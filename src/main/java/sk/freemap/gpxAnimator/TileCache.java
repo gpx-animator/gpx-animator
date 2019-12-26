@@ -42,10 +42,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
-public class TileCache {
+public final class TileCache {
 
-    private static final String cachedFileType = "png";
-    private static final String cachedFileExtension = ".gpxac." + cachedFileType;
+    private TileCache() throws InstantiationException {
+        throw new InstantiationException("Utility classes can't be instantiated!");
+    }
+
+    private static final String CACHED_FILE_TYPE = "png";
+    private static final String CACHED_FILE_EXTENSION = ".gpxac." + CACHED_FILE_TYPE;
     private static MessageDigest messageDigest = null;
 
     //
@@ -71,7 +75,7 @@ public class TileCache {
             if (files != null) {
                 for (File cacheEntry : files) {
                     final String cacheFilename = cacheEntry.getName();
-                    if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(cachedFileExtension))) {
+                    if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(CACHED_FILE_EXTENSION))) {
                         ageCacheFile(cacheEntry, tileCacheTimeLimit);
                     } else {
                         System.err.println("Error: Unknown file in tile cache: " + cacheFilename);
@@ -115,7 +119,7 @@ public class TileCache {
 
     private static BufferedImage cachedGetTile(final String url, final String tileCacheDir, final Long tileCacheTimeLimit) throws UserException {
         BufferedImage mapTile = null;
-        String filename = hashName(url) + cachedFileExtension;
+        String filename = hashName(url) + CACHED_FILE_EXTENSION;
         String path = tileCacheDir + File.separator + filename;
         File cacheFile = new File(path);
 
@@ -145,7 +149,7 @@ public class TileCache {
         if (mapTile == null) {          // Map tile doesn't exist or we could not read it
             mapTile = unCachedGetTile(url);
             try {
-                ImageIO.write(mapTile, cachedFileType, cacheFile);
+                ImageIO.write(mapTile, CACHED_FILE_TYPE, cacheFile);
             } catch (final IOException e) {
                 // Treat as non-fatal. This should revert the behavior to the same
                 // as running without a cache.
@@ -205,9 +209,9 @@ public class TileCache {
 
     private static String hashName(final String url) throws UserException {
         try {
-            if (messageDigest == null)
+            if (messageDigest == null) {
                 messageDigest = MessageDigest.getInstance("SHA-256");
-
+            }
             return bytesToHex(messageDigest.digest(url.getBytes(StandardCharsets.UTF_8)));
         } catch (final NoSuchAlgorithmException e) {
             throw new UserException("error creating hash name " + url, e);

@@ -75,7 +75,8 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner maxLonSpinner;
     private final transient JSpinner minLatSpinner;
 
-    public GeneralSettingsPanel() {
+    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
+    GeneralSettingsPanel() {
         mapTemplateList = readMaps();
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -83,31 +84,41 @@ abstract class GeneralSettingsPanel extends JPanel {
         gridBagLayout.columnWidths = new int[]{91, 100, 0, 0};
         gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 0};
         gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                Double.MIN_VALUE};
         setLayout(gridBagLayout);
 
         final JLabel lblOutput = new JLabel("Output");
-        final GridBagConstraints gbc_lblOutput = new GridBagConstraints();
-        gbc_lblOutput.anchor = GridBagConstraints.EAST;
-        gbc_lblOutput.insets = new Insets(0, 0, 5, 5);
-        gbc_lblOutput.gridx = 0;
-        gbc_lblOutput.gridy = 0;
-        add(lblOutput, gbc_lblOutput);
+        final GridBagConstraints gbcLabelOutput = new GridBagConstraints();
+        gbcLabelOutput.anchor = GridBagConstraints.EAST;
+        gbcLabelOutput.insets = new Insets(0, 0, 5, 5);
+        gbcLabelOutput.gridx = 0;
+        gbcLabelOutput.gridy = 0;
+        add(lblOutput, gbcLabelOutput);
 
         outputFileSelector = new FileSelector(FILES_ONLY) {
             private static final long serialVersionUID = 7372002778976603239L;
 
             @Override
             protected Type configure(final JFileChooser outputFileChooser) {
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Image Frames", "png"));
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("H.264 Encoded Video Files (*.mp4, *.mov, *.mkv)", "mp4", "mov", "mkv"));
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-1 Encoded Video Files (*.mpg)", "mpg"));
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4 Encoded Video Files (*.avi)", "avi"));
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("MS MPEG-4 Encoded Video Files (*.wmv, *.asf)", "wmv", "asf"));
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Theora Encoded Video Files (*.ogv)", "ogv"));
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("FLV Encoded Video Files (*.flv)", "flv"));
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("RV10 Encoded Video Files (*.rm)", "rm"));
+                outputFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
+                outputFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("PNG Image Frames", "png"));
+                outputFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("H.264 Encoded Video Files (*.mp4, *.mov, *.mkv)", "mp4", "mov", "mkv"));
+                outputFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("MPEG-1 Encoded Video Files (*.mpg)", "mpg"));
+                outputFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("MPEG-4 Encoded Video Files (*.avi)", "avi"));
+                outputFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("MS MPEG-4 Encoded Video Files (*.wmv, *.asf)", "wmv", "asf"));
+                outputFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("Theora Encoded Video Files (*.ogv)", "ogv"));
+                outputFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("FLV Encoded Video Files (*.flv)", "flv"));
+                outputFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("RV10 Encoded Video Files (*.rm)", "rm"));
                 return Type.SAVE;
             }
 
@@ -124,12 +135,12 @@ abstract class GeneralSettingsPanel extends JPanel {
         };
 
         outputFileSelector.setToolTipText(Option.OUTPUT.getHelp());
-        final GridBagConstraints gbc_outputFileSelector = new GridBagConstraints();
-        gbc_outputFileSelector.fill = GridBagConstraints.BOTH;
-        gbc_outputFileSelector.insets = new Insets(0, 0, 5, 0);
-        gbc_outputFileSelector.gridx = 1;
-        gbc_outputFileSelector.gridy = 0;
-        add(outputFileSelector, gbc_outputFileSelector);
+        final GridBagConstraints gbcOutputFileSelector = new GridBagConstraints();
+        gbcOutputFileSelector.fill = GridBagConstraints.BOTH;
+        gbcOutputFileSelector.insets = new Insets(0, 0, 5, 0);
+        gbcOutputFileSelector.gridx = 1;
+        gbcOutputFileSelector.gridy = 0;
+        add(outputFileSelector, gbcOutputFileSelector);
 
         final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
             @Override
@@ -140,23 +151,23 @@ abstract class GeneralSettingsPanel extends JPanel {
         outputFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
 
         final JLabel lblWidth = new JLabel("Width");
-        final GridBagConstraints gbc_lblWidth = new GridBagConstraints();
-        gbc_lblWidth.anchor = GridBagConstraints.EAST;
-        gbc_lblWidth.insets = new Insets(0, 0, 5, 5);
-        gbc_lblWidth.gridx = 0;
-        gbc_lblWidth.gridy = 1;
-        add(lblWidth, gbc_lblWidth);
+        final GridBagConstraints gbcLabelWidth = new GridBagConstraints();
+        gbcLabelWidth.anchor = GridBagConstraints.EAST;
+        gbcLabelWidth.insets = new Insets(0, 0, 5, 5);
+        gbcLabelWidth.gridx = 0;
+        gbcLabelWidth.gridy = 1;
+        add(lblWidth, gbcLabelWidth);
 
         widthSpinner = new JSpinner();
         widthSpinner.setToolTipText(Option.WIDTH.getHelp());
         widthSpinner.setModel(new EmptyNullSpinnerModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(10)));
         widthSpinner.setEditor(new EmptyZeroNumberEditor(widthSpinner, Integer.class));
-        final GridBagConstraints gbc_widthSpinner = new GridBagConstraints();
-        gbc_widthSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_widthSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_widthSpinner.gridx = 1;
-        gbc_widthSpinner.gridy = 1;
-        add(widthSpinner, gbc_widthSpinner);
+        final GridBagConstraints gbcWidthSpinner = new GridBagConstraints();
+        gbcWidthSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcWidthSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcWidthSpinner.gridx = 1;
+        gbcWidthSpinner.gridy = 1;
+        add(widthSpinner, gbcWidthSpinner);
         final ChangeListener changeListener = new ChangeListener() {
             @Override
             public void stateChanged(final ChangeEvent e) {
@@ -166,185 +177,185 @@ abstract class GeneralSettingsPanel extends JPanel {
         widthSpinner.addChangeListener(changeListener);
 
         final JLabel lblHeight = new JLabel("Height");
-        final GridBagConstraints gbc_lblHeight = new GridBagConstraints();
-        gbc_lblHeight.anchor = GridBagConstraints.EAST;
-        gbc_lblHeight.insets = new Insets(0, 0, 5, 5);
-        gbc_lblHeight.gridx = 0;
-        gbc_lblHeight.gridy = 2;
-        add(lblHeight, gbc_lblHeight);
+        final GridBagConstraints gbcLabelHeight = new GridBagConstraints();
+        gbcLabelHeight.anchor = GridBagConstraints.EAST;
+        gbcLabelHeight.insets = new Insets(0, 0, 5, 5);
+        gbcLabelHeight.gridx = 0;
+        gbcLabelHeight.gridy = 2;
+        add(lblHeight, gbcLabelHeight);
 
         heightSpinner = new JSpinner();
         heightSpinner.setToolTipText(Option.HEIGHT.getHelp());
         heightSpinner.setModel(new EmptyNullSpinnerModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(10)));
         heightSpinner.setEditor(new EmptyZeroNumberEditor(heightSpinner, Integer.class));
-        final GridBagConstraints gbc_heightSpinner = new GridBagConstraints();
-        gbc_heightSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_heightSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_heightSpinner.gridx = 1;
-        gbc_heightSpinner.gridy = 2;
-        add(heightSpinner, gbc_heightSpinner);
+        final GridBagConstraints gbcHeightSpinner = new GridBagConstraints();
+        gbcHeightSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcHeightSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcHeightSpinner.gridx = 1;
+        gbcHeightSpinner.gridy = 2;
+        add(heightSpinner, gbcHeightSpinner);
         heightSpinner.addChangeListener(changeListener);
 
         final JLabel lblZoom = new JLabel("Zoom");
-        final GridBagConstraints gbc_lblZoom = new GridBagConstraints();
-        gbc_lblZoom.anchor = GridBagConstraints.EAST;
-        gbc_lblZoom.insets = new Insets(0, 0, 5, 5);
-        gbc_lblZoom.gridx = 0;
-        gbc_lblZoom.gridy = 3;
-        add(lblZoom, gbc_lblZoom);
+        final GridBagConstraints gbcLabelZoom = new GridBagConstraints();
+        gbcLabelZoom.anchor = GridBagConstraints.EAST;
+        gbcLabelZoom.insets = new Insets(0, 0, 5, 5);
+        gbcLabelZoom.gridx = 0;
+        gbcLabelZoom.gridy = 3;
+        add(lblZoom, gbcLabelZoom);
 
         zoomSpinner = new JSpinner();
         zoomSpinner.setToolTipText(Option.ZOOM.getHelp());
         zoomSpinner.setModel(new EmptyNullSpinnerModel(Integer.valueOf(1), Integer.valueOf(0), Integer.valueOf(18), Integer.valueOf(1)));
         zoomSpinner.setEditor(new EmptyZeroNumberEditor(zoomSpinner, Integer.class));
-        final GridBagConstraints gbc_zoomSpinner = new GridBagConstraints();
-        gbc_zoomSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_zoomSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_zoomSpinner.gridx = 1;
-        gbc_zoomSpinner.gridy = 3;
-        add(zoomSpinner, gbc_zoomSpinner);
+        final GridBagConstraints gbcZoomSpinner = new GridBagConstraints();
+        gbcZoomSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcZoomSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcZoomSpinner.gridx = 1;
+        gbcZoomSpinner.gridy = 3;
+        add(zoomSpinner, gbcZoomSpinner);
         zoomSpinner.addChangeListener(changeListener);
 
         final JLabel lblBoundingBox = new JLabel("Bounding Box");
-        final GridBagConstraints gbc_lblBoundingBox = new GridBagConstraints();
-        gbc_lblBoundingBox.anchor = GridBagConstraints.EAST;
-        gbc_lblBoundingBox.insets = new Insets(0, 0, 5, 5);
-        gbc_lblBoundingBox.gridx = 0;
-        gbc_lblBoundingBox.gridy = 4;
-        add(lblBoundingBox, gbc_lblBoundingBox);
+        final GridBagConstraints gbcLabelBoundingBox = new GridBagConstraints();
+        gbcLabelBoundingBox.anchor = GridBagConstraints.EAST;
+        gbcLabelBoundingBox.insets = new Insets(0, 0, 5, 5);
+        gbcLabelBoundingBox.gridx = 0;
+        gbcLabelBoundingBox.gridy = 4;
+        add(lblBoundingBox, gbcLabelBoundingBox);
 
         final JPanel panel = new JPanel();
-        final GridBagConstraints gbc_panel = new GridBagConstraints();
-        gbc_panel.fill = GridBagConstraints.HORIZONTAL;
-        gbc_panel.insets = new Insets(0, 0, 5, 0);
-        gbc_panel.gridx = 1;
-        gbc_panel.gridy = 4;
-        add(panel, gbc_panel);
-        final GridBagLayout gbl_panel = new GridBagLayout();
-        gbl_panel.columnWidths = new int[]{0, 40, 40, 40, 0};
-        gbl_panel.rowHeights = new int[]{20, 0, 0, 0};
-        gbl_panel.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-        gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-        panel.setLayout(gbl_panel);
+        final GridBagConstraints gbcPanel = new GridBagConstraints();
+        gbcPanel.fill = GridBagConstraints.HORIZONTAL;
+        gbcPanel.insets = new Insets(0, 0, 5, 0);
+        gbcPanel.gridx = 1;
+        gbcPanel.gridy = 4;
+        add(panel, gbcPanel);
+        final GridBagLayout gblPanel = new GridBagLayout();
+        gblPanel.columnWidths = new int[]{0, 40, 40, 40, 0};
+        gblPanel.rowHeights = new int[]{20, 0, 0, 0};
+        gblPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+        gblPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+        panel.setLayout(gblPanel);
 
         final JLabel lblMaxLat = new JLabel("Max Lat");
-        final GridBagConstraints gbc_lblMaxLat = new GridBagConstraints();
-        gbc_lblMaxLat.insets = new Insets(0, 0, 5, 5);
-        gbc_lblMaxLat.anchor = GridBagConstraints.EAST;
-        gbc_lblMaxLat.gridx = 1;
-        gbc_lblMaxLat.gridy = 0;
-        panel.add(lblMaxLat, gbc_lblMaxLat);
+        final GridBagConstraints gbcLabelMaxLat = new GridBagConstraints();
+        gbcLabelMaxLat.insets = new Insets(0, 0, 5, 5);
+        gbcLabelMaxLat.anchor = GridBagConstraints.EAST;
+        gbcLabelMaxLat.gridx = 1;
+        gbcLabelMaxLat.gridy = 0;
+        panel.add(lblMaxLat, gbcLabelMaxLat);
 
         final JLabel lblMinLon = new JLabel("Min Lon");
-        final GridBagConstraints gbc_lblMinLon = new GridBagConstraints();
-        gbc_lblMinLon.insets = new Insets(0, 0, 5, 5);
-        gbc_lblMinLon.anchor = GridBagConstraints.EAST;
-        gbc_lblMinLon.gridx = 0;
-        gbc_lblMinLon.gridy = 1;
-        panel.add(lblMinLon, gbc_lblMinLon);
+        final GridBagConstraints gbcLabelMinLon = new GridBagConstraints();
+        gbcLabelMinLon.insets = new Insets(0, 0, 5, 5);
+        gbcLabelMinLon.anchor = GridBagConstraints.EAST;
+        gbcLabelMinLon.gridx = 0;
+        gbcLabelMinLon.gridy = 1;
+        panel.add(lblMinLon, gbcLabelMinLon);
 
         minLonSpinner = new JSpinner();
         minLonSpinner.setToolTipText(Option.MIN_LON.getHelp());
         minLonSpinner.setEditor(new EmptyZeroNumberEditor(minLonSpinner, Double.class));
         minLonSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-180.0), Double.valueOf(180.0), Double.valueOf(0.1), false));
-        final GridBagConstraints gbc_minLonSpinner = new GridBagConstraints();
-        gbc_minLonSpinner.insets = new Insets(0, 0, 5, 5);
-        gbc_minLonSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_minLonSpinner.gridx = 1;
-        gbc_minLonSpinner.gridy = 1;
-        panel.add(minLonSpinner, gbc_minLonSpinner);
+        final GridBagConstraints gbcMinLonSpinner = new GridBagConstraints();
+        gbcMinLonSpinner.insets = new Insets(0, 0, 5, 5);
+        gbcMinLonSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcMinLonSpinner.gridx = 1;
+        gbcMinLonSpinner.gridy = 1;
+        panel.add(minLonSpinner, gbcMinLonSpinner);
         minLonSpinner.addChangeListener(changeListener);
 
         maxLatSpinner = new JSpinner();
         maxLatSpinner.setToolTipText(Option.MAX_LAT.getHelp());
         maxLatSpinner.setEditor(new EmptyZeroNumberEditor(maxLatSpinner, Double.class));
         maxLatSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-90.0), Double.valueOf(90.0), Double.valueOf(0.1), false));
-        final GridBagConstraints gbc_maxLatSpinner = new GridBagConstraints();
-        gbc_maxLatSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_maxLatSpinner.anchor = GridBagConstraints.NORTH;
-        gbc_maxLatSpinner.insets = new Insets(0, 0, 5, 5);
-        gbc_maxLatSpinner.gridx = 2;
-        gbc_maxLatSpinner.gridy = 0;
-        panel.add(maxLatSpinner, gbc_maxLatSpinner);
+        final GridBagConstraints gbcMaxLatSpinner = new GridBagConstraints();
+        gbcMaxLatSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcMaxLatSpinner.anchor = GridBagConstraints.NORTH;
+        gbcMaxLatSpinner.insets = new Insets(0, 0, 5, 5);
+        gbcMaxLatSpinner.gridx = 2;
+        gbcMaxLatSpinner.gridy = 0;
+        panel.add(maxLatSpinner, gbcMaxLatSpinner);
         maxLatSpinner.addChangeListener(changeListener);
 
         final JLabel lblMaxLon = new JLabel("Max Lon");
-        final GridBagConstraints gbc_lblMaxLon = new GridBagConstraints();
-        gbc_lblMaxLon.insets = new Insets(0, 0, 5, 5);
-        gbc_lblMaxLon.anchor = GridBagConstraints.EAST;
-        gbc_lblMaxLon.gridx = 2;
-        gbc_lblMaxLon.gridy = 1;
-        panel.add(lblMaxLon, gbc_lblMaxLon);
+        final GridBagConstraints gbcLabelMaxLon = new GridBagConstraints();
+        gbcLabelMaxLon.insets = new Insets(0, 0, 5, 5);
+        gbcLabelMaxLon.anchor = GridBagConstraints.EAST;
+        gbcLabelMaxLon.gridx = 2;
+        gbcLabelMaxLon.gridy = 1;
+        panel.add(lblMaxLon, gbcLabelMaxLon);
 
         final JLabel lblMinLat = new JLabel("Min Lat");
-        final GridBagConstraints gbc_lblMinLat = new GridBagConstraints();
-        gbc_lblMinLat.insets = new Insets(0, 0, 0, 5);
-        gbc_lblMinLat.anchor = GridBagConstraints.EAST;
-        gbc_lblMinLat.gridx = 1;
-        gbc_lblMinLat.gridy = 2;
-        panel.add(lblMinLat, gbc_lblMinLat);
+        final GridBagConstraints gbcLabelMinLat = new GridBagConstraints();
+        gbcLabelMinLat.insets = new Insets(0, 0, 0, 5);
+        gbcLabelMinLat.anchor = GridBagConstraints.EAST;
+        gbcLabelMinLat.gridx = 1;
+        gbcLabelMinLat.gridy = 2;
+        panel.add(lblMinLat, gbcLabelMinLat);
 
         minLatSpinner = new JSpinner();
         minLatSpinner.setToolTipText(Option.MIN_LAT.getHelp());
         minLatSpinner.setEditor(new EmptyZeroNumberEditor(minLatSpinner, Double.class));
         minLatSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-90.0), Double.valueOf(90.0), Double.valueOf(0.1), false));
-        final GridBagConstraints gbc_minLatSpinner = new GridBagConstraints();
-        gbc_minLatSpinner.insets = new Insets(0, 0, 0, 5);
-        gbc_minLatSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_minLatSpinner.gridx = 2;
-        gbc_minLatSpinner.gridy = 2;
-        panel.add(minLatSpinner, gbc_minLatSpinner);
+        final GridBagConstraints gbcMinLatSpinner = new GridBagConstraints();
+        gbcMinLatSpinner.insets = new Insets(0, 0, 0, 5);
+        gbcMinLatSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcMinLatSpinner.gridx = 2;
+        gbcMinLatSpinner.gridy = 2;
+        panel.add(minLatSpinner, gbcMinLatSpinner);
         minLatSpinner.addChangeListener(changeListener);
 
         maxLonSpinner = new JSpinner();
         maxLonSpinner.setToolTipText(Option.MAX_LON.getHelp());
         maxLonSpinner.setEditor(new EmptyZeroNumberEditor(maxLonSpinner, Double.class));
         maxLonSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-180.0), Double.valueOf(180.0), Double.valueOf(0.1), false));
-        final GridBagConstraints gbc_maxLonSpinner = new GridBagConstraints();
-        gbc_maxLonSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_maxLonSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_maxLonSpinner.gridx = 3;
-        gbc_maxLonSpinner.gridy = 1;
-        panel.add(maxLonSpinner, gbc_maxLonSpinner);
+        final GridBagConstraints gbcMaxLonSpinner = new GridBagConstraints();
+        gbcMaxLonSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcMaxLonSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcMaxLonSpinner.gridx = 3;
+        gbcMaxLonSpinner.gridy = 1;
+        panel.add(maxLonSpinner, gbcMaxLonSpinner);
         maxLonSpinner.addChangeListener(changeListener);
 
         final JLabel lblMargin = new JLabel("Margin");
-        final GridBagConstraints gbc_lblMargin = new GridBagConstraints();
-        gbc_lblMargin.anchor = GridBagConstraints.EAST;
-        gbc_lblMargin.insets = new Insets(0, 0, 5, 5);
-        gbc_lblMargin.gridx = 0;
-        gbc_lblMargin.gridy = 5;
-        add(lblMargin, gbc_lblMargin);
+        final GridBagConstraints gbcLabelMargin = new GridBagConstraints();
+        gbcLabelMargin.anchor = GridBagConstraints.EAST;
+        gbcLabelMargin.insets = new Insets(0, 0, 5, 5);
+        gbcLabelMargin.gridx = 0;
+        gbcLabelMargin.gridy = 5;
+        add(lblMargin, gbcLabelMargin);
 
         marginSpinner = new JSpinner();
         marginSpinner.setToolTipText(Option.MARGIN.getHelp());
         marginSpinner.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
-        final GridBagConstraints gbc_marginSpinner = new GridBagConstraints();
-        gbc_marginSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_marginSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_marginSpinner.gridx = 1;
-        gbc_marginSpinner.gridy = 5;
-        add(marginSpinner, gbc_marginSpinner);
+        final GridBagConstraints gbcMarginSpinner = new GridBagConstraints();
+        gbcMarginSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcMarginSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcMarginSpinner.gridx = 1;
+        gbcMarginSpinner.gridy = 5;
+        add(marginSpinner, gbcMarginSpinner);
         marginSpinner.addChangeListener(changeListener);
 
         final JLabel lblSpeedup = new JLabel("Speedup");
-        final GridBagConstraints gbc_lblSpeedup = new GridBagConstraints();
-        gbc_lblSpeedup.anchor = GridBagConstraints.EAST;
-        gbc_lblSpeedup.insets = new Insets(0, 0, 5, 5);
-        gbc_lblSpeedup.gridx = 0;
-        gbc_lblSpeedup.gridy = 6;
-        add(lblSpeedup, gbc_lblSpeedup);
+        final GridBagConstraints gbcLabelSpeedup = new GridBagConstraints();
+        gbcLabelSpeedup.anchor = GridBagConstraints.EAST;
+        gbcLabelSpeedup.insets = new Insets(0, 0, 5, 5);
+        gbcLabelSpeedup.gridx = 0;
+        gbcLabelSpeedup.gridy = 6;
+        add(lblSpeedup, gbcLabelSpeedup);
 
         speedupSpinner = new JSpinner();
         speedupSpinner.setToolTipText(Option.SPEEDUP.getHelp());
         speedupSpinner.setModel(new EmptyNullSpinnerModel(Double.valueOf(0), Double.valueOf(0), null, Double.valueOf(1)));
         speedupSpinner.setEditor(new EmptyZeroNumberEditor(speedupSpinner, Double.class));
-        final GridBagConstraints gbc_speedupSpinner = new GridBagConstraints();
-        gbc_speedupSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_speedupSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_speedupSpinner.gridx = 1;
-        gbc_speedupSpinner.gridy = 6;
-        add(speedupSpinner, gbc_speedupSpinner);
+        final GridBagConstraints gbcSpeedupSpinner = new GridBagConstraints();
+        gbcSpeedupSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcSpeedupSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcSpeedupSpinner.gridx = 1;
+        gbcSpeedupSpinner.gridy = 6;
+        add(speedupSpinner, gbcSpeedupSpinner);
 
         speedupSpinner.addChangeListener(new ChangeListener() {
             @Override
@@ -359,23 +370,23 @@ abstract class GeneralSettingsPanel extends JPanel {
         speedupSpinner.addChangeListener(changeListener);
 
         final JLabel lblTotalTime = new JLabel("Total Time");
-        final GridBagConstraints gbc_lblTotalTime = new GridBagConstraints();
-        gbc_lblTotalTime.anchor = GridBagConstraints.EAST;
-        gbc_lblTotalTime.insets = new Insets(0, 0, 5, 5);
-        gbc_lblTotalTime.gridx = 0;
-        gbc_lblTotalTime.gridy = 7;
-        add(lblTotalTime, gbc_lblTotalTime);
+        final GridBagConstraints gbcLabelTotalTime = new GridBagConstraints();
+        gbcLabelTotalTime.anchor = GridBagConstraints.EAST;
+        gbcLabelTotalTime.insets = new Insets(0, 0, 5, 5);
+        gbcLabelTotalTime.gridx = 0;
+        gbcLabelTotalTime.gridy = 7;
+        add(lblTotalTime, gbcLabelTotalTime);
 
         totalTimeSpinner = new JSpinner();
         totalTimeSpinner.setToolTipText(Option.TOTAL_TIME.getHelp());
         totalTimeSpinner.setModel(new DurationSpinnerModel());
         totalTimeSpinner.setEditor(new DurationEditor(totalTimeSpinner));
-        final GridBagConstraints gbc_totalTimeSpinner = new GridBagConstraints();
-        gbc_totalTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_totalTimeSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_totalTimeSpinner.gridx = 1;
-        gbc_totalTimeSpinner.gridy = 7;
-        add(totalTimeSpinner, gbc_totalTimeSpinner);
+        final GridBagConstraints gbcTotalTimeSpinner = new GridBagConstraints();
+        gbcTotalTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcTotalTimeSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcTotalTimeSpinner.gridx = 1;
+        gbcTotalTimeSpinner.gridy = 7;
+        add(totalTimeSpinner, gbcTotalTimeSpinner);
 
         totalTimeSpinner.addChangeListener(new ChangeListener() {
             @Override
@@ -390,150 +401,150 @@ abstract class GeneralSettingsPanel extends JPanel {
         totalTimeSpinner.addChangeListener(changeListener);
 
         final JLabel lblMarkerSize = new JLabel("Marker Size");
-        final GridBagConstraints gbc_lblMarkerSize = new GridBagConstraints();
-        gbc_lblMarkerSize.anchor = GridBagConstraints.EAST;
-        gbc_lblMarkerSize.insets = new Insets(0, 0, 5, 5);
-        gbc_lblMarkerSize.gridx = 0;
-        gbc_lblMarkerSize.gridy = 8;
-        add(lblMarkerSize, gbc_lblMarkerSize);
+        final GridBagConstraints gbcLabelMarkerSize = new GridBagConstraints();
+        gbcLabelMarkerSize.anchor = GridBagConstraints.EAST;
+        gbcLabelMarkerSize.insets = new Insets(0, 0, 5, 5);
+        gbcLabelMarkerSize.gridx = 0;
+        gbcLabelMarkerSize.gridy = 8;
+        add(lblMarkerSize, gbcLabelMarkerSize);
 
         markerSizeSpinner = new JSpinner();
         markerSizeSpinner.setToolTipText(Option.MARKER_SIZE.getHelp());
         markerSizeSpinner.setEditor(new EmptyZeroNumberEditor(markerSizeSpinner, Double.class));
         markerSizeSpinner.setModel(new EmptyNullSpinnerModel(Double.valueOf(6.0), Double.valueOf(0.0), null, Double.valueOf(1.0)));
-        final GridBagConstraints gbc_markerSizeSpinner = new GridBagConstraints();
-        gbc_markerSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_markerSizeSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_markerSizeSpinner.gridx = 1;
-        gbc_markerSizeSpinner.gridy = 8;
-        add(markerSizeSpinner, gbc_markerSizeSpinner);
+        final GridBagConstraints gbcMarkerSizeSpinner = new GridBagConstraints();
+        gbcMarkerSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcMarkerSizeSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcMarkerSizeSpinner.gridx = 1;
+        gbcMarkerSizeSpinner.gridy = 8;
+        add(markerSizeSpinner, gbcMarkerSizeSpinner);
         markerSizeSpinner.addChangeListener(changeListener);
 
         final JLabel lblWaypointSize = new JLabel("Waypoint Size");
-        final GridBagConstraints gbc_lblWaypointSize = new GridBagConstraints();
-        gbc_lblWaypointSize.anchor = GridBagConstraints.EAST;
-        gbc_lblWaypointSize.insets = new Insets(0, 0, 5, 5);
-        gbc_lblWaypointSize.gridx = 0;
-        gbc_lblWaypointSize.gridy = 9;
-        add(lblWaypointSize, gbc_lblWaypointSize);
+        final GridBagConstraints gbcLabelWaypointSize = new GridBagConstraints();
+        gbcLabelWaypointSize.anchor = GridBagConstraints.EAST;
+        gbcLabelWaypointSize.insets = new Insets(0, 0, 5, 5);
+        gbcLabelWaypointSize.gridx = 0;
+        gbcLabelWaypointSize.gridy = 9;
+        add(lblWaypointSize, gbcLabelWaypointSize);
 
         waypointSizeSpinner = new JSpinner();
         waypointSizeSpinner.setToolTipText(Option.WAYPOINT_SIZE.getHelp());
         waypointSizeSpinner.setEditor(new EmptyZeroNumberEditor(waypointSizeSpinner, Double.class));
         waypointSizeSpinner.setModel(new EmptyNullSpinnerModel(Double.valueOf(1.0), Double.valueOf(0.0), null, Double.valueOf(1.0)));
-        final GridBagConstraints gbc_waypointSizeSpinner = new GridBagConstraints();
-        gbc_waypointSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_waypointSizeSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_waypointSizeSpinner.gridx = 1;
-        gbc_waypointSizeSpinner.gridy = 9;
-        add(waypointSizeSpinner, gbc_waypointSizeSpinner);
+        final GridBagConstraints gbcWaypointSizeSpinner = new GridBagConstraints();
+        gbcWaypointSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcWaypointSizeSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcWaypointSizeSpinner.gridx = 1;
+        gbcWaypointSizeSpinner.gridy = 9;
+        add(waypointSizeSpinner, gbcWaypointSizeSpinner);
         waypointSizeSpinner.addChangeListener(changeListener);
 
         final JLabel lblTailColor = new JLabel("Tail Color");
-        final GridBagConstraints gbc_lblTailColor = new GridBagConstraints();
-        gbc_lblTailColor.anchor = GridBagConstraints.EAST;
-        gbc_lblTailColor.insets = new Insets(0, 0, 5, 5);
-        gbc_lblTailColor.gridx = 0;
-        gbc_lblTailColor.gridy = 10;
-        add(lblTailColor, gbc_lblTailColor);
+        final GridBagConstraints gbcLabelTailColor = new GridBagConstraints();
+        gbcLabelTailColor.anchor = GridBagConstraints.EAST;
+        gbcLabelTailColor.insets = new Insets(0, 0, 5, 5);
+        gbcLabelTailColor.gridx = 0;
+        gbcLabelTailColor.gridy = 10;
+        add(lblTailColor, gbcLabelTailColor);
 
         tailColorSelector = new ColorSelector();
         tailColorSelector.setToolTipText(Option.TAIL_COLOR.getHelp());
-        final GridBagConstraints gbc_tailColorSelector = new GridBagConstraints();
-        gbc_tailColorSelector.fill = GridBagConstraints.BOTH;
-        gbc_tailColorSelector.insets = new Insets(0, 0, 5, 0);
-        gbc_tailColorSelector.gridx = 1;
-        gbc_tailColorSelector.gridy = 10;
-        add(tailColorSelector, gbc_tailColorSelector);
+        final GridBagConstraints gbcTailColorSelector = new GridBagConstraints();
+        gbcTailColorSelector.fill = GridBagConstraints.BOTH;
+        gbcTailColorSelector.insets = new Insets(0, 0, 5, 0);
+        gbcTailColorSelector.gridx = 1;
+        gbcTailColorSelector.gridy = 10;
+        add(tailColorSelector, gbcTailColorSelector);
         tailColorSelector.addPropertyChangeListener("tail-color", propertyChangeListener);
 
         final JLabel lblTailDuration = new JLabel("Tail Duration");
-        final GridBagConstraints gbc_lblTailDuration = new GridBagConstraints();
-        gbc_lblTailDuration.anchor = GridBagConstraints.EAST;
-        gbc_lblTailDuration.insets = new Insets(0, 0, 5, 5);
-        gbc_lblTailDuration.gridx = 0;
-        gbc_lblTailDuration.gridy = 11;
-        add(lblTailDuration, gbc_lblTailDuration);
+        final GridBagConstraints gbcLabelTailDuration = new GridBagConstraints();
+        gbcLabelTailDuration.anchor = GridBagConstraints.EAST;
+        gbcLabelTailDuration.insets = new Insets(0, 0, 5, 5);
+        gbcLabelTailDuration.gridx = 0;
+        gbcLabelTailDuration.gridy = 11;
+        add(lblTailDuration, gbcLabelTailDuration);
 
         tailDurationSpinner = new JSpinner();
         tailDurationSpinner.setToolTipText(Option.TAIL_DURATION.getHelp());
         tailDurationSpinner.setModel(new DurationSpinnerModel());
         tailDurationSpinner.setEditor(new DurationEditor(tailDurationSpinner));
-        final GridBagConstraints gbc_tailDurationSpinner = new GridBagConstraints();
-        gbc_tailDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_tailDurationSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_tailDurationSpinner.gridx = 1;
-        gbc_tailDurationSpinner.gridy = 11;
-        add(tailDurationSpinner, gbc_tailDurationSpinner);
+        final GridBagConstraints gbcTailDurationSpinner = new GridBagConstraints();
+        gbcTailDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcTailDurationSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcTailDurationSpinner.gridx = 1;
+        gbcTailDurationSpinner.gridy = 11;
+        add(tailDurationSpinner, gbcTailDurationSpinner);
         tailDurationSpinner.addChangeListener(changeListener);
 
         final JLabel lblFps = new JLabel("FPS");
-        final GridBagConstraints gbc_lblFps = new GridBagConstraints();
-        gbc_lblFps.anchor = GridBagConstraints.EAST;
-        gbc_lblFps.insets = new Insets(0, 0, 5, 5);
-        gbc_lblFps.gridx = 0;
-        gbc_lblFps.gridy = 12;
-        add(lblFps, gbc_lblFps);
+        final GridBagConstraints gbcLabelFps = new GridBagConstraints();
+        gbcLabelFps.anchor = GridBagConstraints.EAST;
+        gbcLabelFps.insets = new Insets(0, 0, 5, 5);
+        gbcLabelFps.gridx = 0;
+        gbcLabelFps.gridy = 12;
+        add(lblFps, gbcLabelFps);
 
         fpsSpinner = new JSpinner();
         fpsSpinner.setToolTipText(Option.FPS.getHelp());
         fpsSpinner.setModel(new SpinnerNumberModel(Double.valueOf(0.1), Double.valueOf(0.1), null, Double.valueOf(1)));
-        final GridBagConstraints gbc_fpsSpinner = new GridBagConstraints();
-        gbc_fpsSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_fpsSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_fpsSpinner.gridx = 1;
-        gbc_fpsSpinner.gridy = 12;
-        add(fpsSpinner, gbc_fpsSpinner);
+        final GridBagConstraints gbcFpsSpinner = new GridBagConstraints();
+        gbcFpsSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcFpsSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcFpsSpinner.gridx = 1;
+        gbcFpsSpinner.gridy = 12;
+        add(fpsSpinner, gbcFpsSpinner);
         fpsSpinner.addChangeListener(changeListener);
 
         final JLabel lblTmsUrlTemplate = new JLabel("Background Map");
-        final GridBagConstraints gbc_lblTmsUrlTemplate = new GridBagConstraints();
-        gbc_lblTmsUrlTemplate.anchor = GridBagConstraints.EAST;
-        gbc_lblTmsUrlTemplate.insets = new Insets(0, 0, 5, 5);
-        gbc_lblTmsUrlTemplate.gridx = 0;
-        gbc_lblTmsUrlTemplate.gridy = 13;
-        add(lblTmsUrlTemplate, gbc_lblTmsUrlTemplate);
+        final GridBagConstraints gbcLabelTmsUrlTemplate = new GridBagConstraints();
+        gbcLabelTmsUrlTemplate.anchor = GridBagConstraints.EAST;
+        gbcLabelTmsUrlTemplate.insets = new Insets(0, 0, 5, 5);
+        gbcLabelTmsUrlTemplate.gridx = 0;
+        gbcLabelTmsUrlTemplate.gridy = 13;
+        add(lblTmsUrlTemplate, gbcLabelTmsUrlTemplate);
 
         tmsUrlTemplateComboBox = new JComboBox<MapTemplate>();
         tmsUrlTemplateComboBox.setToolTipText(Option.TMS_URL_TEMPLATE.getHelp());
         tmsUrlTemplateComboBox.setEditable(true);
         tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<MapTemplate>(mapTemplateList.toArray(new MapTemplate[mapTemplateList.size()])));
-        final GridBagConstraints gbc_tmsUrlTemplateComboBox = new GridBagConstraints();
-        gbc_tmsUrlTemplateComboBox.fill = GridBagConstraints.HORIZONTAL;
-        gbc_tmsUrlTemplateComboBox.insets = new Insets(0, 0, 5, 0);
-        gbc_tmsUrlTemplateComboBox.gridx = 1;
-        gbc_tmsUrlTemplateComboBox.gridy = 13;
-        add(tmsUrlTemplateComboBox, gbc_tmsUrlTemplateComboBox);
+        final GridBagConstraints gbcTmsUrlTemplateComboBox = new GridBagConstraints();
+        gbcTmsUrlTemplateComboBox.fill = GridBagConstraints.HORIZONTAL;
+        gbcTmsUrlTemplateComboBox.insets = new Insets(0, 0, 5, 0);
+        gbcTmsUrlTemplateComboBox.gridx = 1;
+        gbcTmsUrlTemplateComboBox.gridy = 13;
+        add(tmsUrlTemplateComboBox, gbcTmsUrlTemplateComboBox);
         tmsUrlTemplateComboBox.setPreferredSize(new Dimension(10, tmsUrlTemplateComboBox.getPreferredSize().height));
 
         final JLabel lblAttribution = new JLabel("Attribution");
-        final GridBagConstraints gbc_lblAttribution = new GridBagConstraints();
-        gbc_lblAttribution.anchor = GridBagConstraints.EAST;
-        gbc_lblAttribution.insets = new Insets(0, 0, 5, 5);
-        gbc_lblAttribution.gridx = 0;
-        gbc_lblAttribution.gridy = 14;
-        add(lblAttribution, gbc_lblAttribution);
+        final GridBagConstraints gbcLabelAttribution = new GridBagConstraints();
+        gbcLabelAttribution.anchor = GridBagConstraints.EAST;
+        gbcLabelAttribution.insets = new Insets(0, 0, 5, 5);
+        gbcLabelAttribution.gridx = 0;
+        gbcLabelAttribution.gridy = 14;
+        add(lblAttribution, gbcLabelAttribution);
 
         final JScrollPane scrollPane = new JScrollPane();
         scrollPane.setPreferredSize(new Dimension(3, 50));
-        final GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-        gbc_scrollPane.fill = GridBagConstraints.BOTH;
-        gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-        gbc_scrollPane.gridx = 1;
-        gbc_scrollPane.gridy = 14;
-        add(scrollPane, gbc_scrollPane);
+        final GridBagConstraints gbcScrollPane = new GridBagConstraints();
+        gbcScrollPane.fill = GridBagConstraints.BOTH;
+        gbcScrollPane.insets = new Insets(0, 0, 5, 0);
+        gbcScrollPane.gridx = 1;
+        gbcScrollPane.gridy = 14;
+        add(scrollPane, gbcScrollPane);
 
         attributionTextArea = new JTextArea();
         attributionTextArea.setToolTipText(Option.ATTRIBUTION.getHelp());
         scrollPane.setViewportView(attributionTextArea);
 
         final JLabel lblVisibility = new JLabel("Map Visibility");
-        final GridBagConstraints gbc_lblVisibility = new GridBagConstraints();
-        gbc_lblVisibility.anchor = GridBagConstraints.EAST;
-        gbc_lblVisibility.insets = new Insets(0, 0, 5, 5);
-        gbc_lblVisibility.gridx = 0;
-        gbc_lblVisibility.gridy = 15;
-        add(lblVisibility, gbc_lblVisibility);
+        final GridBagConstraints gbcLabelVisibility = new GridBagConstraints();
+        gbcLabelVisibility.anchor = GridBagConstraints.EAST;
+        gbcLabelVisibility.insets = new Insets(0, 0, 5, 5);
+        gbcLabelVisibility.gridx = 0;
+        gbcLabelVisibility.gridy = 15;
+        add(lblVisibility, gbcLabelVisibility);
 
         backgroundMapVisibilitySlider = new JSlider();
         backgroundMapVisibilitySlider.setMinorTickSpacing(5);
@@ -541,50 +552,50 @@ abstract class GeneralSettingsPanel extends JPanel {
         backgroundMapVisibilitySlider.setMajorTickSpacing(10);
         backgroundMapVisibilitySlider.setPaintLabels(true);
         backgroundMapVisibilitySlider.setToolTipText(Option.BACKGROUND_MAP_VISIBILITY.getHelp());
-        final GridBagConstraints gbc_backgroundMapVisibilitySlider = new GridBagConstraints();
-        gbc_backgroundMapVisibilitySlider.fill = GridBagConstraints.HORIZONTAL;
-        gbc_backgroundMapVisibilitySlider.insets = new Insets(0, 0, 5, 0);
-        gbc_backgroundMapVisibilitySlider.gridx = 1;
-        gbc_backgroundMapVisibilitySlider.gridy = 15;
-        add(backgroundMapVisibilitySlider, gbc_backgroundMapVisibilitySlider);
-        //		tmsUrlTemplateComboBox.addChangeListener(listener);
+        final GridBagConstraints gbcBackgroundMapVisibilitySlider = new GridBagConstraints();
+        gbcBackgroundMapVisibilitySlider.fill = GridBagConstraints.HORIZONTAL;
+        gbcBackgroundMapVisibilitySlider.insets = new Insets(0, 0, 5, 0);
+        gbcBackgroundMapVisibilitySlider.gridx = 1;
+        gbcBackgroundMapVisibilitySlider.gridy = 15;
+        add(backgroundMapVisibilitySlider, gbcBackgroundMapVisibilitySlider);
+        // tmsUrlTemplateComboBox.addChangeListener(listener);
         backgroundMapVisibilitySlider.addChangeListener(changeListener);
 
         final JLabel lblFontSize = new JLabel("Font Size");
-        final GridBagConstraints gbc_lblFontSize = new GridBagConstraints();
-        gbc_lblFontSize.anchor = GridBagConstraints.EAST;
-        gbc_lblFontSize.insets = new Insets(0, 0, 5, 5);
-        gbc_lblFontSize.gridx = 0;
-        gbc_lblFontSize.gridy = 16;
-        add(lblFontSize, gbc_lblFontSize);
+        final GridBagConstraints gbcLabelFontSize = new GridBagConstraints();
+        gbcLabelFontSize.anchor = GridBagConstraints.EAST;
+        gbcLabelFontSize.insets = new Insets(0, 0, 5, 5);
+        gbcLabelFontSize.gridx = 0;
+        gbcLabelFontSize.gridy = 16;
+        add(lblFontSize, gbcLabelFontSize);
 
         fontSizeSpinner = new JSpinner();
         fontSizeSpinner.setToolTipText(Option.FONT_SIZE.getHelp());
         fontSizeSpinner.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
-        final GridBagConstraints gbc_fontSizeSpinner = new GridBagConstraints();
-        gbc_fontSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_fontSizeSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_fontSizeSpinner.gridx = 1;
-        gbc_fontSizeSpinner.gridy = 16;
-        add(fontSizeSpinner, gbc_fontSizeSpinner);
+        final GridBagConstraints gbcFontSizeSpinner = new GridBagConstraints();
+        gbcFontSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcFontSizeSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcFontSizeSpinner.gridx = 1;
+        gbcFontSizeSpinner.gridy = 16;
+        add(fontSizeSpinner, gbcFontSizeSpinner);
         fontSizeSpinner.addChangeListener(changeListener);
 
         final JLabel lblSkipIdle = new JLabel("Skip Idle");
-        final GridBagConstraints gbc_lblSkipIdle = new GridBagConstraints();
-        gbc_lblSkipIdle.anchor = GridBagConstraints.EAST;
-        gbc_lblSkipIdle.insets = new Insets(0, 0, 5, 5);
-        gbc_lblSkipIdle.gridx = 0;
-        gbc_lblSkipIdle.gridy = 17;
-        add(lblSkipIdle, gbc_lblSkipIdle);
+        final GridBagConstraints gbcLabelSkipIdle = new GridBagConstraints();
+        gbcLabelSkipIdle.anchor = GridBagConstraints.EAST;
+        gbcLabelSkipIdle.insets = new Insets(0, 0, 5, 5);
+        gbcLabelSkipIdle.gridx = 0;
+        gbcLabelSkipIdle.gridy = 17;
+        add(lblSkipIdle, gbcLabelSkipIdle);
 
         skipIdleCheckBox = new JCheckBox("");
         skipIdleCheckBox.setToolTipText(Option.SKIP_IDLE.getHelp());
-        final GridBagConstraints gbc_skipIdleCheckBox = new GridBagConstraints();
-        gbc_skipIdleCheckBox.anchor = GridBagConstraints.WEST;
-        gbc_skipIdleCheckBox.insets = new Insets(0, 0, 5, 0);
-        gbc_skipIdleCheckBox.gridx = 1;
-        gbc_skipIdleCheckBox.gridy = 17;
-        add(skipIdleCheckBox, gbc_skipIdleCheckBox);
+        final GridBagConstraints gbcSkipIdleCheckBox = new GridBagConstraints();
+        gbcSkipIdleCheckBox.anchor = GridBagConstraints.WEST;
+        gbcSkipIdleCheckBox.insets = new Insets(0, 0, 5, 0);
+        gbcSkipIdleCheckBox.gridx = 1;
+        gbcSkipIdleCheckBox.gridy = 17;
+        add(skipIdleCheckBox, gbcSkipIdleCheckBox);
         skipIdleCheckBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(final ItemEvent e) {
@@ -593,68 +604,68 @@ abstract class GeneralSettingsPanel extends JPanel {
         });
 
         final JLabel lblFlashbackColor = new JLabel("Flashback Color");
-        final GridBagConstraints gbc_lblFlashbackColor = new GridBagConstraints();
-        gbc_lblFlashbackColor.anchor = GridBagConstraints.EAST;
-        gbc_lblFlashbackColor.insets = new Insets(0, 0, 5, 5);
-        gbc_lblFlashbackColor.gridx = 0;
-        gbc_lblFlashbackColor.gridy = 18;
-        add(lblFlashbackColor, gbc_lblFlashbackColor);
+        final GridBagConstraints gbcLabelFlashbackColor = new GridBagConstraints();
+        gbcLabelFlashbackColor.anchor = GridBagConstraints.EAST;
+        gbcLabelFlashbackColor.insets = new Insets(0, 0, 5, 5);
+        gbcLabelFlashbackColor.gridx = 0;
+        gbcLabelFlashbackColor.gridy = 18;
+        add(lblFlashbackColor, gbcLabelFlashbackColor);
 
         flashbackColorSelector = new ColorSelector();
         flashbackColorSelector.setToolTipText(Option.FLASHBACK_COLOR.getHelp());
-        final GridBagConstraints gbc_flashbackColorSelector = new GridBagConstraints();
-        gbc_flashbackColorSelector.fill = GridBagConstraints.BOTH;
-        gbc_flashbackColorSelector.insets = new Insets(0, 0, 5, 0);
-        gbc_flashbackColorSelector.gridx = 1;
-        gbc_flashbackColorSelector.gridy = 18;
-        add(flashbackColorSelector, gbc_flashbackColorSelector);
+        final GridBagConstraints gbcFlashbackColorSelector = new GridBagConstraints();
+        gbcFlashbackColorSelector.fill = GridBagConstraints.BOTH;
+        gbcFlashbackColorSelector.insets = new Insets(0, 0, 5, 0);
+        gbcFlashbackColorSelector.gridx = 1;
+        gbcFlashbackColorSelector.gridy = 18;
+        add(flashbackColorSelector, gbcFlashbackColorSelector);
         flashbackColorSelector.addPropertyChangeListener("color", propertyChangeListener);
 
         final JLabel lblFlashbackDuration = new JLabel("Flashback Duration");
-        final GridBagConstraints gbc_lblFlashbackDuration = new GridBagConstraints();
-        gbc_lblFlashbackDuration.anchor = GridBagConstraints.EAST;
-        gbc_lblFlashbackDuration.insets = new Insets(0, 0, 0, 5);
-        gbc_lblFlashbackDuration.gridx = 0;
-        gbc_lblFlashbackDuration.gridy = 19;
-        add(lblFlashbackDuration, gbc_lblFlashbackDuration);
+        final GridBagConstraints gbcLabelFlashbackDuration = new GridBagConstraints();
+        gbcLabelFlashbackDuration.anchor = GridBagConstraints.EAST;
+        gbcLabelFlashbackDuration.insets = new Insets(0, 0, 0, 5);
+        gbcLabelFlashbackDuration.gridx = 0;
+        gbcLabelFlashbackDuration.gridy = 19;
+        add(lblFlashbackDuration, gbcLabelFlashbackDuration);
 
         flashbackDurationSpinner = new JSpinner();
         flashbackDurationSpinner.setToolTipText(Option.FLASHBACK_DURATION.getHelp());
         flashbackDurationSpinner.setModel(new DurationSpinnerModel());
         flashbackDurationSpinner.setEditor(new DurationEditor(flashbackDurationSpinner));
-        final GridBagConstraints gbc_flashbackDurationSpinner = new GridBagConstraints();
-        gbc_flashbackDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_flashbackDurationSpinner.gridx = 1;
-        gbc_flashbackDurationSpinner.gridy = 19;
-        add(flashbackDurationSpinner, gbc_flashbackDurationSpinner);
+        final GridBagConstraints gbcFlashbackDurationSpinner = new GridBagConstraints();
+        gbcFlashbackDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcFlashbackDurationSpinner.gridx = 1;
+        gbcFlashbackDurationSpinner.gridy = 19;
+        add(flashbackDurationSpinner, gbcFlashbackDurationSpinner);
         flashbackDurationSpinner.addChangeListener(changeListener);
 
         final JLabel lblKeepLastFrame = new JLabel("Keep Last Frame");
-        final GridBagConstraints gbc_lblKeepLastFrame = new GridBagConstraints();
-        gbc_lblKeepLastFrame.anchor = GridBagConstraints.EAST;
-        gbc_lblKeepLastFrame.insets = new Insets(0, 0, 0, 5);
-        gbc_lblKeepLastFrame.gridx = 0;
-        gbc_lblKeepLastFrame.gridy = 20;
-        add(lblKeepLastFrame, gbc_lblKeepLastFrame);
+        final GridBagConstraints gbcLabelKeepLastFrame = new GridBagConstraints();
+        gbcLabelKeepLastFrame.anchor = GridBagConstraints.EAST;
+        gbcLabelKeepLastFrame.insets = new Insets(0, 0, 0, 5);
+        gbcLabelKeepLastFrame.gridx = 0;
+        gbcLabelKeepLastFrame.gridy = 20;
+        add(lblKeepLastFrame, gbcLabelKeepLastFrame);
 
         keepLastFrameSpinner = new JSpinner();
         keepLastFrameSpinner.setToolTipText(Option.KEEP_LAST_FRAME.getHelp());
         keepLastFrameSpinner.setModel(new DurationSpinnerModel());
         keepLastFrameSpinner.setEditor(new DurationEditor(keepLastFrameSpinner));
-        final GridBagConstraints gbc_keepLastFrameSpinner = new GridBagConstraints();
-        gbc_keepLastFrameSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_keepLastFrameSpinner.gridx = 1;
-        gbc_keepLastFrameSpinner.gridy = 20;
-        add(keepLastFrameSpinner, gbc_keepLastFrameSpinner);
+        final GridBagConstraints gbcKeepLastFrameSpinner = new GridBagConstraints();
+        gbcKeepLastFrameSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcKeepLastFrameSpinner.gridx = 1;
+        gbcKeepLastFrameSpinner.gridy = 20;
+        add(keepLastFrameSpinner, gbcKeepLastFrameSpinner);
         keepLastFrameSpinner.addChangeListener(changeListener);
 
         final JLabel lblPhotosDirectorySelector = new JLabel("Photo Directory");
-        final GridBagConstraints gbc_lblPhotosDirectorySelector = new GridBagConstraints();
-        gbc_lblPhotosDirectorySelector.anchor = GridBagConstraints.EAST;
-        gbc_lblPhotosDirectorySelector.insets = new Insets(0, 0, 0, 5);
-        gbc_lblPhotosDirectorySelector.gridx = 0;
-        gbc_lblPhotosDirectorySelector.gridy = 21;
-        add(lblPhotosDirectorySelector, gbc_lblPhotosDirectorySelector);
+        final GridBagConstraints gbcLabelPhotosDirectorySelector = new GridBagConstraints();
+        gbcLabelPhotosDirectorySelector.anchor = GridBagConstraints.EAST;
+        gbcLabelPhotosDirectorySelector.insets = new Insets(0, 0, 0, 5);
+        gbcLabelPhotosDirectorySelector.gridx = 0;
+        gbcLabelPhotosDirectorySelector.gridy = 21;
+        add(lblPhotosDirectorySelector, gbcLabelPhotosDirectorySelector);
 
         photosDirectorySelector = new FileSelector(DIRECTORIES_ONLY) {
             private static final long serialVersionUID = 7372002778976603240L;
@@ -666,32 +677,32 @@ abstract class GeneralSettingsPanel extends JPanel {
         };
 
         photosDirectorySelector.setToolTipText(Option.PHOTO_DIR.getHelp());
-        final GridBagConstraints gbc_photosDirectorySelector = new GridBagConstraints();
-        gbc_photosDirectorySelector.fill = GridBagConstraints.BOTH;
-        gbc_photosDirectorySelector.insets = new Insets(0, 0, 5, 0);
-        gbc_photosDirectorySelector.gridx = 1;
-        gbc_photosDirectorySelector.gridy = 21;
-        add(photosDirectorySelector, gbc_photosDirectorySelector);
+        final GridBagConstraints gbcPhotosDirectorySelector = new GridBagConstraints();
+        gbcPhotosDirectorySelector.fill = GridBagConstraints.BOTH;
+        gbcPhotosDirectorySelector.insets = new Insets(0, 0, 5, 0);
+        gbcPhotosDirectorySelector.gridx = 1;
+        gbcPhotosDirectorySelector.gridy = 21;
+        add(photosDirectorySelector, gbcPhotosDirectorySelector);
 
         photosDirectorySelector.addPropertyChangeListener("filename", propertyChangeListener);
 
         final JLabel lblPhotoTime = new JLabel("Show Photos For");
-        final GridBagConstraints gbc_lblPhotoTime = new GridBagConstraints();
-        gbc_lblPhotoTime.anchor = GridBagConstraints.EAST;
-        gbc_lblPhotoTime.insets = new Insets(0, 0, 0, 5);
-        gbc_lblPhotoTime.gridx = 0;
-        gbc_lblPhotoTime.gridy = 22;
-        add(lblPhotoTime, gbc_lblPhotoTime);
+        final GridBagConstraints gbcLabelPhotoTime = new GridBagConstraints();
+        gbcLabelPhotoTime.anchor = GridBagConstraints.EAST;
+        gbcLabelPhotoTime.insets = new Insets(0, 0, 0, 5);
+        gbcLabelPhotoTime.gridx = 0;
+        gbcLabelPhotoTime.gridy = 22;
+        add(lblPhotoTime, gbcLabelPhotoTime);
 
         photoTimeSpinner = new JSpinner();
         photoTimeSpinner.setToolTipText(Option.PHOTO_TIME.getHelp());
         photoTimeSpinner.setModel(new DurationSpinnerModel());
         photoTimeSpinner.setEditor(new DurationEditor(photoTimeSpinner));
-        final GridBagConstraints gbc_photoTimeSpinner = new GridBagConstraints();
-        gbc_photoTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_photoTimeSpinner.gridx = 1;
-        gbc_photoTimeSpinner.gridy = 22;
-        add(photoTimeSpinner, gbc_photoTimeSpinner);
+        final GridBagConstraints gbcPhotoTimeSpinner = new GridBagConstraints();
+        gbcPhotoTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcPhotoTimeSpinner.gridx = 1;
+        gbcPhotoTimeSpinner.gridy = 22;
+        add(photoTimeSpinner, gbcPhotoTimeSpinner);
         photoTimeSpinner.addChangeListener(changeListener);
     }
 
@@ -713,10 +724,10 @@ abstract class GeneralSettingsPanel extends JPanel {
         try {
             try {
                 saxParser.parse(is, new DefaultHandler() {
-                    StringBuilder sb = new StringBuilder();
-                    String name;
-                    String url;
-                    String attributionText;
+                    private StringBuilder sb = new StringBuilder();
+                    private String name;
+                    private String url;
+                    private String attributionText;
 
                     @Override
                     public void endElement(final String uri, final String localName, final String qName) throws SAXException {
@@ -811,7 +822,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         b.speedup((Double) speedupSpinner.getValue());
         b.tailColor(tailColorSelector.getColor());
         final Long td = (Long) tailDurationSpinner.getValue();
-        b.tailDuration(td == null ? 0l : td.longValue());
+        b.tailDuration(td == null ? 0L : td.longValue());
         b.fps((Double) fpsSpinner.getValue());
         b.totalTime((Long) totalTimeSpinner.getValue());
         b.keepLastFrame((Long) keepLastFrameSpinner.getValue());

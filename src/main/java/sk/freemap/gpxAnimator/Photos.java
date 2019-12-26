@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.groupingBy;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
-public class Photos {
+public final class Photos {
 
     private static final String SYSTEM_ZONE_OFFSET;
 
@@ -129,7 +129,7 @@ public class Photos {
     private static BufferedImage readPhoto(final Photo photo, final int width, final int height) {
         try {
             final byte[] rawData = getRawBytesFromFile(photo.getFile());
-            try (final ImageInputStream input = ImageIO.createImageInputStream(new ByteArrayInputStream(rawData))) {
+            try (ImageInputStream input = ImageIO.createImageInputStream(new ByteArrayInputStream(rawData))) {
                 final BufferedImage image = ImageIO.read(input);
                 final int scaledWidth = Math.round(width * 0.7f);
                 final int scaledHeight = Math.round(height * 0.7f);
@@ -172,7 +172,7 @@ public class Photos {
 
     private static byte[] getRawBytesFromFile(final File file) throws IOException {
         final byte[] image = new byte[(int) file.length()];
-        try (final FileInputStream fileInputStream = new FileInputStream(file)) {
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
             //noinspection ResultOfMethodCallIgnored
             fileInputStream.read(image);
         }

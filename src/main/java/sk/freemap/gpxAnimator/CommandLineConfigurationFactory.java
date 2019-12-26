@@ -49,6 +49,7 @@ public final class CommandLineConfigurationFactory {
     private final Configuration configuration;
 
 
+    @SuppressWarnings("checkstyle:MethodLength") // Is it worth investing time refactoring this class?
     public CommandLineConfigurationFactory(final String[] args) throws UserException {
         final Configuration.Builder cfg = Configuration.createBuilder();
 
@@ -106,7 +107,7 @@ public final class CommandLineConfigurationFactory {
                             System.out.println("Copyright " + Constants.YEAR + " Martin Ždila, Freemap Slovakia");
                             System.out.println();
                             System.out.println("Usage:");
-                            try (final PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
+                            try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
                                 Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
                                 pw.flush();
                             }
@@ -162,7 +163,8 @@ public final class CommandLineConfigurationFactory {
                             break;
                         case TAIL_COLOR:
                             final long lvTailColor = Long.decode(args[++i]).longValue();
-                            cfg.tailColor(new Color(lvTailColor < Integer.MAX_VALUE ? (int) lvTailColor : (int) (0xffffffff00000000L | lvTailColor), true));
+                            cfg.tailColor(new Color(lvTailColor < Integer.MAX_VALUE
+                                    ? (int) lvTailColor : (int) (0xffffffff00000000L | lvTailColor), true));
                             break;
                         case TIME_OFFSET:
                             final String s2 = args[++i].trim();
@@ -188,7 +190,7 @@ public final class CommandLineConfigurationFactory {
                             throw new AssertionError();
                     }
 
-// TODO				--configuration : args[++i];
+                    // TODO --configuration : args[++i];
                 }
             } catch (final NumberFormatException e) {
                 throw new UserException("invalid number for option " + arg);

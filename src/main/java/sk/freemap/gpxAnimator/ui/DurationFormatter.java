@@ -40,12 +40,12 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
             return null;
         }
 
-        final Pattern pattern = Pattern.compile("\\s*" +
-                "(?:(-?\\d+)\\s*d\\s*)?" +
-                "(?:(-?\\d+)\\s*h\\s*)?" +
-                "(?:(-?\\d+)\\s*m\\s*)?" +
-                "(?:(-?\\d+)\\s*s\\s*)?" +
-                "(?:(-?\\d+)\\s*ms\\s*)?");
+        final Pattern pattern = Pattern.compile("\\s*"
+                + "(?:(-?\\d+)\\s*d\\s*)?"
+                + "(?:(-?\\d+)\\s*h\\s*)?"
+                + "(?:(-?\\d+)\\s*m\\s*)?"
+                + "(?:(-?\\d+)\\s*s\\s*)?"
+                + "(?:(-?\\d+)\\s*ms\\s*)?");
 
         final Matcher matcher = pattern.matcher(text);
 
@@ -69,7 +69,7 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
         }
     }
 
-    private boolean isValid(Object value) {
+    private boolean isValid(final Object value) {
         boolean isValid = true;
         if (value == null) {
             isValid = false;
@@ -77,8 +77,10 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
         return isValid;
     }
 
-    private String getDurationAsText(long l) {
+    private String getDurationAsText(final long duration) {
         final StringBuilder sb = new StringBuilder();
+
+        long l = duration;
 
         sb.insert(0, "ms");
         sb.insert(0, l % 1000);

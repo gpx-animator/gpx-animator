@@ -48,68 +48,63 @@ public class UsageDialog extends JDialog {
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-        {
-            final JEditorPane dtrpngpxNavigator = new JEditorPane();
-            dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-            dtrpngpxNavigator.setEditable(false);
-            dtrpngpxNavigator.setContentType("text/html");
 
-            final StringWriter sw = new StringWriter();
-            final PrintWriter pw = new PrintWriter(sw);
-            pw.println("<dl>");
-            Help.printHelp(new OptionHelpWriter() {
-                @Override
-                public void writeOptionHelp(final Option option, final String argument, final boolean track, final Object defaultValue) {
-                    // TODO html escape
-                    pw.print("<dt><b>--");
-                    pw.print(option.getName());
-                    if (argument != null) {
-                        pw.print(" &lt;");
-                        pw.print(argument);
-                        pw.print("&gt;");
-                    }
-                    pw.println("</b></dt>");
-                    pw.print("<dd>");
-                    pw.print(option.getHelp());
-                    if (track) {
-                        pw.print("; can be specified multiple times if multiple tracks are provided");
-                    }
-                    if (defaultValue != null) {
-                        pw.print("; default ");
-                        pw.print(defaultValue);
-                    }
-                    pw.println("</dd>");
+        final JEditorPane dtrpngpxNavigator = new JEditorPane();
+        dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        dtrpngpxNavigator.setEditable(false);
+        dtrpngpxNavigator.setContentType("text/html");
+
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
+        pw.println("<dl>");
+        Help.printHelp(new OptionHelpWriter() {
+            @Override
+            public void writeOptionHelp(final Option option, final String argument, final boolean track, final Object defaultValue) {
+                // TODO html escape
+                pw.print("<dt><b>--");
+                pw.print(option.getName());
+                if (argument != null) {
+                    pw.print(" &lt;");
+                    pw.print(argument);
+                    pw.print("&gt;");
                 }
-            });
-            pw.println("</dl>");
-            pw.close();
-
-            dtrpngpxNavigator.setText("Commandline parameters:" + sw.toString());
-
-            dtrpngpxNavigator.setCaretPosition(0);
-
-            {
-                final JScrollPane scrollPane = new JScrollPane(dtrpngpxNavigator);
-                contentPanel.add(scrollPane);
+                pw.println("</b></dt>");
+                pw.print("<dd>");
+                pw.print(option.getHelp());
+                if (track) {
+                    pw.print("; can be specified multiple times if multiple tracks are provided");
+                }
+                if (defaultValue != null) {
+                    pw.print("; default ");
+                    pw.print(defaultValue);
+                }
+                pw.println("</dd>");
             }
-        }
-        {
-            final JPanel buttonPane = new JPanel();
-            buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
-            getContentPane().add(buttonPane, BorderLayout.SOUTH);
-            {
-                final JButton okButton = new JButton("OK");
-                okButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        UsageDialog.this.dispose();
-                    }
-                });
-                okButton.setActionCommand("OK");
-                buttonPane.add(okButton);
-                getRootPane().setDefaultButton(okButton);
+        });
+        pw.println("</dl>");
+        pw.close();
+
+        dtrpngpxNavigator.setText("Commandline parameters:" + sw.toString());
+
+        dtrpngpxNavigator.setCaretPosition(0);
+
+        final JScrollPane scrollPane = new JScrollPane(dtrpngpxNavigator);
+        contentPanel.add(scrollPane);
+
+        final JPanel buttonPane = new JPanel();
+        buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
+        getContentPane().add(buttonPane, BorderLayout.SOUTH);
+
+        final JButton okButton = new JButton("OK");
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                UsageDialog.this.dispose();
             }
-        }
+        });
+        okButton.setActionCommand("OK");
+        buttonPane.add(okButton);
+        getRootPane().setDefaultButton(okButton);
     }
 
 }

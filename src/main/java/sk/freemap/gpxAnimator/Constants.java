@@ -1,5 +1,6 @@
 package sk.freemap.gpxAnimator;
 
+@SuppressWarnings("checkstyle:NoWhitespaceBefore") // For the ";" after the class declaration which is needed to use an enum for constants only
 public enum Constants {
     ;
 

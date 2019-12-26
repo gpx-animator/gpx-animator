@@ -54,7 +54,7 @@ import java.util.Random;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-public class MainFrame extends JFrame {
+public final class MainFrame extends JFrame {
 
     private static final String PROJECT_FILENAME_SUFFIX = ".ga.xml";
     private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
@@ -77,13 +77,10 @@ public class MainFrame extends JFrame {
     private transient File file;
     private transient boolean changed;
 
-
-    /**
-     * Create the frame.
-     */
+    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     public MainFrame() {
         final ActionListener addTrackActionListener = new ActionListener() {
-            float hue = random.nextFloat();
+            private float hue = random.nextFloat();
 
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -135,7 +132,8 @@ public class MainFrame extends JFrame {
         mntmNew.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
+                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     loadDefaults();
                 }
             }
@@ -146,15 +144,16 @@ public class MainFrame extends JFrame {
         mntmOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
+                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
                     final String lastCwd = Preferences.getLastWorkingDir();
                     fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
                     if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-                        final File file = fileChooser.getSelectedFile();
-                        Preferences.setLastWorkingDir(file.getParent());
+                        final File fileToOpen = fileChooser.getSelectedFile();
+                        Preferences.setLastWorkingDir(fileToOpen.getParent());
 
-                        openFile(file);
+                        openFile(fileToOpen);
                     }
                 }
 
@@ -224,7 +223,8 @@ public class MainFrame extends JFrame {
             @SuppressWarnings("PMD.DoNotCallSystemExit") // Exit the application on user request
             @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request")
             public void actionPerformed(final ActionEvent e) {
-                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
+                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 }
             }
@@ -329,20 +329,20 @@ public class MainFrame extends JFrame {
         final JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-        final GridBagLayout gbl_contentPane = new GridBagLayout();
-        gbl_contentPane.columnWidths = new int[]{438, 0};
-        gbl_contentPane.rowHeights = new int[]{264, 0, 0};
-        gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-        gbl_contentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-        contentPane.setLayout(gbl_contentPane);
+        final GridBagLayout gblContentPane = new GridBagLayout();
+        gblContentPane.columnWidths = new int[]{438, 0};
+        gblContentPane.rowHeights = new int[]{264, 0, 0};
+        gblContentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+        gblContentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+        contentPane.setLayout(gblContentPane);
 
         tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        final GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-        gbc_tabbedPane.insets = new Insets(0, 0, 5, 0);
-        gbc_tabbedPane.fill = GridBagConstraints.BOTH;
-        gbc_tabbedPane.gridx = 0;
-        gbc_tabbedPane.gridy = 0;
-        contentPane.add(tabbedPane, gbc_tabbedPane);
+        final GridBagConstraints gbcTabbedPane = new GridBagConstraints();
+        gbcTabbedPane.insets = new Insets(0, 0, 5, 0);
+        gbcTabbedPane.fill = GridBagConstraints.BOTH;
+        gbcTabbedPane.gridx = 0;
+        gbcTabbedPane.gridy = 0;
+        contentPane.add(tabbedPane, gbcTabbedPane);
 
         tabbedPane.addChangeListener(new ChangeListener() {
             @Override
@@ -368,59 +368,58 @@ public class MainFrame extends JFrame {
         // TODO tabbedPane.addTab("Map", new MapPanel());
 
         final JPanel panel = new JPanel();
-        final GridBagConstraints gbc_panel = new GridBagConstraints();
-        gbc_panel.fill = GridBagConstraints.BOTH;
-        gbc_panel.gridx = 0;
-        gbc_panel.gridy = 1;
-        contentPane.add(panel, gbc_panel);
-        final GridBagLayout gbl_panel = new GridBagLayout();
-        gbl_panel.columnWidths = new int[]{174, 49, 0, 32, 0};
-        gbl_panel.rowHeights = new int[]{27, 0};
-        gbl_panel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-        panel.setLayout(gbl_panel);
+        final GridBagConstraints gbcPanel = new GridBagConstraints();
+        gbcPanel.fill = GridBagConstraints.BOTH;
+        gbcPanel.gridx = 0;
+        gbcPanel.gridy = 1;
+        contentPane.add(panel, gbcPanel);
+        final GridBagLayout gblPanel = new GridBagLayout();
+        gblPanel.columnWidths = new int[]{174, 49, 0, 32, 0};
+        gblPanel.rowHeights = new int[]{27, 0};
+        gblPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gblPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+        panel.setLayout(gblPanel);
 
         final JProgressBar progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
         progressBar.setVisible(false);
-        final GridBagConstraints gbc_progressBar = new GridBagConstraints();
-        gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
-        gbc_progressBar.insets = new Insets(0, 0, 0, 5);
-        gbc_progressBar.gridx = 0;
-        gbc_progressBar.gridy = 0;
-        panel.add(progressBar, gbc_progressBar);
+        final GridBagConstraints gbcProgressBar = new GridBagConstraints();
+        gbcProgressBar.fill = GridBagConstraints.HORIZONTAL;
+        gbcProgressBar.insets = new Insets(0, 0, 0, 5);
+        gbcProgressBar.gridx = 0;
+        gbcProgressBar.gridy = 0;
+        panel.add(progressBar, gbcProgressBar);
 
         final JButton addTrackButton = new JButton("Add Track");
-        final GridBagConstraints gbc_addTrackButton = new GridBagConstraints();
-        gbc_addTrackButton.anchor = GridBagConstraints.NORTHWEST;
-        gbc_addTrackButton.insets = new Insets(0, 0, 0, 5);
-        gbc_addTrackButton.gridx = 1;
-        gbc_addTrackButton.gridy = 0;
-        panel.add(addTrackButton, gbc_addTrackButton);
+        final GridBagConstraints gbcAddTrackButton = new GridBagConstraints();
+        gbcAddTrackButton.anchor = GridBagConstraints.NORTHWEST;
+        gbcAddTrackButton.insets = new Insets(0, 0, 0, 5);
+        gbcAddTrackButton.gridx = 1;
+        gbcAddTrackButton.gridy = 0;
+        panel.add(addTrackButton, gbcAddTrackButton);
         addTrackButton.addActionListener(addTrackActionListener);
 
-//		final JButton btnComputeBbox = new JButton("Compute BBox");
-//		final GridBagConstraints gbc_btnComputeBbox = new GridBagConstraints();
-//		gbc_btnComputeBbox.anchor = GridBagConstraints.NORTHWEST;
-//		gbc_btnComputeBbox.insets = new Insets(0, 0, 0, 5);
-//		gbc_btnComputeBbox.gridx = 2;
-//		gbc_btnComputeBbox.gridy = 0;
-//		panel.add(btnComputeBbox, gbc_btnComputeBbox);
-//		btnComputeBbox.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(final ActionEvent e) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		});
+// final JButton btnComputeBbox = new JButton("Compute BBox");
+// final GridBagConstraints gbc_btnComputeBbox = new GridBagConstraints();
+// gbc_btnComputeBbox.anchor = GridBagConstraints.NORTHWEST;
+// gbc_btnComputeBbox.insets = new Insets(0, 0, 0, 5);
+// gbc_btnComputeBbox.gridx = 2;
+// gbc_btnComputeBbox.gridy = 0;
+// panel.add(btnComputeBbox, gbc_btnComputeBbox);
+// btnComputeBbox.addActionListener(new ActionListener() {
+//     @Override
+//     public void actionPerformed(final ActionEvent e) {
+//         // TODO Auto-generated method stub
+//     }
+// });
 
         renderButton = new JButton("Render");
         renderButton.setEnabled(false);
-        final GridBagConstraints gbc_renderButton = new GridBagConstraints();
-        gbc_renderButton.anchor = GridBagConstraints.NORTHWEST;
-        gbc_renderButton.gridx = 3;
-        gbc_renderButton.gridy = 0;
-        panel.add(renderButton, gbc_renderButton);
+        final GridBagConstraints gbcRenderButton = new GridBagConstraints();
+        gbcRenderButton.anchor = GridBagConstraints.NORTHWEST;
+        gbcRenderButton.gridx = 3;
+        gbcRenderButton.gridy = 0;
+        panel.add(renderButton, gbcRenderButton);
         renderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -433,15 +432,18 @@ public class MainFrame extends JFrame {
                 try {
                     cfg = createConfiguration(true, true);
                     if (cfg.getOutput().exists()) {
-                        final String message = String.format("A file with the name \"%s\" already exists.%nDo you really want to overwrite this file?", cfg.getOutput());
-                        final int result = JOptionPane.showConfirmDialog(MainFrame.this, message, WARNING_TITLE, JOptionPane.YES_NO_OPTION);
+                        final String message = String.format(
+                                "A file with the name \"%s\" already exists.%nDo you really want to overwrite this file?", cfg.getOutput());
+                        final int result = JOptionPane.showConfirmDialog(MainFrame.this,
+                                message, WARNING_TITLE, JOptionPane.YES_NO_OPTION);
                         if (result == JOptionPane.NO_OPTION) {
                             return;
                         }
                     }
                 } catch (final UserException ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(MainFrame.this, "Configuration error:\n" + ex.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Configuration error:\n" + ex.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -480,14 +482,18 @@ public class MainFrame extends JFrame {
 
                         try {
                             get();
-                            JOptionPane.showMessageDialog(MainFrame.this, "Rendering has finished successfully.", "Finished", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(MainFrame.this,
+                                    "Rendering has finished successfully.", "Finished", JOptionPane.INFORMATION_MESSAGE);
                         } catch (final InterruptedException e) {
-                            JOptionPane.showMessageDialog(MainFrame.this, "Rendering has been interrupted.", "Interrupted", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(MainFrame.this,
+                                    "Rendering has been interrupted.", "Interrupted", JOptionPane.ERROR_MESSAGE);
                         } catch (final ExecutionException e) {
                             e.printStackTrace();
-                            JOptionPane.showMessageDialog(MainFrame.this, "Error while rendering:\n" + e.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(MainFrame.this,
+                                    "Error while rendering:\n" + e.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
                         } catch (final CancellationException e) {
-                            JOptionPane.showMessageDialog(MainFrame.this, "Rendering has been cancelled.", "Cancelled", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(MainFrame.this,
+                                    "Rendering has been cancelled.", "Cancelled", JOptionPane.WARNING_MESSAGE);
                         }
                     }
                 };
@@ -559,22 +565,22 @@ public class MainFrame extends JFrame {
 
     private void pupulateOpenRecentMenu() {
         openRecent.removeAll();
-        Preferences.getRecentFiles().forEach(file -> {
-                    JMenuItem item = new JMenuItem(file.getName());
+        Preferences.getRecentFiles().forEach(recentFile -> {
+                    JMenuItem item = new JMenuItem(recentFile.getName());
                     openRecent.add(item);
-                    item.addActionListener(e -> openFile(file));
+                    item.addActionListener(e -> openFile(recentFile));
                 }
         );
     }
 
-    private void openFile(final File file) {
+    private void openFile(final File fileToOpen) {
         try {
             final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
             final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            unmarshaller.setAdapter(new FileXmlAdapter(file.getParentFile()));
-            setConfiguration((Configuration) unmarshaller.unmarshal(file));
-            MainFrame.this.file = file;
-            addRecentFile(file);
+            unmarshaller.setAdapter(new FileXmlAdapter(fileToOpen.getParentFile()));
+            setConfiguration((Configuration) unmarshaller.unmarshal(fileToOpen));
+            MainFrame.this.file = fileToOpen;
+            addRecentFile(fileToOpen);
             setChanged(false);
         } catch (final JAXBException e1) {
             e1.printStackTrace();
@@ -583,8 +589,8 @@ public class MainFrame extends JFrame {
     }
 
 
-    private void addRecentFile(File file) {
-        Preferences.addRecentFile(file);
+    private void addRecentFile(final File recentFile) {
+        Preferences.addRecentFile(recentFile);
         pupulateOpenRecentMenu();
     }
 
@@ -643,26 +649,26 @@ public class MainFrame extends JFrame {
         fileChooser.setCurrentDirectory(new File(lastCwd));
         fileChooser.setSelectedFile(new File("")); // to forget previous file name
         if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            Preferences.setLastWorkingDir(file.getParent());
+            File fileToSave = fileChooser.getSelectedFile();
+            Preferences.setLastWorkingDir(fileToSave.getParent());
 
-            if (!file.getName().endsWith(PROJECT_FILENAME_SUFFIX)) {
-                file = new File(file.getPath() + PROJECT_FILENAME_SUFFIX);
+            if (!fileToSave.getName().endsWith(PROJECT_FILENAME_SUFFIX)) {
+                fileToSave = new File(fileToSave.getPath() + PROJECT_FILENAME_SUFFIX);
             }
-            save(file);
+            save(fileToSave);
         }
     }
 
-    private void save(final File file) {
+    private void save(final File fileToSave) {
         try {
             try {
                 final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
                 final Marshaller marshaller = jaxbContext.createMarshaller();
-                marshaller.setAdapter(new FileXmlAdapter(file.getParentFile()));
-                marshaller.marshal(createConfiguration(true, false), file);
-                MainFrame.this.file = file;
+                marshaller.setAdapter(new FileXmlAdapter(fileToSave.getParentFile()));
+                marshaller.marshal(createConfiguration(true, false), fileToSave);
+                MainFrame.this.file = fileToSave;
                 setChanged(false);
-                addRecentFile(file);
+                addRecentFile(fileToSave);
             } catch (final JAXBException e) {
                 throw new UserException(e.getMessage(), e);
             }
@@ -708,7 +714,8 @@ public class MainFrame extends JFrame {
             setConfiguration((Configuration) unmarshaller.unmarshal(defaultConfigFile));
         } catch (final JAXBException e1) {
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(MainFrame.this, "Error loading default configuration: " + e1.getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(MainFrame.this, "Error loading default configuration: " + e1.getMessage(),
+                    ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -717,7 +724,8 @@ public class MainFrame extends JFrame {
             if (defaultConfigFile.delete()) {
                 loadDefaults();
             } else {
-                JOptionPane.showMessageDialog(MainFrame.this, "Can't reset default configuration!", ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(MainFrame.this, "Can't reset default configuration!",
+                        ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
             }
         }
     }

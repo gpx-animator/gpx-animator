@@ -27,7 +27,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ColorSelector extends JPanel {
+public final class ColorSelector extends JPanel {
 
     private static final long serialVersionUID = 6506364764640471311L;
 

@@ -50,23 +50,24 @@ abstract class TrackSettingsPanel extends JPanel {
     private final transient JComboBox<TrackIcon> trackIconComboBox;
 
 
-    public TrackSettingsPanel() {
+    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
+    TrackSettingsPanel() {
         setBounds(100, 100, 595, 419);
         setBorder(new EmptyBorder(5, 5, 5, 5));
-        final GridBagLayout gbl_contentPane = new GridBagLayout();
-        gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-        gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        gbl_contentPane.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-        gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-        setLayout(gbl_contentPane);
+        final GridBagLayout gblContentPane = new GridBagLayout();
+        gblContentPane.columnWidths = new int[]{0, 0, 0};
+        gblContentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        gblContentPane.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+        gblContentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+        setLayout(gblContentPane);
 
         final JLabel lblGpx = new JLabel("Input GPX File");
-        final GridBagConstraints gbc_lblGpx = new GridBagConstraints();
-        gbc_lblGpx.insets = new Insets(0, 0, 5, 5);
-        gbc_lblGpx.anchor = GridBagConstraints.EAST;
-        gbc_lblGpx.gridx = 0;
-        gbc_lblGpx.gridy = 0;
-        add(lblGpx, gbc_lblGpx);
+        final GridBagConstraints gbcLabelGpx = new GridBagConstraints();
+        gbcLabelGpx.insets = new Insets(0, 0, 5, 5);
+        gbcLabelGpx.anchor = GridBagConstraints.EAST;
+        gbcLabelGpx.gridx = 0;
+        gbcLabelGpx.gridy = 0;
+        add(lblGpx, gbcLabelGpx);
 
         inputGpxFileSelector = new FileSelector(FILES_ONLY) {
             private static final long serialVersionUID = -7085193817022374995L;
@@ -103,30 +104,30 @@ abstract class TrackSettingsPanel extends JPanel {
 
         inputGpxFileSelector.setToolTipText(Option.INPUT.getHelp());
         lblGpx.setLabelFor(inputGpxFileSelector);
-        final GridBagConstraints gbc_inputGpxFileSelector = new GridBagConstraints();
-        gbc_inputGpxFileSelector.insets = new Insets(0, 0, 5, 0);
-        gbc_inputGpxFileSelector.fill = GridBagConstraints.BOTH;
-        gbc_inputGpxFileSelector.gridx = 1;
-        gbc_inputGpxFileSelector.gridy = 0;
-        add(inputGpxFileSelector, gbc_inputGpxFileSelector);
+        final GridBagConstraints gbcInputGpxFileSelector = new GridBagConstraints();
+        gbcInputGpxFileSelector.insets = new Insets(0, 0, 5, 0);
+        gbcInputGpxFileSelector.fill = GridBagConstraints.BOTH;
+        gbcInputGpxFileSelector.gridx = 1;
+        gbcInputGpxFileSelector.gridy = 0;
+        add(inputGpxFileSelector, gbcInputGpxFileSelector);
 
         final JLabel lblLabel = new JLabel("Label");
-        final GridBagConstraints gbc_lblLabel = new GridBagConstraints();
-        gbc_lblLabel.anchor = GridBagConstraints.EAST;
-        gbc_lblLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_lblLabel.gridx = 0;
-        gbc_lblLabel.gridy = 1;
-        add(lblLabel, gbc_lblLabel);
+        final GridBagConstraints gbcLabelLabel = new GridBagConstraints();
+        gbcLabelLabel.anchor = GridBagConstraints.EAST;
+        gbcLabelLabel.insets = new Insets(0, 0, 5, 5);
+        gbcLabelLabel.gridx = 0;
+        gbcLabelLabel.gridy = 1;
+        add(lblLabel, gbcLabelLabel);
 
         labelTextField = new JTextField();
         labelTextField.setToolTipText(Option.LABEL.getHelp());
         lblLabel.setLabelFor(labelTextField);
-        final GridBagConstraints gbc_labelTextField = new GridBagConstraints();
-        gbc_labelTextField.insets = new Insets(0, 0, 5, 0);
-        gbc_labelTextField.fill = GridBagConstraints.HORIZONTAL;
-        gbc_labelTextField.gridx = 1;
-        gbc_labelTextField.gridy = 1;
-        add(labelTextField, gbc_labelTextField);
+        final GridBagConstraints gbcLabelTextField = new GridBagConstraints();
+        gbcLabelTextField.insets = new Insets(0, 0, 5, 0);
+        gbcLabelTextField.fill = GridBagConstraints.HORIZONTAL;
+        gbcLabelTextField.gridx = 1;
+        gbcLabelTextField.gridy = 1;
+        add(labelTextField, gbcLabelTextField);
         labelTextField.setColumns(10);
         labelTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -149,116 +150,116 @@ abstract class TrackSettingsPanel extends JPanel {
             }
         });
 
-        final JLabel lblColor_1 = new JLabel("Color");
-        final GridBagConstraints gbc_lblColor_1 = new GridBagConstraints();
-        gbc_lblColor_1.anchor = GridBagConstraints.EAST;
-        gbc_lblColor_1.insets = new Insets(0, 0, 5, 5);
-        gbc_lblColor_1.gridx = 0;
-        gbc_lblColor_1.gridy = 2;
-        add(lblColor_1, gbc_lblColor_1);
+        final JLabel lblColor1 = new JLabel("Color");
+        final GridBagConstraints gbcLabelColor1 = new GridBagConstraints();
+        gbcLabelColor1.anchor = GridBagConstraints.EAST;
+        gbcLabelColor1.insets = new Insets(0, 0, 5, 5);
+        gbcLabelColor1.gridx = 0;
+        gbcLabelColor1.gridy = 2;
+        add(lblColor1, gbcLabelColor1);
 
         colorSelector = new ColorSelector();
         colorSelector.setToolTipText(Option.COLOR.getHelp());
-        final GridBagConstraints gbc_colorSelector = new GridBagConstraints();
-        gbc_colorSelector.insets = new Insets(0, 0, 5, 0);
-        gbc_colorSelector.fill = GridBagConstraints.BOTH;
-        gbc_colorSelector.gridx = 1;
-        gbc_colorSelector.gridy = 2;
-        add(colorSelector, gbc_colorSelector);
+        final GridBagConstraints gbcColorSelector = new GridBagConstraints();
+        gbcColorSelector.insets = new Insets(0, 0, 5, 0);
+        gbcColorSelector.fill = GridBagConstraints.BOTH;
+        gbcColorSelector.gridx = 1;
+        gbcColorSelector.gridy = 2;
+        add(colorSelector, gbcColorSelector);
 
         final JLabel lblLineWidth = new JLabel("Line Width");
-        final GridBagConstraints gbc_lblLineWidth = new GridBagConstraints();
-        gbc_lblLineWidth.insets = new Insets(0, 0, 5, 5);
-        gbc_lblLineWidth.anchor = GridBagConstraints.EAST;
-        gbc_lblLineWidth.gridx = 0;
-        gbc_lblLineWidth.gridy = 3;
-        add(lblLineWidth, gbc_lblLineWidth);
+        final GridBagConstraints gbcLabelLineWidth = new GridBagConstraints();
+        gbcLabelLineWidth.insets = new Insets(0, 0, 5, 5);
+        gbcLabelLineWidth.anchor = GridBagConstraints.EAST;
+        gbcLabelLineWidth.gridx = 0;
+        gbcLabelLineWidth.gridy = 3;
+        add(lblLineWidth, gbcLabelLineWidth);
 
         lineWidthSpinner = new JSpinner();
         lineWidthSpinner.setToolTipText(Option.LINE_WIDTH.getHelp());
         lineWidthSpinner.setModel(new SpinnerNumberModel(Float.valueOf(0f), Float.valueOf(0f), null, Float.valueOf(0.5f)));
-        final GridBagConstraints gbc_lineWidthSpinner = new GridBagConstraints();
-        gbc_lineWidthSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_lineWidthSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_lineWidthSpinner.gridx = 1;
-        gbc_lineWidthSpinner.gridy = 3;
-        add(lineWidthSpinner, gbc_lineWidthSpinner);
+        final GridBagConstraints gbcLineWidthSpinner = new GridBagConstraints();
+        gbcLineWidthSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcLineWidthSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcLineWidthSpinner.gridx = 1;
+        gbcLineWidthSpinner.gridy = 3;
+        add(lineWidthSpinner, gbcLineWidthSpinner);
 
         final JLabel lblTimeOffset = new JLabel("Time Offset");
-        final GridBagConstraints gbc_lblTimeOffset = new GridBagConstraints();
-        gbc_lblTimeOffset.anchor = GridBagConstraints.EAST;
-        gbc_lblTimeOffset.insets = new Insets(0, 0, 5, 5);
-        gbc_lblTimeOffset.gridx = 0;
-        gbc_lblTimeOffset.gridy = 4;
-        add(lblTimeOffset, gbc_lblTimeOffset);
+        final GridBagConstraints gbcLabelTimeOffset = new GridBagConstraints();
+        gbcLabelTimeOffset.anchor = GridBagConstraints.EAST;
+        gbcLabelTimeOffset.insets = new Insets(0, 0, 5, 5);
+        gbcLabelTimeOffset.gridx = 0;
+        gbcLabelTimeOffset.gridy = 4;
+        add(lblTimeOffset, gbcLabelTimeOffset);
 
         timeOffsetSpinner = new JSpinner();
         timeOffsetSpinner.setToolTipText(Option.TIME_OFFSET.getHelp());
         timeOffsetSpinner.setModel(new DurationSpinnerModel());
         timeOffsetSpinner.setEditor(new DurationEditor(timeOffsetSpinner));
-        final GridBagConstraints gbc_timeOffsetSpinner = new GridBagConstraints();
-        gbc_timeOffsetSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_timeOffsetSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_timeOffsetSpinner.gridx = 1;
-        gbc_timeOffsetSpinner.gridy = 4;
-        add(timeOffsetSpinner, gbc_timeOffsetSpinner);
+        final GridBagConstraints gbcTimeOffsetSpinner = new GridBagConstraints();
+        gbcTimeOffsetSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcTimeOffsetSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcTimeOffsetSpinner.gridx = 1;
+        gbcTimeOffsetSpinner.gridy = 4;
+        add(timeOffsetSpinner, gbcTimeOffsetSpinner);
 
         final JLabel lblForcedPointTime = new JLabel("Forced Point Time Interval");
-        final GridBagConstraints gbc_lblForcedPointTime = new GridBagConstraints();
-        gbc_lblForcedPointTime.anchor = GridBagConstraints.EAST;
-        gbc_lblForcedPointTime.insets = new Insets(0, 0, 5, 5);
-        gbc_lblForcedPointTime.gridx = 0;
-        gbc_lblForcedPointTime.gridy = 5;
-        add(lblForcedPointTime, gbc_lblForcedPointTime);
+        final GridBagConstraints gbcLabelForcedPointTime = new GridBagConstraints();
+        gbcLabelForcedPointTime.anchor = GridBagConstraints.EAST;
+        gbcLabelForcedPointTime.insets = new Insets(0, 0, 5, 5);
+        gbcLabelForcedPointTime.gridx = 0;
+        gbcLabelForcedPointTime.gridy = 5;
+        add(lblForcedPointTime, gbcLabelForcedPointTime);
 
         forcedPointTimeIntervalSpinner = new JSpinner();
         forcedPointTimeIntervalSpinner.setToolTipText(Option.FORCED_POINT_TIME_INTERVAL.getHelp());
         forcedPointTimeIntervalSpinner.setModel(new DurationSpinnerModel());
         forcedPointTimeIntervalSpinner.setEditor(new DurationEditor(forcedPointTimeIntervalSpinner));
-        final GridBagConstraints gbc_forcedPointTimeIntervalSpinner = new GridBagConstraints();
-        gbc_forcedPointTimeIntervalSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_forcedPointTimeIntervalSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_forcedPointTimeIntervalSpinner.gridx = 1;
-        gbc_forcedPointTimeIntervalSpinner.gridy = 5;
-        add(forcedPointTimeIntervalSpinner, gbc_forcedPointTimeIntervalSpinner);
+        final GridBagConstraints gbcForcedPointTimeIntervalSpinner = new GridBagConstraints();
+        gbcForcedPointTimeIntervalSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcForcedPointTimeIntervalSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcForcedPointTimeIntervalSpinner.gridx = 1;
+        gbcForcedPointTimeIntervalSpinner.gridy = 5;
+        add(forcedPointTimeIntervalSpinner, gbcForcedPointTimeIntervalSpinner);
 
         final JLabel lblTrimGpxStart = new JLabel("Trim Start of GPX File");
-        final GridBagConstraints gbc_lblTrimGpxStart = new GridBagConstraints();
-        gbc_lblTrimGpxStart.anchor = GridBagConstraints.EAST;
-        gbc_lblTrimGpxStart.insets = new Insets(0, 0, 5, 5);
-        gbc_lblTrimGpxStart.gridx = 0;
-        gbc_lblTrimGpxStart.gridy = 6;
-        add(lblTrimGpxStart, gbc_lblTrimGpxStart);
+        final GridBagConstraints gbcLabelTrimGpxStart = new GridBagConstraints();
+        gbcLabelTrimGpxStart.anchor = GridBagConstraints.EAST;
+        gbcLabelTrimGpxStart.insets = new Insets(0, 0, 5, 5);
+        gbcLabelTrimGpxStart.gridx = 0;
+        gbcLabelTrimGpxStart.gridy = 6;
+        add(lblTrimGpxStart, gbcLabelTrimGpxStart);
 
         trimGpxStartSpinner = new JSpinner();
         trimGpxStartSpinner.setToolTipText(Option.TRIM_GPX_START.getHelp());
         trimGpxStartSpinner.setModel(new DurationSpinnerModel());
         trimGpxStartSpinner.setEditor(new DurationEditor(trimGpxStartSpinner));
-        final GridBagConstraints gbc_trimGpxStartSpinner = new GridBagConstraints();
-        gbc_trimGpxStartSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_trimGpxStartSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_trimGpxStartSpinner.gridx = 1;
-        gbc_trimGpxStartSpinner.gridy = 6;
-        add(trimGpxStartSpinner, gbc_trimGpxStartSpinner);
+        final GridBagConstraints gbcTrimGpxStartSpinner = new GridBagConstraints();
+        gbcTrimGpxStartSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcTrimGpxStartSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcTrimGpxStartSpinner.gridx = 1;
+        gbcTrimGpxStartSpinner.gridy = 6;
+        add(trimGpxStartSpinner, gbcTrimGpxStartSpinner);
 
         final JLabel lblTrimGpxEnd = new JLabel("Trim End of GPX File");
-        final GridBagConstraints gbc_lblTrimGpxEnd = new GridBagConstraints();
-        gbc_lblTrimGpxEnd.anchor = GridBagConstraints.EAST;
-        gbc_lblTrimGpxEnd.insets = new Insets(0, 0, 5, 5);
-        gbc_lblTrimGpxEnd.gridx = 0;
-        gbc_lblTrimGpxEnd.gridy = 7;
-        add(lblTrimGpxEnd, gbc_lblTrimGpxEnd);
+        final GridBagConstraints gbcLabelTrimGpxEnd = new GridBagConstraints();
+        gbcLabelTrimGpxEnd.anchor = GridBagConstraints.EAST;
+        gbcLabelTrimGpxEnd.insets = new Insets(0, 0, 5, 5);
+        gbcLabelTrimGpxEnd.gridx = 0;
+        gbcLabelTrimGpxEnd.gridy = 7;
+        add(lblTrimGpxEnd, gbcLabelTrimGpxEnd);
 
         trimGpxEndSpinner = new JSpinner();
         trimGpxEndSpinner.setToolTipText(Option.TRIM_GPX_END.getHelp());
         trimGpxEndSpinner.setModel(new DurationSpinnerModel());
         trimGpxEndSpinner.setEditor(new DurationEditor(trimGpxEndSpinner));
-        final GridBagConstraints gbc_trimGpxEndSpinner = new GridBagConstraints();
-        gbc_trimGpxEndSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbc_trimGpxEndSpinner.insets = new Insets(0, 0, 5, 0);
-        gbc_trimGpxEndSpinner.gridx = 1;
-        gbc_trimGpxEndSpinner.gridy = 7;
-        add(trimGpxEndSpinner, gbc_trimGpxEndSpinner);
+        final GridBagConstraints gbcTrimGpxEndSpinner = new GridBagConstraints();
+        gbcTrimGpxEndSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcTrimGpxEndSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcTrimGpxEndSpinner.gridx = 1;
+        gbcTrimGpxEndSpinner.gridy = 7;
+        add(trimGpxEndSpinner, gbcTrimGpxEndSpinner);
 
         final Vector<TrackIcon> trackIcons = new Vector<>();
         trackIcons.add(new TrackIcon(""));
@@ -269,21 +270,21 @@ abstract class TrackSettingsPanel extends JPanel {
         trackIconComboBox = new JComboBox<TrackIcon>(trackIcons);
         trackIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
         trackIconComboBox.setEditable(false);
-        final GridBagConstraints gbc_trackIconComboBox = new GridBagConstraints();
-        gbc_trackIconComboBox.fill = GridBagConstraints.HORIZONTAL;
-        gbc_trackIconComboBox.insets = new Insets(0, 0, 5, 0);
-        gbc_trackIconComboBox.gridx = 1;
-        gbc_trackIconComboBox.gridy = 8;
-        add(trackIconComboBox, gbc_trackIconComboBox);
+        final GridBagConstraints gbcTrackIconComboBox = new GridBagConstraints();
+        gbcTrackIconComboBox.fill = GridBagConstraints.HORIZONTAL;
+        gbcTrackIconComboBox.insets = new Insets(0, 0, 5, 0);
+        gbcTrackIconComboBox.gridx = 1;
+        gbcTrackIconComboBox.gridy = 8;
+        add(trackIconComboBox, gbcTrackIconComboBox);
         trackIconComboBox.setPreferredSize(new Dimension(10, trackIconComboBox.getPreferredSize().height));
 
         final JLabel lblEnableIcon = new JLabel("Choose Icon");
-        final GridBagConstraints gbc_lblEnableIcon = new GridBagConstraints();
-        gbc_lblEnableIcon.anchor = GridBagConstraints.EAST;
-        gbc_lblEnableIcon.insets = new Insets(0, 0, 5, 5);
-        gbc_lblEnableIcon.gridx = 0;
-        gbc_lblEnableIcon.gridy = 8;
-        add(lblEnableIcon, gbc_lblEnableIcon);
+        final GridBagConstraints gbcLabelEnableIcon = new GridBagConstraints();
+        gbcLabelEnableIcon.anchor = GridBagConstraints.EAST;
+        gbcLabelEnableIcon.insets = new Insets(0, 0, 5, 5);
+        gbcLabelEnableIcon.gridx = 0;
+        gbcLabelEnableIcon.gridy = 8;
+        add(lblEnableIcon, gbcLabelEnableIcon);
 
         final JButton btnNewButton = new JButton("Remove Track");
         btnNewButton.addActionListener(new ActionListener() {
@@ -292,13 +293,13 @@ abstract class TrackSettingsPanel extends JPanel {
                 remove();
             }
         });
-        final GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-        gbc_btnNewButton.anchor = GridBagConstraints.EAST;
-        gbc_btnNewButton.gridwidth = 3;
-        gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-        gbc_btnNewButton.gridx = 0;
-        gbc_btnNewButton.gridy = 9;
-        add(btnNewButton, gbc_btnNewButton);
+        final GridBagConstraints gbcButtonNewButton = new GridBagConstraints();
+        gbcButtonNewButton.anchor = GridBagConstraints.EAST;
+        gbcButtonNewButton.gridwidth = 3;
+        gbcButtonNewButton.insets = new Insets(0, 0, 0, 5);
+        gbcButtonNewButton.gridx = 0;
+        gbcButtonNewButton.gridy = 9;
+        add(btnNewButton, gbcButtonNewButton);
 
         final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
             @Override

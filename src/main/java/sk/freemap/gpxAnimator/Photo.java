@@ -20,11 +20,11 @@ import java.io.File;
 import java.util.Objects;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
-public class Photo {
+public final class Photo {
     private Long epochSeconds;
     private File file;
 
-    public Photo(@NotNull Long epochSeconds, @NotNull File file) {
+    public Photo(@NotNull final Long epochSeconds, @NotNull final File file) {
         this.epochSeconds = epochSeconds;
         this.file = file;
     }
@@ -38,12 +38,16 @@ public class Photo {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Photo photo = (Photo) o;
-        return epochSeconds.equals(photo.epochSeconds) &&
-                file.equals(photo.file);
+        return epochSeconds.equals(photo.epochSeconds)
+                && file.equals(photo.file);
     }
 
     @Override
@@ -53,9 +57,9 @@ public class Photo {
 
     @Override
     public String toString() {
-        return "Photo{" +
-                "epochSeconds=" + epochSeconds +
-                ", file=" + file +
-                '}';
+        return "Photo{"
+                + "epochSeconds=" + epochSeconds
+                + ", file=" + file
+                + '}';
     }
 }

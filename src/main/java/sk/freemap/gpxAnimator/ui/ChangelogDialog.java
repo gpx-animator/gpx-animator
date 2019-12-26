@@ -70,10 +70,12 @@ public class ChangelogDialog extends JDialog {
             "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" }, justification = "Check for null exactly as needed")
     private String readChangelogAsMarkdown() throws IOException {
         final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        try (final InputStream is = classLoader.getResourceAsStream("CHANGELOG.md")) {
-            if (is == null) return null;
-            try (final InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
-                 final BufferedReader reader = new BufferedReader(isr)) {
+        try (InputStream is = classLoader.getResourceAsStream("CHANGELOG.md")) {
+            if (is == null) {
+                return null;
+            }
+            try (InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
+                 BufferedReader reader = new BufferedReader(isr)) {
                 return reader.lines().collect(Collectors.joining(System.lineSeparator()));
             }
         }

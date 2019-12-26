@@ -16,13 +16,14 @@ package sk.freemap.gpxAnimator.ui;
 
 import javax.swing.AbstractSpinnerModel;
 
-public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
+public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
     private static final long serialVersionUID = -8064362052986633347L;
 
     private final transient boolean zeroEmpty;
     private final transient Number stepSize;
-    private final transient Comparable minimum, maximum;
+    private final transient Comparable minimum;
+    private final transient Comparable maximum;
     private transient Number value;
     private transient Object object = new Object();
 
@@ -32,7 +33,8 @@ public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
     }
 
 
-    public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize, final boolean zeroEmpty) {
+    public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize,
+                                 final boolean zeroEmpty) {
         if (stepSize == null) {
             throw new IllegalArgumentException("value and stepSize must be non-null");
         }

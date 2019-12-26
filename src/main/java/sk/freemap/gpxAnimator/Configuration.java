@@ -29,7 +29,7 @@ import java.util.List;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable, it uses XML transformation
-public class Configuration {
+public final class Configuration {
 
     private int margin;
     private Integer width;
@@ -81,6 +81,7 @@ public class Configuration {
 
     }
 
+    @SuppressWarnings("checkstyle:ParameterNumber")
     public Configuration(
             final int margin, final Integer width, final Integer height, final Integer zoom,
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
@@ -258,8 +259,8 @@ public class Configuration {
                 + "]";
     }
 
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName") // This is okay for the builder pattern
-    public static class Builder {
+    @SuppressWarnings({ "PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField" }) // This is okay for the builder pattern
+    public static final class Builder {
         private final List<TrackConfiguration> trackConfigurationList = new ArrayList<TrackConfiguration>();
         private int margin = 20;
         private Integer height;
@@ -274,7 +275,7 @@ public class Configuration {
         private String tmsUrlTemplate;
         private boolean skipIdle = true;
         private Color flashbackColor = Color.white;
-        private Long flashbackDuration = 250l;
+        private Long flashbackDuration = 250L;
         private Long keepLastFrame;
         private File output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
         private String attribution = "Created by GPX Animator " + Constants.VERSION + "\n%MAP_ATTRIBUTION%";
@@ -334,7 +335,7 @@ public class Configuration {
             return this;
         }
 
-        public Builder tailColor(Color tailColor) {
+        public Builder tailColor(final Color tailColor) {
             this.tailColor = tailColor;
             return this;
         }

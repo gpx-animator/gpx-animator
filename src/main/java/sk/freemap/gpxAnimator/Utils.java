@@ -20,8 +20,8 @@ import java.awt.image.WritableRaster;
 
 final class Utils {
 
-    private Utils() {
-        throw new AssertionError();
+    private Utils() throws InstantiationException {
+        throw new InstantiationException("Utility classes can't be instantiated!");
     }
 
     static BufferedImage deepCopy(final BufferedImage bi) {

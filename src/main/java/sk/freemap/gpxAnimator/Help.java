@@ -17,7 +17,11 @@ package sk.freemap.gpxAnimator;
 import java.io.PrintWriter;
 
 
-public class Help {
+public final class Help {
+
+    private Help() throws InstantiationException {
+        throw new InstantiationException("Utility classes can't be instantiated!");
+    }
 
     public static void printHelp(final OptionHelpWriter w) {
         final Configuration cfg;
@@ -70,7 +74,7 @@ public class Help {
     }
 
     @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
-    public static class PrintWriterOptionHelpWriter implements OptionHelpWriter {
+    public static final class PrintWriterOptionHelpWriter implements OptionHelpWriter {
         private final PrintWriter pw;
 
         public PrintWriterOptionHelpWriter(final PrintWriter pw) {

@@ -20,7 +20,11 @@ import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 
 
-public class Main {
+public final class Main {
+
+    private Main() throws InstantiationException {
+        throw new InstantiationException("Utility classes can't be instantiated!");
+    }
 
     public static void main(final String[] args) {
         try {

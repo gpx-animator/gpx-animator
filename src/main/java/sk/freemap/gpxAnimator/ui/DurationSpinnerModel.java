@@ -17,7 +17,7 @@ package sk.freemap.gpxAnimator.ui;
 import javax.swing.AbstractSpinnerModel;
 import java.util.Objects;
 
-public class DurationSpinnerModel extends AbstractSpinnerModel {
+public final class DurationSpinnerModel extends AbstractSpinnerModel {
 
     private static final long serialVersionUID = 7220186634453532297L;
 

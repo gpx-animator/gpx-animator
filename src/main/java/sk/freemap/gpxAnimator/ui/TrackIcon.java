@@ -19,7 +19,7 @@ import com.drew.lang.annotations.NotNull;
 import java.util.Locale;
 import java.util.Objects;
 
-public class TrackIcon {
+public final class TrackIcon {
 
     @NotNull
     private final String name;
@@ -35,8 +35,12 @@ public class TrackIcon {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TrackIcon trackIcon = (TrackIcon) o;
         return Objects.equals(name, trackIcon.name);
     }

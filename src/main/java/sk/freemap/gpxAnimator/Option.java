@@ -13,8 +13,8 @@ public enum Option {
     TIME_OFFSET("time-offset", "time offset for track in milliseconds"),
     TRIM_GPX_START("trim-gpx-start", "trim the start of the GPX file in milliseconds"),
     TRIM_GPX_END("trim-gpx-end", "trim the end of the GPX file in milliseconds"),
-    FORCED_POINT_TIME_INTERVAL("forced-point-time-interval", "interval between adjanced GPS points in milliseconds - useful for GPX files with missing point time information; " +
-            "if specified then time offset must be set representing absolute; empty for no forcing"),
+    FORCED_POINT_TIME_INTERVAL("forced-point-time-interval", "interval between adjanced GPS points in milliseconds - useful for GPX files "
+            + "with missing point time information; if specified then time offset must be set representing absolute; empty for no forcing"),
     SPEEDUP("speedup", "speed multiplication of the real time; complementary to specifying total time"),
     LINE_WIDTH("line-width", "track line width in pixels"),
     TAIL_DURATION("tail-duration", "highlighted tail length in real time milliseconds"),
@@ -26,12 +26,16 @@ public enum Option {
     MAX_LAT("max-lat", "maximal latitude; leave empty if it should be automatically computed from the GPX tracks"),
     MIN_LON("min-lon", "minimal longitude; leave empty if it should be automatically computed from the GPX tracks"),
     MAX_LON("max-lon", "maximal longitude; leave empty if it should be automatically computed from the GPX tracks"),
-    WIDTH("width", "video width in pixels; if not specified but zoom is specified, then computed from GPX bounding box and margin, otherwise 800"),
+    WIDTH("width", "video width in pixels; if not specified but zoom is specified, then computed from GPX bounding box and margin, "
+            + "otherwise 800"),
     HEIGHT("height", "video height in pixels; if unspecified, it is derived from width, GPX bounding box and margin"),
-    ZOOM("zoom", "map zoom typically from 1 to 18; if not specified and TMS URL Template (Background Map) is specified then it is computed from width"),
+    ZOOM("zoom", "map zoom typically from 1 to 18; if not specified and TMS URL Template (Background Map) is specified then it is "
+            + "computed from width"),
     FONT_SIZE("font-size", "datetime text font size; set to 0 for no date text"),
-    TMS_URL_TEMPLATE("tms-url-template", "slippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap"),
-    ATTRIBUTION("attribution", "map attribution text; %MAP_ATTRIBUTION% placeholder is replaced by attribution of selected pre-defined map (only from GUI)"),
+    TMS_URL_TEMPLATE("tms-url-template", "slippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be "
+            + "replaced; for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap"),
+    ATTRIBUTION("attribution", "map attribution text; %MAP_ATTRIBUTION% placeholder is replaced by attribution of selected pre-defined "
+            + "map (only from GUI)"),
     BACKGROUND_MAP_VISIBILITY("background-map-visibility", "opacity of the background map from 0.0 to 1.0"),
     TOTAL_TIME("total-time", "total length of video in milliseconds; complementary to speedup"),
     KEEP_IDLE("keep-idle", "keep parts where no movement is present"),
@@ -39,10 +43,12 @@ public enum Option {
     FLASHBACK_DURATION("flashback-duration", "color of the idle-skipping flashback effect in #AARRGGBB representation"),
     KEEP_LAST_FRAME("keep-last-frame", "time to repeat the last rendered frame in milliseconds; complementary to total time"),
     SKIP_IDLE("skip-idle", "idle-skipping flashback effect duration in milliseconds; set to empty for no flashback"),
-    PHOTO_DIR("photo-dir", "a directory containing photos to be added to the animation (must contain EXIF information with date and time of photo taken)"),
+    PHOTO_DIR("photo-dir", "a directory containing photos to be added to the animation (must contain EXIF information with date and time "
+            + "of photo taken)"),
     PHOTO_TIME("photo-time", "the amount of time, a photo should be shown above the map"),
     HELP("help", "this help"),
-    TRACK_ICON("track-icon", "enables an icon that replaces the standard circle of the current position (valid values: Bicycle, Jogging, Trekking)");
+    TRACK_ICON("track-icon", "enables an icon that replaces the standard circle of the current position (valid values: Bicycle, Jogging, "
+            + "Trekking)");
 
     private static java.util.Map<String, Option> map = new HashMap<String, Option>();
 

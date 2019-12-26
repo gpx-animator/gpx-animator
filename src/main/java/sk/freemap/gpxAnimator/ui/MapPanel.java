@@ -16,8 +16,8 @@ public class MapPanel extends JPanel {
 
     @Override
     protected void paintComponent(final Graphics g) {
-//		((Graphics2D) g).
-//		Map.drawMap(bi, tmsUrlTemplate, backgroundMapVisibility, zoom, minX, maxX, minY, maxY, rc);
+// ((Graphics2D) g).
+// Map.drawMap(bi, tmsUrlTemplate, backgroundMapVisibility, zoom, minX, maxX, minY, maxY, rc);
     }
 
 }

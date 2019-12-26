@@ -52,7 +52,7 @@ public abstract class FileSelector extends JPanel {
         fileTextField.setColumns(10);
 
         fileTextField.getDocument().addDocumentListener(new DocumentListener() {
-            String oldText = fileTextField.getText();
+            private String oldText = fileTextField.getText();
 
             @Override
             public void removeUpdate(final DocumentEvent e) {
@@ -70,7 +70,8 @@ public abstract class FileSelector extends JPanel {
             }
 
             private void fire() {
-                firePropertyChange("filename", oldText, oldText = fileTextField.getText());
+                firePropertyChange("filename", oldText, fileTextField.getText());
+                oldText = fileTextField.getText();
             }
         });
 
@@ -100,7 +101,8 @@ public abstract class FileSelector extends JPanel {
                 }
 
                 final Type type = configure(fileChooser);
-                if ((type == Type.OPEN ? fileChooser.showOpenDialog(FileSelector.this) : fileChooser.showSaveDialog(FileSelector.this)) == JFileChooser.APPROVE_OPTION) {
+                if ((type == Type.OPEN ? fileChooser.showOpenDialog(FileSelector.this)
+                        : fileChooser.showSaveDialog(FileSelector.this)) == JFileChooser.APPROVE_OPTION) {
                     Preferences.setLastWorkingDir(fileChooser.getSelectedFile().getParent());
                     setFilename(transformFilename(fileChooser.getSelectedFile().toString()));
                 }
@@ -110,27 +112,34 @@ public abstract class FileSelector extends JPanel {
 
     }
 
-    protected abstract Type configure(final JFileChooser gpxFileChooser);
+    protected abstract Type configure(JFileChooser gpxFileChooser);
 
+    /**
+     * Overwrite this method to transform the filename.
+     * Defaults to no transformation and behaves like a getter.
+     *
+     * @param filename the filename to be transformed
+     * @return the transformed filename
+     */
     protected String transformFilename(final String filename) {
         return filename;
     }
 
-    public String getFilename() {
+    public final String getFilename() {
         return fileTextField.getText();
     }
 
-    public void setFilename(final String filename) {
+    public final void setFilename(final String filename) {
         fileTextField.setText(filename);
     }
 
     @Override
-    public String getToolTipText() {
+    public final String getToolTipText() {
         return fileTextField.getToolTipText();
     }
 
     @Override
-    public void setToolTipText(final String text) {
+    public final void setToolTipText(final String text) {
         fileTextField.setToolTipText(text);
         btnNewButton.setToolTipText(text);
     }
