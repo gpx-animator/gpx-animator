@@ -35,6 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -60,7 +61,7 @@ public class Photos {
             final File directory = new File(dirname);
             if (directory.isDirectory()) {
                 final File[] files = directory.listFiles((dir, name) -> {
-                    final String lowerCaseName = name.toLowerCase();
+                    final String lowerCaseName = name.toLowerCase(Locale.getDefault());
                     return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png");
                 });
                 if (files != null) {

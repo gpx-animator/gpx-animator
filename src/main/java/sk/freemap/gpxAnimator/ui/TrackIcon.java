@@ -16,6 +16,7 @@ package sk.freemap.gpxAnimator.ui;
 
 import com.drew.lang.annotations.NotNull;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class TrackIcon {
@@ -51,7 +52,7 @@ public class TrackIcon {
 
     public String getFilename() {
         return "/"
-                .concat(name.toLowerCase())
+                .concat(name.toLowerCase(Locale.getDefault()))
                 .concat(".png");
     }
 

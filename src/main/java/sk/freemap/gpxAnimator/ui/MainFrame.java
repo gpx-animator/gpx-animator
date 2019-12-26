@@ -49,6 +49,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -279,7 +280,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(final ActionEvent e) {
                 final String url = "https://gpx-animator.app/#faq";
                 try {
-                    final String os = System.getProperty("os.name").toLowerCase();
+                    final String os = System.getProperty("os.name").toLowerCase(Locale.getDefault());
                     final Runtime rt = Runtime.getRuntime();
 
                     if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {

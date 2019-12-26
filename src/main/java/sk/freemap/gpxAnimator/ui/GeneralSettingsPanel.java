@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 import static javax.swing.JFileChooser.FILES_ONLY;
@@ -112,7 +113,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
             @Override
             protected String transformFilename(final String filename) {
-                if ((filename.toLowerCase().endsWith(".png") || filename.toLowerCase().endsWith(".jpg"))
+                if ((filename.toLowerCase(Locale.getDefault()).endsWith(".png") || filename.toLowerCase(Locale.getDefault()).endsWith(".jpg"))
                         && String.format(filename, 100).equals(String.format(filename, 200))) {
                     final int n = filename.lastIndexOf('.');
                     return filename.substring(0, n) + "%08d" + filename.substring(n);
