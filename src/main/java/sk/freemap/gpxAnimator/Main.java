@@ -34,16 +34,13 @@ public final class Main {
             new Thread(TileCache::ageCache).start();
 
             if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            final MainFrame frame = new MainFrame();
-                            frame.setVisible(true);
-                            frame.setConfiguration(configuration);
-                        } catch (final Exception e) {
-                            e.printStackTrace();
-                        }
+                EventQueue.invokeLater(() -> {
+                    try {
+                        final MainFrame frame = new MainFrame();
+                        frame.setVisible(true);
+                        frame.setConfiguration(configuration);
+                    } catch (final Exception e) {
+                        e.printStackTrace();
                     }
                 });
             } else {

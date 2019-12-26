@@ -63,21 +63,21 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
         if ((value instanceof Float) || (value instanceof Double)) {
             final double v = value.doubleValue() + (stepSize.doubleValue() * dir);
             if (value instanceof Double) {
-                newValue = Double.valueOf(v);
+                newValue = v;
             } else {
-                newValue = Float.valueOf((float) v);
+                newValue = (float) v;
             }
         } else {
             final long v = value.longValue() + (stepSize.longValue() * dir);
 
             if (value instanceof Long) {
-                newValue = Long.valueOf(v);
+                newValue = v;
             } else if (value instanceof Integer) {
-                newValue = Integer.valueOf((int) v);
+                newValue = (int) v;
             } else if (value instanceof Short) {
-                newValue = Short.valueOf((short) v);
+                newValue = (short) v;
             } else {
-                newValue = Byte.valueOf((byte) v);
+                newValue = (byte) v;
             }
         }
 

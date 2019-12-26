@@ -219,9 +219,9 @@ public final class TileCache {
     }
 
     private static String bytesToHex(final byte[] hash) {
-        StringBuffer hexString = new StringBuffer();
-        for (int i = 0; i < hash.length; i++) {
-            String hex = Integer.toHexString(0xff & hash[i]);
+        final StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            final String hex = Integer.toHexString(0xff & b);
             if (hex.length() == 1) { // NOPMD -- Ignore magic number literal
                 hexString.append('0');
             }

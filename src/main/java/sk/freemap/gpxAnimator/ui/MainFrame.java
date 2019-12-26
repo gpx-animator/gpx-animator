@@ -25,8 +25,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -41,8 +39,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -129,35 +125,29 @@ public final class MainFrame extends JFrame {
         menuBar.add(mnFile);
 
         final JMenuItem mntmNew = new JMenuItem("New");
-        mntmNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
-                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    loadDefaults();
-                }
+        mntmNew.addActionListener(e -> {
+            if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                loadDefaults();
             }
         });
         mnFile.add(mntmNew);
 
         final JMenuItem mntmOpen = new JMenuItem("Open...");
-        mntmOpen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
-                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        mntmOpen.addActionListener(e -> {
+            if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
-                    final String lastCwd = Preferences.getLastWorkingDir();
-                    fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
-                    if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-                        final File fileToOpen = fileChooser.getSelectedFile();
-                        Preferences.setLastWorkingDir(fileToOpen.getParent());
+                final String lastCwd = Preferences.getLastWorkingDir();
+                fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
+                if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                    final File fileToOpen = fileChooser.getSelectedFile();
+                    Preferences.setLastWorkingDir(fileToOpen.getParent());
 
-                        openFile(fileToOpen);
-                    }
+                    openFile(fileToOpen);
                 }
-
             }
+
         });
         mnFile.add(mntmOpen);
 
@@ -168,45 +158,27 @@ public final class MainFrame extends JFrame {
         mnFile.addSeparator();
 
         final JMenuItem mntmSave = new JMenuItem("Save");
-        mntmSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                if (file == null) {
-                    saveAs();
-                } else {
-                    save(file);
-                }
+        mntmSave.addActionListener(e -> {
+            if (file == null) {
+                saveAs();
+            } else {
+                save(file);
             }
         });
         mnFile.add(mntmSave);
 
         final JMenuItem mntmSaveAs = new JMenuItem("Save As...");
-        mntmSaveAs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                saveAs();
-            }
-        });
+        mntmSaveAs.addActionListener(e -> saveAs());
         mnFile.add(mntmSaveAs);
 
         mnFile.addSeparator();
 
         final JMenuItem mntmSaveAsDefault = new JMenuItem("Save As Default");
-        mntmSaveAsDefault.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                saveAsDefault();
-            }
-        });
+        mntmSaveAsDefault.addActionListener(e -> saveAsDefault());
         mnFile.add(mntmSaveAsDefault);
 
         final JMenuItem mntmResetDefaults = new JMenuItem("Reset To Factory Defaults");
-        mntmResetDefaults.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                resetDefaults();
-            }
-        });
+        mntmResetDefaults.addActionListener(e -> resetDefaults());
         mnFile.add(mntmResetDefaults);
 
         mnFile.addSeparator();
@@ -218,17 +190,7 @@ public final class MainFrame extends JFrame {
         mnFile.addSeparator();
 
         final JMenuItem mntmExit = new JMenuItem("Exit");
-        mntmExit.addActionListener(new ActionListener() {
-            @Override
-            @SuppressWarnings("PMD.DoNotCallSystemExit") // Exit the application on user request
-            @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request")
-            public void actionPerformed(final ActionEvent e) {
-                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
-                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-                }
-            }
-        });
+        mntmExit.addActionListener(this::exitApplication);
         mnFile.add(mntmExit);
 
         final JMenu mnTrack = new JMenu("Track");
@@ -255,69 +217,60 @@ public final class MainFrame extends JFrame {
         menuBar.add(mnHelp);
 
         final JMenuItem mntmAbout = new JMenuItem("About");
-        mntmAbout.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                final AboutDialog aboutDialog = new AboutDialog();
-                aboutDialog.setLocationRelativeTo(MainFrame.this);
-                aboutDialog.setVisible(true);
-            }
+        mntmAbout.addActionListener(e -> {
+            final AboutDialog aboutDialog = new AboutDialog();
+            aboutDialog.setLocationRelativeTo(MainFrame.this);
+            aboutDialog.setVisible(true);
         });
         mnHelp.add(mntmAbout);
 
         final JMenuItem mntmUsage = new JMenuItem("Usage");
-        mntmUsage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                final UsageDialog usageDialog = new UsageDialog();
-                usageDialog.setLocationRelativeTo(MainFrame.this);
-                usageDialog.setVisible(true);
-            }
+        mntmUsage.addActionListener(e -> {
+            final UsageDialog usageDialog = new UsageDialog();
+            usageDialog.setLocationRelativeTo(MainFrame.this);
+            usageDialog.setVisible(true);
         });
         mnHelp.add(mntmUsage);
 
         final JMenuItem mntmFAQ = new JMenuItem("FAQ");
-        mntmFAQ.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                final String url = "https://gpx-animator.app/#faq";
-                try {
-                    final String os = System.getProperty("os.name").toLowerCase(Locale.getDefault());
-                    final Runtime rt = Runtime.getRuntime();
+        mntmFAQ.addActionListener(e -> {
+            final String url = "https://gpx-animator.app/#faq";
+            try {
+                final String os = System.getProperty("os.name").toLowerCase(Locale.getDefault());
+                final Runtime rt = Runtime.getRuntime();
 
-                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                        Desktop.getDesktop().browse(new URI(url));
-                    } else if (os.indexOf("win") >= 0) {
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(new URI(url));
+                } else if (os.contains("win")) {
 
-                        // this doesn't support showing urls in the form of "page.html#nameLink"
-                        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+                    // this doesn't support showing urls in the form of "page.html#nameLink"
+                    rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
 
-                    } else if (os.indexOf("mac") >= 0) {
+                } else if (os.contains("mac")) {
 
-                        rt.exec("open " + url);
+                    rt.exec("open " + url);
 
-                    } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0) {
+                } else if (os.contains("nix") || os.contains("nux")) {
 
-                        // Do a best guess on unix until we get a platform independent way
-                        // Build a list of browsers to try, in this order.
-                        final String[] browsers = {"chrome", "firefox", "mozilla", "konqueror",
-                                "epiphany", "netscape", "opera", "links", "lynx"};
+                    // Do a best guess on unix until we get a platform independent way
+                    // Build a list of browsers to try, in this order.
+                    final String[] browsers = {"chrome", "firefox", "mozilla", "konqueror",
+                            "epiphany", "netscape", "opera", "links", "lynx"};
 
-                        // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
-                        final StringBuffer cmd = new StringBuffer();
-                        for (int i = 0; i < browsers.length; i++) {
-                            cmd.append((i == 0 ? "" : " || ") + browsers[i] + " \"" + url + "\" ");
-                        }
-                        rt.exec(new String[]{"sh", "-c", cmd.toString()});
+                    // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
+                    final StringBuilder cmd = new StringBuilder();
+                    for (int i = 0; i < browsers.length; i++) {
+                        cmd.append((i == 0 ? "" : " || ") + browsers[i] + " \"" + url + "\" ");
                     }
-                } catch (final IOException | URISyntaxException ex) {
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "I was not able to start a web browser for the FAQ:\n" + url,
-                            "Sorry",
-                            JOptionPane.WARNING_MESSAGE
-                    );
+                    rt.exec(new String[]{"sh", "-c", cmd.toString()});
                 }
+            } catch (final IOException | URISyntaxException ex) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "I was not able to start a web browser for the FAQ:\n" + url,
+                        "Sorry",
+                        JOptionPane.WARNING_MESSAGE
+                );
             }
         });
         mnHelp.add(mntmFAQ);
@@ -344,12 +297,7 @@ public final class MainFrame extends JFrame {
         gbcTabbedPane.gridy = 0;
         contentPane.add(tabbedPane, gbcTabbedPane);
 
-        tabbedPane.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(final ChangeEvent e) {
-                mntmRemoveTrack.setEnabled(tabbedPane.getSelectedIndex() > 0);
-            }
-        });
+        tabbedPane.addChangeListener(e -> mntmRemoveTrack.setEnabled(tabbedPane.getSelectedIndex() > 0));
 
         final JScrollPane generalScrollPane = new JScrollPane();
         tabbedPane.addTab("General", generalScrollPane);
@@ -420,97 +368,91 @@ public final class MainFrame extends JFrame {
         gbcRenderButton.gridx = 3;
         gbcRenderButton.gridy = 0;
         panel.add(renderButton, gbcRenderButton);
-        renderButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                if (swingWorker != null) {
-                    swingWorker.cancel(false);
-                    return;
-                }
-
-                final Configuration cfg;
-                try {
-                    cfg = createConfiguration(true, true);
-                    if (cfg.getOutput().exists()) {
-                        final String message = String.format(
-                                "A file with the name \"%s\" already exists.%nDo you really want to overwrite this file?", cfg.getOutput());
-                        final int result = JOptionPane.showConfirmDialog(MainFrame.this,
-                                message, WARNING_TITLE, JOptionPane.YES_NO_OPTION);
-                        if (result == JOptionPane.NO_OPTION) {
-                            return;
-                        }
-                    }
-                } catch (final UserException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(MainFrame.this,
-                            "Configuration error:\n" + ex.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                swingWorker = new SwingWorker<Void, String>() {
-                    @Override
-                    protected Void doInBackground() throws Exception {
-                        new Renderer(cfg).render(new RenderingContext() {
-                            @Override
-                            public void setProgress1(final int pct, final String message) {
-                                System.out.printf("[%3d%%] %s%n", pct, message);
-                                setProgress(pct);
-                                publish(message + " (" + pct + "%)");
-                            }
-
-                            @Override
-                            public boolean isCancelled1() {
-                                return isCancelled();
-                            }
-                        });
-
-                        return null;
-                    }
-
-                    @Override
-                    protected void process(final List<String> chunks) {
-                        if (!chunks.isEmpty()) {
-                            progressBar.setString(chunks.get(chunks.size() - 1));
-                        }
-                    }
-
-                    @Override
-                    protected void done() {
-                        swingWorker = null; // NOPMD -- dereference the SwingWorker to make it available for garbage collection
-                        progressBar.setVisible(false);
-                        renderButton.setText("Render");
-
-                        try {
-                            get();
-                            JOptionPane.showMessageDialog(MainFrame.this,
-                                    "Rendering has finished successfully.", "Finished", JOptionPane.INFORMATION_MESSAGE);
-                        } catch (final InterruptedException e) {
-                            JOptionPane.showMessageDialog(MainFrame.this,
-                                    "Rendering has been interrupted.", "Interrupted", JOptionPane.ERROR_MESSAGE);
-                        } catch (final ExecutionException e) {
-                            e.printStackTrace();
-                            JOptionPane.showMessageDialog(MainFrame.this,
-                                    "Error while rendering:\n" + e.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
-                        } catch (final CancellationException e) {
-                            JOptionPane.showMessageDialog(MainFrame.this,
-                                    "Rendering has been cancelled.", "Cancelled", JOptionPane.WARNING_MESSAGE);
-                        }
-                    }
-                };
-
-                swingWorker.addPropertyChangeListener(new PropertyChangeListener() {
-                    @Override
-                    public void propertyChange(final PropertyChangeEvent evt) {
-                        if ("progress".equals(evt.getPropertyName())) {
-                            progressBar.setValue((Integer) evt.getNewValue());
-                        }
-                    }
-                });
-
-                progressBar.setVisible(true);
-                renderButton.setText("Cancel");
-                swingWorker.execute();
+        renderButton.addActionListener(e -> {
+            if (swingWorker != null) {
+                swingWorker.cancel(false);
+                return;
             }
+
+            final Configuration cfg;
+            try {
+                cfg = createConfiguration(true, true);
+                if (cfg.getOutput().exists()) {
+                    final String message = String.format(
+                            "A file with the name \"%s\" already exists.%nDo you really want to overwrite this file?", cfg.getOutput());
+                    final int result = JOptionPane.showConfirmDialog(MainFrame.this,
+                            message, WARNING_TITLE, JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.NO_OPTION) {
+                        return;
+                    }
+                }
+            } catch (final UserException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(MainFrame.this,
+                        "Configuration error:\n" + ex.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            swingWorker = new SwingWorker<>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    new Renderer(cfg).render(new RenderingContext() {
+                        @Override
+                        public void setProgress1(final int pct, final String message) {
+                            System.out.printf("[%3d%%] %s%n", pct, message);
+                            setProgress(pct);
+                            publish(message + " (" + pct + "%)");
+                        }
+
+                        @Override
+                        public boolean isCancelled1() {
+                            return isCancelled();
+                        }
+                    });
+
+                    return null;
+                }
+
+                @Override
+                protected void process(final List<String> chunks) {
+                    if (!chunks.isEmpty()) {
+                        progressBar.setString(chunks.get(chunks.size() - 1));
+                    }
+                }
+
+                @Override
+                protected void done() {
+                    swingWorker = null; // NOPMD -- dereference the SwingWorker to make it available for garbage collection
+                    progressBar.setVisible(false);
+                    renderButton.setText("Render");
+
+                    try {
+                        get();
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Rendering has finished successfully.", "Finished", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (final InterruptedException e) {
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Rendering has been interrupted.", "Interrupted", JOptionPane.ERROR_MESSAGE);
+                    } catch (final ExecutionException e) {
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Error while rendering:\n" + e.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+                    } catch (final CancellationException e) {
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Rendering has been cancelled.", "Cancelled", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            };
+
+            swingWorker.addPropertyChangeListener(evt -> {
+                if ("progress".equals(evt.getPropertyName())) {
+                    progressBar.setValue((Integer) evt.getNewValue());
+                }
+            });
+
+            progressBar.setVisible(true);
+            renderButton.setText("Cancel");
+            swingWorker.execute();
         });
 
         addWindowListener(new WindowAdapter() {
@@ -530,6 +472,15 @@ public final class MainFrame extends JFrame {
 
         SwingUtilities.invokeLater(this::loadDefaults);
         SwingUtilities.invokeLater(this::showChangelogOnce);
+    }
+
+    @SuppressWarnings("PMD.DoNotCallSystemExit") // Exit the application on user request
+    @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request")
+    private void exitApplication(final ActionEvent e) {
+        if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }
 
     public Configuration createConfiguration(final boolean includeTracks, final boolean replacePlaceholders) throws UserException {

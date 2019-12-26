@@ -50,11 +50,11 @@ public final class Renderer {
 
     private static final double MS = 1000d;
 
-    private static LinkedList<Double> speedValues = new LinkedList<>();
+    private final LinkedList<Double> speedValues = new LinkedList<>();
 
     private final Configuration cfg;
 
-    private final List<List<TreeMap<Long, Point2D>>> timePointMapListList = new ArrayList<List<TreeMap<Long, Point2D>>>();
+    private final List<List<TreeMap<Long, Point2D>>> timePointMapListList = new ArrayList<>();
 
     private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
@@ -73,7 +73,7 @@ public final class Renderer {
         this.cfg = cfg;
     }
 
-    private static double calculateSpeed(final GpxPoint lastPoint, final LatLon latLon, final long time) {
+    private double calculateSpeed(final GpxPoint lastPoint, final LatLon latLon, final long time) {
         if (lastPoint == null) {
             return 0;
         }
@@ -88,9 +88,7 @@ public final class Renderer {
             speedValues.pop();
         }
 
-        double avgSpeed = speedValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
-
-        return avgSpeed;
+        return speedValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
     }
 
     private static double calculateDistance(final GpxPoint lastPoint, final LatLon latLon) {
@@ -136,9 +134,9 @@ public final class Renderer {
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO This method needs to be refactored! It is not only too long, it is hard to understand.
     public void render(final RenderingContext rc) throws UserException {
-        final List<Long[]> spanList = new ArrayList<Long[]>();
+        final List<Long[]> spanList = new ArrayList<>();
 
-        final TreeMap<Long, Point2D> wpMap = new TreeMap<Long, Point2D>();
+        final TreeMap<Long, Point2D> wpMap = new TreeMap<>();
 
         int i = -1;
         for (final TrackConfiguration trackConfiguration : cfg.getTrackConfigurationList()) {
@@ -148,18 +146,18 @@ public final class Renderer {
 
             GpxParser.parseGpx(trackConfiguration.getInputGpx(), gch);
 
-            final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<TreeMap<Long, Point2D>>();
+            final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
             for (final List<LatLon> latLonList : gch.getPointLists()) {
-                final TreeMap<Long, Point2D> timePointMap = new TreeMap<Long, Point2D>();
+                final TreeMap<Long, Point2D> timePointMap = new TreeMap<>();
                 toTimePointMap(timePointMap, i, latLonList);
                 trimGpxData(timePointMap, trackConfiguration);
                 timePointMapList.add(timePointMap);
 
                 toTimePointMap(wpMap, i, gch.getWaypointList());
 
-                Long t0 = timePointMap.firstKey();
-                Long t1 = timePointMap.lastKey() + cfg.getTailDuration();
+                long t0 = timePointMap.firstKey();
+                long t1 = timePointMap.lastKey() + cfg.getTailDuration();
                 test:
                 { // code in the block merges connected spans; it is currently not important to do this
                     for (final Iterator<Long[]> iter = spanList.iterator(); iter.hasNext();) {
@@ -198,8 +196,8 @@ public final class Renderer {
             final boolean userSpecifiedHeight = cfg.getHeight() != null;
             if (userSpecifiedHeight) {
                 final int height = cfg.getHeight();
-                final Integer zoom1 = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
-                final Integer zoom2 = (int) Math.floor(Math.log(Math.PI / 128.0 * (height - cfg.getMargin() * 2) / (maxY - minY)) / Math.log(2));
+                final int zoom1 = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
+                final int zoom2 = (int) Math.floor(Math.log(Math.PI / 128.0 * (height - cfg.getMargin() * 2) / (maxY - minY)) / Math.log(2));
                 zoom = Math.min(zoom1, zoom2);
             } else {
                 zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
@@ -295,7 +293,7 @@ public final class Renderer {
 
         final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
 
-        final boolean keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame().longValue() > 0;
+        final boolean keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
 
         final Photos photos = new Photos(cfg.getPhotoDirectory());
 
@@ -350,7 +348,7 @@ public final class Renderer {
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
 
             if (keepLastFrame && frame == frames - 1) { // last frame
-                final long ms = cfg.getKeepLastFrame().longValue();
+                final long ms = cfg.getKeepLastFrame();
                 final long fps = Double.valueOf(cfg.getFps()).longValue();
                 final long stillFrames = ms / 1_000 * fps;
                 for (long stillFrame = 0; stillFrame < stillFrames; stillFrame++) {
@@ -384,7 +382,7 @@ public final class Renderer {
 
     private void drawWaypoints(final BufferedImage bi, final int frame, final TreeMap<Long, Point2D> wpMap) {
         final Double waypointSize = cfg.getWaypointSize();
-        if (waypointSize == null || waypointSize.doubleValue() == 0.0 || wpMap.isEmpty()) {
+        if (waypointSize == null || waypointSize == 0.0 || wpMap.isEmpty()) {
             return;
         }
 
@@ -530,7 +528,7 @@ public final class Renderer {
 
     private Point2D drawMarker(final BufferedImage bi, final int frame) {
         Point2D point = null;
-        if (cfg.getMarkerSize() == null || cfg.getMarkerSize().doubleValue() == 0.0) {
+        if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {
             return point;
         }
 

@@ -112,7 +112,7 @@ public final class Photos {
             g2d.drawImage(image, posX, posY, null);
             g2d.dispose();
 
-            final long ms = cfg.getPhotoTime().longValue();
+            final long ms = cfg.getPhotoTime();
             final long fps = Double.valueOf(cfg.getFps()).longValue();
             final long frames = ms * fps / 1_000;
 
@@ -145,7 +145,7 @@ public final class Photos {
     private static BufferedImage addBorder(final BufferedImage image) {
         int borderWidth = image.getWidth() / 15;
         int borderHeight = image.getHeight() / 15;
-        int borderSize = borderWidth < borderHeight ? borderWidth : borderHeight;
+        int borderSize = Math.min(borderWidth, borderHeight);
         int outerBorderSize = borderSize / 5;
         final BufferedImage border = new BufferedImage(
                 image.getWidth() + 2 * borderSize,

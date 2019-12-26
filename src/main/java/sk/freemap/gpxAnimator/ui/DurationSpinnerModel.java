@@ -44,8 +44,7 @@ public final class DurationSpinnerModel extends AbstractSpinnerModel {
 
     @Override
     public Object getPreviousValue() {
-        final long prev = (duration == null ? 0 : duration) - getDiffMs();
-        return prev;
+        return (duration == null ? 0 : duration) - getDiffMs();
     }
 
     public Field getField() {

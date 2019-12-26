@@ -14,7 +14,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -24,11 +23,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Vector;
@@ -177,7 +171,7 @@ abstract class TrackSettingsPanel extends JPanel {
 
         lineWidthSpinner = new JSpinner();
         lineWidthSpinner.setToolTipText(Option.LINE_WIDTH.getHelp());
-        lineWidthSpinner.setModel(new SpinnerNumberModel(Float.valueOf(0f), Float.valueOf(0f), null, Float.valueOf(0.5f)));
+        lineWidthSpinner.setModel(new SpinnerNumberModel(0f, 0f, null, 0.5f));
         final GridBagConstraints gbcLineWidthSpinner = new GridBagConstraints();
         gbcLineWidthSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcLineWidthSpinner.insets = new Insets(0, 0, 5, 0);
@@ -267,7 +261,7 @@ abstract class TrackSettingsPanel extends JPanel {
         trackIcons.add(new TrackIcon("Jogging"));
         trackIcons.add(new TrackIcon("Trekking"));
 
-        trackIconComboBox = new JComboBox<TrackIcon>(trackIcons);
+        trackIconComboBox = new JComboBox<>(trackIcons);
         trackIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
         trackIconComboBox.setEditable(false);
         final GridBagConstraints gbcTrackIconComboBox = new GridBagConstraints();
@@ -287,12 +281,7 @@ abstract class TrackSettingsPanel extends JPanel {
         add(lblEnableIcon, gbcLabelEnableIcon);
 
         final JButton btnNewButton = new JButton("Remove Track");
-        btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                remove();
-            }
-        });
+        btnNewButton.addActionListener(e -> remove());
         final GridBagConstraints gbcButtonNewButton = new GridBagConstraints();
         gbcButtonNewButton.anchor = GridBagConstraints.EAST;
         gbcButtonNewButton.gridwidth = 3;
@@ -301,12 +290,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcButtonNewButton.gridy = 9;
         add(btnNewButton, gbcButtonNewButton);
 
-        final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(final PropertyChangeEvent evt) {
-                configurationChanged();
-            }
-        };
+        final PropertyChangeListener propertyChangeListener = evt -> configurationChanged();
         inputGpxFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
 
         labelTextField.getDocument().addDocumentListener(new DocumentListener() {
@@ -328,24 +312,14 @@ abstract class TrackSettingsPanel extends JPanel {
 
         colorSelector.addPropertyChangeListener("color", propertyChangeListener);
 
-        final ChangeListener changeListener = new ChangeListener() {
-            @Override
-            public void stateChanged(final ChangeEvent e) {
-                configurationChanged();
-            }
-        };
+        final ChangeListener changeListener = e -> configurationChanged();
 
         lineWidthSpinner.addChangeListener(changeListener);
         timeOffsetSpinner.addChangeListener(changeListener);
         forcedPointTimeIntervalSpinner.addChangeListener(changeListener);
         trimGpxStartSpinner.addChangeListener(changeListener);
         trimGpxEndSpinner.addChangeListener(changeListener);
-        trackIconComboBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(final ItemEvent e) {
-                configurationChanged();
-            }
-        });
+        trackIconComboBox.addItemListener(e -> configurationChanged());
     }
 
 

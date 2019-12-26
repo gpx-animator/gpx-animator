@@ -15,8 +15,6 @@
 package sk.freemap.gpxAnimator.ui;
 
 import sk.freemap.gpxAnimator.Help;
-import sk.freemap.gpxAnimator.Help.OptionHelpWriter;
-import sk.freemap.gpxAnimator.Option;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -28,8 +26,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -57,29 +53,26 @@ public class UsageDialog extends JDialog {
         final StringWriter sw = new StringWriter();
         final PrintWriter pw = new PrintWriter(sw);
         pw.println("<dl>");
-        Help.printHelp(new OptionHelpWriter() {
-            @Override
-            public void writeOptionHelp(final Option option, final String argument, final boolean track, final Object defaultValue) {
-                // TODO html escape
-                pw.print("<dt><b>--");
-                pw.print(option.getName());
-                if (argument != null) {
-                    pw.print(" &lt;");
-                    pw.print(argument);
-                    pw.print("&gt;");
-                }
-                pw.println("</b></dt>");
-                pw.print("<dd>");
-                pw.print(option.getHelp());
-                if (track) {
-                    pw.print("; can be specified multiple times if multiple tracks are provided");
-                }
-                if (defaultValue != null) {
-                    pw.print("; default ");
-                    pw.print(defaultValue);
-                }
-                pw.println("</dd>");
+        Help.printHelp((option, argument, track, defaultValue) -> {
+            // TODO html escape
+            pw.print("<dt><b>--");
+            pw.print(option.getName());
+            if (argument != null) {
+                pw.print(" &lt;");
+                pw.print(argument);
+                pw.print("&gt;");
             }
+            pw.println("</b></dt>");
+            pw.print("<dd>");
+            pw.print(option.getHelp());
+            if (track) {
+                pw.print("; can be specified multiple times if multiple tracks are provided");
+            }
+            if (defaultValue != null) {
+                pw.print("; default ");
+                pw.print(defaultValue);
+            }
+            pw.println("</dd>");
         });
         pw.println("</dl>");
         pw.close();
@@ -96,12 +89,7 @@ public class UsageDialog extends JDialog {
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
         final JButton okButton = new JButton("OK");
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                UsageDialog.this.dispose();
-            }
-        });
+        okButton.addActionListener(e -> UsageDialog.this.dispose());
         okButton.setActionCommand("OK");
         buttonPane.add(okButton);
         getRootPane().setDefaultButton(okButton);

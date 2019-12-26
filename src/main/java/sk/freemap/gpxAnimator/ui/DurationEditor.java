@@ -22,8 +22,6 @@ import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.text.DefaultFormatterFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,56 +36,50 @@ public class DurationEditor extends DefaultEditor {
 
         final JFormattedTextField ftf = getTextField();
 
-        ftf.addCaretListener(new CaretListener() {
-            @Override
-            public void caretUpdate(final CaretEvent e) {
-                final SpinnerModel model = spinner.getModel();
-                if (!(model instanceof DurationSpinnerModel)) {
-                    return;
+        ftf.addCaretListener(e -> {
+            final SpinnerModel model = spinner.getModel();
+            if (!(model instanceof DurationSpinnerModel)) {
+                return;
+            }
+
+            final DurationSpinnerModel dsm = (DurationSpinnerModel) model;
+
+            // special hack to select number
+            if (!ftf.isValid()) {
+                final Field field = dsm.getField();
+                final Matcher matcher = Pattern.compile("(\\d+)\\s*" + field.getUnit() + "\\b").matcher(ftf.getText());
+                if (matcher.find()) {
+                    SwingUtilities.invokeLater(() -> {
+                        ftf.setSelectionStart(matcher.start(1));
+                        ftf.setSelectionEnd(matcher.end(1));
+                    });
                 }
 
-                final DurationSpinnerModel dsm = (DurationSpinnerModel) model;
+                return;
+            }
 
-                // special hack to select number
-                if (!ftf.isValid()) {
-                    final Field field = dsm.getField();
-                    final Matcher matcher = Pattern.compile("(\\d+)\\s*" + field.getUnit() + "\\b").matcher(ftf.getText());
-                    if (matcher.find()) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                ftf.setSelectionStart(matcher.start(1));
-                                ftf.setSelectionEnd(matcher.end(1));
-                            }
-                        });
-                    }
+            final String text = ftf.getText();
+            final int n = text.length();
 
-                    return;
-                }
+            int i = e.getDot();
 
-                final String text = ftf.getText();
-                final int n = text.length();
+            while (i < n && !Character.isLowerCase(text.charAt(i))) {
+                i++;
+            }
 
-                int i = e.getDot();
+            while (i > 1 && Character.isLowerCase(text.charAt(i - 1))) {
+                i--;
+            }
 
-                while (i < n && !Character.isLowerCase(text.charAt(i))) {
-                    i++;
-                }
+            final StringBuilder sb = new StringBuilder();
+            for (; i < n && Character.isLowerCase(text.charAt(i)); i++) {
+                sb.append(text.charAt(i));
+            }
 
-                while (i > 1 && Character.isLowerCase(text.charAt(i - 1))) {
-                    i--;
-                }
+            final Field field = Field.fromUnit(sb.toString());
 
-                final StringBuilder sb = new StringBuilder();
-                for (; i < n && Character.isLowerCase(text.charAt(i)); i++) {
-                    sb.append(text.charAt(i));
-                }
-
-                final Field field = Field.fromUnit(sb.toString());
-
-                if (field != null) {
-                    dsm.setField(field);
-                }
+            if (field != null) {
+                dsm.setField(field);
             }
         });
 

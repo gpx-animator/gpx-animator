@@ -50,11 +50,11 @@ public enum Option {
     TRACK_ICON("track-icon", "enables an icon that replaces the standard circle of the current position (valid values: Bicycle, Jogging, "
             + "Trekking)");
 
-    private static java.util.Map<String, Option> map = new HashMap<String, Option>();
+    private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();
 
     static {
         for (final Option option : Option.values()) {
-            map.put(option.name, option);
+            OPTION_MAP.put(option.name, option);
         }
     }
 
@@ -67,7 +67,7 @@ public enum Option {
     }
 
     public static Option fromName(final String name) {
-        return map.get(name);
+        return OPTION_MAP.get(name);
     }
 
     public String getName() {

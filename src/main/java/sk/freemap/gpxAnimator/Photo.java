@@ -21,8 +21,8 @@ import java.util.Objects;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class Photo {
-    private Long epochSeconds;
-    private File file;
+    private final Long epochSeconds;
+    private final File file;
 
     public Photo(@NotNull final Long epochSeconds, @NotNull final File file) {
         this.epochSeconds = epochSeconds;

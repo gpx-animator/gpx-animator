@@ -27,16 +27,11 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -142,12 +137,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcOutputFileSelector.gridy = 0;
         add(outputFileSelector, gbcOutputFileSelector);
 
-        final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(final PropertyChangeEvent evt) {
-                configurationChanged();
-            }
-        };
+        final PropertyChangeListener propertyChangeListener = evt -> configurationChanged();
         outputFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
 
         final JLabel lblWidth = new JLabel("Width");
@@ -160,7 +150,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         widthSpinner = new JSpinner();
         widthSpinner.setToolTipText(Option.WIDTH.getHelp());
-        widthSpinner.setModel(new EmptyNullSpinnerModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(10)));
+        widthSpinner.setModel(new EmptyNullSpinnerModel(1, 0, null, 10));
         widthSpinner.setEditor(new EmptyZeroNumberEditor(widthSpinner, Integer.class));
         final GridBagConstraints gbcWidthSpinner = new GridBagConstraints();
         gbcWidthSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -168,12 +158,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcWidthSpinner.gridx = 1;
         gbcWidthSpinner.gridy = 1;
         add(widthSpinner, gbcWidthSpinner);
-        final ChangeListener changeListener = new ChangeListener() {
-            @Override
-            public void stateChanged(final ChangeEvent e) {
-                configurationChanged();
-            }
-        };
+        final ChangeListener changeListener = e -> configurationChanged();
         widthSpinner.addChangeListener(changeListener);
 
         final JLabel lblHeight = new JLabel("Height");
@@ -186,7 +171,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         heightSpinner = new JSpinner();
         heightSpinner.setToolTipText(Option.HEIGHT.getHelp());
-        heightSpinner.setModel(new EmptyNullSpinnerModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(10)));
+        heightSpinner.setModel(new EmptyNullSpinnerModel(1, 0, null, 10));
         heightSpinner.setEditor(new EmptyZeroNumberEditor(heightSpinner, Integer.class));
         final GridBagConstraints gbcHeightSpinner = new GridBagConstraints();
         gbcHeightSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -206,7 +191,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         zoomSpinner = new JSpinner();
         zoomSpinner.setToolTipText(Option.ZOOM.getHelp());
-        zoomSpinner.setModel(new EmptyNullSpinnerModel(Integer.valueOf(1), Integer.valueOf(0), Integer.valueOf(18), Integer.valueOf(1)));
+        zoomSpinner.setModel(new EmptyNullSpinnerModel(1, 0, 18, 1));
         zoomSpinner.setEditor(new EmptyZeroNumberEditor(zoomSpinner, Integer.class));
         final GridBagConstraints gbcZoomSpinner = new GridBagConstraints();
         gbcZoomSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -257,7 +242,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         minLonSpinner = new JSpinner();
         minLonSpinner.setToolTipText(Option.MIN_LON.getHelp());
         minLonSpinner.setEditor(new EmptyZeroNumberEditor(minLonSpinner, Double.class));
-        minLonSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-180.0), Double.valueOf(180.0), Double.valueOf(0.1), false));
+        minLonSpinner.setModel(new EmptyNullSpinnerModel(null, -180.0, 180.0, 0.1, false));
         final GridBagConstraints gbcMinLonSpinner = new GridBagConstraints();
         gbcMinLonSpinner.insets = new Insets(0, 0, 5, 5);
         gbcMinLonSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -269,7 +254,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         maxLatSpinner = new JSpinner();
         maxLatSpinner.setToolTipText(Option.MAX_LAT.getHelp());
         maxLatSpinner.setEditor(new EmptyZeroNumberEditor(maxLatSpinner, Double.class));
-        maxLatSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-90.0), Double.valueOf(90.0), Double.valueOf(0.1), false));
+        maxLatSpinner.setModel(new EmptyNullSpinnerModel(null, -90.0, 90.0, 0.1, false));
         final GridBagConstraints gbcMaxLatSpinner = new GridBagConstraints();
         gbcMaxLatSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcMaxLatSpinner.anchor = GridBagConstraints.NORTH;
@@ -298,7 +283,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         minLatSpinner = new JSpinner();
         minLatSpinner.setToolTipText(Option.MIN_LAT.getHelp());
         minLatSpinner.setEditor(new EmptyZeroNumberEditor(minLatSpinner, Double.class));
-        minLatSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-90.0), Double.valueOf(90.0), Double.valueOf(0.1), false));
+        minLatSpinner.setModel(new EmptyNullSpinnerModel(null, -90.0, 90.0, 0.1, false));
         final GridBagConstraints gbcMinLatSpinner = new GridBagConstraints();
         gbcMinLatSpinner.insets = new Insets(0, 0, 0, 5);
         gbcMinLatSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -310,7 +295,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         maxLonSpinner = new JSpinner();
         maxLonSpinner.setToolTipText(Option.MAX_LON.getHelp());
         maxLonSpinner.setEditor(new EmptyZeroNumberEditor(maxLonSpinner, Double.class));
-        maxLonSpinner.setModel(new EmptyNullSpinnerModel(null, Double.valueOf(-180.0), Double.valueOf(180.0), Double.valueOf(0.1), false));
+        maxLonSpinner.setModel(new EmptyNullSpinnerModel(null, -180.0, 180.0, 0.1, false));
         final GridBagConstraints gbcMaxLonSpinner = new GridBagConstraints();
         gbcMaxLonSpinner.insets = new Insets(0, 0, 5, 0);
         gbcMaxLonSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -329,7 +314,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         marginSpinner = new JSpinner();
         marginSpinner.setToolTipText(Option.MARGIN.getHelp());
-        marginSpinner.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+        marginSpinner.setModel(new SpinnerNumberModel(0, 0, null, 1));
         final GridBagConstraints gbcMarginSpinner = new GridBagConstraints();
         gbcMarginSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcMarginSpinner.insets = new Insets(0, 0, 5, 0);
@@ -348,7 +333,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         speedupSpinner = new JSpinner();
         speedupSpinner.setToolTipText(Option.SPEEDUP.getHelp());
-        speedupSpinner.setModel(new EmptyNullSpinnerModel(Double.valueOf(0), Double.valueOf(0), null, Double.valueOf(1)));
+        speedupSpinner.setModel(new EmptyNullSpinnerModel((double) 0, (double) 0, null, 1d));
         speedupSpinner.setEditor(new EmptyZeroNumberEditor(speedupSpinner, Double.class));
         final GridBagConstraints gbcSpeedupSpinner = new GridBagConstraints();
         gbcSpeedupSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -388,15 +373,12 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcTotalTimeSpinner.gridy = 7;
         add(totalTimeSpinner, gbcTotalTimeSpinner);
 
-        totalTimeSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(final ChangeEvent e) {
-                final boolean enabled = totalTimeSpinner.getValue() == null;
-                if (!enabled) {
-                    speedupSpinner.setValue(null);
-                }
-                speedupSpinner.setEnabled(enabled);
+        totalTimeSpinner.addChangeListener(e -> {
+            final boolean enabled = totalTimeSpinner.getValue() == null;
+            if (!enabled) {
+                speedupSpinner.setValue(null);
             }
+            speedupSpinner.setEnabled(enabled);
         });
         totalTimeSpinner.addChangeListener(changeListener);
 
@@ -411,7 +393,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         markerSizeSpinner = new JSpinner();
         markerSizeSpinner.setToolTipText(Option.MARKER_SIZE.getHelp());
         markerSizeSpinner.setEditor(new EmptyZeroNumberEditor(markerSizeSpinner, Double.class));
-        markerSizeSpinner.setModel(new EmptyNullSpinnerModel(Double.valueOf(6.0), Double.valueOf(0.0), null, Double.valueOf(1.0)));
+        markerSizeSpinner.setModel(new EmptyNullSpinnerModel(6.0, 0.0, null, 1.0));
         final GridBagConstraints gbcMarkerSizeSpinner = new GridBagConstraints();
         gbcMarkerSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcMarkerSizeSpinner.insets = new Insets(0, 0, 5, 0);
@@ -431,7 +413,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         waypointSizeSpinner = new JSpinner();
         waypointSizeSpinner.setToolTipText(Option.WAYPOINT_SIZE.getHelp());
         waypointSizeSpinner.setEditor(new EmptyZeroNumberEditor(waypointSizeSpinner, Double.class));
-        waypointSizeSpinner.setModel(new EmptyNullSpinnerModel(Double.valueOf(1.0), Double.valueOf(0.0), null, Double.valueOf(1.0)));
+        waypointSizeSpinner.setModel(new EmptyNullSpinnerModel(1.0, 0.0, null, 1.0));
         final GridBagConstraints gbcWaypointSizeSpinner = new GridBagConstraints();
         gbcWaypointSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcWaypointSizeSpinner.insets = new Insets(0, 0, 5, 0);
@@ -488,7 +470,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         fpsSpinner = new JSpinner();
         fpsSpinner.setToolTipText(Option.FPS.getHelp());
-        fpsSpinner.setModel(new SpinnerNumberModel(Double.valueOf(0.1), Double.valueOf(0.1), null, Double.valueOf(1)));
+        fpsSpinner.setModel(new SpinnerNumberModel(0.1, 0.1, null, 1d));
         final GridBagConstraints gbcFpsSpinner = new GridBagConstraints();
         gbcFpsSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcFpsSpinner.insets = new Insets(0, 0, 5, 0);
@@ -505,10 +487,10 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelTmsUrlTemplate.gridy = 13;
         add(lblTmsUrlTemplate, gbcLabelTmsUrlTemplate);
 
-        tmsUrlTemplateComboBox = new JComboBox<MapTemplate>();
+        tmsUrlTemplateComboBox = new JComboBox<>();
         tmsUrlTemplateComboBox.setToolTipText(Option.TMS_URL_TEMPLATE.getHelp());
         tmsUrlTemplateComboBox.setEditable(true);
-        tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<MapTemplate>(mapTemplateList.toArray(new MapTemplate[mapTemplateList.size()])));
+        tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<>(mapTemplateList.toArray(new MapTemplate[mapTemplateList.size()])));
         final GridBagConstraints gbcTmsUrlTemplateComboBox = new GridBagConstraints();
         gbcTmsUrlTemplateComboBox.fill = GridBagConstraints.HORIZONTAL;
         gbcTmsUrlTemplateComboBox.insets = new Insets(0, 0, 5, 0);
@@ -571,7 +553,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         fontSizeSpinner = new JSpinner();
         fontSizeSpinner.setToolTipText(Option.FONT_SIZE.getHelp());
-        fontSizeSpinner.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        fontSizeSpinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
         final GridBagConstraints gbcFontSizeSpinner = new GridBagConstraints();
         gbcFontSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcFontSizeSpinner.insets = new Insets(0, 0, 5, 0);
@@ -596,12 +578,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcSkipIdleCheckBox.gridx = 1;
         gbcSkipIdleCheckBox.gridy = 17;
         add(skipIdleCheckBox, gbcSkipIdleCheckBox);
-        skipIdleCheckBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(final ItemEvent e) {
-                configurationChanged();
-            }
-        });
+        skipIdleCheckBox.addItemListener(e -> configurationChanged());
 
         final JLabel lblFlashbackColor = new JLabel("Flashback Color");
         final GridBagConstraints gbcLabelFlashbackColor = new GridBagConstraints();
@@ -711,20 +688,16 @@ abstract class GeneralSettingsPanel extends JPanel {
         final SAXParser saxParser;
         try {
             saxParser = factory.newSAXParser();
-        } catch (final ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (final SAXException e) {
+        } catch (final ParserConfigurationException | SAXException e) {
             throw new RuntimeException(e);
         }
 
-        final List<MapTemplate> labeledItems = new ArrayList<MapTemplate>();
-
-        final InputStream is = getClass().getResourceAsStream("/maps.xml");
+        final List<MapTemplate> labeledItems = new ArrayList<>();
 
         try {
-            try {
+            try (InputStream is = getClass().getResourceAsStream("/maps.xml")) {
                 saxParser.parse(is, new DefaultHandler() {
-                    private StringBuilder sb = new StringBuilder();
+                    private final StringBuilder sb = new StringBuilder();
                     private String name;
                     private String url;
                     private String attributionText;
@@ -750,19 +723,12 @@ abstract class GeneralSettingsPanel extends JPanel {
                 });
             } catch (final SAXException e) {
                 throw new RuntimeException(e);
-            } finally {
-                is.close();
             }
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
 
-        Collections.sort(labeledItems, new Comparator<MapTemplate>() {
-            @Override
-            public int compare(final MapTemplate o1, final MapTemplate o2) {
-                return o1.toString().compareTo(o2.toString());
-            }
-        });
+        labeledItems.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
 
         return labeledItems;
     }
@@ -822,7 +788,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         b.speedup((Double) speedupSpinner.getValue());
         b.tailColor(tailColorSelector.getColor());
         final Long td = (Long) tailDurationSpinner.getValue();
-        b.tailDuration(td == null ? 0L : td.longValue());
+        b.tailDuration(td == null ? 0L : td);
         b.fps((Double) fpsSpinner.getValue());
         b.totalTime((Long) totalTimeSpinner.getValue());
         b.keepLastFrame((Long) keepLastFrameSpinner.getValue());

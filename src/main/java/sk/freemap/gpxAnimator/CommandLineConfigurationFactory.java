@@ -29,19 +29,11 @@ import java.util.List;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {
 
-    private final List<String> inputGpxList = new ArrayList<String>();
+    private final List<String> inputGpxList = new ArrayList<>();
 
-    private final List<String> labelList = new ArrayList<String>();
+    private final List<Color> colorList = new ArrayList<>();
 
-    private final List<Color> colorList = new ArrayList<Color>();
-
-    private final List<Long> timeOffsetList = new ArrayList<Long>();
-
-    private final List<Long> forcedPointIntervalList = new ArrayList<Long>();
-
-    private final List<Float> lineWidthList = new ArrayList<Float>();
-
-    private final List<TrackIcon> trackIconList = new ArrayList<TrackIcon>();
+    private final List<Float> lineWidthList = new ArrayList<>();
 
     private final boolean gui;
 
@@ -54,6 +46,11 @@ public final class CommandLineConfigurationFactory {
         final Configuration.Builder cfg = Configuration.createBuilder();
 
         boolean forceGui = false;
+
+        final List<String> labelList = new ArrayList<>();
+        final List<Long> timeOffsetList = new ArrayList<>();
+        final List<Long> forcedPointIntervalList = new ArrayList<>();
+        final List<TrackIcon> trackIconList = new ArrayList<>();
 
         for (int i = 0; i < args.length; i++) {
             final String arg = args[i];
@@ -76,7 +73,7 @@ public final class CommandLineConfigurationFactory {
                             colorList.add(Color.decode(args[++i]));
                             break;
                         case FLASHBACK_COLOR:
-                            final long lv = Long.decode(args[++i]).longValue();
+                            final long lv = Long.decode(args[++i]);
                             cfg.flashbackColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
                             break;
                         case FLASHBACK_DURATION:
@@ -162,7 +159,7 @@ public final class CommandLineConfigurationFactory {
                             cfg.tailDuration(Long.parseLong(args[++i]));
                             break;
                         case TAIL_COLOR:
-                            final long lvTailColor = Long.decode(args[++i]).longValue();
+                            final long lvTailColor = Long.decode(args[++i]);
                             cfg.tailColor(new Color(lvTailColor < Integer.MAX_VALUE
                                     ? (int) lvTailColor : (int) (0xffffffff00000000L | lvTailColor), true));
                             break;

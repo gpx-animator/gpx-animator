@@ -24,7 +24,6 @@ import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public final class ColorSelector extends JPanel {
@@ -53,20 +52,12 @@ public final class ColorSelector extends JPanel {
         add(rigidArea);
 
         selectButton = new JButton("Select");
-        selectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                final JColorChooser chooserPane = new JColorChooser();
-                chooserPane.setColor(colorTextField.getBackground());
-                final ActionListener okListener = new ActionListener() {
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
-                        setColor(chooserPane.getColor());
-                    }
-                };
-                final JDialog colorChooser = JColorChooser.createDialog(ColorSelector.this, "Track Color", true, chooserPane, okListener, null);
-                colorChooser.setVisible(true);
-            }
+        selectButton.addActionListener(e -> {
+            final JColorChooser chooserPane = new JColorChooser();
+            chooserPane.setColor(colorTextField.getBackground());
+            final ActionListener okListener = e1 -> setColor(chooserPane.getColor());
+            final JDialog colorChooser = JColorChooser.createDialog(ColorSelector.this, "Track Color", true, chooserPane, okListener, null);
+            colorChooser.setVisible(true);
         });
 
         add(selectButton);

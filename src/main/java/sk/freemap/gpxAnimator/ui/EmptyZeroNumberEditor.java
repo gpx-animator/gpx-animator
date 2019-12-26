@@ -50,9 +50,7 @@ public class EmptyZeroNumberEditor extends DefaultEditor {
                     return clazz.getConstructor(String.class).newInstance(text);
                 } catch (final NumberFormatException e) {
                     throw new ParseException(text, 0);
-                } catch (final InstantiationException e) {
-                    throw new RuntimeException(e);
-                } catch (final IllegalAccessException e) {
+                } catch (final InstantiationException | NoSuchMethodException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 } catch (final InvocationTargetException e) {
                     try {
@@ -62,8 +60,6 @@ public class EmptyZeroNumberEditor extends DefaultEditor {
                     } catch (final Throwable e1) { // NOPMD -- The cause of InvocationTargetException is a Throwable
                         throw new RuntimeException(e1);
                     }
-                } catch (final NoSuchMethodException e) {
-                    throw new RuntimeException(e);
                 }
             }
         }));

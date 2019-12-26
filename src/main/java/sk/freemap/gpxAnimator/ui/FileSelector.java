@@ -26,8 +26,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 public abstract class FileSelector extends JPanel {
@@ -79,33 +77,30 @@ public abstract class FileSelector extends JPanel {
         add(rigidArea);
 
         btnNewButton = new JButton("Browse");
-        btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                if (fileChooser == null) {
-                    fileChooser = new JFileChooser();
-                }
+        btnNewButton.addActionListener(e -> {
+            if (fileChooser == null) {
+                fileChooser = new JFileChooser();
+            }
 
-                fileChooser.setFileSelectionMode(fileSelectionMode);
+            fileChooser.setFileSelectionMode(fileSelectionMode);
 
-                final String lastCwd = Preferences.getLastWorkingDir();
+            final String lastCwd = Preferences.getLastWorkingDir();
 
-                final String text = fileTextField.getText();
-                if (text.isEmpty()) {
-                    fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
-                    fileChooser.setSelectedFile(new File(""));
-                } else {
-                    final File file = new File(text);
-                    fileChooser.setCurrentDirectory(file.getParentFile() == null ? new File(System.getProperty("user.dir")) : file.getParentFile());
-                    fileChooser.setSelectedFile(file);
-                }
+            final String text = fileTextField.getText();
+            if (text.isEmpty()) {
+                fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
+                fileChooser.setSelectedFile(new File(""));
+            } else {
+                final File file = new File(text);
+                fileChooser.setCurrentDirectory(file.getParentFile() == null ? new File(System.getProperty("user.dir")) : file.getParentFile());
+                fileChooser.setSelectedFile(file);
+            }
 
-                final Type type = configure(fileChooser);
-                if ((type == Type.OPEN ? fileChooser.showOpenDialog(FileSelector.this)
-                        : fileChooser.showSaveDialog(FileSelector.this)) == JFileChooser.APPROVE_OPTION) {
-                    Preferences.setLastWorkingDir(fileChooser.getSelectedFile().getParent());
-                    setFilename(transformFilename(fileChooser.getSelectedFile().toString()));
-                }
+            final Type type = configure(fileChooser);
+            if ((type == Type.OPEN ? fileChooser.showOpenDialog(FileSelector.this)
+                    : fileChooser.showSaveDialog(FileSelector.this)) == JFileChooser.APPROVE_OPTION) {
+                Preferences.setLastWorkingDir(fileChooser.getSelectedFile().getParent());
+                setFilename(transformFilename(fileChooser.getSelectedFile().toString()));
             }
         });
         add(btnNewButton);

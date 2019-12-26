@@ -33,8 +33,8 @@ final class GpxContentHandler extends DefaultHandler {
     private static final String ELEM_TIME = "time";
     private static final String ELEM_NAME = "name";
 
-    private final List<List<LatLon>> timePointListList = new ArrayList<List<LatLon>>();
-    private final List<LatLon> waypointList = new ArrayList<LatLon>();
+    private final List<List<LatLon>> timePointListList = new ArrayList<>();
+    private final List<LatLon> waypointList = new ArrayList<>();
     private List<LatLon> timePointList;
     private StringBuilder sb;
     private long time = Long.MIN_VALUE;
@@ -46,7 +46,7 @@ final class GpxContentHandler extends DefaultHandler {
     @Override
     public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException {
         if (ELEM_TRKSEG.equals(qName)) {
-            timePointList = new ArrayList<LatLon>();
+            timePointList = new ArrayList<>();
         } else if (ELEM_TRKPT.equals(qName) || ELEM_WPT.equals(qName)) {
             lat = Double.parseDouble(attributes.getValue(ATTR_LAT));
             lon = Double.parseDouble(attributes.getValue(ATTR_LON));
