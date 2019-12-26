@@ -567,7 +567,7 @@ public class Renderer {
                     }
                 }
 
-                continue outer;
+                continue outer; // NOPMD -- Continue the outer loop, not the inner one
             }
         }
         return point;
