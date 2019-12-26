@@ -51,11 +51,11 @@ public class Photos {
         SYSTEM_ZONE_OFFSET = dateTime.format(formatter);
     }
 
-    private final Map<Long, List<Photo>> photos;
+    private final Map<Long, List<Photo>> allPhotos;
 
     public Photos(final String dirname) {
         if (dirname == null || dirname.isBlank()) {
-            photos = new HashMap<>();
+            allPhotos = new HashMap<>();
         } else {
             final File directory = new File(dirname);
             if (directory.isDirectory()) {
@@ -64,14 +64,14 @@ public class Photos {
                     return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png");
                 });
                 if (files != null) {
-                    photos = Arrays.stream(files).map(Photos::toPhoto).filter(photo -> photo.getEpochSeconds() > 0)
+                    allPhotos = Arrays.stream(files).map(Photos::toPhoto).filter(photo -> photo.getEpochSeconds() > 0)
                             .collect(groupingBy(Photo::getEpochSeconds));
                 } else {
-                    photos = new HashMap<>();
+                    allPhotos = new HashMap<>();
                 }
             } else {
                 System.err.println(String.format("'%s' is not a directory!", directory));
-                photos = new HashMap<>();
+                allPhotos = new HashMap<>();
             }
         }
     }
@@ -180,15 +180,15 @@ public class Photos {
 
     public void render(final Long gpsTime, final Configuration cfg, final BufferedImage bi,
                        final FrameWriter frameWriter, final RenderingContext rc, final int pct) {
-        final List<Long> keys = photos.keySet().stream()
+        final List<Long> keys = allPhotos.keySet().stream()
                 .filter(photoTime -> gpsTime >= photoTime)
                 .collect(Collectors.toList());
         if (!keys.isEmpty()) {
             keys.stream()
-                    .map(photos::get)
+                    .map(allPhotos::get)
                     .flatMap(List::stream).collect(Collectors.toList())
                     .forEach(photo -> Photos.renderPhoto(photo, cfg, bi, frameWriter, rc, pct));
-            keys.forEach(photos::remove);
+            keys.forEach(allPhotos::remove);
         }
     }
 }
