@@ -128,12 +128,13 @@ public class Photos {
     private static BufferedImage readPhoto(final Photo photo, final int width, final int height) {
         try {
             final byte[] rawData = getRawBytesFromFile(photo.getFile());
-            final ImageInputStream input = ImageIO.createImageInputStream(new ByteArrayInputStream(rawData));
-            final BufferedImage image = ImageIO.read(input);
-            final int scaledWidth = Math.round(width * 0.7f);
-            final int scaledHeight = Math.round(height * 0.7f);
-            final BufferedImage scaledImage = scaleImage(image, scaledWidth, scaledHeight);
-            return addBorder(scaledImage);
+            try (final ImageInputStream input = ImageIO.createImageInputStream(new ByteArrayInputStream(rawData))) {
+                final BufferedImage image = ImageIO.read(input);
+                final int scaledWidth = Math.round(width * 0.7f);
+                final int scaledHeight = Math.round(height * 0.7f);
+                final BufferedImage scaledImage = scaleImage(image, scaledWidth, scaledHeight);
+                return addBorder(scaledImage);
+            }
         } catch (final IOException e) {
             System.err.println(String.format("Problem reading photo '%s': %s", photo, e.getMessage()));
         }

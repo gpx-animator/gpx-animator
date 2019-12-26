@@ -106,9 +106,10 @@ public final class CommandLineConfigurationFactory {
                             System.out.println("Copyright " + Constants.YEAR + " Martin Ždila, Freemap Slovakia");
                             System.out.println();
                             System.out.println("Usage:");
-                            final PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
-                            Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
-                            pw.flush();
+                            try (final PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
+                                Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
+                                pw.flush();
+                            }
                             exit();
                             break;
                         case INPUT:
