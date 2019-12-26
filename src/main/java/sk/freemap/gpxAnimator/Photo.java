@@ -19,6 +19,7 @@ import com.drew.lang.annotations.NotNull;
 import java.io.File;
 import java.util.Objects;
 
+@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public class Photo {
     private Long epochSeconds;
     private File file;

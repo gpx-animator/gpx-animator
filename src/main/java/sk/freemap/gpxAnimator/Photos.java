@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
+@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public class Photos {
 
     private static final String SYSTEM_ZONE_OFFSET;

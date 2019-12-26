@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.io.File;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable, it uses XML transformation
 public class TrackConfiguration {
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)

@@ -5,7 +5,6 @@ import com.jgoodies.forms.layout.CellConstraints;
 import sk.freemap.gpxAnimator.Preferences;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -17,18 +16,12 @@ import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 
 public class PreferencesDialog extends JDialog {
 
-    private final FileSelector tileCachePathSelector;
-    private final JSpinner tileCacheTimeLimitSpinner;
-
-    private final JButton cancelButton;
-    private final JButton saveButton;
-
     public PreferencesDialog(final JFrame owner) {
         super(owner, true);
         setTitle("Preferences");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        tileCachePathSelector = new FileSelector(DIRECTORIES_ONLY) {
+        final FileSelector tileCachePathSelector = new FileSelector(DIRECTORIES_ONLY) {
             private static final long serialVersionUID = 7372002778979993241L;
             @Override
             protected Type configure(final JFileChooser outputFileChooser) {
@@ -37,33 +30,26 @@ public class PreferencesDialog extends JDialog {
         };
         tileCachePathSelector.setToolTipText("path to a directory to use for caching map tiles");
 
-        tileCacheTimeLimitSpinner = new JSpinner();
+        final JSpinner tileCacheTimeLimitSpinner = new JSpinner();
         tileCacheTimeLimitSpinner.setToolTipText("time a cached map tile is valid");
         tileCacheTimeLimitSpinner.setModel(new DurationSpinnerModel());
         tileCacheTimeLimitSpinner.setEditor(new DurationEditor(tileCacheTimeLimitSpinner));
 
-        cancelButton = new JButton("Cancel");
+        final JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(e -> SwingUtilities.invokeLater(() -> {
             setVisible(false);
             dispose();
         }));
 
-        saveButton = new JButton("Save");
+        final JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> SwingUtilities.invokeLater(() -> {
-            savePreferences();
+            Preferences.setTileCacheDir(tileCachePathSelector.getFilename());
+            Preferences.setTileCacheTimeLimit((Long) tileCacheTimeLimitSpinner.getValue());
             setVisible(false);
             dispose();
         }));
 
-        loadPreferences();
-
-        setContentPane(buildContent());
-        pack();
-        setLocationRelativeTo(owner);
-    }
-
-    private JComponent buildContent() {
-        return FormBuilder.create()
+        setContentPane(FormBuilder.create()
                 .padding(new EmptyBorder(20, 20, 20, 20))
                 .columns("right:p, 5dlu, fill:[200dlu, pref]")
                 .rows("p, 5dlu, p, 5dlu, p, 5dlu, p, 10dlu, p")
@@ -76,17 +62,13 @@ public class PreferencesDialog extends JDialog {
 
                 .addSeparator("").xyw(1, 7, 3)
                 .addBar(cancelButton, saveButton).xyw(1, 9, 3, CellConstraints.RIGHT, CellConstraints.FILL)
-                .build();
-    }
+                .build());
 
-    private void loadPreferences() {
         tileCachePathSelector.setFilename(Preferences.getTileCacheDir());
         tileCacheTimeLimitSpinner.setValue(Preferences.getTileCacheTimeLimit());
-    }
 
-    private void savePreferences() {
-        Preferences.setTileCacheDir(tileCachePathSelector.getFilename());
-        Preferences.setTileCacheTimeLimit((Long) tileCacheTimeLimitSpinner.getValue());
+        pack();
+        setLocationRelativeTo(owner);
     }
 
 }

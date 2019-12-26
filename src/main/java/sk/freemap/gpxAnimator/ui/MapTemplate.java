@@ -14,6 +14,7 @@
  */
 package sk.freemap.gpxAnimator.ui;
 
+@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public class MapTemplate {
 
     private final String name;

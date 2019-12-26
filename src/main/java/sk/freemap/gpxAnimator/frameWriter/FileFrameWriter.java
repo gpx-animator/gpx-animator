@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class FileFrameWriter implements FrameWriter {
 
     private final String frameFilePattern;

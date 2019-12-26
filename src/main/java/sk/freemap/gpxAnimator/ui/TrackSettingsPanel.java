@@ -38,23 +38,16 @@ import static javax.swing.JFileChooser.FILES_ONLY;
 abstract class TrackSettingsPanel extends JPanel {
 
     private static final long serialVersionUID = 2492074184123083022L;
-    private final JLabel lblLabel;
-    private final JTextField labelTextField;
-    private final JLabel lblLineWidth;
-    private final JLabel lblTimeOffset;
-    private final JLabel lblForcedPointTime;
-    private final JSpinner forcedPointTimeIntervalSpinner;
-    private final JSpinner timeOffsetSpinner;
-    private final JSpinner lineWidthSpinner;
-    private final JLabel lblColor_1;
-    private final ColorSelector colorSelector;
-    private final FileSelector inputGpxFileSelector;
-    private final JLabel lblTrimGpxStart;
-    private final JSpinner trimGpxStartSpinner;
-    private final JLabel lblTrimGpxEnd;
-    private final JSpinner trimGpxEndSpinner;
-    private final JComboBox<TrackIcon> trackIconComboBox;
-    private final JLabel lblEnableIcon;
+
+    private final transient JTextField labelTextField;
+    private final transient JSpinner forcedPointTimeIntervalSpinner;
+    private final transient JSpinner timeOffsetSpinner;
+    private final transient JSpinner lineWidthSpinner;
+    private final transient ColorSelector colorSelector;
+    private final transient FileSelector inputGpxFileSelector;
+    private final transient JSpinner trimGpxStartSpinner;
+    private final transient JSpinner trimGpxEndSpinner;
+    private final transient JComboBox<TrackIcon> trackIconComboBox;
 
 
     public TrackSettingsPanel() {
@@ -117,7 +110,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbc_inputGpxFileSelector.gridy = 0;
         add(inputGpxFileSelector, gbc_inputGpxFileSelector);
 
-        lblLabel = new JLabel("Label");
+        final JLabel lblLabel = new JLabel("Label");
         final GridBagConstraints gbc_lblLabel = new GridBagConstraints();
         gbc_lblLabel.anchor = GridBagConstraints.EAST;
         gbc_lblLabel.insets = new Insets(0, 0, 5, 5);
@@ -156,7 +149,7 @@ abstract class TrackSettingsPanel extends JPanel {
             }
         });
 
-        lblColor_1 = new JLabel("Color");
+        final JLabel lblColor_1 = new JLabel("Color");
         final GridBagConstraints gbc_lblColor_1 = new GridBagConstraints();
         gbc_lblColor_1.anchor = GridBagConstraints.EAST;
         gbc_lblColor_1.insets = new Insets(0, 0, 5, 5);
@@ -173,7 +166,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbc_colorSelector.gridy = 2;
         add(colorSelector, gbc_colorSelector);
 
-        lblLineWidth = new JLabel("Line Width");
+        final JLabel lblLineWidth = new JLabel("Line Width");
         final GridBagConstraints gbc_lblLineWidth = new GridBagConstraints();
         gbc_lblLineWidth.insets = new Insets(0, 0, 5, 5);
         gbc_lblLineWidth.anchor = GridBagConstraints.EAST;
@@ -191,7 +184,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbc_lineWidthSpinner.gridy = 3;
         add(lineWidthSpinner, gbc_lineWidthSpinner);
 
-        lblTimeOffset = new JLabel("Time Offset");
+        final JLabel lblTimeOffset = new JLabel("Time Offset");
         final GridBagConstraints gbc_lblTimeOffset = new GridBagConstraints();
         gbc_lblTimeOffset.anchor = GridBagConstraints.EAST;
         gbc_lblTimeOffset.insets = new Insets(0, 0, 5, 5);
@@ -210,7 +203,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbc_timeOffsetSpinner.gridy = 4;
         add(timeOffsetSpinner, gbc_timeOffsetSpinner);
 
-        lblForcedPointTime = new JLabel("Forced Point Time Interval");
+        final JLabel lblForcedPointTime = new JLabel("Forced Point Time Interval");
         final GridBagConstraints gbc_lblForcedPointTime = new GridBagConstraints();
         gbc_lblForcedPointTime.anchor = GridBagConstraints.EAST;
         gbc_lblForcedPointTime.insets = new Insets(0, 0, 5, 5);
@@ -229,7 +222,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbc_forcedPointTimeIntervalSpinner.gridy = 5;
         add(forcedPointTimeIntervalSpinner, gbc_forcedPointTimeIntervalSpinner);
 
-        lblTrimGpxStart = new JLabel("Trim Start of GPX File");
+        final JLabel lblTrimGpxStart = new JLabel("Trim Start of GPX File");
         final GridBagConstraints gbc_lblTrimGpxStart = new GridBagConstraints();
         gbc_lblTrimGpxStart.anchor = GridBagConstraints.EAST;
         gbc_lblTrimGpxStart.insets = new Insets(0, 0, 5, 5);
@@ -248,7 +241,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbc_trimGpxStartSpinner.gridy = 6;
         add(trimGpxStartSpinner, gbc_trimGpxStartSpinner);
 
-        lblTrimGpxEnd = new JLabel("Trim End of GPX File");
+        final JLabel lblTrimGpxEnd = new JLabel("Trim End of GPX File");
         final GridBagConstraints gbc_lblTrimGpxEnd = new GridBagConstraints();
         gbc_lblTrimGpxEnd.anchor = GridBagConstraints.EAST;
         gbc_lblTrimGpxEnd.insets = new Insets(0, 0, 5, 5);
@@ -284,7 +277,7 @@ abstract class TrackSettingsPanel extends JPanel {
         add(trackIconComboBox, gbc_trackIconComboBox);
         trackIconComboBox.setPreferredSize(new Dimension(10, trackIconComboBox.getPreferredSize().height));
 
-        lblEnableIcon = new JLabel("Choose Icon");
+        final JLabel lblEnableIcon = new JLabel("Choose Icon");
         final GridBagConstraints gbc_lblEnableIcon = new GridBagConstraints();
         gbc_lblEnableIcon.anchor = GridBagConstraints.EAST;
         gbc_lblEnableIcon.insets = new Insets(0, 0, 5, 5);

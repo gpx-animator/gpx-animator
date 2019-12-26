@@ -20,11 +20,11 @@ public class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
     private static final long serialVersionUID = -8064362052986633347L;
 
-    private final boolean zeroEmpty;
-    private final Number stepSize;
-    private final Comparable minimum, maximum;
-    private Number value;
-    private Object object = new Object();
+    private final transient boolean zeroEmpty;
+    private final transient Number stepSize;
+    private final transient Comparable minimum, maximum;
+    private transient Number value;
+    private transient Object object = new Object();
 
 
     public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize) {

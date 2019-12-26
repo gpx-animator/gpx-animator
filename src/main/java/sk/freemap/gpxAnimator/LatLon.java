@@ -14,7 +14,9 @@
  */
 package sk.freemap.gpxAnimator;
 
-public class LatLon {
+import java.io.Serializable;
+
+public class LatLon implements Serializable {
 
     private final double lat;
 

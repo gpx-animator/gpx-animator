@@ -46,48 +46,36 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     private static final long serialVersionUID = -2024548578211891192L;
 
-    private final JSpinner heightSpinner;
-    private final FileSelector outputFileSelector;
-    private final JSpinner widthSpinner;
-    private final JSpinner zoomSpinner;
-    private final JSpinner marginSpinner;
-    private final JSpinner speedupSpinner;
-    private final JSpinner markerSizeSpinner;
-    private final JSpinner waypointSizeSpinner;
-    private final ColorSelector tailColorSelector;
-    private final JSpinner tailDurationSpinner;
-    private final JSpinner fpsSpinner;
-    private final JComboBox<MapTemplate> tmsUrlTemplateComboBox;
-    private final JSlider backgroundMapVisibilitySlider;
-    private final JSpinner fontSizeSpinner;
-    private final JCheckBox skipIdleCheckBox;
-    private final ColorSelector flashbackColorSelector;
-    private final JSpinner flashbackDurationSpinner;
-    private final JSpinner keepLastFrameSpinner;
-    private final JSpinner totalTimeSpinner;
-    private final FileSelector photosDirectorySelector;
-    private final JSpinner photoTimeSpinner;
-    private final ChangeListener changeListener = new ChangeListener() {
-        @Override
-        public void stateChanged(final ChangeEvent e) {
-            configurationChanged();
-        }
-    };
-    private final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
-        @Override
-        public void propertyChange(final PropertyChangeEvent evt) {
-            configurationChanged();
-        }
-    };
-    private JTextArea attributionTextArea;
-    private List<MapTemplate> mapTamplateList;
-    private JSpinner maxLatSpinner;
-    private JSpinner minLonSpinner;
-    private JSpinner maxLonSpinner;
-    private JSpinner minLatSpinner;
+    private final transient JSpinner heightSpinner;
+    private final transient FileSelector outputFileSelector;
+    private final transient JSpinner widthSpinner;
+    private final transient JSpinner zoomSpinner;
+    private final transient JSpinner marginSpinner;
+    private final transient JSpinner speedupSpinner;
+    private final transient JSpinner markerSizeSpinner;
+    private final transient JSpinner waypointSizeSpinner;
+    private final transient ColorSelector tailColorSelector;
+    private final transient JSpinner tailDurationSpinner;
+    private final transient JSpinner fpsSpinner;
+    private final transient JComboBox<MapTemplate> tmsUrlTemplateComboBox;
+    private final transient JSlider backgroundMapVisibilitySlider;
+    private final transient JSpinner fontSizeSpinner;
+    private final transient JCheckBox skipIdleCheckBox;
+    private final transient ColorSelector flashbackColorSelector;
+    private final transient JSpinner flashbackDurationSpinner;
+    private final transient JSpinner keepLastFrameSpinner;
+    private final transient JSpinner totalTimeSpinner;
+    private final transient FileSelector photosDirectorySelector;
+    private final transient JSpinner photoTimeSpinner;
+    private final transient JTextArea attributionTextArea;
+    private final transient List<MapTemplate> mapTemplateList;
+    private final transient JSpinner maxLatSpinner;
+    private final transient JSpinner minLonSpinner;
+    private final transient JSpinner maxLonSpinner;
+    private final transient JSpinner minLatSpinner;
 
     public GeneralSettingsPanel() {
-        mapTamplateList = readMaps();
+        mapTemplateList = readMaps();
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final GridBagLayout gridBagLayout = new GridBagLayout();
@@ -142,6 +130,12 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbc_outputFileSelector.gridy = 0;
         add(outputFileSelector, gbc_outputFileSelector);
 
+        final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(final PropertyChangeEvent evt) {
+                configurationChanged();
+            }
+        };
         outputFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
 
         final JLabel lblWidth = new JLabel("Width");
@@ -162,6 +156,12 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbc_widthSpinner.gridx = 1;
         gbc_widthSpinner.gridy = 1;
         add(widthSpinner, gbc_widthSpinner);
+        final ChangeListener changeListener = new ChangeListener() {
+            @Override
+            public void stateChanged(final ChangeEvent e) {
+                configurationChanged();
+            }
+        };
         widthSpinner.addChangeListener(changeListener);
 
         final JLabel lblHeight = new JLabel("Height");
@@ -496,7 +496,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         tmsUrlTemplateComboBox = new JComboBox<MapTemplate>();
         tmsUrlTemplateComboBox.setToolTipText(Option.TMS_URL_TEMPLATE.getHelp());
         tmsUrlTemplateComboBox.setEditable(true);
-        tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<MapTemplate>(mapTamplateList.toArray(new MapTemplate[mapTamplateList.size()])));
+        tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<MapTemplate>(mapTemplateList.toArray(new MapTemplate[mapTemplateList.size()])));
         final GridBagConstraints gbc_tmsUrlTemplateComboBox = new GridBagConstraints();
         gbc_tmsUrlTemplateComboBox.fill = GridBagConstraints.HORIZONTAL;
         gbc_tmsUrlTemplateComboBox.insets = new Insets(0, 0, 5, 0);
@@ -775,7 +775,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final String tmsUrlTemplate = c.getTmsUrlTemplate();
         found:
         {
-            for (final MapTemplate mapTemplate : mapTamplateList) {
+            for (final MapTemplate mapTemplate : mapTemplateList) {
                 if (mapTemplate.getUrl().equals(tmsUrlTemplate)) {
                     tmsUrlTemplateComboBox.setSelectedItem(mapTemplate);
                     break found;

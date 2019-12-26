@@ -31,9 +31,9 @@ public class ColorSelector extends JPanel {
 
     private static final long serialVersionUID = 6506364764640471311L;
 
-    private final JTextField colorTextField;
+    private final transient JTextField colorTextField;
 
-    private final JButton selectButton;
+    private final transient JButton selectButton;
 
 
     /**

@@ -37,8 +37,6 @@ public class UsageDialog extends JDialog {
 
     private static final long serialVersionUID = -8639477664121609849L;
 
-    private final JPanel contentPanel = new JPanel();
-
     /**
      * Create the dialog.
      */
@@ -46,6 +44,7 @@ public class UsageDialog extends JDialog {
         setTitle("Usage");
         setBounds(100, 100, 657, 535);
         getContentPane().setLayout(new BorderLayout());
+        final JPanel contentPanel = new JPanel();
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));

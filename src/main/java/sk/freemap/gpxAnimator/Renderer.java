@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-
+@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public class Renderer {
 
     private static final double MS = 1000d;

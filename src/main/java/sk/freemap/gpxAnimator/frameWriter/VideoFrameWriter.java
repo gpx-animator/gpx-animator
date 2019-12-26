@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class VideoFrameWriter implements FrameWriter {
     private final IMediaWriter writer;
     private final double interval;

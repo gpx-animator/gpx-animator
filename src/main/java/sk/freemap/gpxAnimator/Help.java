@@ -69,6 +69,7 @@ public class Help {
         void writeOptionHelp(Option option, String argument, boolean track, Object defaultValue);
     }
 
+    @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
     public static class PrintWriterOptionHelpWriter implements OptionHelpWriter {
         private final PrintWriter pw;
 

@@ -60,27 +60,26 @@ public class MainFrame extends JFrame {
     private static final String TITLE = "GPX Animator " + Constants.VERSION;
     private static final long serialVersionUID = 190371886979948114L;
     private static final int FIXED_TABS = 1; // TODO set to 2 for MapPanel
-    private final Random random = new Random();
-    private final File defaultConfigFile = new File(Preferences.getConfigurationDir()
+
+    private final transient Random random = new Random();
+    private final transient File defaultConfigFile = new File(Preferences.getConfigurationDir()
             + System.getProperty("file.separator") + "defaultConfig.ga.xml");
-    private final JPanel contentPane;
-    private final JTabbedPane tabbedPane;
-    private final JButton renderButton;
-    private final JMenu openRecent;
-    private final JMenuItem preferencesMenu;
-    private final JFileChooser fileChooser = new JFileChooser();
-    private final transient ActionListener addTrackActionListener;
+    private final transient JTabbedPane tabbedPane;
+    private final transient JButton renderButton;
+    private final transient JMenu openRecent;
+    private final transient JFileChooser fileChooser = new JFileChooser();
+    private final transient GeneralSettingsPanel generalSettingsPanel;
+
     private transient SwingWorker<Void, String> swingWorker;
-    private File file;
-    private boolean changed;
-    private GeneralSettingsPanel generalSettingsPanel;
+    private transient File file;
+    private transient boolean changed;
 
 
     /**
      * Create the frame.
      */
     public MainFrame() {
-        addTrackActionListener = new ActionListener() {
+        final ActionListener addTrackActionListener = new ActionListener() {
             float hue = random.nextFloat();
 
             @Override
@@ -210,7 +209,7 @@ public class MainFrame extends JFrame {
 
         mnFile.addSeparator();
 
-        preferencesMenu = new JMenuItem("Preferences");
+        final JMenuItem preferencesMenu = new JMenuItem("Preferences");
         preferencesMenu.addActionListener(e -> SwingUtilities.invokeLater(() -> new PreferencesDialog(this).setVisible(true)));
         mnFile.add(preferencesMenu);
 
@@ -323,7 +322,7 @@ public class MainFrame extends JFrame {
         changelogMenu.addActionListener(e -> SwingUtilities.invokeLater(this::showChangelog));
         mnHelp.add(changelogMenu);
 
-        contentPane = new JPanel();
+        final JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         final GridBagLayout gbl_contentPane = new GridBagLayout();

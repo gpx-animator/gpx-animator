@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.File;
 import java.nio.file.Path;
 
+@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public class FileXmlAdapter extends XmlAdapter<String, File> {
 
     private final Path base;

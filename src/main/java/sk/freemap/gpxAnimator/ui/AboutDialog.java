@@ -33,7 +33,7 @@ public class AboutDialog extends JDialog {
 
     private static final long serialVersionUID = 8374270428933983176L;
 
-    private final JPanel contentPanel = new JPanel();
+    private final transient JPanel contentPanel = new JPanel();
 
     /**
      * Create the dialog.

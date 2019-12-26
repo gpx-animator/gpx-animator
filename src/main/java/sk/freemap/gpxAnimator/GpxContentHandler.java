@@ -22,6 +22,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 final class GpxContentHandler extends DefaultHandler {
 
     private static final String ATTR_LON = "lon";
