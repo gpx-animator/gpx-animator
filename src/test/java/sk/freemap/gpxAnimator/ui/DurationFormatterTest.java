@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.text.ParseException;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DurationFormatterTest {
 

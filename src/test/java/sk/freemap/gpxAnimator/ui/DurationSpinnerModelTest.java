@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
-public class DurationSpinnerModelTest {
+public final class DurationSpinnerModelTest {
 
     private static Stream<Arguments> generateGetterSetterTestData() {
         return Stream.of(
