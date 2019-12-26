@@ -58,13 +58,15 @@ public class MainFrame extends JFrame {
 
     private static final String PROJECT_FILENAME_SUFFIX = ".ga.xml";
     private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
+    private static final String WARNING_TITLE = "Warning";
+    private static final String ERROR_TITLE = "Error";
     private static final String TITLE = "GPX Animator " + Constants.VERSION;
     private static final long serialVersionUID = 190371886979948114L;
     private static final int FIXED_TABS = 1; // TODO set to 2 for MapPanel
 
     private final transient Random random = new Random();
     private final transient File defaultConfigFile = new File(Preferences.getConfigurationDir()
-            + System.getProperty("file.separator") + "defaultConfig.ga.xml");
+            + Preferences.FILE_SEPARATOR + "defaultConfig.ga.xml");
     private final transient JTabbedPane tabbedPane;
     private final transient JButton renderButton;
     private final transient JMenu openRecent;
@@ -133,7 +135,7 @@ public class MainFrame extends JFrame {
         mntmNew.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     loadDefaults();
                 }
             }
@@ -144,7 +146,7 @@ public class MainFrame extends JFrame {
         mntmOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
                     final String lastCwd = Preferences.getLastWorkingDir();
                     fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
@@ -222,7 +224,7 @@ public class MainFrame extends JFrame {
             @SuppressWarnings("PMD.DoNotCallSystemExit") // Exit the application on user request
             @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request")
             public void actionPerformed(final ActionEvent e) {
-                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 }
             }
@@ -432,14 +434,14 @@ public class MainFrame extends JFrame {
                     cfg = createConfiguration(true, true);
                     if (cfg.getOutput().exists()) {
                         final String message = String.format("A file with the name \"%s\" already exists.%nDo you really want to overwrite this file?", cfg.getOutput());
-                        final int result = JOptionPane.showConfirmDialog(MainFrame.this, message, "Warning", JOptionPane.YES_NO_OPTION);
+                        final int result = JOptionPane.showConfirmDialog(MainFrame.this, message, WARNING_TITLE, JOptionPane.YES_NO_OPTION);
                         if (result == JOptionPane.NO_OPTION) {
                             return;
                         }
                     }
                 } catch (final UserException ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(MainFrame.this, "Configuration error:\n" + ex.getCause().getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(MainFrame.this, "Configuration error:\n" + ex.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -483,7 +485,7 @@ public class MainFrame extends JFrame {
                             JOptionPane.showMessageDialog(MainFrame.this, "Rendering has been interrupted.", "Interrupted", JOptionPane.ERROR_MESSAGE);
                         } catch (final ExecutionException e) {
                             e.printStackTrace();
-                            JOptionPane.showMessageDialog(MainFrame.this, "Error while rendering:\n" + e.getCause().getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(MainFrame.this, "Error while rendering:\n" + e.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
                         } catch (final CancellationException e) {
                             JOptionPane.showMessageDialog(MainFrame.this, "Rendering has been cancelled.", "Cancelled", JOptionPane.WARNING_MESSAGE);
                         }
@@ -576,7 +578,7 @@ public class MainFrame extends JFrame {
             setChanged(false);
         } catch (final JAXBException e1) {
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -666,7 +668,7 @@ public class MainFrame extends JFrame {
             }
         } catch (final UserException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error saving configuration: " + e.getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -682,7 +684,7 @@ public class MainFrame extends JFrame {
             }
         } catch (final UserException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving default configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error saving default configuration: " + e.getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -706,7 +708,7 @@ public class MainFrame extends JFrame {
             setConfiguration((Configuration) unmarshaller.unmarshal(defaultConfigFile));
         } catch (final JAXBException e1) {
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(MainFrame.this, "Error loading default configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(MainFrame.this, "Error loading default configuration: " + e1.getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -715,7 +717,7 @@ public class MainFrame extends JFrame {
             if (defaultConfigFile.delete()) {
                 loadDefaults();
             } else {
-                JOptionPane.showMessageDialog(MainFrame.this, "Can't reset default configuration!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(MainFrame.this, "Can't reset default configuration!", ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
             }
         }
     }

@@ -8,7 +8,9 @@ import java.util.stream.Stream;
 
 public final class Preferences {
 
-    private static final java.util.prefs.Preferences prefs =
+    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+
+    private static final java.util.prefs.Preferences PREFS =
             java.util.prefs.Preferences.userRoot().node("app/gpx-animator");
 
     private static final String CHANGELOG_VERSION = "changelog_version";
@@ -18,22 +20,22 @@ public final class Preferences {
     private static final String TILE_CACHE_TIME_LIMIT = "tile_cache_time_limit";
 
     public static String getConfigurationDir() {
-        return System.getProperty("user.home") + System.getProperty("file.separator") + ".gpx-animator";
+        return System.getProperty("user.home") + Preferences.FILE_SEPARATOR + ".gpx-animator";
     }
 
     public static String getChangelogVersion() {
-        return prefs.get(CHANGELOG_VERSION, "");
+        return PREFS.get(CHANGELOG_VERSION, "");
     }
 
     public static void setChangelogVersion(final String changelogVersion) {
-        prefs.put(CHANGELOG_VERSION, changelogVersion);
+        PREFS.put(CHANGELOG_VERSION, changelogVersion);
     }
 
     public static String getLastWorkingDir() {
-       String lastWorkingDir = prefs.get(LAST_WORKING_DIR, null);
+       String lastWorkingDir = PREFS.get(LAST_WORKING_DIR, null);
         if (lastWorkingDir == null) {
             lastWorkingDir = System.getProperty("user.home");
-            final String videosDir = lastWorkingDir + System.getProperty("file.separator") + "Videos";
+            final String videosDir = lastWorkingDir + Preferences.FILE_SEPARATOR + "Videos";
             if (new File(videosDir).exists()) {
                 lastWorkingDir = videosDir;
             }
@@ -42,11 +44,11 @@ public final class Preferences {
     }
 
     public static void setLastWorkingDir(final String lastWorkingDir) {
-        prefs.put(LAST_WORKING_DIR, lastWorkingDir);
+        PREFS.put(LAST_WORKING_DIR, lastWorkingDir);
     }
 
     public static List<File> getRecentFiles() {
-        return Arrays.stream(prefs.get(RECENT_FILES, "").split(","))
+        return Arrays.stream(PREFS.get(RECENT_FILES, "").split(","))
                 .map(File::new)
                 .filter(File::exists)
                 .collect(Collectors.toList());
@@ -58,27 +60,27 @@ public final class Preferences {
                 .limit(5)
                 .map(File::getAbsolutePath)
                 .collect(Collectors.joining(","));
-        prefs.put(RECENT_FILES, result);
+        PREFS.put(RECENT_FILES, result);
     }
 
     public static String getTileCacheDir() {
-        return prefs.get(TILE_CACHE_DIR,
+        return PREFS.get(TILE_CACHE_DIR,
                 getConfigurationDir()
-                        + System.getProperty("file.separator") + "caches"
-                        + System.getProperty("file.separator") + "tiles");
+                        + Preferences.FILE_SEPARATOR + "caches"
+                        + Preferences.FILE_SEPARATOR + "tiles");
     }
 
     public static void setTileCacheDir(final String tileCacheDir) {
-        prefs.put(TILE_CACHE_DIR, tileCacheDir);
+        PREFS.put(TILE_CACHE_DIR, tileCacheDir);
     }
 
     public static long getTileCacheTimeLimit() {
-        return prefs.getLong(TILE_CACHE_TIME_LIMIT,
+        return PREFS.getLong(TILE_CACHE_TIME_LIMIT,
                 24 * 60 * 60 * 1_000); // 24 hours
     }
 
     public static void setTileCacheTimeLimit(final long tileCacheTimeLimit) {
-        prefs.putLong(TILE_CACHE_TIME_LIMIT, tileCacheTimeLimit);
+        PREFS.putLong(TILE_CACHE_TIME_LIMIT, tileCacheTimeLimit);
     }
 
     private Preferences() {
