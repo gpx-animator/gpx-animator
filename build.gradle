@@ -75,3 +75,8 @@ tasks.withType(SpotBugsTask) {
         html.enabled = true
     }
 }
+
+pmd {
+    ruleSets = []
+    ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
+}
