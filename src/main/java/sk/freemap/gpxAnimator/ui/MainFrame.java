@@ -356,7 +356,7 @@ public class MainFrame extends JFrame {
 
             @Override
             protected void configurationChanged() {
-                changed(true);
+                setChanged(true);
             }
         };
 
@@ -551,7 +551,7 @@ public class MainFrame extends JFrame {
             addTrackSettingsTab(tc);
         }
 
-        changed(false);
+        setChanged(false);
     }
 
     private void pupulateOpenRecentMenu() {
@@ -572,7 +572,7 @@ public class MainFrame extends JFrame {
             setConfiguration((Configuration) unmarshaller.unmarshal(file));
             MainFrame.this.file = file;
             addRecentFile(file);
-            changed(false);
+            setChanged(false);
         } catch (final JAXBException e1) {
             e1.printStackTrace();
             JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -586,7 +586,7 @@ public class MainFrame extends JFrame {
     }
 
 
-    private void changed(final boolean changed) {
+    private void setChanged(final boolean changed) {
         this.changed = changed;
         updateTitle();
     }
@@ -609,7 +609,7 @@ public class MainFrame extends JFrame {
 
             @Override
             protected void configurationChanged() {
-                changed(true);
+                setChanged(true);
             }
 
             @Override
@@ -625,14 +625,14 @@ public class MainFrame extends JFrame {
 
         renderButton.setEnabled(true);
 
-        changed(true);
+        setChanged(true);
     }
 
     private void afterRemove() {
         if (tabbedPane.getTabCount() == 1) {
             renderButton.setEnabled(false);
         }
-        changed(true);
+        setChanged(true);
     }
 
     private void saveAs() {
@@ -658,7 +658,7 @@ public class MainFrame extends JFrame {
                 marshaller.setAdapter(new FileXmlAdapter(file.getParentFile()));
                 marshaller.marshal(createConfiguration(true, false), file);
                 MainFrame.this.file = file;
-                changed(false);
+                setChanged(false);
                 addRecentFile(file);
             } catch (final JAXBException e) {
                 throw new UserException(e.getMessage(), e);
@@ -687,7 +687,7 @@ public class MainFrame extends JFrame {
 
     private void loadDefaults() {
         file = null;
-        changed(false);
+        setChanged(false);
 
         if (defaultConfigFile == null || !defaultConfigFile.exists()) {
             try {

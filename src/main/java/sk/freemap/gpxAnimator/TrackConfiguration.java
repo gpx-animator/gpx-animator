@@ -100,6 +100,7 @@ public class TrackConfiguration {
         return lineWidth;
     }
 
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName") // This is okay for the builder pattern
     public static class Builder {
 
         private File inputGpx;

@@ -258,6 +258,7 @@ public class Configuration {
                 + "]";
     }
 
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName") // This is okay for the builder pattern
     public static class Builder {
         private final List<TrackConfiguration> trackConfigurationList = new ArrayList<TrackConfiguration>();
         private int margin = 20;
