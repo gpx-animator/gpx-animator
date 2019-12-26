@@ -59,7 +59,7 @@ public class EmptyZeroNumberEditor extends DefaultEditor {
                         throw e.getCause();
                     } catch (final NumberFormatException e1) {
                         throw new ParseException(text, 0);
-                    } catch (final Throwable e1) {
+                    } catch (final Throwable e1) { // NOPMD -- The cause of InvocationTargetException is a Throwable
                         throw new RuntimeException(e1);
                     }
                 } catch (final NoSuchMethodException e) {
