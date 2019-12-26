@@ -80,14 +80,14 @@ public final class CommandLineConfigurationFactory {
                             break;
                         case FLASHBACK_DURATION:
                             final String s = args[++i];
-                            cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s));
+                            cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s)); // NOPMD -- null = not set
                             break;
                         case FONT_SIZE:
                             cfg.fontSize(Integer.parseInt(args[++i]));
                             break;
                         case FORCED_POINT_TIME_INTERVAL:
                             final String s1 = args[++i].trim();
-                            forcedPointIntervalList.add(s1.isEmpty() ? null : Long.valueOf(s1));
+                            forcedPointIntervalList.add(s1.isEmpty() ? null : Long.valueOf(s1)); // NOPMD -- null = not set
                             break;
                         case FPS:
                             cfg.fps(Double.parseDouble(args[++i]));
@@ -165,14 +165,14 @@ public final class CommandLineConfigurationFactory {
                             break;
                         case TIME_OFFSET:
                             final String s2 = args[++i].trim();
-                            timeOffsetList.add(s2.isEmpty() ? null : Long.valueOf(s2));
+                            timeOffsetList.add(s2.isEmpty() ? null : Long.valueOf(s2)); // NOPMD -- null = not set
                             break;
                         case TMS_URL_TEMPLATE:
                             cfg.tmsUrlTemplate(args[++i]);
                             break;
                         case TOTAL_TIME:
                             final String s3 = args[++i].trim();
-                            cfg.totalTime(s3.isEmpty() ? null : Long.valueOf(s3));
+                            cfg.totalTime(s3.isEmpty() ? null : Long.valueOf(s3)); // NOPMD -- null = not set
                             break;
                         case WAYPOINT_SIZE:
                             cfg.waypointSize(Double.parseDouble(args[++i]));
@@ -206,7 +206,7 @@ public final class CommandLineConfigurationFactory {
             tcb.lineWidth(lineWidthList.get(i));
             tcb.label(i < labelList.size() ? labelList.get(i) : "");
             tcb.timeOffset(i < timeOffsetList.size() ? timeOffsetList.get(i) : Long.valueOf(0));
-            tcb.forcedPointInterval(i < forcedPointIntervalList.size() ? forcedPointIntervalList.get(i) : null);
+            tcb.forcedPointInterval(i < forcedPointIntervalList.size() ? forcedPointIntervalList.get(i) : null); // NOPMD -- null = not set
             tcb.trackIcon(trackIconList.get(i));
 
             cfg.addTrackConfiguration(tcb.build());

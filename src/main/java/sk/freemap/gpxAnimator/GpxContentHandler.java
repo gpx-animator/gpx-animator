@@ -65,6 +65,7 @@ final class GpxContentHandler extends DefaultHandler {
 
 
     @Override
+    @SuppressWarnings("PMD.NullAssignment") // XML parsing ending elements, it's okay here
     public void endElement(final String uri, final String localName, final String qName) throws SAXException {
         if (ELEM_TRKSEG.equals(qName)) {
             timePointListList.add(timePointList);

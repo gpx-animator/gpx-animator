@@ -471,7 +471,7 @@ public class MainFrame extends JFrame {
 
                     @Override
                     protected void done() {
-                        swingWorker = null;
+                        swingWorker = null; // NOPMD -- dereference the SwingWorker to make it available for garbage collection
                         progressBar.setVisible(false);
                         renderButton.setText("Render");
 
@@ -686,7 +686,7 @@ public class MainFrame extends JFrame {
     }
 
     private void loadDefaults() {
-        file = null;
+        file = null; // NOPMD -- Resetting everything means unsetting the filename, too
         setChanged(false);
 
         if (defaultConfigFile == null || !defaultConfigFile.exists()) {

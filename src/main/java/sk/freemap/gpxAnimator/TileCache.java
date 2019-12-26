@@ -131,7 +131,6 @@ public class TileCache {
                 // remove the file we could not read.
 
                 System.out.println("Error: Failed to read cached tile  " + url + "(" + path + ")");
-                mapTile = null;
                 if (cacheFile.exists() && !cacheFile.delete()) {
                     System.err.println("Can't delete tile cache file: " + cacheFile);
                 }

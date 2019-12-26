@@ -817,7 +817,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
-        b.tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate);
+        b.tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate); // NOPMD -- null = not set
         b.skipIdle(skipIdleCheckBox.isSelected());
         b.flashbackColor(flashbackColorSelector.getColor());
         b.flashbackDuration((Long) flashbackDurationSpinner.getValue());
