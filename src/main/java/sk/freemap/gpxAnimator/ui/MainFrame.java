@@ -632,7 +632,7 @@ public class MainFrame extends JFrame {
     }
 
     private void afterRemove() {
-        if (tabbedPane.getTabCount() == 1) {
+        if (tabbedPane.getTabCount() == 1) { // NOPMD -- Ignore magic number literal
             renderButton.setEnabled(false);
         }
         setChanged(true);

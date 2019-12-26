@@ -218,7 +218,7 @@ public class TileCache {
         StringBuffer hexString = new StringBuffer();
         for (int i = 0; i < hash.length; i++) {
             String hex = Integer.toHexString(0xff & hash[i]);
-            if (hex.length() == 1) {
+            if (hex.length() == 1) { // NOPMD -- Ignore magic number literal
                 hexString.append('0');
             }
             hexString.append(hex);
