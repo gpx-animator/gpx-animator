@@ -83,7 +83,7 @@ public class ChangelogDialog extends JDialog {
         try {
             final String md = readChangelogAsMarkdown();
             return convertMarkdownToHTML(md);
-        } catch (final IOException | NullPointerException e) {
+        } catch (final IOException | NullPointerException e) { // NOPMD -- NPE happens on missing changelog file
             e.printStackTrace();
             JOptionPane.showMessageDialog(ChangelogDialog.this, "Error loading changelog: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             SwingUtilities.invokeLater(this::closeDialog);
