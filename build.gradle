@@ -69,6 +69,7 @@ task deleteChangelog(type: Delete) {
 }
 
 clean.dependsOn deleteChangelog
+assemble.dependsOn check
 
 tasks.withType(SpotBugsTask) {
     reports {
