@@ -132,7 +132,7 @@ public class TileCache {
 
                 System.out.println("Error: Failed to read cached tile  " + url + "(" + path + ")");
                 mapTile = null;
-                if (!cacheFile.delete()) {
+                if (cacheFile.exists() && !cacheFile.delete()) {
                     System.err.println("Can't delete tile cache file: " + cacheFile);
                 }
             }
@@ -198,7 +198,7 @@ public class TileCache {
         final Date fileDate = new Date(cacheFile.lastModified());
         long msBetweenDates = new Date().getTime() - fileDate.getTime();
         if ((msBetweenDates) > tileCacheTimeLimit) {
-            if (!cacheFile.delete()) {
+            if (cacheFile.exists() && !cacheFile.delete()) {
                 System.err.println("Can't delete tile cache file: " + cacheFile);
             }
         }
