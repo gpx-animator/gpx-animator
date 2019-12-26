@@ -218,6 +218,7 @@ public class MainFrame extends JFrame {
         final JMenuItem mntmExit = new JMenuItem("Exit");
         mntmExit.addActionListener(new ActionListener() {
             @Override
+            @SuppressWarnings("PMD.DoNotCallSystemExit") // Exit the application on user request
             @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request")
             public void actionPerformed(final ActionEvent e) {
                 if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -507,9 +508,9 @@ public class MainFrame extends JFrame {
             @Override
             public void windowClosing(final WindowEvent e) {
                 if (!changed || JOptionPane.showConfirmDialog(MainFrame.this,
-                        "There are unsaved changes. Close anyway?", "Error", JOptionPane.YES_NO_OPTION
+                        "There are unsaved changes. Close anyway?", "Unsaved changes", JOptionPane.YES_NO_OPTION
                 ) == JOptionPane.YES_OPTION) {
-                    System.exit(0);
+                    System.exit(0); // NOPMD -- Exit on user request
                 }
 
                 if (swingWorker != null && !swingWorker.isDone()) {

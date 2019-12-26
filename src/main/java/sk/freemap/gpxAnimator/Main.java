@@ -57,7 +57,7 @@ public class Main {
             }
         } catch (final UserException e) {
             System.err.println(e.getMessage());
-            System.exit(1);
+            System.exit(1); // NOPMD -- We can't recover here
         }
     }
 

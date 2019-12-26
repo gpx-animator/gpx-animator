@@ -217,6 +217,7 @@ public final class CommandLineConfigurationFactory {
         configuration = cfg.build();
     }
 
+    @SuppressWarnings("PMD.DoNotCallSystemExit") // Exit after printing command line help message
     @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit after printing command line help message")
     private void exit() {
         System.exit(0);
