@@ -82,3 +82,11 @@ pmd {
     ruleSets = []
     ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
 }
+
+task installGitHooks(type: Copy) {
+    from new File(rootProject.rootDir, 'config/git/pre-push')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    fileMode 0755
+}
+
+check.dependsOn installGitHooks
