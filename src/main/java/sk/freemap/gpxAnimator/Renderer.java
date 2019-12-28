@@ -62,6 +62,7 @@ public final class Renderer {
     private FontMetrics fontMetrics;
 
     private long minTime = Long.MAX_VALUE;
+    private long maxTime = Long.MIN_VALUE;
     private double minX = Double.POSITIVE_INFINITY;
     private double maxX = Double.NEGATIVE_INFINITY;
     private double minY = Double.POSITIVE_INFINITY;
@@ -132,7 +133,6 @@ public final class Renderer {
         return new Color((int) r, (int) g, (int) b, (int) a);
     }
 
-    @SuppressWarnings("checkstyle:MethodLength") // TODO This method needs to be refactored! It is not only too long, it is hard to understand.
     public void render(final RenderingContext rc) throws UserException {
         final List<Long[]> spanList = new ArrayList<>();
 
@@ -183,44 +183,15 @@ public final class Renderer {
             maxY += hh / scale / 2.0;
         }
 
-        long maxTime = Long.MIN_VALUE;
-
-        // translate to 0,0
-        for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
-            for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
-                maxTime = Math.max(maxTime, timePointMap.lastKey());
-                minTime = Math.min(minTime, timePointMap.firstKey());
-
-                for (final Point2D point : timePointMap.values()) {
-                    point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
-                }
-            }
-        }
-
-        if (!wpMap.isEmpty()) {
-            maxTime = Math.max(maxTime, wpMap.lastKey());
-            minTime = Math.min(minTime, wpMap.firstKey());
-
-            for (final Point2D point : wpMap.values()) {
-                point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
-            }
-        }
+        translateCoordinatesToZeroZero(scale, wpMap);
 
         final String frameFilePattern = cfg.getOutput().toString();
         final int dot = frameFilePattern.lastIndexOf('.');
         final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1);
         final boolean toImages = "png".equalsIgnoreCase(ext) || "jpg".equalsIgnoreCase(ext);
 
-        int realWidth = (int) Math.round(((maxX - minX) * scale));
-        int realHeight = (int) Math.round(((maxY - minY) * scale));
-
-        // align width and height to 2 for videos
-        if (realWidth % 2 != 0 && !userSpecifiedWidth && !toImages) {
-            realWidth++;
-        }
-        if (realHeight % 2 != 0 && cfg.getHeight() == null && !toImages) {
-            realHeight++;
-        }
+        final int realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
+        final int realHeight = calculateRealHeight(scale, toImages);
 
         final BufferedImage bi = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_3BYTE_BGR);
 
@@ -307,6 +278,44 @@ public final class Renderer {
         frameWriter.close();
 
         System.out.println("Done.");
+    }
+
+    private int calculateRealHeight(final double scale, final boolean toImages) {
+        int realHeight = (int) Math.round(((maxY - minY) * scale));
+        if (realHeight % 2 != 0 && cfg.getHeight() == null && !toImages) {
+            realHeight++;
+        }
+        return realHeight;
+    }
+
+    private int calculateRealWidth(final boolean userSpecifiedWidth, final double scale, final boolean toImages) {
+        int realWidth = (int) Math.round(((maxX - minX) * scale));
+        if (realWidth % 2 != 0 && !userSpecifiedWidth && !toImages) {
+            realWidth++;
+        }
+        return realWidth;
+    }
+
+    private void translateCoordinatesToZeroZero(final double scale, final TreeMap<Long, Point2D> wpMap) {
+        for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
+            for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
+                maxTime = Math.max(maxTime, timePointMap.lastKey());
+                minTime = Math.min(minTime, timePointMap.firstKey());
+
+                for (final Point2D point : timePointMap.values()) {
+                    point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
+                }
+            }
+        }
+
+        if (!wpMap.isEmpty()) {
+            maxTime = Math.max(maxTime, wpMap.lastKey());
+            minTime = Math.min(minTime, wpMap.firstKey());
+
+            for (final Point2D point : wpMap.values()) {
+                point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
+            }
+        }
     }
 
     private void mergeConnectedSpans(final List<Long[]> spanList, final TreeMap<Long, Point2D> timePointMap) {
