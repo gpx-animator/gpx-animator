@@ -135,34 +135,11 @@ public final class Renderer {
 
     public void render(final RenderingContext rc) throws UserException {
         final List<Long[]> spanList = new ArrayList<>();
-
         final TreeMap<Long, Point2D> wpMap = new TreeMap<>();
-
-        int i = -1;
-        for (final TrackConfiguration trackConfiguration : cfg.getTrackConfigurationList()) {
-            i++;
-
-            final GpxContentHandler gch = new GpxContentHandler();
-
-            GpxParser.parseGpx(trackConfiguration.getInputGpx(), gch);
-
-            final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
-
-            for (final List<LatLon> latLonList : gch.getPointLists()) {
-                final TreeMap<Long, Point2D> timePointMap = new TreeMap<>();
-                toTimePointMap(timePointMap, i, latLonList);
-                trimGpxData(timePointMap, trackConfiguration);
-                timePointMapList.add(timePointMap);
-                toTimePointMap(wpMap, i, gch.getWaypointList());
-                mergeConnectedSpans(spanList, timePointMap);
-            }
-            Collections.reverse(timePointMapList); // reversing because of last known location drawing
-            timePointMapListList.add(timePointMapList);
-        }
+        parseGPX(spanList, wpMap);
 
         final boolean userSpecifiedWidth = cfg.getWidth() != null;
         final int width = userSpecifiedWidth ? cfg.getWidth() : 800;
-
         final Integer zoom = calculateZoomFactor(rc, width);
         final double scale = calculateScaleFactor(width, zoom);
 
@@ -278,6 +255,30 @@ public final class Renderer {
         frameWriter.close();
 
         System.out.println("Done.");
+    }
+
+    private void parseGPX(final List<Long[]> spanList, final TreeMap<Long, Point2D> wpMap) throws UserException {
+        int trackIndex = -1;
+        for (final TrackConfiguration trackConfiguration : cfg.getTrackConfigurationList()) {
+            trackIndex++;
+
+            final GpxContentHandler gch = new GpxContentHandler();
+            GpxParser.parseGpx(trackConfiguration.getInputGpx(), gch);
+
+            final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
+
+            for (final List<LatLon> latLonList : gch.getPointLists()) {
+                final TreeMap<Long, Point2D> timePointMap = new TreeMap<>();
+                toTimePointMap(timePointMap, trackIndex, latLonList);
+                trimGpxData(timePointMap, trackConfiguration);
+                timePointMapList.add(timePointMap);
+                toTimePointMap(wpMap, trackIndex, gch.getWaypointList());
+                mergeConnectedSpans(spanList, timePointMap);
+            }
+
+            Collections.reverse(timePointMapList); // reversing because of last known location drawing
+            timePointMapListList.add(timePointMapList);
+        }
     }
 
     private int calculateRealHeight(final double scale, final boolean toImages) {
@@ -435,10 +436,10 @@ public final class Renderer {
         }
     }
 
-    private void toTimePointMap(final TreeMap<Long, Point2D> timePointMap, final int i, final List<LatLon> latLonList) throws UserException {
+    private void toTimePointMap(final TreeMap<Long, Point2D> timePointMap, final int trackIndex, final List<LatLon> latLonList) throws UserException {
         long forcedTime = 0;
 
-        final TrackConfiguration trackConfiguration = cfg.getTrackConfigurationList().get(i);
+        final TrackConfiguration trackConfiguration = cfg.getTrackConfigurationList().get(trackIndex);
 
         final Double minLon = cfg.getMinLon();
         final Double maxLon = cfg.getMaxLon();
