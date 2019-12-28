@@ -180,12 +180,7 @@ public final class Renderer {
 
         System.out.println(realWidth + "x" + realHeight + ";" + scale);
 
-        if (cfg.getTmsUrlTemplate() == null) {
-            ga.setColor(Color.white);
-            ga.fillRect(0, 0, realWidth, realHeight);
-        } else {
-            Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
-        }
+        drawBackground(rc, zoom, bi, ga);
 
         if (cfg.getFontSize() > 0) {
             font = new Font(Font.MONOSPACED, Font.PLAIN, cfg.getFontSize());
@@ -255,6 +250,15 @@ public final class Renderer {
         frameWriter.close();
 
         System.out.println("Done.");
+    }
+
+    private void drawBackground(final RenderingContext rc, final Integer zoom, final BufferedImage bi, final Graphics2D ga) throws UserException {
+        if (cfg.getTmsUrlTemplate() == null) {
+            ga.setColor(Color.white); // TODO https://github.com/zdila/gpx-animator/issues/150
+            ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+        } else {
+            Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
+        }
     }
 
     private void parseGPX(final List<Long[]> spanList, final TreeMap<Long, Point2D> wpMap) throws UserException {
