@@ -153,34 +153,8 @@ public final class Renderer {
                 toTimePointMap(timePointMap, i, latLonList);
                 trimGpxData(timePointMap, trackConfiguration);
                 timePointMapList.add(timePointMap);
-
                 toTimePointMap(wpMap, i, gch.getWaypointList());
-
-                long t0 = timePointMap.firstKey();
-                long t1 = timePointMap.lastKey() + cfg.getTailDuration();
-                test:
-                { // code in the block merges connected spans; it is currently not important to do this
-                    for (final Iterator<Long[]> iter = spanList.iterator(); iter.hasNext();) {
-                        final Long[] span = iter.next();
-                        if (t0 > span[0] && t1 < span[1]) {
-                            // swallowed
-                            break test;
-                        }
-
-                        if (t0 < span[0] && t1 > span[1]) {
-                            // swallows
-                            iter.remove();
-                        } else if (t1 > span[0] && t1 < span[1]) {
-                            t1 = span[1];
-                            iter.remove();
-                        } else if (t0 < span[1] && t0 > span[0]) {
-                            t0 = span[0];
-                            iter.remove();
-                        }
-                    }
-
-                    spanList.add(new Long[]{t0, t1});
-                }
+                mergeConnectedSpans(spanList, timePointMap);
             }
             Collections.reverse(timePointMapList); // reversing because of last known location drawing
             timePointMapListList.add(timePointMapList);
@@ -189,27 +163,8 @@ public final class Renderer {
         final boolean userSpecifiedWidth = cfg.getWidth() != null;
         final int width = userSpecifiedWidth ? cfg.getWidth() : 800;
 
-        final Integer zoom;
-
-        if (cfg.getTmsUrlTemplate() != null && cfg.getZoom() == null) {
-            // force using computed zoom
-            final boolean userSpecifiedHeight = cfg.getHeight() != null;
-            if (userSpecifiedHeight) {
-                final int height = cfg.getHeight();
-                final int zoom1 = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
-                final int zoom2 = (int) Math.floor(Math.log(Math.PI / 128.0 * (height - cfg.getMargin() * 2) / (maxY - minY)) / Math.log(2));
-                zoom = Math.min(zoom1, zoom2);
-            } else {
-                zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
-            }
-            rc.setProgress1(0, "computed zoom is " + zoom);
-        } else {
-            zoom = cfg.getZoom();
-        }
-
-        final double scale = zoom == null
-                ? (width - cfg.getMargin() * 2) / (maxX - minX)
-                : (128.0 * (1 << zoom)) / Math.PI;
+        final Integer zoom = calculateZoomFactor(rc, width);
+        final double scale = calculateScaleFactor(width, zoom);
 
         minX -= cfg.getMargin() / scale;
         maxX += cfg.getMargin() / scale;
@@ -293,8 +248,6 @@ public final class Renderer {
 
         final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
 
-        final boolean keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
-
         final Photos photos = new Photos(cfg.getPhotoDirectory());
 
         float skip = -1f;
@@ -347,22 +300,66 @@ public final class Renderer {
 
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
 
-            if (keepLastFrame && frame == frames - 1) { // last frame
-                final long ms = cfg.getKeepLastFrame();
-                final long fps = Double.valueOf(cfg.getFps()).longValue();
-                final long stillFrames = ms / 1_000 * fps;
-                for (long stillFrame = 0; stillFrame < stillFrames; stillFrame++) {
-                    frameWriter.addFrame(bi2);
-                    if (rc.isCancelled1()) {
-                        return;
-                    }
-                }
-            }
         }
+
+        keepLastFrame(rc, frameWriter, bi, frames);
 
         frameWriter.close();
 
         System.out.println("Done.");
+    }
+
+    private void mergeConnectedSpans(final List<Long[]> spanList, final TreeMap<Long, Point2D> timePointMap) {
+        long t0 = timePointMap.firstKey();
+        long t1 = timePointMap.lastKey() + cfg.getTailDuration();
+
+        for (final Iterator<Long[]> iter = spanList.iterator(); iter.hasNext();) {
+            final Long[] span = iter.next();
+            if (t0 > span[0] && t1 < span[1]) {
+                // swallowed
+                return;
+            }
+
+            if (t0 < span[0] && t1 > span[1]) {
+                // swallows
+                iter.remove();
+            } else if (t1 > span[0] && t1 < span[1]) {
+                t1 = span[1];
+                iter.remove();
+            } else if (t0 < span[1] && t0 > span[0]) {
+                t0 = span[0];
+                iter.remove();
+            }
+        }
+
+        spanList.add(new Long[]{t0, t1});
+    }
+
+    private Integer calculateZoomFactor(final RenderingContext rc, final int width) {
+        final Integer zoom;
+
+        if (cfg.getTmsUrlTemplate() != null && cfg.getZoom() == null) {
+            // force using computed zoom
+            final boolean userSpecifiedHeight = cfg.getHeight() != null;
+            if (userSpecifiedHeight) {
+                final int height = cfg.getHeight();
+                final int zoom1 = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
+                final int zoom2 = (int) Math.floor(Math.log(Math.PI / 128.0 * (height - cfg.getMargin() * 2) / (maxY - minY)) / Math.log(2));
+                zoom = Math.min(zoom1, zoom2);
+            } else {
+                zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
+            }
+            rc.setProgress1(0, "computed zoom is " + zoom);
+        } else {
+            zoom = cfg.getZoom();
+        }
+        return zoom;
+    }
+
+    private double calculateScaleFactor(final int width, final Integer zoom) {
+        return zoom == null
+                ? (width - cfg.getMargin() * 2) / (maxX - minX)
+                : (128.0 * (1 << zoom)) / Math.PI;
     }
 
     private void trimGpxData(final TreeMap<Long, Point2D> timePointMap, final TrackConfiguration trackConfiguration) {
@@ -377,6 +374,29 @@ public final class Renderer {
         if (trimGpxEnd != null && trimGpxEnd > 0 && timePointMap.size() > 0) {
             final Long skipAfterTime = timePointMap.lastKey() - trimGpxEnd;
             timePointMap.entrySet().removeIf(e -> e.getKey() > skipAfterTime);
+        }
+    }
+
+    private void keepLastFrame(final RenderingContext rc, final FrameWriter frameWriter, final BufferedImage bi, final int frames)
+            throws UserException {
+        final boolean keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
+        if (keepLastFrame) {
+            final Point2D marker = drawMarker(bi, frames);
+            if (font != null) {
+                drawInfo(bi, frames, marker);
+                drawAttribution(bi, cfg.getAttribution());
+            }
+            final long ms = cfg.getKeepLastFrame();
+            final long fps = Double.valueOf(cfg.getFps()).longValue();
+            final long stillFrames = ms / 1_000 * fps;
+            for (long stillFrame = 0; stillFrame < stillFrames; stillFrame++) {
+                final int pct = (int) (100.0 * stillFrame / stillFrames);
+                rc.setProgress1(pct, "Rendering Keep Last Frame: " + stillFrame + "/" + stillFrames);
+                frameWriter.addFrame(bi);
+                if (rc.isCancelled1()) {
+                    return;
+                }
+            }
         }
     }
 
