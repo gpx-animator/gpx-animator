@@ -289,7 +289,7 @@ public final class Configuration {
         private String photoDirectory;
         private Long photoTime = 3_000L;
 
-        public Configuration build() throws UserException {
+        public Configuration build() {
             return new Configuration(
                     margin, width, height, zoom,
                     speedup, tailDuration, tailColor, fps, totalTime,

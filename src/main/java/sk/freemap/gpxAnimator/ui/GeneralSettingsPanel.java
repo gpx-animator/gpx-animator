@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -490,7 +491,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         tmsUrlTemplateComboBox = new JComboBox<>();
         tmsUrlTemplateComboBox.setToolTipText(Option.TMS_URL_TEMPLATE.getHelp());
         tmsUrlTemplateComboBox.setEditable(true);
-        tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<>(mapTemplateList.toArray(new MapTemplate[mapTemplateList.size()])));
+        tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<>(mapTemplateList.toArray(new MapTemplate[0])));
         final GridBagConstraints gbcTmsUrlTemplateComboBox = new GridBagConstraints();
         gbcTmsUrlTemplateComboBox.fill = GridBagConstraints.HORIZONTAL;
         gbcTmsUrlTemplateComboBox.insets = new Insets(0, 0, 5, 0);
@@ -703,7 +704,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                     private String attributionText;
 
                     @Override
-                    public void endElement(final String uri, final String localName, final String qName) throws SAXException {
+                    public void endElement(final String uri, final String localName, final String qName) {
                         if ("name".equals(qName)) {
                             name = sb.toString().trim();
                         } else if ("url".equals(qName)) {
@@ -717,7 +718,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                     }
 
                     @Override
-                    public void characters(final char[] ch, final int start, final int length) throws SAXException {
+                    public void characters(final char[] ch, final int start, final int length) {
                         sb.append(ch, start, length);
                     }
                 });
@@ -728,7 +729,7 @@ abstract class GeneralSettingsPanel extends JPanel {
             throw new RuntimeException(e);
         }
 
-        labeledItems.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
+        labeledItems.sort(Comparator.comparing(MapTemplate::toString));
 
         return labeledItems;
     }
@@ -776,43 +777,42 @@ abstract class GeneralSettingsPanel extends JPanel {
     }
 
 
-    public void buildConfiguration(final Configuration.Builder b, final boolean replacePlaceholders) {
-        b.height((Integer) heightSpinner.getValue());
-        b.width((Integer) widthSpinner.getValue());
-        b.margin((Integer) marginSpinner.getValue());
-        b.zoom((Integer) zoomSpinner.getValue());
-        b.minLat((Double) minLatSpinner.getValue());
-        b.maxLat((Double) maxLatSpinner.getValue());
-        b.minLon((Double) minLonSpinner.getValue());
-        b.maxLon((Double) maxLonSpinner.getValue());
-        b.speedup((Double) speedupSpinner.getValue());
-        b.tailColor(tailColorSelector.getColor());
+    public void buildConfiguration(final Configuration.Builder builder, final boolean replacePlaceholders) {
         final Long td = (Long) tailDurationSpinner.getValue();
-        b.tailDuration(td == null ? 0L : td);
-        b.fps((Double) fpsSpinner.getValue());
-        b.totalTime((Long) totalTimeSpinner.getValue());
-        b.keepLastFrame((Long) keepLastFrameSpinner.getValue());
-        b.backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f);
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
-        b.tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate); // NOPMD -- null = not set
-        b.skipIdle(skipIdleCheckBox.isSelected());
-        b.flashbackColor(flashbackColorSelector.getColor());
-        b.flashbackDuration((Long) flashbackDurationSpinner.getValue());
-        b.output(new File(outputFileSelector.getFilename()));
-        b.fontSize((Integer) fontSizeSpinner.getValue());
-        b.markerSize((Double) markerSizeSpinner.getValue());
-        b.waypointSize((Double) waypointSizeSpinner.getValue());
-        b.photoDirectory(photosDirectorySelector.getFilename());
-        b.photoTime((Long) photoTimeSpinner.getValue());
-
-        if (replacePlaceholders) {
-            b.attribution(attributionTextArea.getText().replace("%MAP_ATTRIBUTION%",
+        final String attribution = replacePlaceholders
+                ? attributionTextArea.getText().replace("%MAP_ATTRIBUTION%",
                     tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
-                            ? ((MapTemplate) tmsItem).getAttributionText() : "").trim());
-        } else {
-            b.attribution(attributionTextArea.getText().trim());
-        }
+                            ? ((MapTemplate) tmsItem).getAttributionText() : "").trim()
+                : attributionTextArea.getText().trim();
+
+        builder.height((Integer) heightSpinner.getValue())
+                .width((Integer) widthSpinner.getValue())
+                .margin((Integer) marginSpinner.getValue())
+                .zoom((Integer) zoomSpinner.getValue())
+                .minLat((Double) minLatSpinner.getValue())
+                .maxLat((Double) maxLatSpinner.getValue())
+                .minLon((Double) minLonSpinner.getValue())
+                .maxLon((Double) maxLonSpinner.getValue())
+                .speedup((Double) speedupSpinner.getValue())
+                .tailColor(tailColorSelector.getColor())
+                .tailDuration(td == null ? 0L : td)
+                .fps((Double) fpsSpinner.getValue())
+                .totalTime((Long) totalTimeSpinner.getValue())
+                .keepLastFrame((Long) keepLastFrameSpinner.getValue())
+                .backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f)
+                .tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate) // NOPMD -- null = not set
+                .skipIdle(skipIdleCheckBox.isSelected())
+                .flashbackColor(flashbackColorSelector.getColor())
+                .flashbackDuration((Long) flashbackDurationSpinner.getValue())
+                .output(new File(outputFileSelector.getFilename()))
+                .fontSize((Integer) fontSizeSpinner.getValue())
+                .markerSize((Double) markerSizeSpinner.getValue())
+                .waypointSize((Double) waypointSizeSpinner.getValue())
+                .photoDirectory(photosDirectorySelector.getFilename())
+                .photoTime((Long) photoTimeSpinner.getValue())
+                .attribution(attribution);
     }
 
     protected abstract void configurationChanged();

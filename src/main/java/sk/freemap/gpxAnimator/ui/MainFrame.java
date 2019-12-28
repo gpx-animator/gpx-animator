@@ -260,7 +260,7 @@ public final class MainFrame extends JFrame {
                     // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
                     final StringBuilder cmd = new StringBuilder();
                     for (int i = 0; i < browsers.length; i++) {
-                        cmd.append((i == 0 ? "" : " || ") + browsers[i] + " \"" + url + "\" ");
+                        cmd.append(i == 0 ? "" : " || ").append(browsers[i]).append(" \"").append(url).append("\" ");
                     }
                     rt.exec(new String[]{"sh", "-c", cmd.toString()});
                 }
@@ -646,16 +646,12 @@ public final class MainFrame extends JFrame {
     }
 
     private void loadDefaults() {
-        file = null; // NOPMD -- Resetting everything means unsetting the filename, too
+        file = null; // NOPMD -- Loading defaults = resetting everything means unsetting the filename, too
         setChanged(false);
 
         if (defaultConfigFile == null || !defaultConfigFile.exists()) {
-            try {
-                setConfiguration(Configuration.createBuilder().build());
-                return;
-            } catch (final UserException e1) {
-                throw new RuntimeException(e1);
-            }
+            setConfiguration(Configuration.createBuilder().build());
+            return;
         }
 
         try {
