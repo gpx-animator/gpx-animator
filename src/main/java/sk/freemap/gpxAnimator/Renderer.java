@@ -69,7 +69,7 @@ public final class Renderer {
 
     private double speedup;
 
-    public Renderer(final Configuration cfg) throws UserException {
+    public Renderer(final Configuration cfg) {
         this.cfg = cfg;
     }
 
