@@ -169,17 +169,14 @@ public final class Renderer {
 
         final int realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
         final int realHeight = calculateRealHeight(scale, toImages);
-
-        final BufferedImage bi = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_3BYTE_BGR);
+        System.out.println(realWidth + "x" + realHeight + ";" + scale);
 
         final FrameWriter frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
                 : new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), realWidth, realHeight);
 
+        final BufferedImage bi = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_3BYTE_BGR);
         final Graphics2D ga = (Graphics2D) bi.getGraphics();
-
-        System.out.println(realWidth + "x" + realHeight + ";" + scale);
-
         drawBackground(rc, zoom, bi, ga);
 
         if (cfg.getFontSize() > 0) {
@@ -188,9 +185,7 @@ public final class Renderer {
         }
 
         speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / cfg.getTotalTime();
-
         final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
-
         final Photos photos = new Photos(cfg.getPhotoDirectory());
 
         float skip = -1f;
@@ -216,32 +211,23 @@ public final class Renderer {
             rc.setProgress1(pct, "Rendering Frame: " + frame + "/" + (frames - 1));
 
             paint(bi, frame, 0, null);
-
             final BufferedImage bi2 = Utils.deepCopy(bi);
-
             paint(bi2, frame, cfg.getTailDuration(), cfg.getTailColor());
-
             drawWaypoints(bi2, frame, wpMap);
 
             final Point2D marker = drawMarker(bi2, frame);
-
             if (font != null) {
                 drawInfo(bi2, frame, marker);
                 drawAttribution(bi2, cfg.getAttribution());
             }
 
             skip = renderFlashback(skip, bi2);
-
             frameWriter.addFrame(bi2);
-
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
-
         }
 
         keepLastFrame(rc, frameWriter, bi, frames);
-
         frameWriter.close();
-
         System.out.println("Done.");
     }
 
