@@ -230,14 +230,7 @@ public final class Renderer {
                 drawAttribution(bi2, cfg.getAttribution());
             }
 
-            final Color flashbackColor = cfg.getFlashbackColor();
-            if (skip > 0f && flashbackColor.getAlpha() > 0 && cfg.getFlashbackDuration() != null && cfg.getFlashbackDuration() > 0) {
-                final Graphics2D g2 = (Graphics2D) bi2.getGraphics();
-                g2.setColor(new Color(flashbackColor.getRed(), flashbackColor.getGreen(), flashbackColor.getBlue(),
-                        (int) (flashbackColor.getAlpha() * skip)));
-                g2.fillRect(0, 0, bi2.getWidth(), bi2.getHeight());
-                skip -= 1000f / cfg.getFlashbackDuration() / cfg.getFps();
-            }
+            skip = renderFlashback(skip, bi2);
 
             frameWriter.addFrame(bi2);
 
@@ -250,6 +243,18 @@ public final class Renderer {
         frameWriter.close();
 
         System.out.println("Done.");
+    }
+
+    private float renderFlashback(final float skip, final BufferedImage bi2) {
+        final Color flashbackColor = cfg.getFlashbackColor();
+        if (skip > 0f && flashbackColor.getAlpha() > 0 && cfg.getFlashbackDuration() != null && cfg.getFlashbackDuration() > 0) {
+            final Graphics2D g2 = (Graphics2D) bi2.getGraphics();
+            g2.setColor(new Color(flashbackColor.getRed(), flashbackColor.getGreen(), flashbackColor.getBlue(),
+                    (int) (flashbackColor.getAlpha() * skip)));
+            g2.fillRect(0, 0, bi2.getWidth(), bi2.getHeight());
+            return (float) (skip - (1000f / cfg.getFlashbackDuration() / cfg.getFps()));
+        }
+        return skip;
     }
 
     private void drawBackground(final RenderingContext rc, final Integer zoom, final BufferedImage bi, final Graphics2D ga) throws UserException {
