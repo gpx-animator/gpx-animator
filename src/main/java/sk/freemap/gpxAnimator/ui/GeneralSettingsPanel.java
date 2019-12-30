@@ -1,5 +1,6 @@
 package sk.freemap.gpxAnimator.ui;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import sk.freemap.gpxAnimator.Configuration;
@@ -704,6 +705,8 @@ abstract class GeneralSettingsPanel extends JPanel {
                     private String attributionText;
 
                     @Override
+                    @SuppressWarnings("checkstyle:MissingSwitchDefault") // Every other case can be ignored!
+                    @SuppressFBWarnings(value = "SF_SWITCH_NO_DEFAULT", justification = "Every other case can be ignored!")
                     public void endElement(final String uri, final String localName, final String qName) {
                         switch (qName) {
                             case "name":
@@ -717,9 +720,6 @@ abstract class GeneralSettingsPanel extends JPanel {
                                 break;
                             case "entry":
                                 labeledItems.add(new MapTemplate(name, url, attributionText));
-                                break;
-                            default:
-                                System.out.println("Silently ignoring XML element while parsing: " + qName);
                                 break;
                         }
                         sb.setLength(0);
