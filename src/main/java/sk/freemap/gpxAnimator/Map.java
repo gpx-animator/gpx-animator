@@ -26,6 +26,8 @@ public final class Map {
         throw new InstantiationException("Utility classes can't be instantiated!");
     }
 
+    @SuppressWarnings({"RegExpAnonymousGroup", "RegExpRedundantEscape"})
+    // This regex is tested and I don't want to rewrite it which may potentionally break it.
     private static final Pattern SWITCH_PATTERN = Pattern.compile("\\{switch:([^}]*)\\}");
 
 

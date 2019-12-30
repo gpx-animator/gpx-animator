@@ -40,6 +40,7 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
             return null;
         }
 
+        @SuppressWarnings("RegExpAnonymousGroup") // This regex is tested and I don't want to rewrite it which may potentionally break it.
         final Pattern pattern = Pattern.compile("\\s*"
                 + "(?:(-?\\d+)\\s*d\\s*)?"
                 + "(?:(-?\\d+)\\s*h\\s*)?"

@@ -47,6 +47,7 @@ public class DurationEditor extends DefaultEditor {
             // special hack to select number
             if (!ftf.isValid()) {
                 final Field field = dsm.getField();
+                @SuppressWarnings("RegExpAnonymousGroup") // This regex is tested and I don't want to rewrite it which may potentionally break it.
                 final Matcher matcher = Pattern.compile("(\\d+)\\s*" + field.getUnit() + "\\b").matcher(ftf.getText());
                 if (matcher.find()) {
                     SwingUtilities.invokeLater(() -> {
