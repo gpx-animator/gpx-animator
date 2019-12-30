@@ -705,14 +705,22 @@ abstract class GeneralSettingsPanel extends JPanel {
 
                     @Override
                     public void endElement(final String uri, final String localName, final String qName) {
-                        if ("name".equals(qName)) {
-                            name = sb.toString().trim();
-                        } else if ("url".equals(qName)) {
-                            url = sb.toString().trim();
-                        } else if ("attribution-text".equals(qName)) {
-                            attributionText = sb.toString().trim();
-                        } else if ("entry".equals(qName)) {
-                            labeledItems.add(new MapTemplate(name, url, attributionText));
+                        switch (qName) {
+                            case "name":
+                                name = sb.toString().trim();
+                                break;
+                            case "url":
+                                url = sb.toString().trim();
+                                break;
+                            case "attribution-text":
+                                attributionText = sb.toString().trim();
+                                break;
+                            case "entry":
+                                labeledItems.add(new MapTemplate(name, url, attributionText));
+                                break;
+                            default:
+                                System.out.println("Silently ignoring XML element while parsing: " + qName);
+                                break;
                         }
                         sb.setLength(0);
                     }

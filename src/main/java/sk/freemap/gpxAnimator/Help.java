@@ -24,14 +24,8 @@ public final class Help {
     }
 
     public static void printHelp(final OptionHelpWriter w) {
-        final Configuration cfg;
-        final TrackConfiguration tc;
-        try {
-            cfg = Configuration.createBuilder().build();
-            tc = TrackConfiguration.createBuilder().build();
-        } catch (final UserException e) {
-            throw new RuntimeException(e); // should never happen
-        }
+        final Configuration cfg = Configuration.createBuilder().build();
+        final TrackConfiguration tc = TrackConfiguration.createBuilder().build();
 
         w.writeOptionHelp(Option.ATTRIBUTION, "text", false, cfg.getAttribution());
         w.writeOptionHelp(Option.BACKGROUND_MAP_VISIBILITY, "visibility", false, cfg.getBackgroundMapVisibility());

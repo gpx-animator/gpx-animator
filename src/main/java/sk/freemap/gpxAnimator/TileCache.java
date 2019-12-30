@@ -157,12 +157,6 @@ public final class TileCache {
             }
         }
 
-        // At this point a current map tile should be in our cache.
-
-        if (mapTile == null) {
-            throw new UserException("could not read tile " + url);
-        }
-
         return mapTile;
     }
 

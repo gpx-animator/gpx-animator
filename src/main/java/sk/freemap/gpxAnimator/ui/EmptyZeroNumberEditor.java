@@ -36,7 +36,7 @@ public class EmptyZeroNumberEditor extends DefaultEditor {
             private static final long serialVersionUID = -6817456936657252534L;
 
             @Override
-            public String valueToString(final Object value) throws ParseException {
+            public String valueToString(final Object value) {
                 return value == null ? "" : value.toString();
             }
 

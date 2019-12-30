@@ -25,7 +25,7 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
     private static final long serialVersionUID = -6817456936657252534L;
 
     @Override
-    public String valueToString(final Object value) throws ParseException {
+    public String valueToString(final Object value) {
 
         if (isValid(value)) {
             long l = (Long) value;

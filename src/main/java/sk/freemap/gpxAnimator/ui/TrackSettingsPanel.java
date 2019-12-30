@@ -3,7 +3,6 @@ package sk.freemap.gpxAnimator.ui;
 import sk.freemap.gpxAnimator.Option;
 import sk.freemap.gpxAnimator.TrackConfiguration;
 import sk.freemap.gpxAnimator.TrackConfiguration.Builder;
-import sk.freemap.gpxAnimator.UserException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -326,7 +325,7 @@ abstract class TrackSettingsPanel extends JPanel {
     protected abstract void labelChanged(String label);
 
 
-    public TrackConfiguration createConfiguration() throws UserException {
+    public TrackConfiguration createConfiguration() {
         final Builder b = TrackConfiguration.createBuilder();
 
         b.inputGpx(new File(inputGpxFileSelector.getFilename()));

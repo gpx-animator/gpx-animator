@@ -15,7 +15,6 @@
 package sk.freemap.gpxAnimator;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.time.ZonedDateTime;
@@ -44,7 +43,7 @@ final class GpxContentHandler extends DefaultHandler {
 
 
     @Override
-    public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException {
+    public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) {
         if (ELEM_TRKSEG.equals(qName)) {
             timePointList = new ArrayList<>();
         } else if (ELEM_TRKPT.equals(qName) || ELEM_WPT.equals(qName)) {
@@ -57,7 +56,7 @@ final class GpxContentHandler extends DefaultHandler {
 
 
     @Override
-    public void characters(final char[] ch, final int start, final int length) throws SAXException {
+    public void characters(final char[] ch, final int start, final int length) {
         if (sb != null) {
             sb.append(ch, start, length);
         }
@@ -66,7 +65,7 @@ final class GpxContentHandler extends DefaultHandler {
 
     @Override
     @SuppressWarnings("PMD.NullAssignment") // XML parsing ending elements, it's okay here
-    public void endElement(final String uri, final String localName, final String qName) throws SAXException {
+    public void endElement(final String uri, final String localName, final String qName) {
         if (ELEM_TRKSEG.equals(qName)) {
             timePointListList.add(timePointList);
             timePointList = null;

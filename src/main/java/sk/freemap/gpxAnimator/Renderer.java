@@ -552,15 +552,14 @@ public final class Renderer {
 
 
     private Point2D drawMarker(final BufferedImage bi, final int frame) {
-        Point2D point = null;
         if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {
-            return point;
+            return null;
         }
 
+        Point2D point = null;
+
         final Graphics2D g2 = getGraphics(bi);
-
         final long t2 = getTime(frame);
-
         final List<TrackConfiguration> trackConfigurationList = cfg.getTrackConfigurationList();
 
         int i = 0;

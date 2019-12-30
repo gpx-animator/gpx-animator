@@ -35,7 +35,7 @@ class DurationFormatterTest {
 
     @ParameterizedTest
     @MethodSource("generateTestData")
-    void valueToString(final Long timestamp, final String timeText) throws ParseException {
+    void valueToString(final Long timestamp, final String timeText) {
         final DurationFormatter testee = new DurationFormatter();
         assertEquals(timeText, testee.valueToString(timestamp));
     }

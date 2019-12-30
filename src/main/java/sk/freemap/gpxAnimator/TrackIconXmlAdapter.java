@@ -21,12 +21,12 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public final class TrackIconXmlAdapter extends XmlAdapter<String, TrackIcon> {
 
     @Override
-    public TrackIcon unmarshal(final String name) throws Exception {
+    public TrackIcon unmarshal(final String name) {
         return new TrackIcon(name);
     }
 
     @Override
-    public String marshal(final TrackIcon trackIcon) throws Exception {
+    public String marshal(final TrackIcon trackIcon) {
         return trackIcon.getName();
     }
 

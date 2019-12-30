@@ -20,12 +20,12 @@ import java.awt.Color;
 public final class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
     @Override
-    public Color unmarshal(final String string) throws Exception {
+    public Color unmarshal(final String string) {
         return new Color(Long.decode(string).intValue(), true);
     }
 
     @Override
-    public String marshal(final Color color) throws Exception {
+    public String marshal(final Color color) {
         return "#" + Integer.toHexString(color.getRGB()).toUpperCase();
     }
 

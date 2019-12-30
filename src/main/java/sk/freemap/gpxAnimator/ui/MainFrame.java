@@ -80,17 +80,13 @@ public final class MainFrame extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                try {
-                    addTrackSettingsTab(TrackConfiguration
-                            .createBuilder()
-                            .color(Color.getHSBColor(hue, 0.8f, 0.8f))
-                            .build());
-                    hue += 0.275f;
-                    while (hue >= 1f) {
-                        hue -= 1f;
-                    }
-                } catch (final UserException ex) {
-                    throw new RuntimeException(ex);
+                addTrackSettingsTab(TrackConfiguration
+                        .createBuilder()
+                        .color(Color.getHSBColor(hue, 0.8f, 0.8f))
+                        .build());
+                hue += 0.275f;
+                while (hue >= 1f) {
+                    hue -= 1f;
                 }
             }
         };
@@ -374,23 +370,15 @@ public final class MainFrame extends JFrame {
                 return;
             }
 
-            final Configuration cfg;
-            try {
-                cfg = createConfiguration(true, true);
-                if (cfg.getOutput().exists()) {
-                    final String message = String.format(
-                            "A file with the name \"%s\" already exists.%nDo you really want to overwrite this file?", cfg.getOutput());
-                    final int result = JOptionPane.showConfirmDialog(MainFrame.this,
-                            message, WARNING_TITLE, JOptionPane.YES_NO_OPTION);
-                    if (result == JOptionPane.NO_OPTION) {
-                        return;
-                    }
+            final Configuration cfg = createConfiguration(true, true);
+            if (cfg.getOutput().exists()) {
+                final String message = String.format(
+                        "A file with the name \"%s\" already exists.%nDo you really want to overwrite this file?", cfg.getOutput());
+                final int result = JOptionPane.showConfirmDialog(MainFrame.this,
+                        message, WARNING_TITLE, JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.NO_OPTION) {
+                    return;
                 }
-            } catch (final UserException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(MainFrame.this,
-                        "Configuration error:\n" + ex.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
-                return;
             }
 
             swingWorker = new SwingWorker<>() {
@@ -483,19 +471,19 @@ public final class MainFrame extends JFrame {
         }
     }
 
-    public Configuration createConfiguration(final boolean includeTracks, final boolean replacePlaceholders) throws UserException {
-        final Configuration.Builder b = Configuration.createBuilder();
+    public Configuration createConfiguration(final boolean includeTracks, final boolean replacePlaceholders) {
+        final Configuration.Builder builder = Configuration.createBuilder();
 
-        generalSettingsPanel.buildConfiguration(b, replacePlaceholders);
+        generalSettingsPanel.buildConfiguration(builder, replacePlaceholders);
 
         if (includeTracks) {
             for (int i = FIXED_TABS, n = tabbedPane.getTabCount(); i < n; i++) {
                 final TrackSettingsPanel tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
-                b.addTrackConfiguration(tsp.createConfiguration());
+                builder.addTrackConfiguration(tsp.createConfiguration());
             }
         }
 
-        return b.build();
+        return builder.build();
     }
 
     public void setConfiguration(final Configuration c) {

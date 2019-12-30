@@ -123,7 +123,7 @@ public final class TrackConfiguration {
         }
 
 
-        public TrackConfiguration build() throws UserException {
+        public TrackConfiguration build() {
             return new TrackConfiguration(inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, trackIcon);
         }
 

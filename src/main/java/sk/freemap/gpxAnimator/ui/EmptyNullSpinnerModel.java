@@ -103,7 +103,7 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
             return;
         }
 
-        if (o == null && object != null || o != null && !o.equals(object)) {
+        if (o == null || !o.equals(object)) {
             object = o;
             Object newValue = o == null || ((Number) o).doubleValue() == 0.0 && zeroEmpty ? null : o;
             if (newValue != null) {

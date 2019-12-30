@@ -28,14 +28,14 @@ public final class FileXmlAdapter extends XmlAdapter<String, File> {
     }
 
     @Override
-    public File unmarshal(final String string) throws Exception {
+    public File unmarshal(final String string) {
         return base != null
                 ? base.resolve(string).toFile()
                 : new File(string);
     }
 
     @Override
-    public String marshal(final File file) throws Exception {
+    public String marshal(final File file) {
         return base != null
                 ? base.relativize(file.getAbsoluteFile().toPath()).toString()
                 : file.getAbsolutePath();

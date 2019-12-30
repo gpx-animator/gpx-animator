@@ -22,6 +22,6 @@ public interface FrameWriter {
 
     void addFrame(BufferedImage bi) throws UserException;
 
-    void close() throws UserException;
+    void close();
 
 }
