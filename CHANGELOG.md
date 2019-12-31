@@ -4,6 +4,7 @@
 
 Release date: not yet released
 
+**Most important changes for users:**
 * Show the changelog on the first start after install/update
 * Adding profile picture / logo to the animation
 * Making video background color configurable
@@ -15,10 +16,12 @@ Release date: not yet released
 * Tile cache now enabled by default (24 hour caching)
 * New application wide settings (_File > Preferences_)
 * New installers for Windows, macOS and Linux systems
+
+**Most important changes for developers:**
 * GPX-Animator now uses Gradle to build the project
 * Integrating Spotbugs to search for potential bugs automatically
 * Integrating PMD to search for potential bugs automatically
-* Default Java version for GPX Animator is now 11 LTS
+* Default Java version for GPX Animator is now Java 11 LTS
 
 ## Version 1.4
 
