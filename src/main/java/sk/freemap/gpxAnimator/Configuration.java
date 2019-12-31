@@ -31,6 +31,8 @@ import java.util.List;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable, it uses XML transformation
 public final class Configuration {
 
+    private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
+
     private int margin;
     private Integer width;
     private Integer height;
@@ -49,7 +51,7 @@ public final class Configuration {
     private boolean skipIdle;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    private Color backgroundColor;
+    private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color flashbackColor;
@@ -255,6 +257,7 @@ public final class Configuration {
                 + ", backgroundMapVisibility=" + backgroundMapVisibility
                 + ", tmsUrlTemplate=" + tmsUrlTemplate
                 + ", skipIdle=" + skipIdle
+                + ", backgroundColor=" + backgroundColor
                 + ", flashbackColor=" + flashbackColor
                 + ", flashbackDuration=" + flashbackDuration
                 + ", output=" + output
@@ -282,7 +285,7 @@ public final class Configuration {
         private float backgroundMapVisibility = 0.5f;
         private String tmsUrlTemplate;
         private boolean skipIdle = true;
-        private Color backgroundColor = Color.white;
+        private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
         private Color flashbackColor = Color.white;
         private Long flashbackDuration = 250L;
         private Long keepLastFrame;
