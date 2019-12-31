@@ -49,6 +49,9 @@ public final class Configuration {
     private boolean skipIdle;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
+    private Color backgroundColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color flashbackColor;
     private Long flashbackDuration;
 
@@ -85,8 +88,8 @@ public final class Configuration {
     public Configuration(
             final int margin, final Integer width, final Integer height, final Integer zoom,
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
-            final float backgroundMapVisibility, final String tmsUrlTemplate,
-            final boolean skipIdle, final Color flashbackColor, final Long flashbackDuration,
+            final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
+            final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
             final Long keepLastFrame, final File output, final String attribution,
             final int fontSize, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
@@ -105,6 +108,7 @@ public final class Configuration {
         this.backgroundMapVisibility = backgroundMapVisibility;
         this.tmsUrlTemplate = tmsUrlTemplate;
         this.skipIdle = skipIdle;
+        this.backgroundColor = backgroundColor;
         this.flashbackColor = flashbackColor;
         this.flashbackDuration = flashbackDuration;
         this.keepLastFrame = keepLastFrame;
@@ -172,6 +176,10 @@ public final class Configuration {
 
     public boolean isSkipIdle() {
         return skipIdle;
+    }
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
     }
 
     public Color getFlashbackColor() {
@@ -274,6 +282,7 @@ public final class Configuration {
         private float backgroundMapVisibility = 0.5f;
         private String tmsUrlTemplate;
         private boolean skipIdle = true;
+        private Color backgroundColor = Color.white;
         private Color flashbackColor = Color.white;
         private Long flashbackDuration = 250L;
         private Long keepLastFrame;
@@ -294,7 +303,7 @@ public final class Configuration {
                     margin, width, height, zoom,
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
-                    skipIdle, flashbackColor, flashbackDuration,
+                    skipIdle, backgroundColor, flashbackColor, flashbackDuration,
                     keepLastFrame, output, attribution,
                     fontSize, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
@@ -362,6 +371,11 @@ public final class Configuration {
 
         public Builder skipIdle(final boolean skipIdle) {
             this.skipIdle = skipIdle;
+            return this;
+        }
+
+        public Builder backgroundColor(final Color backgroundColor) {
+            this.backgroundColor = backgroundColor;
             return this;
         }
 

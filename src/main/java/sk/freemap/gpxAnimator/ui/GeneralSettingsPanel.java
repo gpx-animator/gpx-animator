@@ -59,6 +59,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient JSpinner fontSizeSpinner;
     private final transient JCheckBox skipIdleCheckBox;
+    private final transient ColorSelector backgroundColorSelector;
     private final transient ColorSelector flashbackColorSelector;
     private final transient JSpinner flashbackDurationSpinner;
     private final transient JSpinner keepLastFrameSpinner;
@@ -582,12 +583,30 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(skipIdleCheckBox, gbcSkipIdleCheckBox);
         skipIdleCheckBox.addItemListener(e -> configurationChanged());
 
+        final JLabel lblBackgroundColor = new JLabel("Background Color");
+        final GridBagConstraints gbcLabelBackgroundColor = new GridBagConstraints();
+        gbcLabelBackgroundColor.anchor = GridBagConstraints.EAST;
+        gbcLabelBackgroundColor.insets = new Insets(0, 0, 5, 5);
+        gbcLabelBackgroundColor.gridx = 0;
+        gbcLabelBackgroundColor.gridy = 18;
+        add(lblBackgroundColor, gbcLabelBackgroundColor);
+
+        backgroundColorSelector = new ColorSelector();
+        backgroundColorSelector.setToolTipText(Option.BACKGROUND_COLOR.getHelp());
+        final GridBagConstraints gbcBackgroundColorSelector = new GridBagConstraints();
+        gbcBackgroundColorSelector.fill = GridBagConstraints.BOTH;
+        gbcBackgroundColorSelector.insets = new Insets(0, 0, 5, 0);
+        gbcBackgroundColorSelector.gridx = 1;
+        gbcBackgroundColorSelector.gridy = 18;
+        add(backgroundColorSelector, gbcBackgroundColorSelector);
+        backgroundColorSelector.addPropertyChangeListener("color", propertyChangeListener);
+
         final JLabel lblFlashbackColor = new JLabel("Flashback Color");
         final GridBagConstraints gbcLabelFlashbackColor = new GridBagConstraints();
         gbcLabelFlashbackColor.anchor = GridBagConstraints.EAST;
         gbcLabelFlashbackColor.insets = new Insets(0, 0, 5, 5);
         gbcLabelFlashbackColor.gridx = 0;
-        gbcLabelFlashbackColor.gridy = 18;
+        gbcLabelFlashbackColor.gridy = 19;
         add(lblFlashbackColor, gbcLabelFlashbackColor);
 
         flashbackColorSelector = new ColorSelector();
@@ -596,7 +615,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcFlashbackColorSelector.fill = GridBagConstraints.BOTH;
         gbcFlashbackColorSelector.insets = new Insets(0, 0, 5, 0);
         gbcFlashbackColorSelector.gridx = 1;
-        gbcFlashbackColorSelector.gridy = 18;
+        gbcFlashbackColorSelector.gridy = 19;
         add(flashbackColorSelector, gbcFlashbackColorSelector);
         flashbackColorSelector.addPropertyChangeListener("color", propertyChangeListener);
 
@@ -605,7 +624,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelFlashbackDuration.anchor = GridBagConstraints.EAST;
         gbcLabelFlashbackDuration.insets = new Insets(0, 0, 0, 5);
         gbcLabelFlashbackDuration.gridx = 0;
-        gbcLabelFlashbackDuration.gridy = 19;
+        gbcLabelFlashbackDuration.gridy = 20;
         add(lblFlashbackDuration, gbcLabelFlashbackDuration);
 
         flashbackDurationSpinner = new JSpinner();
@@ -615,7 +634,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final GridBagConstraints gbcFlashbackDurationSpinner = new GridBagConstraints();
         gbcFlashbackDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcFlashbackDurationSpinner.gridx = 1;
-        gbcFlashbackDurationSpinner.gridy = 19;
+        gbcFlashbackDurationSpinner.gridy = 20;
         add(flashbackDurationSpinner, gbcFlashbackDurationSpinner);
         flashbackDurationSpinner.addChangeListener(changeListener);
 
@@ -624,7 +643,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelKeepLastFrame.anchor = GridBagConstraints.EAST;
         gbcLabelKeepLastFrame.insets = new Insets(0, 0, 0, 5);
         gbcLabelKeepLastFrame.gridx = 0;
-        gbcLabelKeepLastFrame.gridy = 20;
+        gbcLabelKeepLastFrame.gridy = 21;
         add(lblKeepLastFrame, gbcLabelKeepLastFrame);
 
         keepLastFrameSpinner = new JSpinner();
@@ -634,7 +653,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final GridBagConstraints gbcKeepLastFrameSpinner = new GridBagConstraints();
         gbcKeepLastFrameSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcKeepLastFrameSpinner.gridx = 1;
-        gbcKeepLastFrameSpinner.gridy = 20;
+        gbcKeepLastFrameSpinner.gridy = 21;
         add(keepLastFrameSpinner, gbcKeepLastFrameSpinner);
         keepLastFrameSpinner.addChangeListener(changeListener);
 
@@ -643,7 +662,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelPhotosDirectorySelector.anchor = GridBagConstraints.EAST;
         gbcLabelPhotosDirectorySelector.insets = new Insets(0, 0, 0, 5);
         gbcLabelPhotosDirectorySelector.gridx = 0;
-        gbcLabelPhotosDirectorySelector.gridy = 21;
+        gbcLabelPhotosDirectorySelector.gridy = 22;
         add(lblPhotosDirectorySelector, gbcLabelPhotosDirectorySelector);
 
         photosDirectorySelector = new FileSelector(DIRECTORIES_ONLY) {
@@ -660,7 +679,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcPhotosDirectorySelector.fill = GridBagConstraints.BOTH;
         gbcPhotosDirectorySelector.insets = new Insets(0, 0, 5, 0);
         gbcPhotosDirectorySelector.gridx = 1;
-        gbcPhotosDirectorySelector.gridy = 21;
+        gbcPhotosDirectorySelector.gridy = 22;
         add(photosDirectorySelector, gbcPhotosDirectorySelector);
 
         photosDirectorySelector.addPropertyChangeListener("filename", propertyChangeListener);
@@ -670,7 +689,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelPhotoTime.anchor = GridBagConstraints.EAST;
         gbcLabelPhotoTime.insets = new Insets(0, 0, 0, 5);
         gbcLabelPhotoTime.gridx = 0;
-        gbcLabelPhotoTime.gridy = 22;
+        gbcLabelPhotoTime.gridy = 23;
         add(lblPhotoTime, gbcLabelPhotoTime);
 
         photoTimeSpinner = new JSpinner();
@@ -680,7 +699,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final GridBagConstraints gbcPhotoTimeSpinner = new GridBagConstraints();
         gbcPhotoTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcPhotoTimeSpinner.gridx = 1;
-        gbcPhotoTimeSpinner.gridy = 22;
+        gbcPhotoTimeSpinner.gridy = 23;
         add(photoTimeSpinner, gbcPhotoTimeSpinner);
         photoTimeSpinner.addChangeListener(changeListener);
     }
@@ -780,6 +799,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         fontSizeSpinner.setValue(c.getFontSize());
         markerSizeSpinner.setValue(c.getMarkerSize());
         waypointSizeSpinner.setValue(c.getWaypointSize());
+        backgroundColorSelector.setColor(c.getBackgroundColor());
         flashbackColorSelector.setColor(c.getFlashbackColor());
         flashbackDurationSpinner.setValue(c.getFlashbackDuration());
     }
@@ -812,6 +832,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f)
                 .tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate) // NOPMD -- null = not set
                 .skipIdle(skipIdleCheckBox.isSelected())
+                .backgroundColor(backgroundColorSelector.getColor())
                 .flashbackColor(flashbackColorSelector.getColor())
                 .flashbackDuration((Long) flashbackDurationSpinner.getValue())
                 .output(new File(outputFileSelector.getFilename()))

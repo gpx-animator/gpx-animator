@@ -39,6 +39,7 @@ public enum Option {
     BACKGROUND_MAP_VISIBILITY("background-map-visibility", "opacity of the background map from 0.0 to 1.0"),
     TOTAL_TIME("total-time", "total length of video in milliseconds; complementary to speedup"),
     KEEP_IDLE("keep-idle", "keep parts where no movement is present"),
+    BACKGROUND_COLOR("background-color", "background color when no map is selected"),
     FLASHBACK_COLOR("flashback-color", "transition color between non-idle parts"),
     FLASHBACK_DURATION("flashback-duration", "color of the idle-skipping flashback effect in #AARRGGBB representation"),
     KEEP_LAST_FRAME("keep-last-frame", "time to repeat the last rendered frame in milliseconds; complementary to total time"),

@@ -5,6 +5,7 @@
 Release date: not yet released
 
 * Show the changelog on the first start after install/update
+* Making video background color configurable
 * Saving a configuration as a default setting
 * Integration of automatic application updates
 * Fixed UI on HiDPI (high-resolution) displays

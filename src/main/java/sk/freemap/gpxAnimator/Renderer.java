@@ -245,7 +245,8 @@ public final class Renderer {
 
     private void drawBackground(final RenderingContext rc, final Integer zoom, final BufferedImage bi, final Graphics2D ga) throws UserException {
         if (cfg.getTmsUrlTemplate() == null) {
-            ga.setColor(Color.white); // TODO https://github.com/zdila/gpx-animator/issues/150
+            final Color backgroundColor = cfg.getBackgroundColor();
+            ga.setColor(backgroundColor);
             ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
         } else {
             Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);

@@ -72,9 +72,13 @@ public final class CommandLineConfigurationFactory {
                         case COLOR:
                             colorList.add(Color.decode(args[++i]));
                             break;
-                        case FLASHBACK_COLOR:
+                        case BACKGROUND_COLOR:
                             final long lv = Long.decode(args[++i]);
-                            cfg.flashbackColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
+                            cfg.backgroundColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
+                            break;
+                        case FLASHBACK_COLOR:
+                            final long lv1 = Long.decode(args[++i]);
+                            cfg.flashbackColor(new Color(lv1 < Integer.MAX_VALUE ? (int) lv1 : (int) (0xffffffff00000000L | lv1), true));
                             break;
                         case FLASHBACK_DURATION:
                             final String s = args[++i];
