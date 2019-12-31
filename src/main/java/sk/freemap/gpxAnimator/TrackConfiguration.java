@@ -43,7 +43,7 @@ public final class TrackConfiguration {
     @XmlJavaTypeAdapter(TrackIconXmlAdapter.class)
     private TrackIcon trackIcon;
 
-    // for JAXB
+    @SuppressWarnings("unused") // Needed for JAXB deserialization from saved XML files
     private TrackConfiguration() {
     }
 

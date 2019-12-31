@@ -58,7 +58,7 @@ public final class MainFrame extends JFrame {
     private static final String ERROR_TITLE = "Error";
     private static final String TITLE = "GPX Animator " + Constants.VERSION;
     private static final long serialVersionUID = 190371886979948114L;
-    private static final int FIXED_TABS = 1; // TODO set to 2 for MapPanel
+    private static final int FIXED_TABS = 1;
 
     private final transient Random random = new Random();
     private final transient File defaultConfigFile = new File(Preferences.getConfigurationDir()
@@ -308,8 +308,6 @@ public final class MainFrame extends JFrame {
         };
 
         generalScrollPane.setViewportView(generalSettingsPanel);
-
-        // TODO tabbedPane.addTab("Map", new MapPanel());
 
         final JPanel panel = new JPanel();
         final GridBagConstraints gbcPanel = new GridBagConstraints();
