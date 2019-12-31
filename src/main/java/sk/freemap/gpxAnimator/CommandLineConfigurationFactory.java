@@ -150,6 +150,9 @@ public final class CommandLineConfigurationFactory {
                         case OUTPUT:
                             cfg.output(new File(args[++i]));
                             break;
+                        case LOGO:
+                            cfg.logo(new File(args[++i]));
+                            break;
                         case PHOTO_DIR:
                             cfg.photoDirectory(args[++i]);
                             break;

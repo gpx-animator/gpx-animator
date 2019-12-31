@@ -64,6 +64,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner flashbackDurationSpinner;
     private final transient JSpinner keepLastFrameSpinner;
     private final transient JSpinner totalTimeSpinner;
+    private final transient FileSelector logoFileSelector;
     private final transient FileSelector photosDirectorySelector;
     private final transient JSpinner photoTimeSpinner;
     private final transient JTextArea attributionTextArea;
@@ -657,12 +658,43 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(keepLastFrameSpinner, gbcKeepLastFrameSpinner);
         keepLastFrameSpinner.addChangeListener(changeListener);
 
+        final JLabel lblLogo = new JLabel("Logo");
+        final GridBagConstraints gbcLabelLogo = new GridBagConstraints();
+        gbcLabelLogo.anchor = GridBagConstraints.EAST;
+        gbcLabelLogo.insets = new Insets(0, 0, 5, 5);
+        gbcLabelLogo.gridx = 0;
+        gbcLabelLogo.gridy = 22;
+        add(lblLogo, gbcLabelLogo);
+
+        logoFileSelector = new FileSelector(FILES_ONLY) {
+            private static final long serialVersionUID = 7372002776386603239L;
+
+            @Override
+            protected Type configure(final JFileChooser logoFileChooser) {
+                logoFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
+                logoFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("PNG Image Frames", "png"));
+                return Type.OPEN;
+            }
+        };
+
+        logoFileSelector.setToolTipText(Option.LOGO.getHelp());
+        final GridBagConstraints gbcLogoFileSelector = new GridBagConstraints();
+        gbcLogoFileSelector.fill = GridBagConstraints.BOTH;
+        gbcLogoFileSelector.insets = new Insets(0, 0, 5, 0);
+        gbcLogoFileSelector.gridx = 1;
+        gbcLogoFileSelector.gridy = 22;
+        add(logoFileSelector, gbcLogoFileSelector);
+
+        logoFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
+
         final JLabel lblPhotosDirectorySelector = new JLabel("Photo Directory");
         final GridBagConstraints gbcLabelPhotosDirectorySelector = new GridBagConstraints();
         gbcLabelPhotosDirectorySelector.anchor = GridBagConstraints.EAST;
         gbcLabelPhotosDirectorySelector.insets = new Insets(0, 0, 0, 5);
         gbcLabelPhotosDirectorySelector.gridx = 0;
-        gbcLabelPhotosDirectorySelector.gridy = 22;
+        gbcLabelPhotosDirectorySelector.gridy = 23;
         add(lblPhotosDirectorySelector, gbcLabelPhotosDirectorySelector);
 
         photosDirectorySelector = new FileSelector(DIRECTORIES_ONLY) {
@@ -679,7 +711,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcPhotosDirectorySelector.fill = GridBagConstraints.BOTH;
         gbcPhotosDirectorySelector.insets = new Insets(0, 0, 5, 0);
         gbcPhotosDirectorySelector.gridx = 1;
-        gbcPhotosDirectorySelector.gridy = 22;
+        gbcPhotosDirectorySelector.gridy = 23;
         add(photosDirectorySelector, gbcPhotosDirectorySelector);
 
         photosDirectorySelector.addPropertyChangeListener("filename", propertyChangeListener);
@@ -689,7 +721,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelPhotoTime.anchor = GridBagConstraints.EAST;
         gbcLabelPhotoTime.insets = new Insets(0, 0, 0, 5);
         gbcLabelPhotoTime.gridx = 0;
-        gbcLabelPhotoTime.gridy = 23;
+        gbcLabelPhotoTime.gridy = 24;
         add(lblPhotoTime, gbcLabelPhotoTime);
 
         photoTimeSpinner = new JSpinner();
@@ -699,7 +731,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final GridBagConstraints gbcPhotoTimeSpinner = new GridBagConstraints();
         gbcPhotoTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcPhotoTimeSpinner.gridx = 1;
-        gbcPhotoTimeSpinner.gridy = 23;
+        gbcPhotoTimeSpinner.gridy = 24;
         add(photoTimeSpinner, gbcPhotoTimeSpinner);
         photoTimeSpinner.addChangeListener(changeListener);
     }
@@ -797,6 +829,7 @@ abstract class GeneralSettingsPanel extends JPanel {
             tailColorSelector.setColor(c.getTailColor());
         }
         outputFileSelector.setFilename(c.getOutput().toString());
+        logoFileSelector.setFilename(c.getLogo() != null ? c.getLogo().toString() : "");
         fontSizeSpinner.setValue(c.getFontSize());
         markerSizeSpinner.setValue(c.getMarkerSize());
         waypointSizeSpinner.setValue(c.getWaypointSize());
@@ -840,6 +873,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .fontSize((Integer) fontSizeSpinner.getValue())
                 .markerSize((Double) markerSizeSpinner.getValue())
                 .waypointSize((Double) waypointSizeSpinner.getValue())
+                .logo(new File(logoFileSelector.getFilename()))
                 .photoDirectory(photosDirectorySelector.getFilename())
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .attribution(attribution);

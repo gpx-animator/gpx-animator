@@ -34,6 +34,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -252,6 +253,21 @@ public final class Renderer {
             ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
         } else {
             Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
+        }
+        drawLogo(bi);
+    }
+
+    private void drawLogo(final BufferedImage bi) throws UserException {
+        final File logo = cfg.getLogo();
+        if (logo != null && logo.exists()) {
+            final BufferedImage image;
+            try {
+                image = ImageIO.read(logo);
+            } catch (final IOException e) {
+                throw new UserException("Can't read logo: " + e.getMessage());
+            }
+            final Graphics2D g2 = getGraphics(bi);
+            g2.drawImage(image, cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
         }
     }
 

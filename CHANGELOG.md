@@ -5,6 +5,7 @@
 Release date: not yet released
 
 * Show the changelog on the first start after install/update
+* Adding profile picture / logo to the animation
 * Making video background color configurable
 * Saving a configuration as a default setting
 * Integration of automatic application updates

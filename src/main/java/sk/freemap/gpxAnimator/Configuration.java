@@ -72,6 +72,9 @@ public final class Configuration {
     private Double minLat;
     private Double maxLat;
 
+    @XmlJavaTypeAdapter(FileXmlAdapter.class)
+    private File logo;
+
     private String photoDirectory;
     private Long photoTime;
 
@@ -95,7 +98,7 @@ public final class Configuration {
             final Long keepLastFrame, final File output, final String attribution,
             final int fontSize, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
-            final String photoDirectory, final Long photoTime,
+            final File logo, final String photoDirectory, final Long photoTime,
             final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
@@ -124,6 +127,7 @@ public final class Configuration {
         this.maxLon = maxLon;
         this.minLat = minLat;
         this.maxLat = maxLat;
+        this.logo = logo;
         this.photoDirectory = photoDirectory;
         this.photoTime = photoTime;
     }
@@ -232,6 +236,10 @@ public final class Configuration {
         return maxLat;
     }
 
+    public File getLogo() {
+        return logo;
+    }
+
     public String getPhotoDirectory() {
         return photoDirectory;
     }
@@ -265,6 +273,7 @@ public final class Configuration {
                 + ", markerSize=" + markerSize
                 + ", waypointSize=" + waypointSize
                 + ", keepLastFrame=" + keepLastFrame
+                + ", logo=" + logo
                 + ", photoDirectory=" + photoDirectory
                 + ", photoTime=" + photoTime
                 + ", trackConfigurationList=" + trackConfigurationList
@@ -299,6 +308,7 @@ public final class Configuration {
         private Double maxLon;
         private Double minLat;
         private Double maxLat;
+        private File logo;
         private String photoDirectory;
         private Long photoTime = 3_000L;
 
@@ -311,7 +321,7 @@ public final class Configuration {
                     keepLastFrame, output, attribution,
                     fontSize, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
-                    photoDirectory, photoTime,
+                    logo, photoDirectory, photoTime,
 
                     Collections.unmodifiableList(trackConfigurationList)
             );
@@ -440,6 +450,11 @@ public final class Configuration {
 
         public Builder maxLon(final Double maxLon) {
             this.maxLon = maxLon;
+            return this;
+        }
+
+        public Builder logo(final File logo) {
+            this.logo = logo;
             return this;
         }
 
