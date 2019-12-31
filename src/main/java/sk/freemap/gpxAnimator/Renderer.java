@@ -180,7 +180,7 @@ public final class Renderer {
         drawBackground(rc, zoom, bi, ga);
 
         if (cfg.getFontSize() > 0) {
-            font = new Font(Font.MONOSPACED, Font.PLAIN, cfg.getFontSize());
+            font = new Font(Font.MONOSPACED, Font.PLAIN, cfg.getFontSize()); // TODO https://github.com/zdila/gpx-animator/issues/154
             fontMetrics = ga.getFontMetrics(font);
         }
 
