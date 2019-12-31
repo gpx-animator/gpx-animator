@@ -267,7 +267,7 @@ public final class Configuration {
                 + "]";
     }
 
-    @SuppressWarnings({ "PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField" }) // This is okay for the builder pattern
+    @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField", "UnusedReturnValue"}) // This is okay for the builder pattern
     public static final class Builder {
         private final List<TrackConfiguration> trackConfigurationList = new ArrayList<>();
         private int margin = 20;
