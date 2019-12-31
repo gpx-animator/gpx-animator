@@ -775,6 +775,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         tailDurationSpinner.setValue(c.getTailDuration());
         fpsSpinner.setValue(c.getFps());
         totalTimeSpinner.setValue(c.getTotalTime());
+        keepLastFrameSpinner.setValue(c.getKeepLastFrame());
         backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
         photoTimeSpinner.setValue(c.getPhotoTime());
 

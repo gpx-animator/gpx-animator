@@ -8,7 +8,8 @@ Release date: not yet released
 * Making video background color configurable
 * Saving a configuration as a default setting
 * Integration of automatic application updates
-* Fixed UI on HiDPI (high-resolution) displays
+* Fixing UI on HiDPI (high-resolution) displays
+* Fixing loading of *Keep Last Frame* configuration option
 * Default output directory is no longer the application directory
 * Tile cache now enabled by default (24 hour caching)
 * New application wide settings (_File > Preferences_)

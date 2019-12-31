@@ -264,6 +264,7 @@ public final class Configuration {
                 + ", fontSize=" + fontSize
                 + ", markerSize=" + markerSize
                 + ", waypointSize=" + waypointSize
+                + ", keepLastFrame=" + keepLastFrame
                 + ", photoDirectory=" + photoDirectory
                 + ", photoTime=" + photoTime
                 + ", trackConfigurationList=" + trackConfigurationList
