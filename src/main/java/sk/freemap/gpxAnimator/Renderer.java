@@ -160,6 +160,8 @@ public final class Renderer {
             maxY += hh / scale / 2.0;
         }
 
+        timePointMapListList.forEach((timePointMapList) -> timePointMapList
+                            .forEach((timePointMap) -> translateCoordinatesToZeroZero(scale, timePointMap)));
         translateCoordinatesToZeroZero(scale, wpMap);
 
         final String frameFilePattern = cfg.getOutput().toString();
@@ -293,23 +295,12 @@ public final class Renderer {
         return realWidth;
     }
 
-    private void translateCoordinatesToZeroZero(final double scale, final TreeMap<Long, Point2D> wpMap) {
-        for (final List<TreeMap<Long, Point2D>> timePointMapList : timePointMapListList) {
-            for (final TreeMap<Long, Point2D> timePointMap : timePointMapList) {
-                maxTime = Math.max(maxTime, timePointMap.lastKey());
-                minTime = Math.min(minTime, timePointMap.firstKey());
+    private void translateCoordinatesToZeroZero(final double scale, final TreeMap<Long, Point2D> timePointMap) {
+        if (!timePointMap.isEmpty()) {
+            maxTime = Math.max(maxTime, timePointMap.lastKey());
+            minTime = Math.min(minTime, timePointMap.firstKey());
 
-                for (final Point2D point : timePointMap.values()) {
-                    point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
-                }
-            }
-        }
-
-        if (!wpMap.isEmpty()) {
-            maxTime = Math.max(maxTime, wpMap.lastKey());
-            minTime = Math.min(minTime, wpMap.firstKey());
-
-            for (final Point2D point : wpMap.values()) {
+            for (final Point2D point : timePointMap.values()) {
                 point.setLocation((point.getX() - minX) * scale, (maxY - point.getY()) * scale);
             }
         }
@@ -420,8 +411,7 @@ public final class Renderer {
         if (t2 >= wpMap.firstKey()) {
             for (final Point2D p : wpMap.subMap(wpMap.firstKey(), t2).values()) {
                 g2.setColor(Color.white);
-                final Ellipse2D.Double marker = new Ellipse2D.Double(p.getX() - waypointSize / 2.0, p.getY() - waypointSize / 2.0,
-                        waypointSize, waypointSize);
+                final Ellipse2D.Double marker = createMarker(waypointSize, p);
                 g2.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 g2.fill(marker);
                 g2.setColor(Color.black);
@@ -430,6 +420,10 @@ public final class Renderer {
                 printText(g2, ((NamedPoint) p).getName(), (float) p.getX() + 8f, (float) p.getY() + 4f);
             }
         }
+    }
+
+    private Ellipse2D.Double createMarker(final Double size, final Point2D point) {
+        return new Ellipse2D.Double(point.getX() - size / 2.0, point.getY() - size / 2.0, size, size);
     }
 
     private void toTimePointMap(final TreeMap<Long, Point2D> timePointMap, final int trackIndex, final List<LatLon> latLonList) throws UserException {
@@ -606,11 +600,7 @@ public final class Renderer {
 
         final double markerSize = cfg.getMarkerSize();
 
-        final Ellipse2D.Double marker = new Ellipse2D.Double(
-                point.getX() - markerSize / 2.0,
-                point.getY() - markerSize / 2.0,
-                markerSize,
-                markerSize);
+        final Ellipse2D.Double marker = createMarker(markerSize, point);
         g2.setStroke(new BasicStroke(1f));
         g2.fill(marker);
         g2.setColor(Color.black);
