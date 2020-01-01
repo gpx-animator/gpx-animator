@@ -671,10 +671,13 @@ abstract class GeneralSettingsPanel extends JPanel {
 
             @Override
             protected Type configure(final JFileChooser logoFileChooser) {
+                logoFileChooser.setAcceptAllFileFilterUsed(false);
                 logoFileChooser.addChoosableFileFilter(
-                        new FileNameExtensionFilter("JPEG Image Frames", "jpg"));
+                        new FileNameExtensionFilter("All Suppoted Images", "jpg", "png"));
                 logoFileChooser.addChoosableFileFilter(
-                        new FileNameExtensionFilter("PNG Image Frames", "png"));
+                        new FileNameExtensionFilter("JPEG Image Files", "jpg"));
+                logoFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter("PNG Image Files", "png"));
                 return Type.OPEN;
             }
         };
