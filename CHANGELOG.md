@@ -22,6 +22,7 @@ Release date: not yet released
 * Integrating Spotbugs to search for potential bugs automatically
 * Integrating PMD to search for potential bugs automatically
 * Default Java version for GPX Animator is now Java 11 LTS
+* Using logging instead direct console output
 
 ## Version 1.4
 
