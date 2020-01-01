@@ -77,6 +77,11 @@
         <property name="message" value="Line has trailing spaces."/>
     </module>
 
+    <module name="RegexpSingleline">
+        <property name="format" value="System\.(out|err)\.print(ln|f){0,1}"/>
+        <property name="message" value="Don't use System.out or System.err directly, use loggers instead."/>
+    </module>
+
     <!-- Checks for Headers                                -->
     <!-- See https://checkstyle.org/config_header.html   -->
     <!-- <module name="Header"> -->
