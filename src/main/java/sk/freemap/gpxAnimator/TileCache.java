@@ -32,6 +32,9 @@
 
 package sk.freemap.gpxAnimator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -43,6 +46,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 public final class TileCache {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TileCache.class);
 
     private TileCache() throws InstantiationException {
         throw new InstantiationException("Utility classes can't be instantiated!");
@@ -78,7 +83,7 @@ public final class TileCache {
                     if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(CACHED_FILE_EXTENSION))) {
                         ageCacheFile(cacheEntry, tileCacheTimeLimit);
                     } else {
-                        System.err.println("Error: Unknown file in tile cache: " + cacheFilename);
+                        LOGGER.error("Error: Unknown file in tile cache: {}", cacheFilename);
                     }
                 }
             }
@@ -134,9 +139,9 @@ public final class TileCache {
                 // Treat as non-fatal, we will notify the user then attempt to
                 // remove the file we could not read.
 
-                System.out.println("Error: Failed to read cached tile  " + url + "(" + path + ")");
+                LOGGER.error("Error: Failed to read cached tile {} ({})", url, path, e);
                 if (cacheFile.exists() && !cacheFile.delete()) {
-                    System.err.println("Can't delete tile cache file: " + cacheFile);
+                    LOGGER.error("Can't delete tile cache file: {}", cacheFile);
                 }
             }
         }
@@ -153,7 +158,7 @@ public final class TileCache {
             } catch (final IOException e) {
                 // Treat as non-fatal. This should revert the behavior to the same
                 // as running without a cache.
-                System.out.println("Error reading cached tile  " + url + "(" + path + ")");
+                LOGGER.error("Error writing cached tile {} ({})", url, path, e);
             }
         }
 
@@ -179,8 +184,7 @@ public final class TileCache {
                 result = cacheDir.isDirectory();
             } else {
                 if (!cacheDir.mkdirs()) {
-                    System.err.println("Can't create tile cache directory: " + cacheDir);
-                    System.err.println("Fallback to not caching the tiles!");
+                    LOGGER.error("Can't create tile cache directory '{}'. Fallback to not caching the tiles!", cacheDir);
                     result = false;
                 }
             }
@@ -196,7 +200,7 @@ public final class TileCache {
         long msBetweenDates = new Date().getTime() - fileDate.getTime();
         if ((msBetweenDates) > tileCacheTimeLimit) {
             if (cacheFile.exists() && !cacheFile.delete()) {
-                System.err.println("Can't delete tile cache file: " + cacheFile);
+                LOGGER.error("Can't delete tile cache file: {}", cacheFile);
             }
         }
     }

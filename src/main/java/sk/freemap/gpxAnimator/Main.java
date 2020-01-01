@@ -14,6 +14,8 @@
  */
 package sk.freemap.gpxAnimator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sk.freemap.gpxAnimator.ui.MainFrame;
 
 import java.awt.EventQueue;
@@ -21,6 +23,8 @@ import java.awt.GraphicsEnvironment;
 
 
 public final class Main {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     private Main() throws InstantiationException {
         throw new InstantiationException("Utility classes can't be instantiated!");
@@ -47,7 +51,7 @@ public final class Main {
                 new Renderer(configuration).render(new RenderingContext() {
                     @Override
                     public void setProgress1(final int pct, final String message) {
-                        System.out.printf("%03d%% %s%n", pct, message);
+                        LOGGER.info("{}% {}", pct, message);
                     }
 
                     @Override
@@ -57,7 +61,7 @@ public final class Main {
                 });
             }
         } catch (final UserException e) {
-            System.err.println(e.getMessage());
+            LOGGER.error("Very bad, exception caught in main method!", e);
             System.exit(1); // NOPMD -- We can't recover here
         }
     }

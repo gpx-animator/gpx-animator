@@ -14,6 +14,8 @@
  */
 package sk.freemap.gpxAnimator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sk.freemap.gpxAnimator.frameWriter.FileFrameWriter;
 import sk.freemap.gpxAnimator.frameWriter.FrameWriter;
 import sk.freemap.gpxAnimator.frameWriter.VideoFrameWriter;
@@ -48,6 +50,8 @@ import java.util.TreeMap;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class Renderer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Renderer.class);
 
     private static final double MS = 1000d;
 
@@ -172,7 +176,7 @@ public final class Renderer {
 
         final int realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
         final int realHeight = calculateRealHeight(scale, toImages);
-        System.out.println(realWidth + "x" + realHeight + ";" + scale);
+        LOGGER.info("{}x{};{}", realWidth, realHeight, scale);
 
         final FrameWriter frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
@@ -231,7 +235,7 @@ public final class Renderer {
 
         keepLastFrame(rc, frameWriter, bi, frames);
         frameWriter.close();
-        System.out.println("Done.");
+        LOGGER.info("Done.");
     }
 
     private float renderFlashback(final float skip, final BufferedImage bi2) {

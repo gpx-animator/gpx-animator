@@ -1,6 +1,8 @@
 package sk.freemap.gpxAnimator.ui;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sk.freemap.gpxAnimator.Configuration;
 import sk.freemap.gpxAnimator.Constants;
 import sk.freemap.gpxAnimator.FileXmlAdapter;
@@ -51,6 +53,8 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 public final class MainFrame extends JFrame {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainFrame.class);
 
     private static final String PROJECT_FILENAME_SUFFIX = ".ga.xml";
     private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
@@ -385,7 +389,7 @@ public final class MainFrame extends JFrame {
                     new Renderer(cfg).render(new RenderingContext() {
                         @Override
                         public void setProgress1(final int pct, final String message) {
-                            System.out.printf("[%3d%%] %s%n", pct, message);
+                            LOGGER.info("[{}%] {}", pct, message);
                             setProgress(pct);
                             publish(message + " (" + pct + "%)");
                         }

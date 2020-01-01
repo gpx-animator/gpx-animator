@@ -14,6 +14,8 @@
  */
 package sk.freemap.gpxAnimator.frameWriter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sk.freemap.gpxAnimator.UserException;
 
 import javax.imageio.ImageIO;
@@ -23,6 +25,8 @@ import java.io.IOException;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class FileFrameWriter implements FrameWriter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileFrameWriter.class);
 
     private final String frameFilePattern;
     private final String imageType;
@@ -51,7 +55,7 @@ public final class FileFrameWriter implements FrameWriter {
 
     @Override
     public void close() {
-        System.out.println("To encode generated frames you may run this command:");
-        System.out.println("ffmpeg -i " + frameFilePattern + " -vcodec mpeg4 -b 3000k -r " + fps + " video.avi");
+        LOGGER.info("To encode generated frames you may run this command:");
+        LOGGER.info("ffmpeg -i {} -vcodec mpeg4 -b 3000k -r {} video.avi", frameFilePattern, fps);
     }
 }

@@ -104,11 +104,12 @@ public final class CommandLineConfigurationFactory {
                             cfg.height(Integer.valueOf(args[++i]));
                             break;
                         case HELP:
-                            System.out.println("GPX Animator " + Constants.VERSION);
-                            System.out.println("Copyright " + Constants.YEAR + " Martin Ždila, Freemap Slovakia");
-                            System.out.println();
-                            System.out.println("Usage:");
+                            //noinspection UseOfSystemOutOrSystemErr // okay for command line output
                             try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
+                                pw.println("GPX Animator " + Constants.VERSION);
+                                pw.println("Copyright " + Constants.YEAR + " Martin Ždila, Freemap Slovakia");
+                                pw.println();
+                                pw.println("Usage:");
                                 Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
                                 pw.flush();
                             }
