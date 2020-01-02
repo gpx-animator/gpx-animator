@@ -41,9 +41,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -55,7 +54,7 @@ public final class Renderer {
 
     private static final double MS = 1000d;
 
-    private final LinkedList<Double> speedValues = new LinkedList<>();
+    private final java.util.Map<Integer, Long> speedValues = new HashMap<>();
 
     private final Configuration cfg;
 
@@ -79,45 +78,56 @@ public final class Renderer {
         this.cfg = cfg;
     }
 
-    private double calculateSpeed(final GpxPoint lastPoint, final LatLon latLon, final long time) {
-        if (lastPoint == null) {
-            return 0;
-        }
+    private GpxPoint lastSpeedPoint = null;
 
-        double dist = calculateDistance(lastPoint, latLon);
-        double timeDiff = time - lastPoint.getTime();
+    private long calculateSpeedForDisplay(final GpxPoint point, final int frame) {
+        final long speed = calculateSpeed(point, getTime(frame));
+        speedValues.put(frame, speed);
 
-        double speed = (3_600_000 * dist) / timeDiff;
+        final long deleteBefore = frame - (Math.round(cfg.getFps())); // 1 second
+        speedValues.keySet().removeIf((f) -> f < deleteBefore);
 
-        speedValues.add(speed);
-        while (speedValues.size() > 30) {
-            speedValues.pop();
-        }
-
-        return speedValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+        return Math.round(speedValues.values().stream().mapToLong(Long::longValue).average().orElse(0));
     }
 
-    private static double calculateDistance(final GpxPoint lastPoint, final LatLon latLon) {
-        if (lastPoint == null) {
+    private long calculateSpeed(final GpxPoint point, final long time) {
+        final long timeout = time - 1_000 * 60; // 1 minute
+        final long distance = calculateDistance(lastSpeedPoint, point);
+        final double timeDiff = lastSpeedPoint == null ? 0 : point.getTime() - lastSpeedPoint.getTime();
+
+        final long speed;
+        if (distance > 0 && point.getTime() > timeout) {
+            speed = Math.round((3_600 * distance) / timeDiff);
+        } else {
+            speed = 0;
+        }
+
+        lastSpeedPoint = point;
+        return speed;
+    }
+
+    private static long calculateDistance(final GpxPoint point1, final GpxPoint point2) {
+        if (point1 == null) {
             return 0;
         }
 
-        double lat1 = lastPoint.getLatLon().getLat();
-        double lon1 = lastPoint.getLatLon().getLon();
-        double lat2 = latLon.getLat();
-        double lon2 = latLon.getLon();
+        final double lat1 = point1.getLatLon().getLat();
+        final double lon1 = point1.getLatLon().getLon();
+        final double lat2 = point2.getLatLon().getLat();
+        final double lon2 = point2.getLatLon().getLon();
 
         if ((lat1 == lat2) && (lon1 == lon2)) {
             return 0;
         } else {
-            double theta = lon1 - lon2;
-            double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
+            final double theta = lon1 - lon2;
+            final double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
                     + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
-            dist = Math.acos(dist);
-            dist = Math.toDegrees(dist);
-            dist = dist * 60 * 1.1515; // miles
-            dist = dist * 1.609344; // kilometers
-            return dist;
+            final double arcCosine = Math.acos(dist);
+            final double degrees = Math.toDegrees(arcCosine);
+            final double mi = degrees * 60 * 1.1515; // to miles
+            final double km = mi * 1.609344; // to kilometers
+            final double m = km * 1_000; // to meters
+            return Math.round(m); // round to full meters
         }
     }
 
@@ -469,8 +479,6 @@ public final class Renderer {
             maxY = latToY(minLat);
         }
 
-        GpxPoint lastPoint = null;
-
         for (final LatLon latLon : latLonList) {
             final double x = lonToX(latLon.getLon());
             final double y = latToY(latLon.getLat());
@@ -511,9 +519,7 @@ public final class Renderer {
                 namedPoint.setName(((Waypoint) latLon).getName());
                 point = namedPoint;
             } else {
-                double speed = calculateSpeed(lastPoint, latLon, time);
-                lastPoint = new GpxPoint(x, y, latLon, time, speed);
-                point = lastPoint;
+                point = new GpxPoint(x, y, latLon, time);
             }
 
             // hack to prevent overwriting existing (way)point with same time
@@ -526,9 +532,9 @@ public final class Renderer {
     }
 
     private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) {
-        final String dateString = dateFormat.format(new Date(getTime(frame)));
+        final String dateString = dateFormat.format(getTime(frame));
         final String latLongString = getLatLonString(marker);
-        final String speedString = getSpeedString(marker);
+        final String speedString = getSpeedString(marker, frame);
         final Graphics2D graphics = getGraphics(bi);
         printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
                 bi.getHeight() - cfg.getMargin());
@@ -539,11 +545,11 @@ public final class Renderer {
     }
 
 
-    private String getSpeedString(final Point2D point) {
+    private String getSpeedString(final Point2D point, final int frame) {
         if (point instanceof GpxPoint) {
             final GpxPoint gpxPoint = (GpxPoint) point;
-            final double speed = gpxPoint.getSpeed();
-            return String.format("%.0f km/h", speed);
+            final long speed = calculateSpeedForDisplay(gpxPoint, frame);
+            return String.format("%d km/h", speed);
         } else {
             return "";
         }
