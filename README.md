@@ -80,6 +80,7 @@ Icons included in application and their source:
 * Bus icon made by [monkik](https://www.flaticon.com/authors/monkik) from [flaticon](https://www.flaticon.com/).
 * Car icon made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [flaticon](https://www.flaticon.com/).
 * Jogging icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
+* Riding icon made by [mynamepong](https://www.flaticon.com/authors/mynamepong) from [flaticon](https://www.flaticon.com/).
 * Sailing icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
 * Ship icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
 * Tramway icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
