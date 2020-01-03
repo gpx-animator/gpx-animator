@@ -3,6 +3,7 @@ package sk.freemap.gpxAnimator.ui;
 import sk.freemap.gpxAnimator.Option;
 import sk.freemap.gpxAnimator.TrackConfiguration;
 import sk.freemap.gpxAnimator.TrackConfiguration.Builder;
+import sk.freemap.gpxAnimator.TrackIcon;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;

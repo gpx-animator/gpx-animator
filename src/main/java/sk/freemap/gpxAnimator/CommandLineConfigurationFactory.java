@@ -15,7 +15,6 @@
 package sk.freemap.gpxAnimator;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import sk.freemap.gpxAnimator.ui.TrackIcon;
 
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;

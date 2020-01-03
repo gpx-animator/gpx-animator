@@ -14,8 +14,6 @@
  */
 package sk.freemap.gpxAnimator;
 
-import sk.freemap.gpxAnimator.ui.TrackIcon;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public final class TrackIconXmlAdapter extends XmlAdapter<String, TrackIcon> {

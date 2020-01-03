@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import sk.freemap.gpxAnimator.frameWriter.FileFrameWriter;
 import sk.freemap.gpxAnimator.frameWriter.FrameWriter;
 import sk.freemap.gpxAnimator.frameWriter.VideoFrameWriter;
-import sk.freemap.gpxAnimator.ui.TrackIcon;
 
 import javax.imageio.ImageIO;
 import java.awt.BasicStroke;

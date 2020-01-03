@@ -12,7 +12,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package sk.freemap.gpxAnimator.ui;
+package sk.freemap.gpxAnimator;
 
 import com.drew.lang.annotations.NotNull;
 
@@ -55,7 +55,7 @@ public final class TrackIcon {
     }
 
     public String getFilename() {
-        return "/"
+        return "/trackicons/"
                 .concat(name.toLowerCase(Locale.getDefault()))
                 .concat(".png");
     }

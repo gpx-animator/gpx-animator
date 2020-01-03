@@ -6,6 +6,7 @@ Release date: not yet released
 
 **Most important changes for users:**
 * Show the changelog on the first start after install/update
+* Adding a bunch of new track icons
 * Adding profile picture / logo to the animation
 * Making video background color configurable
 * Saving a configuration as a default setting
