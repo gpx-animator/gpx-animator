@@ -258,6 +258,7 @@ abstract class TrackSettingsPanel extends JPanel {
         trackIcons.add(new TrackIcon(""));
         trackIcons.add(new TrackIcon("Airplane"));
         trackIcons.add(new TrackIcon("Bicycle"));
+        trackIcons.add(new TrackIcon("Bus"));
         trackIcons.add(new TrackIcon("Jogging"));
         trackIcons.add(new TrackIcon("Sailing"));
         trackIcons.add(new TrackIcon("Ship"));
