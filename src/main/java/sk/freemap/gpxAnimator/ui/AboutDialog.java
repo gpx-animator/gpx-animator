@@ -15,6 +15,7 @@
 package sk.freemap.gpxAnimator.ui;
 
 import sk.freemap.gpxAnimator.Constants;
+import sk.freemap.gpxAnimator.Preferences;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -26,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.ResourceBundle;
 
 public class AboutDialog extends JDialog {
 
@@ -35,33 +37,40 @@ public class AboutDialog extends JDialog {
      * Create the dialog.
      */
     public AboutDialog() {
-        setTitle("About");
+        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+
+        setTitle(resourceBundle.getString("ui.dialog.about.title"));
         setBounds(100, 100, 450, 300);
         getContentPane().setLayout(new BorderLayout());
         final JPanel contentPanel = new JPanel();
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.LINE_AXIS));
+
+        @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"}) // Just putting together some HTML code
+        final String text = String.format(
+                "<div align=\"center\"><h1>%s</h1>Version %s<br/>"
+                + "&copy; %s <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a></div>"
+                + "<p>%s</p><p>%s</p>", Constants.APPNAME, Constants.VERSION, Constants.YEAR,
+                resourceBundle.getString("ui.dialog.about.description"),
+                String.format(resourceBundle.getString("ui.dialog.about.link"),
+                        "<a href=\"https://gpx-animator.app\">https://gpx-animator.app</a>"));
 
         final JEditorPane dtrpngpxNavigator = new JEditorPane();
         dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         dtrpngpxNavigator.setEditable(false);
         dtrpngpxNavigator.setContentType("text/html");
-        dtrpngpxNavigator.setText("<div align=\"center\">\n<h1>GPX Animator</h1>\nver. " + Constants.VERSION
-                + "<br/>\n&copy; " + Constants.YEAR + " <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a>\n</div>\n"
-                + "<p>GPX Animator generates video from GPX files.</p>"
-                + "<p>More information can be found at <a href=\"https://gpx-animator.app\">https://gpx-animator.app</a>.</p>\n");
+        dtrpngpxNavigator.setText(text);
 
         final JScrollPane scrollPane = new JScrollPane(dtrpngpxNavigator);
         contentPanel.add(scrollPane);
 
         final JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
-        getContentPane().add(buttonPane, BorderLayout.SOUTH);
+        getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
-        final JButton okButton = new JButton("OK");
+        final JButton okButton = new JButton(resourceBundle.getString("ui.dialog.about.button.ok"));
         okButton.addActionListener(e -> AboutDialog.this.dispose());
-        okButton.setActionCommand("OK");
         buttonPane.add(okButton);
         getRootPane().setDefaultButton(okButton);
     }
