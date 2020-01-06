@@ -8,6 +8,7 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import sk.freemap.gpxAnimator.Constants;
+import sk.freemap.gpxAnimator.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -24,15 +25,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ChangelogDialog extends JDialog {
 
     private static final long serialVersionUID = 1629914924489696463L;
 
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+
     public ChangelogDialog(final JFrame owner) {
         super(owner, true);
-        setTitle("Changelog for GPX Animator " + Constants.VERSION);
+
+        @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"})
+        final String title = String.format(resourceBundle.getString("ui.dialog.changelog.title"),
+                Constants.APPNAME + " v" + Constants.VERSION);
+        setTitle(title);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setContentPane(buildContent());
         pack();
@@ -49,13 +57,13 @@ public class ChangelogDialog extends JDialog {
         final JScrollPane scrollPane = new JScrollPane(changelogView,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-        final JButton closeButton = new JButton("Close");
+        final JButton closeButton = new JButton(resourceBundle.getString("ui.dialog.changelog.button.close"));
         closeButton.addActionListener(e -> SwingUtilities.invokeLater(this::closeDialog));
 
         return FormBuilder.create()
                 .padding(new EmptyBorder(20, 20, 20, 20))
-                .columns("fill:300dlu:grow")
-                .rows("fill:300dlu:grow, 10dlu, p")
+                .columns("fill:300dlu:grow") //NON-NLS
+                .rows("fill:300dlu:grow, 10dlu, p") //NON-NLS
                 .add(scrollPane).xy(1, 1)
                 .addBar(closeButton).xy(1, 3, CellConstraints.RIGHT, CellConstraints.FILL)
                 .build();
@@ -66,8 +74,8 @@ public class ChangelogDialog extends JDialog {
         dispose();
     }
 
-    @SuppressFBWarnings(value = { "NP_LOAD_OF_KNOWN_NULL_VALUE", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE",
-            "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" }, justification = "Check for null exactly as needed")
+    @SuppressFBWarnings(value = { "NP_LOAD_OF_KNOWN_NULL_VALUE", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", //NON-NLS
+            "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" }, justification = "Check for null exactly as needed") //NON-NLS
     private String readChangelogAsMarkdown() throws IOException {
         final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         try (InputStream is = classLoader.getResourceAsStream("CHANGELOG.md")) {
@@ -87,7 +95,9 @@ public class ChangelogDialog extends JDialog {
             return convertMarkdownToHTML(md);
         } catch (final IOException | NullPointerException e) { // NOPMD -- NPE happens on missing changelog file
             e.printStackTrace();
-            JOptionPane.showMessageDialog(ChangelogDialog.this, "Error loading changelog: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ChangelogDialog.this,
+                    String.format(resourceBundle.getString("ui.dialog.changelog.errors.loading"), e.getMessage()),
+                    resourceBundle.getString("ui.dialog.changelog.error"), JOptionPane.ERROR_MESSAGE);
             SwingUtilities.invokeLater(this::closeDialog);
             return "";
         }
