@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {
@@ -42,6 +43,8 @@ public final class CommandLineConfigurationFactory {
 
     @SuppressWarnings("checkstyle:MethodLength") // Is it worth investing time refactoring this class?
     public CommandLineConfigurationFactory(final String[] args) throws UserException {
+        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+
         final Configuration.Builder cfg = Configuration.createBuilder();
 
         boolean forceGui = false;
@@ -58,8 +61,7 @@ public final class CommandLineConfigurationFactory {
                 final Option option = arg.startsWith("--") ? Option.fromName(arg.substring(2)) : null;
 
                 if (option == null) {
-                    throw new UserException("unrecognised option " + arg
-                            + "\nrun program with --help option to print help");
+                    throw new UserException(String.format(resourceBundle.getString("cli.error.option"), arg));
                 } else {
                     switch (option) {
                         case ATTRIBUTION:
@@ -95,7 +97,7 @@ public final class CommandLineConfigurationFactory {
                             break;
                         case GUI:
                             if (GraphicsEnvironment.isHeadless()) {
-                                throw new UserException("graphics is not supported in this environment");
+                                throw new UserException(resourceBundle.getString("cli.error.graphics"));
                             }
                             forceGui = true;
                             break;
@@ -105,10 +107,10 @@ public final class CommandLineConfigurationFactory {
                         case HELP:
                             //noinspection UseOfSystemOutOrSystemErr // okay for command line output
                             try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
-                                pw.println("GPX Animator " + Constants.VERSION);
-                                pw.println("Copyright " + Constants.YEAR + " Martin Ždila, Freemap Slovakia");
+                                pw.println(String.format("%s %s", Constants.APPNAME, Constants.VERSION)); //NON-NLS
+                                pw.println(String.format("Copyright © %s Martin Ždila, Freemap Slovakia", Constants.YEAR)); //NON-NLS
                                 pw.println();
-                                pw.println("Usage:");
+                                pw.println(resourceBundle.getString("cli.help.usage"));
                                 Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));
                                 pw.flush();
                             }
@@ -197,9 +199,9 @@ public final class CommandLineConfigurationFactory {
                     // TODO --configuration : args[++i];
                 }
             } catch (final NumberFormatException e) {
-                throw new UserException("invalid number for option " + arg);
+                throw new UserException(String.format(resourceBundle.getString("cli.error.number"), arg));
             } catch (final ArrayIndexOutOfBoundsException e) {
-                throw new UserException("missing parameter for option " + arg);
+                throw new UserException(String.format(resourceBundle.getString("cli.error.parameter"), arg));
             }
         }
 
@@ -225,7 +227,7 @@ public final class CommandLineConfigurationFactory {
     }
 
     @SuppressWarnings("PMD.DoNotCallSystemExit") // Exit after printing command line help message
-    @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit after printing command line help message")
+    @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit after printing command line help message") //NON-NLS
     private void exit() {
         System.exit(0);
     }
