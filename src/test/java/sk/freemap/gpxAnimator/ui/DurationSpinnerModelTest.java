@@ -25,7 +25,7 @@ public final class DurationSpinnerModelTest {
     }
 
     @ParameterizedTest
-    @MethodSource("generateGetterSetterTestData")
+    @MethodSource("generateGetterSetterTestData") //NON-NLS
     public void testValue(final Long value) {
         final DurationSpinnerModel testee = new DurationSpinnerModel();
         testee.setValue(value);
@@ -42,6 +42,6 @@ public final class DurationSpinnerModelTest {
 
     @Test
     public void testFromUnit() {
-        assertEquals(DurationSpinnerModel.Field.MILLISECOND, DurationSpinnerModel.Field.fromUnit("ms"));
+        assertEquals(DurationSpinnerModel.Field.MILLISECOND, DurationSpinnerModel.Field.fromUnit("ms")); //NON-NLS
     }
 }

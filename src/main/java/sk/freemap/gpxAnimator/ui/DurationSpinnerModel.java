@@ -14,6 +14,8 @@
  */
 package sk.freemap.gpxAnimator.ui;
 
+import org.jetbrains.annotations.NonNls;
+
 import javax.swing.AbstractSpinnerModel;
 import java.util.Objects;
 
@@ -77,11 +79,11 @@ public final class DurationSpinnerModel extends AbstractSpinnerModel {
 
 
     public enum Field {
-        MILLISECOND("ms"),
-        SECOND("s"),
-        MINUTE("m"),
-        HOUR("h"),
-        DAY("d");
+        MILLISECOND("ms"), //NON-NLS
+        SECOND("s"), //NON-NLS
+        MINUTE("m"), //NON-NLS
+        HOUR("h"), //NON-NLS
+        DAY("d"); //NON-NLS
 
         private final String unit;
 
@@ -89,7 +91,7 @@ public final class DurationSpinnerModel extends AbstractSpinnerModel {
             this.unit = unit;
         }
 
-        public static Field fromUnit(final String unit) {
+        public static Field fromUnit(@NonNls final String unit) {
             for (final Field field : Field.values()) {
                 if (field.getUnit().equals(unit)) {
                     return field;

@@ -83,23 +83,23 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
 
         long l = duration;
 
-        sb.insert(0, "ms");
+        sb.insert(0, "ms"); //NON-NLS
         sb.insert(0, l % 1000);
         l /= 1000;
 
-        sb.insert(0, "s ");
+        sb.insert(0, "s "); //NON-NLS
         sb.insert(0, l % 60);
         l /= 60;
 
-        sb.insert(0, "m ");
+        sb.insert(0, "m "); //NON-NLS
         sb.insert(0, l % 60);
         l /= 60;
 
-        sb.insert(0, "h ");
+        sb.insert(0, "h "); //NON-NLS
         sb.insert(0, l % 24);
         l /= 24;
 
-        sb.insert(0, "d ");
+        sb.insert(0, "d "); //NON-NLS
         sb.insert(0, l);
 
         return sb.toString();
