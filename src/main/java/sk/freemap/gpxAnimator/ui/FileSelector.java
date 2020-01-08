@@ -27,6 +27,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
+import java.util.ResourceBundle;
 
 public abstract class FileSelector extends JPanel {
     private static final long serialVersionUID = 3157365691996396016L;
@@ -41,7 +42,9 @@ public abstract class FileSelector extends JPanel {
      * Create the panel.
      */
     public FileSelector(final int fileSelectionMode) {
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+
+        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
         fileTextField = new JTextField();
         fileTextField.setMaximumSize(new Dimension(2147483647, 21));
@@ -68,7 +71,7 @@ public abstract class FileSelector extends JPanel {
             }
 
             private void fire() {
-                firePropertyChange("filename", oldText, fileTextField.getText());
+                firePropertyChange("filename", oldText, fileTextField.getText()); //NON-NLS
                 oldText = fileTextField.getText();
             }
         });
@@ -76,7 +79,7 @@ public abstract class FileSelector extends JPanel {
         final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
         add(rigidArea);
 
-        btnNewButton = new JButton("Browse");
+        btnNewButton = new JButton(resourceBundle.getString("ui.dialog.fileselector.button.browse"));
         btnNewButton.addActionListener(e -> {
             if (fileChooser == null) {
                 fileChooser = new JFileChooser();
