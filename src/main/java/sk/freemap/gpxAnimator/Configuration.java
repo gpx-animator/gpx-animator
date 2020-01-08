@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -79,7 +80,7 @@ public final class Configuration {
     private Long photoTime;
 
     @XmlElementWrapper
-    @XmlElement(name = "trackConfiguration")
+    @XmlElement(name = "trackConfiguration") //NON-NLS
     private List<TrackConfiguration> trackConfigurationList;
 
 
@@ -252,8 +253,9 @@ public final class Configuration {
         return trackConfigurationList;
     }
 
+    @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"}) // for debugging
     @Override
-    public String toString() {
+    public String toString() { // TODO Use a library for this kind of tasks, maybe Lombok.
         return "Configuration [margin=" + margin
                 + ", width=" + width
                 + ", height=" + height
@@ -282,6 +284,7 @@ public final class Configuration {
 
     @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField", "UnusedReturnValue"}) // This is okay for the builder pattern
     public static final class Builder {
+        private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
         private final List<TrackConfiguration> trackConfigurationList = new ArrayList<>();
         private int margin = 20;
         private Integer height;
@@ -300,7 +303,7 @@ public final class Configuration {
         private Long flashbackDuration = 250L;
         private Long keepLastFrame;
         private File output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
-        private String attribution = "Created by GPX Animator " + Constants.VERSION + "\n%MAP_ATTRIBUTION%";
+        private String attribution = String.format(resourceBundle.getString("configuration.attribution"), Constants.APPNAME, Constants.VERSION);
         private int fontSize = 12;
         private Double markerSize = 8.0;
         private Double waypointSize = 6.0;
