@@ -16,17 +16,22 @@ package sk.freemap.gpxAnimator.frameWriter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sk.freemap.gpxAnimator.Preferences;
 import sk.freemap.gpxAnimator.UserException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.Collator;
+import java.util.ResourceBundle;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class FileFrameWriter implements FrameWriter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileFrameWriter.class);
+
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final String frameFilePattern;
     private final String imageType;
@@ -34,8 +39,8 @@ public final class FileFrameWriter implements FrameWriter {
     private int frame;
 
     public FileFrameWriter(final String frameFilePattern, final String imageType, final double fps) throws UserException {
-        if (String.format(frameFilePattern, 100).equals(String.format(frameFilePattern, 200))) {
-            throw new UserException("output must be pattern, for example frame%08d.png");
+        if (Collator.getInstance().compare(String.format(frameFilePattern, 100), String.format(frameFilePattern, 200)) != 0) {
+            throw new UserException(resourceBundle.getString("framewriter.error.outputpattern"));
         }
 
         this.frameFilePattern = frameFilePattern;
@@ -49,13 +54,13 @@ public final class FileFrameWriter implements FrameWriter {
         try {
             ImageIO.write(bi, imageType, outputfile);
         } catch (final IOException e) {
-            throw new UserException("error writing frame to " + outputfile, e);
+            throw new UserException(String.format("error writing frame to '%s'", outputfile), e);
         }
     }
 
     @Override
     public void close() {
-        LOGGER.info("To encode generated frames you may run this command:");
-        LOGGER.info("ffmpeg -i {} -vcodec mpeg4 -b 3000k -r {} video.avi", frameFilePattern, fps);
+        LOGGER.info(resourceBundle.getString("framewriter.info.encodingframes"));
+        LOGGER.info("ffmpeg -i {} -vcodec mpeg4 -b 3000k -r {} video.avi", frameFilePattern, fps); //NON-NLS
     }
 }
