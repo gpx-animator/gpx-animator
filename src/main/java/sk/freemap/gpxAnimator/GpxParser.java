@@ -29,7 +29,7 @@ import java.util.zip.GZIPInputStream;
 public final class GpxParser {
 
     private GpxParser() throws InstantiationException {
-        throw new InstantiationException("Utility classes can't be instantiated!");
+        throw new InstantiationException("GpxParser is a utility class and can't be instantiated!");
     }
 
     static void parseGpx(final File inputGpx, final GpxContentHandler dh) throws UserException {
