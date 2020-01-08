@@ -16,6 +16,7 @@ package sk.freemap.gpxAnimator;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.awt.Color;
+import java.util.Locale;
 
 public final class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
@@ -26,7 +27,7 @@ public final class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
     @Override
     public String marshal(final Color color) {
-        return "#" + Integer.toHexString(color.getRGB()).toUpperCase();
+        return "#" + Integer.toHexString(color.getRGB()).toUpperCase(Locale.getDefault());
     }
 
 }
