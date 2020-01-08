@@ -24,13 +24,13 @@ import java.util.List;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 final class GpxContentHandler extends DefaultHandler {
 
-    private static final String ATTR_LON = "lon";
-    private static final String ATTR_LAT = "lat";
-    private static final String ELEM_TRKSEG = "trkseg";
-    private static final String ELEM_TRKPT = "trkpt";
-    private static final String ELEM_WPT = "wpt";
-    private static final String ELEM_TIME = "time";
-    private static final String ELEM_NAME = "name";
+    private static final String ATTR_LON = "lon"; //NON-NLS
+    private static final String ATTR_LAT = "lat"; //NON-NLS
+    private static final String ELEM_TRKSEG = "trkseg"; //NON-NLS
+    private static final String ELEM_TRKPT = "trkpt"; //NON-NLS
+    private static final String ELEM_WPT = "wpt"; //NON-NLS
+    private static final String ELEM_TIME = "time"; //NON-NLS
+    private static final String ELEM_NAME = "name"; //NON-NLS
 
     private final List<List<LatLon>> timePointListList = new ArrayList<>();
     private final List<LatLon> waypointList = new ArrayList<>();
