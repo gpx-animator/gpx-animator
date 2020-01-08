@@ -50,7 +50,7 @@ public class AboutDialog extends JDialog {
         @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"}) // Just putting together some HTML code
         final String text = String.format(
                 "<div align=\"center\"><h1>%s</h1>Version %s<br/>"
-                + "&copy; %s <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a></div>"
+                + "Copyright &copy; %s <a href=\"http://www.freemap.sk/\">Freemap Slovakia</a></div>"
                 + "<p>%s</p><p>%s</p>", Constants.APPNAME, Constants.VERSION, Constants.YEAR,
                 resourceBundle.getString("ui.dialog.about.description"),
                 String.format(resourceBundle.getString("ui.dialog.about.link"),
