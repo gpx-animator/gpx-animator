@@ -32,7 +32,7 @@ public class ChangelogDialog extends JDialog {
 
     private static final long serialVersionUID = 1629914924489696463L;
 
-    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     public ChangelogDialog(final JFrame owner) {
         super(owner, true);
