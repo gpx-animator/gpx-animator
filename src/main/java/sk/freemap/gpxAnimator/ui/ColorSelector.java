@@ -14,6 +14,8 @@
  */
 package sk.freemap.gpxAnimator.ui;
 
+import sk.freemap.gpxAnimator.Preferences;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -25,6 +27,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public final class ColorSelector extends JPanel {
 
@@ -39,7 +43,9 @@ public final class ColorSelector extends JPanel {
      * Create the panel.
      */
     public ColorSelector() {
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+
+        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
         colorTextField = new JTextField();
         colorTextField.setEditable(false);
@@ -51,12 +57,13 @@ public final class ColorSelector extends JPanel {
         final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
         add(rigidArea);
 
-        selectButton = new JButton("Select");
+        selectButton = new JButton(resourceBundle.getString("ui.dialog.color.button.select"));
         selectButton.addActionListener(e -> {
             final JColorChooser chooserPane = new JColorChooser();
             chooserPane.setColor(colorTextField.getBackground());
             final ActionListener okListener = e1 -> setColor(chooserPane.getColor());
-            final JDialog colorChooser = JColorChooser.createDialog(ColorSelector.this, "Track Color", true, chooserPane, okListener, null);
+            final JDialog colorChooser = JColorChooser.createDialog(
+                    ColorSelector.this, resourceBundle.getString("ui.dialog.color.title"), true, chooserPane, okListener, null);
             colorChooser.setVisible(true);
         });
 
@@ -72,8 +79,8 @@ public final class ColorSelector extends JPanel {
         colorTextField.setBackground(color);
         final double l = color.getRed() / 255.0 * 0.299 + color.getGreen() / 255.0 * 0.587 + color.getBlue() / 255.0 * 0.114;
         colorTextField.setForeground(l > 0.5 ? Color.BLACK : Color.WHITE);
-        colorTextField.setText("#" + Integer.toHexString(color.getRGB()).toUpperCase());
-        firePropertyChange("color", oldColor, color);
+        colorTextField.setText("#".concat(Integer.toHexString(color.getRGB()).toUpperCase(Locale.getDefault())));
+        firePropertyChange("color", oldColor, color); //NON-NLS
     }
 
     @Override
