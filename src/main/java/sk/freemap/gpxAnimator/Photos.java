@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -52,9 +53,11 @@ public final class Photos {
 
     static {
         final ZonedDateTime dateTime = ZonedDateTime.now();
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("x");
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("x"); //NON-NLS
         SYSTEM_ZONE_OFFSET = dateTime.format(formatter);
     }
+
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final Map<Long, List<Photo>> allPhotos;
 
@@ -66,45 +69,45 @@ public final class Photos {
             if (directory.isDirectory()) {
                 final File[] files = directory.listFiles((dir, name) -> {
                     final String lowerCaseName = name.toLowerCase(Locale.getDefault());
-                    return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png");
+                    return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png"); //NON-NLS
                 });
                 if (files != null) {
-                    allPhotos = Arrays.stream(files).map(Photos::toPhoto).filter(photo -> photo.getEpochSeconds() > 0)
+                    allPhotos = Arrays.stream(files).map(this::toPhoto).filter(photo -> photo.getEpochSeconds() > 0)
                             .collect(groupingBy(Photo::getEpochSeconds));
                 } else {
                     allPhotos = new HashMap<>();
                 }
             } else {
-                LOGGER.error("'{}' is not a directory!", directory);
+                LOGGER.error(resourceBundle.getString("photos.error.nodirectory"), directory);
                 allPhotos = new HashMap<>();
             }
         }
     }
 
-    private static Photo toPhoto(final File file) {
+    private Photo toPhoto(final File file) {
         return new Photo(timeOfPhotoInMilliSeconds(file), file);
     }
 
-    private static Long timeOfPhotoInMilliSeconds(final File file) {
+    private Long timeOfPhotoInMilliSeconds(final File file) {
         try {
             final Metadata metadata = ImageMetadataReader.readMetadata(file);
             final ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
             final String zoneOffset = directory.getString(36881) != null ? directory.getString(36881) : SYSTEM_ZONE_OFFSET;
             final String dateTimeString = directory.getString(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)
-                    + " " + zoneOffset.replace(":", "");
+                    .concat(" ").concat(zoneOffset.replace(":", ""));
             final ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString,
-                    DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x"));
+                    DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x")); //NON-NLS
             return zonedDateTime.toEpochSecond() * 1_000;
         } catch (ImageProcessingException | IOException | NullPointerException e) { // NOPMD -- NPEs can happen quite often in image metadata handling
-            LOGGER.error("Error processing file '{}}'!", file.getAbsoluteFile(), e);
+            LOGGER.error(resourceBundle.getString("photos.error.fileprocessing"), file.getAbsoluteFile(), e);
             return 0L;
         }
     }
 
-    private static void renderPhoto(final Photo photo, final Configuration cfg,
+    private void renderPhoto(final Photo photo, final Configuration cfg,
                                     final BufferedImage bi, final FrameWriter frameWriter,
                                     final RenderingContext rc, final int pct) {
-        rc.setProgress1(pct, String.format("Rendering photo '%s'", photo.getFile().getName()));
+        rc.setProgress1(pct, String.format(resourceBundle.getString("photos.progress.rendering"), photo.getFile().getName()));
 
         final BufferedImage image = readPhoto(photo, bi.getWidth(), bi.getHeight());
         if (image != null) {
@@ -124,12 +127,12 @@ public final class Photos {
                     frameWriter.addFrame(bi2);
                 }
             } catch (final UserException e) {
-                LOGGER.error("Problems rendering photo '{}'!", photo, e);
+                LOGGER.error(resourceBundle.getString("photos.error.rendering"), photo, e);
             }
         }
     }
 
-    private static BufferedImage readPhoto(final Photo photo, final int width, final int height) {
+    private BufferedImage readPhoto(final Photo photo, final int width, final int height) {
         try {
             final byte[] rawData = getRawBytesFromFile(photo.getFile());
             try (ImageInputStream input = ImageIO.createImageInputStream(new ByteArrayInputStream(rawData))) {
@@ -140,7 +143,7 @@ public final class Photos {
                 return addBorder(scaledImage);
             }
         } catch (final IOException e) {
-            LOGGER.error("Problems reading photo '{}'!", photo, e);
+            LOGGER.error(resourceBundle.getString("photos.error.reading"), photo, e);
         }
         return null;
     }
@@ -191,7 +194,7 @@ public final class Photos {
             keys.stream()
                     .map(allPhotos::get)
                     .flatMap(List::stream).collect(Collectors.toList())
-                    .forEach(photo -> Photos.renderPhoto(photo, cfg, bi, frameWriter, rc, pct));
+                    .forEach(photo -> renderPhoto(photo, cfg, bi, frameWriter, rc, pct));
             keys.forEach(allPhotos::remove);
         }
     }

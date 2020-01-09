@@ -15,6 +15,7 @@
 package sk.freemap.gpxAnimator;
 
 import com.drew.lang.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
 import java.util.Objects;
@@ -55,6 +56,7 @@ public final class Photo {
         return Objects.hash(epochSeconds, file);
     }
 
+    @NonNls
     @Override
     public String toString() {
         return "Photo{"
