@@ -44,17 +44,20 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 public final class TileCache {
+
+    private static final ResourceBundle RESOURCE_BUNDLE = Preferences.getResourceBundle();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TileCache.class);
 
     private TileCache() throws InstantiationException {
-        throw new InstantiationException("Utility classes can't be instantiated!");
+        throw new InstantiationException("TileCache is a utility class which can't be instantiated!");
     }
 
-    private static final String CACHED_FILE_TYPE = "png";
-    private static final String CACHED_FILE_EXTENSION = ".gpxac." + CACHED_FILE_TYPE;
+    private static final String CACHED_FILE_TYPE = "png"; //NON-NLS
+    private static final String CACHED_FILE_EXTENSION = ".gpxac.".concat(CACHED_FILE_TYPE); //NON-NLS
     private static MessageDigest messageDigest = null;
 
     //
@@ -83,7 +86,7 @@ public final class TileCache {
                     if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(CACHED_FILE_EXTENSION))) {
                         ageCacheFile(cacheEntry, tileCacheTimeLimit);
                     } else {
-                        LOGGER.error("Error: Unknown file in tile cache: {}", cacheFilename);
+                        LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.unknownfile"), cacheFilename);
                     }
                 }
             }
@@ -113,10 +116,10 @@ public final class TileCache {
         try {
             mapTile = ImageIO.read(new URL(url));
         } catch (final IOException e) {
-            throw new UserException("error getting tile " + url, e);
+            throw new UserException("error getting tile ".concat(url), e);
         }
         if (mapTile == null) {
-            throw new UserException("could not get tile " + url);
+            throw new UserException("could not get tile ".concat(url));
         }
 
         return mapTile;
@@ -124,9 +127,9 @@ public final class TileCache {
 
     private static BufferedImage cachedGetTile(final String url, final String tileCacheDir, final Long tileCacheTimeLimit) throws UserException {
         BufferedImage mapTile = null;
-        String filename = hashName(url) + CACHED_FILE_EXTENSION;
-        String path = tileCacheDir + File.separator + filename;
-        File cacheFile = new File(path);
+        final String filename = hashName(url).concat(CACHED_FILE_EXTENSION);
+        final String path = tileCacheDir.concat(File.separator).concat(filename);
+        final File cacheFile = new File(path);
 
         // Age out old tile file in cache directory.
         ageCacheFile(cacheFile, tileCacheTimeLimit);
@@ -139,9 +142,9 @@ public final class TileCache {
                 // Treat as non-fatal, we will notify the user then attempt to
                 // remove the file we could not read.
 
-                LOGGER.error("Error: Failed to read cached tile {} ({})", url, path, e);
+                LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.readfailed"), url, path, e);
                 if (cacheFile.exists() && !cacheFile.delete()) {
-                    LOGGER.error("Can't delete tile cache file: {}", cacheFile);
+                    LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.deletefailed"), cacheFile);
                 }
             }
         }
@@ -158,7 +161,7 @@ public final class TileCache {
             } catch (final IOException e) {
                 // Treat as non-fatal. This should revert the behavior to the same
                 // as running without a cache.
-                LOGGER.error("Error writing cached tile {} ({})", url, path, e);
+                LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.writingfailed"), url, path, e);
             }
         }
 
@@ -184,7 +187,7 @@ public final class TileCache {
                 result = cacheDir.isDirectory();
             } else {
                 if (!cacheDir.mkdirs()) {
-                    LOGGER.error("Can't create tile cache directory '{}'. Fallback to not caching the tiles!", cacheDir);
+                    LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.mkdirfailed"), cacheDir);
                     result = false;
                 }
             }
@@ -200,7 +203,7 @@ public final class TileCache {
         long msBetweenDates = new Date().getTime() - fileDate.getTime();
         if ((msBetweenDates) > tileCacheTimeLimit) {
             if (cacheFile.exists() && !cacheFile.delete()) {
-                LOGGER.error("Can't delete tile cache file: {}", cacheFile);
+                LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.deletefailed"), cacheFile);
             }
         }
     }
@@ -212,7 +215,7 @@ public final class TileCache {
             }
             return bytesToHex(messageDigest.digest(url.getBytes(StandardCharsets.UTF_8)));
         } catch (final NoSuchAlgorithmException e) {
-            throw new UserException("error creating hash name " + url, e);
+            throw new UserException("error creating hash name ".concat(url), e);
         }
     }
 
@@ -221,6 +224,7 @@ public final class TileCache {
         for (byte b : hash) {
             final String hex = Integer.toHexString(0xff & b);
             if (hex.length() == 1) { // NOPMD -- Ignore magic number literal
+                //noinspection MagicCharacter
                 hexString.append('0');
             }
             hexString.append(hex);
