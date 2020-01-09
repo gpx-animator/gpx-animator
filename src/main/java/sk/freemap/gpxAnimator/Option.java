@@ -1,56 +1,50 @@
 package sk.freemap.gpxAnimator;
 
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 public enum Option {
 
-    GUI("gui", "show GUI"),
-    INPUT("input", "input GPX filename"),
-    OUTPUT("output", "filename for generated video or filename template for saved image frames where %06d will be replaced by frame sequence number"),
-    LABEL("label", "text displayed next to marker"),
-    COLOR("color", "track color in #RRGGBB representation"),
-    MARGIN("margin", "margin in pixels"),
-    TIME_OFFSET("time-offset", "time offset for track in milliseconds"),
-    TRIM_GPX_START("trim-gpx-start", "trim the start of the GPX file in milliseconds"),
-    TRIM_GPX_END("trim-gpx-end", "trim the end of the GPX file in milliseconds"),
-    FORCED_POINT_TIME_INTERVAL("forced-point-time-interval", "interval between adjanced GPS points in milliseconds - useful for GPX files "
-            + "with missing point time information; if specified then time offset must be set representing absolute; empty for no forcing"),
-    SPEEDUP("speedup", "speed multiplication of the real time; complementary to specifying total time"),
-    LINE_WIDTH("line-width", "track line width in pixels"),
-    TAIL_DURATION("tail-duration", "highlighted tail length in real time milliseconds"),
-    TAIL_COLOR("tail-color", "highlighted tail color"),
-    FPS("fps", "frames per second"),
-    MARKER_SIZE("marker-size", "marker size in pixels"),
-    WAYPOINT_SIZE("waypoint-size", "waypoint size in pixels; for no waypoints specify 0"),
-    MIN_LAT("min-lat", "minimal latitude; leave empty if it should be automatically computed from the GPX tracks"),
-    MAX_LAT("max-lat", "maximal latitude; leave empty if it should be automatically computed from the GPX tracks"),
-    MIN_LON("min-lon", "minimal longitude; leave empty if it should be automatically computed from the GPX tracks"),
-    MAX_LON("max-lon", "maximal longitude; leave empty if it should be automatically computed from the GPX tracks"),
-    WIDTH("width", "video width in pixels; if not specified but zoom is specified, then computed from GPX bounding box and margin, "
-            + "otherwise 800"),
-    HEIGHT("height", "video height in pixels; if unspecified, it is derived from width, GPX bounding box and margin"),
-    ZOOM("zoom", "map zoom typically from 1 to 18; if not specified and TMS URL Template (Background Map) is specified then it is "
-            + "computed from width"),
-    FONT_SIZE("font-size", "datetime text font size; set to 0 for no date text"),
-    TMS_URL_TEMPLATE("tms-url-template", "slippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be "
-            + "replaced; for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap"),
-    ATTRIBUTION("attribution", "map attribution text; %MAP_ATTRIBUTION% placeholder is replaced by attribution of selected pre-defined "
-            + "map (only from GUI)"),
-    BACKGROUND_MAP_VISIBILITY("background-map-visibility", "opacity of the background map from 0.0 to 1.0"),
-    TOTAL_TIME("total-time", "total length of video in milliseconds; complementary to speedup"),
-    KEEP_IDLE("keep-idle", "keep parts where no movement is present"),
-    BACKGROUND_COLOR("background-color", "background color when no map is selected"),
-    FLASHBACK_COLOR("flashback-color", "transition color between non-idle parts"),
-    FLASHBACK_DURATION("flashback-duration", "color of the idle-skipping flashback effect in #AARRGGBB representation"),
-    KEEP_LAST_FRAME("keep-last-frame", "time to repeat the last rendered frame in milliseconds; complementary to total time"),
-    SKIP_IDLE("skip-idle", "idle-skipping flashback effect duration in milliseconds; set to empty for no flashback"),
-    LOGO("logo", "filename for an optional logo to be placed on top of the animation"),
-    PHOTO_DIR("photo-dir", "a directory containing photos to be added to the animation (must contain EXIF information with date and time "
-            + "of photo taken)"),
-    PHOTO_TIME("photo-time", "the amount of time, a photo should be shown above the map"),
-    HELP("help", "this help"),
-    TRACK_ICON("track-icon", "enables an icon that replaces the standard circle of the current position (valid values: Bicycle, Jogging, "
-            + "Trekking)");
+    GUI("gui"), //NON-NLS
+    INPUT("input"), //NON-NLS
+    OUTPUT("output"), //NON-NLS
+    LABEL("label"), //NON-NLS
+    COLOR("color"), //NON-NLS
+    MARGIN("margin"), //NON-NLS
+    TIME_OFFSET("time-offset"), //NON-NLS
+    TRIM_GPX_START("trim-gpx-start"), //NON-NLS
+    TRIM_GPX_END("trim-gpx-end"), //NON-NLS
+    FORCED_POINT_TIME_INTERVAL("forced-point-time-interval"), //NON-NLS
+    SPEEDUP("speedup"), //NON-NLS
+    LINE_WIDTH("line-width"), //NON-NLS
+    TAIL_DURATION("tail-duration"), //NON-NLS
+    TAIL_COLOR("tail-color"), //NON-NLS
+    FPS("fps"), //NON-NLS
+    MARKER_SIZE("marker-size"), //NON-NLS
+    WAYPOINT_SIZE("waypoint-size"), //NON-NLS
+    MIN_LAT("min-lat"), //NON-NLS
+    MAX_LAT("max-lat"), //NON-NLS
+    MIN_LON("min-lon"), //NON-NLS
+    MAX_LON("max-lon"), //NON-NLS
+    WIDTH("width"), //NON-NLS
+    HEIGHT("height"), //NON-NLS
+    ZOOM("zoom"), //NON-NLS
+    FONT_SIZE("font-size"), //NON-NLS
+    TMS_URL_TEMPLATE("tms-url-template"), //NON-NLS
+    ATTRIBUTION("attribution"), //NON-NLS
+    BACKGROUND_MAP_VISIBILITY("background-map-visibility"), //NON-NLS
+    TOTAL_TIME("total-time"), //NON-NLS
+    KEEP_IDLE("keep-idle"), //NON-NLS
+    BACKGROUND_COLOR("background-color"), //NON-NLS
+    FLASHBACK_COLOR("flashback-color"), //NON-NLS
+    FLASHBACK_DURATION("flashback-duration"), //NON-NLS
+    KEEP_LAST_FRAME("keep-last-frame"), //NON-NLS
+    SKIP_IDLE("skip-idle"), //NON-NLS
+    LOGO("logo"), //NON-NLS
+    PHOTO_DIR("photo-dir"), //NON-NLS
+    PHOTO_TIME("photo-time"), //NON-NLS
+    HELP("help"), //NON-NLS
+    TRACK_ICON("track-icon"); //NON-NLS
 
     private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();
 
@@ -63,9 +57,11 @@ public enum Option {
     private String name;
     private String help;
 
-    Option(final String name, final String help) {
-        this.name = name;
-        this.help = help;
+    Option(final String key) {
+        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+
+        this.name = key;
+        this.help = resourceBundle.getString("option.help.".concat(key)); //NON-NLS
     }
 
     public static Option fromName(final String name) {
