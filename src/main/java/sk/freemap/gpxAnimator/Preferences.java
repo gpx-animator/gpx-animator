@@ -8,24 +8,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Preferences {
+    private static final ResourceBundle RESOURCE_BUNDLE = Preferences.getResourceBundle();
 
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
     private static final java.util.prefs.Preferences PREFS =
-            java.util.prefs.Preferences.userRoot().node("app/gpx-animator");
+            java.util.prefs.Preferences.userRoot().node("app/gpx-animator"); //NON-NLS
 
-    private static final String CHANGELOG_VERSION = "changelog_version";
-    private static final String LAST_WORKING_DIR = "last_working_dir";
-    private static final String RECENT_FILES = "recent_files";
-    private static final String TILE_CACHE_DIR = "tile_cache_dir";
-    private static final String TILE_CACHE_TIME_LIMIT = "tile_cache_time_limit";
+    private static final String CHANGELOG_VERSION = "changelog_version"; //NON-NLS
+    private static final String LAST_WORKING_DIR = "last_working_dir"; //NON-NLS
+    private static final String RECENT_FILES = "recent_files"; //NON-NLS
+    private static final String TILE_CACHE_DIR = "tile_cache_dir"; //NON-NLS
+    private static final String TILE_CACHE_TIME_LIMIT = "tile_cache_time_limit"; //NON-NLS
 
     public static ResourceBundle getResourceBundle() {
-        return ResourceBundle.getBundle("i18n/Messages");
+        return ResourceBundle.getBundle("i18n/Messages"); //NON-NLS
     }
 
     public static String getConfigurationDir() {
-        return System.getProperty("user.home") + Preferences.FILE_SEPARATOR + ".gpx-animator";
+        return System.getProperty("user.home").concat(FILE_SEPARATOR).concat(".gpx-animator"); //NON-NLS
     }
 
     public static String getChangelogVersion() {
@@ -40,7 +41,7 @@ public final class Preferences {
        String lastWorkingDir = PREFS.get(LAST_WORKING_DIR, null);
         if (lastWorkingDir == null) {
             lastWorkingDir = System.getProperty("user.home");
-            final String videosDir = lastWorkingDir + Preferences.FILE_SEPARATOR + "Videos";
+            final String videosDir = lastWorkingDir.concat(FILE_SEPARATOR).concat(RESOURCE_BUNDLE.getString("preferences.videodirectory"));
             if (new File(videosDir).exists()) {
                 lastWorkingDir = videosDir;
             }
@@ -71,8 +72,8 @@ public final class Preferences {
     public static String getTileCacheDir() {
         return PREFS.get(TILE_CACHE_DIR,
                 getConfigurationDir()
-                        + Preferences.FILE_SEPARATOR + "caches"
-                        + Preferences.FILE_SEPARATOR + "tiles");
+                        .concat(FILE_SEPARATOR).concat("caches") //NON-NLS
+                        .concat(FILE_SEPARATOR).concat("tiles")); //NON-NLS
     }
 
     public static void setTileCacheDir(final String tileCacheDir) {
