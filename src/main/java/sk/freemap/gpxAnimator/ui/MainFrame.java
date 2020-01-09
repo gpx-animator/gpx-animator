@@ -45,10 +45,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.Collator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.ResourceBundle;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
@@ -56,13 +58,14 @@ public final class MainFrame extends JFrame {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainFrame.class);
 
-    private static final String PROJECT_FILENAME_SUFFIX = ".ga.xml";
-    private static final String UNSAVED_MSG = "There are unsaved changes. Continue?";
-    private static final String WARNING_TITLE = "Warning";
-    private static final String ERROR_TITLE = "Error";
-    private static final String TITLE = "GPX Animator " + Constants.VERSION;
+    private static final String PROJECT_FILENAME_SUFFIX = ".ga.xml"; //NON-NLS
     private static final long serialVersionUID = 190371886979948114L;
     private static final int FIXED_TABS = 1;
+
+    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final transient String unsavedMessage = resourceBundle.getString("ui.mainframe.dialog.message.unsaved.continue");
+    private final transient String warningTitle = resourceBundle.getString("ui.mainframe.dialog.title.warning");
+    private final transient String errorTitle = resourceBundle.getString("ui.mainframe.dialog.title.error");
 
     private final transient Random random = new Random();
     private final transient File defaultConfigFile = new File(Preferences.getConfigurationDir()
@@ -99,7 +102,7 @@ public final class MainFrame extends JFrame {
         fileChooser.addChoosableFileFilter(new FileFilter() {
             @Override
             public String getDescription() {
-                return "GPX Animator Configuration Files";
+                return resourceBundle.getString("ui.mainframe.dialog.opensave.filtertext");
             }
 
             @Override
@@ -108,11 +111,11 @@ public final class MainFrame extends JFrame {
             }
         });
 
-        setTitle(TITLE);
+        setTitle(Constants.APPNAME_VERSION);
         setIconImages(
                 Arrays.asList(
-                        new ImageIcon(getClass().getResource("/icon_16.png")).getImage(),
-                        new ImageIcon(getClass().getResource("/icon_32.png")).getImage()
+                        new ImageIcon(getClass().getResource("/icon_16.png")).getImage(), //NON-NLS
+                        new ImageIcon(getClass().getResource("/icon_32.png")).getImage() //NON-NLS
                 )
         );
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -121,21 +124,21 @@ public final class MainFrame extends JFrame {
         final JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
-        final JMenu mnFile = new JMenu("File");
+        final JMenu mnFile = new JMenu(resourceBundle.getString("ui.mainframe.menu.file"));
         menuBar.add(mnFile);
 
-        final JMenuItem mntmNew = new JMenuItem("New");
+        final JMenuItem mntmNew = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.new"));
         mntmNew.addActionListener(e -> {
-            if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
+            if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 loadDefaults();
             }
         });
         mnFile.add(mntmNew);
 
-        final JMenuItem mntmOpen = new JMenuItem("Open...");
+        final JMenuItem mntmOpen = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.open"));
         mntmOpen.addActionListener(e -> {
-            if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
+            if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
                 final String lastCwd = Preferences.getLastWorkingDir();
@@ -151,13 +154,13 @@ public final class MainFrame extends JFrame {
         });
         mnFile.add(mntmOpen);
 
-        openRecent = new JMenu("Open Recent");
+        openRecent = new JMenu(resourceBundle.getString("ui.mainframe.menu.file.openrecent"));
         pupulateOpenRecentMenu();
         mnFile.add(openRecent);
 
         mnFile.addSeparator();
 
-        final JMenuItem mntmSave = new JMenuItem("Save");
+        final JMenuItem mntmSave = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.save"));
         mntmSave.addActionListener(e -> {
             if (file == null) {
                 saveAs();
@@ -167,40 +170,40 @@ public final class MainFrame extends JFrame {
         });
         mnFile.add(mntmSave);
 
-        final JMenuItem mntmSaveAs = new JMenuItem("Save As...");
+        final JMenuItem mntmSaveAs = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.saveas"));
         mntmSaveAs.addActionListener(e -> saveAs());
         mnFile.add(mntmSaveAs);
 
         mnFile.addSeparator();
 
-        final JMenuItem mntmSaveAsDefault = new JMenuItem("Save As Default");
+        final JMenuItem mntmSaveAsDefault = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.defaults.save"));
         mntmSaveAsDefault.addActionListener(e -> saveAsDefault());
         mnFile.add(mntmSaveAsDefault);
 
-        final JMenuItem mntmResetDefaults = new JMenuItem("Reset To Factory Defaults");
+        final JMenuItem mntmResetDefaults = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.defaults.reset"));
         mntmResetDefaults.addActionListener(e -> resetDefaults());
         mnFile.add(mntmResetDefaults);
 
         mnFile.addSeparator();
 
-        final JMenuItem preferencesMenu = new JMenuItem("Preferences");
+        final JMenuItem preferencesMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.preferences"));
         preferencesMenu.addActionListener(e -> SwingUtilities.invokeLater(() -> new PreferencesDialog(this).setVisible(true)));
         mnFile.add(preferencesMenu);
 
         mnFile.addSeparator();
 
-        final JMenuItem mntmExit = new JMenuItem("Exit");
+        final JMenuItem mntmExit = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.exit"));
         mntmExit.addActionListener(this::exitApplication);
         mnFile.add(mntmExit);
 
-        final JMenu mnTrack = new JMenu("Track");
+        final JMenu mnTrack = new JMenu(resourceBundle.getString("ui.mainframe.menu.track"));
         menuBar.add(mnTrack);
 
-        final JMenuItem mntmAddTrack = new JMenuItem("Add");
+        final JMenuItem mntmAddTrack = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.track.add"));
         mntmAddTrack.addActionListener(addTrackActionListener);
         mnTrack.add(mntmAddTrack);
 
-        final JMenuItem mntmRemoveTrack = new JMenuItem("Remove");
+        final JMenuItem mntmRemoveTrack = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.track.remove"));
         mntmRemoveTrack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -213,10 +216,10 @@ public final class MainFrame extends JFrame {
         });
         mnTrack.add(mntmRemoveTrack);
 
-        final JMenu mnHelp = new JMenu("Help");
+        final JMenu mnHelp = new JMenu(resourceBundle.getString("ui.mainframe.menu.help"));
         menuBar.add(mnHelp);
 
-        final JMenuItem mntmAbout = new JMenuItem("About");
+        final JMenuItem mntmAbout = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.about"));
         mntmAbout.addActionListener(e -> {
             final AboutDialog aboutDialog = new AboutDialog();
             aboutDialog.setLocationRelativeTo(MainFrame.this);
@@ -224,7 +227,7 @@ public final class MainFrame extends JFrame {
         });
         mnHelp.add(mntmAbout);
 
-        final JMenuItem mntmUsage = new JMenuItem("Usage");
+        final JMenuItem mntmUsage = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.usage"));
         mntmUsage.addActionListener(e -> {
             final UsageDialog usageDialog = new UsageDialog();
             usageDialog.setLocationRelativeTo(MainFrame.this);
@@ -232,30 +235,30 @@ public final class MainFrame extends JFrame {
         });
         mnHelp.add(mntmUsage);
 
-        final JMenuItem mntmFAQ = new JMenuItem("FAQ");
+        final JMenuItem mntmFAQ = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.faq"));
         mntmFAQ.addActionListener(e -> {
-            final String url = "https://gpx-animator.app/#faq";
+            final String url = "https://gpx-animator.app/#faq"; //NON-NLS
             try {
                 final String os = System.getProperty("os.name").toLowerCase(Locale.getDefault());
                 final Runtime rt = Runtime.getRuntime();
 
                 if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                     Desktop.getDesktop().browse(new URI(url));
-                } else if (os.contains("win")) {
+                } else if (os.contains("win")) { //NON-NLS
 
                     // this doesn't support showing urls in the form of "page.html#nameLink"
-                    rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+                    rt.exec("rundll32 url.dll,FileProtocolHandler ".concat(url)); //NON-NLS
 
-                } else if (os.contains("mac")) {
+                } else if (os.contains("mac")) { //NON-NLS
 
-                    rt.exec("open " + url);
+                    rt.exec("open ".concat(url)); //NON-NLS
 
-                } else if (os.contains("nix") || os.contains("nux")) {
+                } else if (os.contains("nix") || os.contains("nux")) { //NON-NLS
 
                     // Do a best guess on unix until we get a platform independent way
                     // Build a list of browsers to try, in this order.
-                    final String[] browsers = {"chrome", "firefox", "mozilla", "konqueror",
-                            "epiphany", "netscape", "opera", "links", "lynx"};
+                    final String[] browsers = {"chrome", "firefox", "mozilla", "konqueror", //NON-NLS
+                            "epiphany", "netscape", "opera", "links", "lynx"}; //NON-NLS
 
                     // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
                     final StringBuilder cmd = new StringBuilder();
@@ -267,15 +270,15 @@ public final class MainFrame extends JFrame {
             } catch (final IOException | URISyntaxException ex) {
                 JOptionPane.showMessageDialog(
                         null,
-                        "I was not able to start a web browser for the FAQ:\n" + url,
-                        "Sorry",
+                        String.format(resourceBundle.getString("ui.mainframe.faq.open.errormessage"), url),
+                        resourceBundle.getString("ui.mainframe.faq.open.errortitle"),
                         JOptionPane.WARNING_MESSAGE
                 );
             }
         });
         mnHelp.add(mntmFAQ);
 
-        final JMenuItem changelogMenu = new JMenuItem("Changelog");
+        final JMenuItem changelogMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.changelog"));
         changelogMenu.addActionListener(e -> SwingUtilities.invokeLater(this::showChangelog));
         mnHelp.add(changelogMenu);
 
@@ -300,7 +303,7 @@ public final class MainFrame extends JFrame {
         tabbedPane.addChangeListener(e -> mntmRemoveTrack.setEnabled(tabbedPane.getSelectedIndex() > 0));
 
         final JScrollPane generalScrollPane = new JScrollPane();
-        tabbedPane.addTab("General", generalScrollPane);
+        tabbedPane.addTab(resourceBundle.getString("ui.mainframe.tab.general"), generalScrollPane);
 
         generalSettingsPanel = new GeneralSettingsPanel() {
             private static final long serialVersionUID = 9088070803139334820L;
@@ -336,33 +339,20 @@ public final class MainFrame extends JFrame {
         gbcProgressBar.gridy = 0;
         panel.add(progressBar, gbcProgressBar);
 
-        final JButton addTrackButton = new JButton("Add Track");
+        final JButton addTrackButton = new JButton(resourceBundle.getString("ui.mainframe.button.addtrack"));
         final GridBagConstraints gbcAddTrackButton = new GridBagConstraints();
-        gbcAddTrackButton.anchor = GridBagConstraints.NORTHWEST;
+        gbcAddTrackButton.anchor = GridBagConstraints.FIRST_LINE_START;
         gbcAddTrackButton.insets = new Insets(0, 0, 0, 5);
         gbcAddTrackButton.gridx = 1;
         gbcAddTrackButton.gridy = 0;
         panel.add(addTrackButton, gbcAddTrackButton);
         addTrackButton.addActionListener(addTrackActionListener);
 
-// final JButton btnComputeBbox = new JButton("Compute BBox");
-// final GridBagConstraints gbc_btnComputeBbox = new GridBagConstraints();
-// gbc_btnComputeBbox.anchor = GridBagConstraints.NORTHWEST;
-// gbc_btnComputeBbox.insets = new Insets(0, 0, 0, 5);
-// gbc_btnComputeBbox.gridx = 2;
-// gbc_btnComputeBbox.gridy = 0;
-// panel.add(btnComputeBbox, gbc_btnComputeBbox);
-// btnComputeBbox.addActionListener(new ActionListener() {
-//     @Override
-//     public void actionPerformed(final ActionEvent e) {
-//         // TODO Auto-generated method stub
-//     }
-// });
-
-        renderButton = new JButton("Render");
+        //noinspection DuplicateStringLiteralInspection
+        renderButton = new JButton(resourceBundle.getString("ui.mainframe.button.render"));
         renderButton.setEnabled(false);
         final GridBagConstraints gbcRenderButton = new GridBagConstraints();
-        gbcRenderButton.anchor = GridBagConstraints.NORTHWEST;
+        gbcRenderButton.anchor = GridBagConstraints.FIRST_LINE_START;
         gbcRenderButton.gridx = 3;
         gbcRenderButton.gridy = 0;
         panel.add(renderButton, gbcRenderButton);
@@ -375,9 +365,9 @@ public final class MainFrame extends JFrame {
             final Configuration cfg = createConfiguration(true, true);
             if (cfg.getOutput().exists()) {
                 final String message = String.format(
-                        "A file with the name \"%s\" already exists.%nDo you really want to overwrite this file?", cfg.getOutput());
+                        resourceBundle.getString("ui.mainframe.dialog.message.overwrite"), cfg.getOutput());
                 final int result = JOptionPane.showConfirmDialog(MainFrame.this,
-                        message, WARNING_TITLE, JOptionPane.YES_NO_OPTION);
+                        message, warningTitle, JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.NO_OPTION) {
                     return;
                 }
@@ -391,7 +381,7 @@ public final class MainFrame extends JFrame {
                         public void setProgress1(final int pct, final String message) {
                             LOGGER.info("[{}%] {}", pct, message);
                             setProgress(pct);
-                            publish(message + " (" + pct + "%)");
+                            publish(String.format("%s (%d%%)", message, pct)); //NON-NLS
                         }
 
                         @Override
@@ -414,34 +404,40 @@ public final class MainFrame extends JFrame {
                 protected void done() {
                     swingWorker = null; // NOPMD -- dereference the SwingWorker to make it available for garbage collection
                     progressBar.setVisible(false);
-                    renderButton.setText("Render");
+                    //noinspection DuplicateStringLiteralInspection
+                    renderButton.setText(resourceBundle.getString("ui.mainframe.button.render"));
 
                     try {
                         get();
                         JOptionPane.showMessageDialog(MainFrame.this,
-                                "Rendering has finished successfully.", "Finished", JOptionPane.INFORMATION_MESSAGE);
+                                resourceBundle.getString("ui.mainframe.dialog.finished.message"),
+                                resourceBundle.getString("ui.mainframe.dialog.finished.title"), JOptionPane.INFORMATION_MESSAGE);
                     } catch (final InterruptedException e) {
                         JOptionPane.showMessageDialog(MainFrame.this,
-                                "Rendering has been interrupted.", "Interrupted", JOptionPane.ERROR_MESSAGE);
+                                resourceBundle.getString("ui.mainframe.dialog.interrupted.message"),
+                                resourceBundle.getString("ui.mainframe.dialog.interrupted.title"), JOptionPane.ERROR_MESSAGE);
                     } catch (final ExecutionException e) {
                         e.printStackTrace();
                         JOptionPane.showMessageDialog(MainFrame.this,
-                                "Error while rendering:\n" + e.getCause().getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+                                String.format(resourceBundle.getString("ui.mainframe.dialog.rendering.error.message"), e.getCause().getMessage()),
+                                errorTitle, JOptionPane.ERROR_MESSAGE);
                     } catch (final CancellationException e) {
                         JOptionPane.showMessageDialog(MainFrame.this,
-                                "Rendering has been cancelled.", "Cancelled", JOptionPane.WARNING_MESSAGE);
+                                resourceBundle.getString("ui.mainframe.dialog.cancelled.message"),
+                                resourceBundle.getString("ui.mainframe.dialog.cancelled.title"), JOptionPane.WARNING_MESSAGE);
                     }
                 }
             };
 
             swingWorker.addPropertyChangeListener(evt -> {
-                if ("progress".equals(evt.getPropertyName())) {
+                final String propertyName = evt.getPropertyName();
+                if (propertyName != null && Collator.getInstance().compare("progress", propertyName) == 0) { //NON-NLS
                     progressBar.setValue((Integer) evt.getNewValue());
                 }
             });
 
             progressBar.setVisible(true);
-            renderButton.setText("Cancel");
+            renderButton.setText(resourceBundle.getString("ui.mainframe.button.cancel"));
             swingWorker.execute();
         });
 
@@ -449,7 +445,7 @@ public final class MainFrame extends JFrame {
             @Override
             public void windowClosing(final WindowEvent e) {
                 if (!changed || JOptionPane.showConfirmDialog(MainFrame.this,
-                        "There are unsaved changes. Close anyway?", "Unsaved changes", JOptionPane.YES_NO_OPTION
+                        resourceBundle.getString("ui.mainframe.dialog.message.unsaved.exit"), warningTitle, JOptionPane.YES_NO_OPTION
                 ) == JOptionPane.YES_OPTION) {
                     System.exit(0); // NOPMD -- Exit on user request
                 }
@@ -465,9 +461,9 @@ public final class MainFrame extends JFrame {
     }
 
     @SuppressWarnings("PMD.DoNotCallSystemExit") // Exit the application on user request
-    @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request")
+    @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request") //NON-NLS
     private void exitApplication(final ActionEvent e) {
-        if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, UNSAVED_MSG, WARNING_TITLE,
+        if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
@@ -525,7 +521,9 @@ public final class MainFrame extends JFrame {
             setChanged(false);
         } catch (final JAXBException e1) {
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(MainFrame.this, "Error opening configuration: " + e1.getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(MainFrame.this,
+                    String.format(resourceBundle.getString("ui.mainframe.dialog.message.openconfig.error"), e1.getMessage()),
+                    errorTitle, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -542,11 +540,12 @@ public final class MainFrame extends JFrame {
     }
 
     private void updateTitle() {
-        final String filename = file != null ? file.getName() : "[unnamed]";
-        setTitle(TITLE + " - " + filename + (changed ? " (*)" : ""));
+        final String filename = file != null ? file.getName() : resourceBundle.getString("ui.mainframe.filename.unnamed");
+        setTitle(Constants.APPNAME_VERSION.concat(" - ").concat(filename).concat(changed ? " (*)" : ""));
     }
 
     private void addTrackSettingsTab(final TrackConfiguration tc) {
+        final String trackTabTitle = resourceBundle.getString("ui.mainframe.tab.track");
         final JScrollPane trackScrollPane = new JScrollPane();
         final TrackSettingsPanel trackSettingsPanel = new TrackSettingsPanel() {
             private static final long serialVersionUID = 308660875202822183L;
@@ -564,11 +563,11 @@ public final class MainFrame extends JFrame {
 
             @Override
             protected void labelChanged(final String label) {
-                tabbedPane.setTitleAt(tabbedPane.indexOfComponent(trackScrollPane), label == null || label.isEmpty() ? "Track" : label);
+                tabbedPane.setTitleAt(tabbedPane.indexOfComponent(trackScrollPane), label == null || label.isEmpty() ? trackTabTitle : label);
             }
         };
 
-        tabbedPane.addTab("Track", trackScrollPane);
+        tabbedPane.addTab(trackTabTitle, trackScrollPane);
         trackScrollPane.setViewportView(trackSettingsPanel);
         tabbedPane.setSelectedComponent(trackScrollPane);
         trackSettingsPanel.setConfiguration(tc);
@@ -615,7 +614,9 @@ public final class MainFrame extends JFrame {
             }
         } catch (final UserException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving configuration: " + e.getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    String.format(resourceBundle.getString("ui.mainframe.dialog.message.saveconfig.error"), e.getMessage()),
+                    errorTitle, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -631,7 +632,9 @@ public final class MainFrame extends JFrame {
             }
         } catch (final UserException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving default configuration: " + e.getMessage(), ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    String.format(resourceBundle.getString("ui.mainframe.dialog.message.savedefault.error"), e.getMessage()),
+                    errorTitle, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -651,8 +654,9 @@ public final class MainFrame extends JFrame {
             setConfiguration((Configuration) unmarshaller.unmarshal(defaultConfigFile));
         } catch (final JAXBException e1) {
             e1.printStackTrace();
-            JOptionPane.showMessageDialog(MainFrame.this, "Error loading default configuration: " + e1.getMessage(),
-                    ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(MainFrame.this,
+                    String.format(resourceBundle.getString("ui.mainframe.dialog.message.loaddefault.error"), e1.getMessage()),
+                    errorTitle, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -661,8 +665,9 @@ public final class MainFrame extends JFrame {
             if (defaultConfigFile.delete()) {
                 loadDefaults();
             } else {
-                JOptionPane.showMessageDialog(MainFrame.this, "Can't reset default configuration!",
-                        ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(MainFrame.this,
+                        resourceBundle.getString("ui.mainframe.dialog.message.resetdefault.error"),
+                        errorTitle, JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -672,7 +677,7 @@ public final class MainFrame extends JFrame {
     }
 
     private void showChangelogOnce() {
-        if (!Preferences.getChangelogVersion().equals(Constants.VERSION)) {
+        if (Collator.getInstance().compare(Preferences.getChangelogVersion(), Constants.VERSION) != 0) {
             showChangelog();
             Preferences.setChangelogVersion(Constants.VERSION);
         }
