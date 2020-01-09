@@ -107,8 +107,8 @@ public final class CommandLineConfigurationFactory {
                         case HELP:
                             //noinspection UseOfSystemOutOrSystemErr // okay for command line output
                             try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
-                                pw.println(String.format("%s %s", Constants.APPNAME, Constants.VERSION)); //NON-NLS
-                                pw.println(String.format("Copyright © %s Martin Ždila, Freemap Slovakia", Constants.YEAR)); //NON-NLS
+                                pw.println(Constants.APPNAME_VERSION);
+                                pw.println(Constants.COPYRIGHT);
                                 pw.println();
                                 pw.println(resourceBundle.getString("cli.help.usage"));
                                 Help.printHelp(new Help.PrintWriterOptionHelpWriter(pw));

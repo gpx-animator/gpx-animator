@@ -36,11 +36,7 @@ public class ChangelogDialog extends JDialog {
 
     public ChangelogDialog(final JFrame owner) {
         super(owner, true);
-
-        @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"})
-        final String title = String.format(resourceBundle.getString("ui.dialog.changelog.title"),
-                Constants.APPNAME + " v" + Constants.VERSION);
-        setTitle(title);
+        setTitle(String.format(resourceBundle.getString("ui.dialog.changelog.title"), Constants.APPNAME_VERSION));
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setContentPane(buildContent());
         pack();
