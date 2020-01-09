@@ -17,13 +17,14 @@ package sk.freemap.gpxAnimator;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class Map {
 
     private Map() throws InstantiationException {
-        throw new InstantiationException("Utility classes can't be instantiated!");
+        throw new InstantiationException("Map is a utility class and can't be instantiated!");
     }
 
     @SuppressWarnings({"RegExpAnonymousGroup", "RegExpRedundantEscape"})
@@ -35,6 +36,8 @@ public final class Map {
     public static void drawMap(final BufferedImage bi, final String tmsUrlTemplate, final float backgroundMapVisibility, final int zoom,
                                final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc)
             throws UserException {
+
+        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
         final Graphics2D ga = (Graphics2D) bi.getGraphics();
 
@@ -67,9 +70,9 @@ public final class Map {
                 i++;
 
                 String url = tmsUrlTemplate
-                        .replace("{zoom}", Integer.toString(zoom))
-                        .replace("{x}", Integer.toString(x))
-                        .replace("{y}", Integer.toString(y));
+                        .replace("{zoom}", Integer.toString(zoom)) //NON-NLS
+                        .replace("{x}", Integer.toString(x)) //NON-NLS
+                        .replace("{y}", Integer.toString(y)); //NON-NLS
 
                 if (options != null) {
                     final StringBuffer sb = new StringBuffer();
@@ -81,7 +84,7 @@ public final class Map {
                     url = sb.toString();
                 }
 
-                rc.setProgress1((int) (100.0 * i / total), "Reading Map Tile: " + i + "/" + total);
+                rc.setProgress1((int) (100.0 * i / total), String.format(resourceBundle.getString("map.loadingtiles.progress"), i, total));
 
                 final BufferedImage tile = TileCache.getTile(url, tileCacheDir, tileCacheTimeLimit);
 
