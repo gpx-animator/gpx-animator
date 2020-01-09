@@ -55,9 +55,9 @@ public final class TrackIcon {
     }
 
     public String getFilename() {
-        return "/trackicons/"
+        return "/trackicons/" //NON-NLS
                 .concat(name.toLowerCase(Locale.getDefault()))
-                .concat(".png");
+                .concat(".png"); //NON-NLS
     }
 
 }
