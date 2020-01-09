@@ -140,17 +140,13 @@ public final class MainFrame extends JFrame {
         mntmOpen.addActionListener(e -> {
             if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-
-                final String lastCwd = Preferences.getLastWorkingDir();
-                fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
+                fileChooser.setCurrentDirectory(new File(Preferences.getLastWorkingDir()));
                 if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
                     final File fileToOpen = fileChooser.getSelectedFile();
                     Preferences.setLastWorkingDir(fileToOpen.getParent());
-
                     openFile(fileToOpen);
                 }
             }
-
         });
         mnFile.add(mntmOpen);
 

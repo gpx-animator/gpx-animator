@@ -87,11 +87,9 @@ public abstract class FileSelector extends JPanel {
 
             fileChooser.setFileSelectionMode(fileSelectionMode);
 
-            final String lastCwd = Preferences.getLastWorkingDir();
-
             final String text = fileTextField.getText();
             if (text.isEmpty()) {
-                fileChooser.setCurrentDirectory(new File(lastCwd == null ? System.getProperty("user.dir") : lastCwd));
+                fileChooser.setCurrentDirectory(new File(Preferences.getLastWorkingDir()));
                 fileChooser.setSelectedFile(new File(""));
             } else {
                 final File file = new File(text);
