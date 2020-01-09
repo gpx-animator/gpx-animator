@@ -875,9 +875,9 @@ abstract class GeneralSettingsPanel extends JPanel {
         photoTimeSpinner.setValue(c.getPhotoTime());
 
         final String tmsUrlTemplate = c.getTmsUrlTemplate();
-        if (tmsUrlTemplate != null && !tmsUrlTemplate.isBlank()) {
-            found:
-            {
+        found:
+        {
+            if (tmsUrlTemplate != null) {
                 final Collator collator = Collator.getInstance();
                 for (final MapTemplate mapTemplate : mapTemplateList) {
                     if (collator.compare(mapTemplate.getUrl(), tmsUrlTemplate) == 0) {
@@ -885,8 +885,8 @@ abstract class GeneralSettingsPanel extends JPanel {
                         break found;
                     }
                 }
-                tmsUrlTemplateComboBox.setSelectedItem(tmsUrlTemplate);
             }
+            tmsUrlTemplateComboBox.setSelectedItem(tmsUrlTemplate);
         }
 
         attributionTextArea.setText(c.getAttribution());
