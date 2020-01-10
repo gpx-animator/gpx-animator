@@ -15,16 +15,51 @@
 package sk.freemap.gpxAnimator;
 
 import com.drew.lang.annotations.NotNull;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import java.util.Locale;
+import java.text.Collator;
 import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.Vector;
 
 public final class TrackIcon {
+
+    private static Vector<TrackIcon> trackIcons = null;
+
+    private static String[] keys = {"airplane", "bicycle", "bus", "car", "jogging", "riding", "sailing", "ship", "train", "tramway", //NON-NLS
+            "trekking"}; //NON-NLS
+
+    @SuppressFBWarnings(value = "DC_DOUBLECHECK", justification = "Before and after synchronization") //NON-NLS
+    public static Vector<TrackIcon> getAllTrackIcons() {
+        if (trackIcons == null) {
+            synchronized (TrackIcon.class) {
+                if (trackIcons == null) {
+                    final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+                    trackIcons = new Vector<>();
+                    for (final String key : keys) {
+                        trackIcons.add(new TrackIcon(key, resourceBundle.getString("trackicon.icon.".concat(key)))); //NON-NLS
+                    }
+                    final Collator collator = Collator.getInstance();
+                    trackIcons.sort((a, b) -> collator.compare(a.name, b.name));
+                    trackIcons.add(0, new TrackIcon("", ""));
+                }
+            }
+        }
+        return trackIcons;
+    }
+
+    @NotNull
+    private final String key;
 
     @NotNull
     private final String name;
 
-    public TrackIcon(@NotNull final String name) {
+    public TrackIcon(@NotNull final String key) {
+        this(key, Preferences.getResourceBundle().getString("trackicon.icon.".concat(key))); //NON-NLS
+    }
+
+    public TrackIcon(@NotNull final String key, @NotNull final String name) {
+        this.key = key;
         this.name = name;
     }
 
@@ -42,12 +77,16 @@ public final class TrackIcon {
             return false;
         }
         TrackIcon trackIcon = (TrackIcon) o;
-        return Objects.equals(name, trackIcon.name);
+        return Objects.equals(key, trackIcon.key);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(key);
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public String getName() {
@@ -55,9 +94,7 @@ public final class TrackIcon {
     }
 
     public String getFilename() {
-        return "/trackicons/" //NON-NLS
-                .concat(name.toLowerCase(Locale.getDefault()))
-                .concat(".png"); //NON-NLS
+        return String.format("/trackicons/%s.png", key); //NON-NLS
     }
 
 }

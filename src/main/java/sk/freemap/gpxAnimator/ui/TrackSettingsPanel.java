@@ -255,21 +255,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcTrimGpxEndSpinner.gridy = 7;
         add(trimGpxEndSpinner, gbcTrimGpxEndSpinner);
 
-        final Vector<TrackIcon> trackIcons = new Vector<>();
-        trackIcons.add(new TrackIcon(""));
-        trackIcons.add(new TrackIcon("Airplane"));
-        trackIcons.add(new TrackIcon("Bicycle"));
-        trackIcons.add(new TrackIcon("Bus"));
-        trackIcons.add(new TrackIcon("Car"));
-        trackIcons.add(new TrackIcon("Jogging"));
-        trackIcons.add(new TrackIcon("Riding"));
-        trackIcons.add(new TrackIcon("Sailing"));
-        trackIcons.add(new TrackIcon("Ship"));
-        trackIcons.add(new TrackIcon("Train"));
-        trackIcons.add(new TrackIcon("Tramway"));
-        trackIcons.add(new TrackIcon("Trekking"));
-
-        trackIconComboBox = new JComboBox<>(trackIcons);
+        trackIconComboBox = new JComboBox<>(TrackIcon.getAllTrackIcons());
         trackIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
         trackIconComboBox.setEditable(false);
         final GridBagConstraints gbcTrackIconComboBox = new GridBagConstraints();

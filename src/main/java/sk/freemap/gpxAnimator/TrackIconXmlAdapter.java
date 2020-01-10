@@ -25,7 +25,7 @@ public final class TrackIconXmlAdapter extends XmlAdapter<String, TrackIcon> {
 
     @Override
     public String marshal(final TrackIcon trackIcon) {
-        return trackIcon.getName();
+        return trackIcon.getKey();
     }
 
 }

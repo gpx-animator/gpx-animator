@@ -607,7 +607,7 @@ public final class Renderer {
                     g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 
                     final TrackIcon trackIcon = trackConfiguration.getTrackIcon();
-                    if (trackIcon == null || trackIcon.getName().isEmpty()) {
+                    if (trackIcon == null || trackIcon.getKey().isEmpty()) {
                         drawSimpleCircleOnGraphics2D(point, g2);
                     } else {
                         try {
