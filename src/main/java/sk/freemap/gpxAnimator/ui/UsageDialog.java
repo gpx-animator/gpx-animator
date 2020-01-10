@@ -15,6 +15,7 @@
 package sk.freemap.gpxAnimator.ui;
 
 import sk.freemap.gpxAnimator.Help;
+import sk.freemap.gpxAnimator.Preferences;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -28,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ResourceBundle;
 
 public class UsageDialog extends JDialog {
 
@@ -37,13 +39,15 @@ public class UsageDialog extends JDialog {
      * Create the dialog.
      */
     public UsageDialog() {
-        setTitle("Usage");
+        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+
+        setTitle(resourceBundle.getString("ui.dialog.usage.title"));
         setBounds(100, 100, 657, 535);
         getContentPane().setLayout(new BorderLayout());
         final JPanel contentPanel = new JPanel();
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.LINE_AXIS));
 
         final JEditorPane dtrpngpxNavigator = new JEditorPane();
         dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -52,32 +56,32 @@ public class UsageDialog extends JDialog {
 
         final StringWriter sw = new StringWriter();
         final PrintWriter pw = new PrintWriter(sw);
-        pw.println("<dl>");
+        pw.println("<dl>"); //NON-NLS
         Help.printHelp((option, argument, track, defaultValue) -> {
             // TODO html escape
-            pw.print("<dt><b>--");
+            pw.print("<dt><b>--"); //NON-NLS
             pw.print(option.getName());
             if (argument != null) {
-                pw.print(" &lt;");
+                pw.print(" &lt;"); //NON-NLS
                 pw.print(argument);
-                pw.print("&gt;");
+                pw.print("&gt;"); //NON-NLS
             }
-            pw.println("</b></dt>");
-            pw.print("<dd>");
+            pw.println("</b></dt>"); //NON-NLS
+            pw.print("<dd>"); //NON-NLS
             pw.print(option.getHelp());
             if (track) {
-                pw.print("; can be specified multiple times if multiple tracks are provided");
+                pw.print("; ".concat(resourceBundle.getString("ui.dialog.usage.multiple")));
             }
             if (defaultValue != null) {
-                pw.print("; default ");
+                pw.print("; ".concat(resourceBundle.getString("ui.dialog.usage.default")).concat(" "));
                 pw.print(defaultValue);
             }
-            pw.println("</dd>");
+            pw.println("</dd>"); //NON-NLS
         });
-        pw.println("</dl>");
+        pw.println("</dl>"); //NON-NLS
         pw.close();
 
-        dtrpngpxNavigator.setText("Commandline parameters:" + sw.toString());
+        dtrpngpxNavigator.setText(resourceBundle.getString("ui.dialog.usage.cliparams").concat(sw.toString()));
 
         dtrpngpxNavigator.setCaretPosition(0);
 
@@ -86,11 +90,10 @@ public class UsageDialog extends JDialog {
 
         final JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
-        getContentPane().add(buttonPane, BorderLayout.SOUTH);
+        getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
-        final JButton okButton = new JButton("OK");
+        final JButton okButton = new JButton(resourceBundle.getString("ui.dialog.usage.button.ok"));
         okButton.addActionListener(e -> UsageDialog.this.dispose());
-        okButton.setActionCommand("OK");
         buttonPane.add(okButton);
         getRootPane().setDefaultButton(okButton);
     }
