@@ -24,10 +24,10 @@ import java.util.Vector;
 
 public final class TrackIcon {
 
-    private static Vector<TrackIcon> trackIcons = null;
-
-    private static String[] keys = {"airplane", "bicycle", "bus", "car", "jogging", "riding", "sailing", "ship", "train", "tramway", //NON-NLS
+    private static final String[] KEYS = {"airplane", "bicycle", "bus", "car", "jogging", "riding", "sailing", "ship", "train", "tramway", //NON-NLS
             "trekking"}; //NON-NLS
+
+    private static Vector<TrackIcon> trackIcons = null;
 
     @SuppressFBWarnings(value = "DC_DOUBLECHECK", justification = "Before and after synchronization") //NON-NLS
     public static Vector<TrackIcon> getAllTrackIcons() {
@@ -36,7 +36,7 @@ public final class TrackIcon {
                 if (trackIcons == null) {
                     final ResourceBundle resourceBundle = Preferences.getResourceBundle();
                     trackIcons = new Vector<>();
-                    for (final String key : keys) {
+                    for (final String key : KEYS) {
                         trackIcons.add(new TrackIcon(key, resourceBundle.getString("trackicon.icon.".concat(key)))); //NON-NLS
                     }
                     final Collator collator = Collator.getInstance();
