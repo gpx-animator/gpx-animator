@@ -37,7 +37,6 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.Collator;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,6 +47,8 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+
+import static sk.freemap.gpxAnimator.Utils.isEqual;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class Renderer {
@@ -187,8 +188,7 @@ public final class Renderer {
         //noinspection MagicCharacter
         final int dot = frameFilePattern.lastIndexOf('.');
         final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1).toLowerCase(Locale.getDefault());
-        final Collator collator = Collator.getInstance();
-        final boolean toImages = ext != null && (collator.compare("png", ext) == 0 || collator.compare("jpg", ext) == 0); //NON-NLS
+        final boolean toImages = ext != null && (isEqual("png", ext) || isEqual("jpg", ext)); //NON-NLS
 
         final int realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
         final int realHeight = calculateRealHeight(scale, toImages);

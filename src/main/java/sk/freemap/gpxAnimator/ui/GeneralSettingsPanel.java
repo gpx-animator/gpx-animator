@@ -41,7 +41,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -50,6 +49,7 @@ import java.util.ResourceBundle;
 
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 import static javax.swing.JFileChooser.FILES_ONLY;
+import static sk.freemap.gpxAnimator.Utils.isEqual;
 
 abstract class GeneralSettingsPanel extends JPanel {
 
@@ -138,7 +138,7 @@ abstract class GeneralSettingsPanel extends JPanel {
             protected String transformFilename(final String filename) {
                 if ((filename.toLowerCase(Locale.getDefault()).endsWith(".png") //NON-NLS
                         || filename.toLowerCase(Locale.getDefault()).endsWith(".jpg")) //NON-NLS
-                        && Collator.getInstance().compare(String.format(filename, 100), String.format(filename, 200)) == 0) {
+                        && isEqual(String.format(filename, 100), String.format(filename, 200))) {
                     final int n = filename.lastIndexOf('.');
                     return String.format("%s%%08d%s", filename.substring(0, n), filename.substring(n)); //NON-NLS
                 } else {
@@ -878,9 +878,8 @@ abstract class GeneralSettingsPanel extends JPanel {
         found:
         {
             if (tmsUrlTemplate != null) {
-                final Collator collator = Collator.getInstance();
                 for (final MapTemplate mapTemplate : mapTemplateList) {
-                    if (collator.compare(mapTemplate.getUrl(), tmsUrlTemplate) == 0) {
+                    if (isEqual(mapTemplate.getUrl(), tmsUrlTemplate)) {
                         tmsUrlTemplateComboBox.setSelectedItem(mapTemplate);
                         break found;
                     }

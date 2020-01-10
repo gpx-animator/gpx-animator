@@ -14,21 +14,40 @@
  */
 package sk.freemap.gpxAnimator;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.text.Collator;
 
-final class Utils {
+public final class Utils {
+
+    private static final Collator COLLATOR = Collator.getInstance();
 
     private Utils() throws InstantiationException {
         throw new InstantiationException("Utility classes can't be instantiated!");
     }
 
-    static BufferedImage deepCopy(final BufferedImage bi) {
+    public static BufferedImage deepCopy(final BufferedImage bi) {
         final ColorModel cm = bi.getColorModel();
         final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         final WritableRaster raster = bi.copyData(null);
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    }
+
+    @SuppressWarnings({"PMD.CompareObjectsWithEquals", "StringEquality"})
+    @SuppressFBWarnings("ES_COMPARING_PARAMETER_STRING_WITH_EQ") //NON-NLS
+    public static boolean isEqual(final String source, final String target) {
+        if (source == target) {
+            return true;
+        }
+
+        if (source == null || target == null) {
+            return false;
+        }
+
+        return COLLATOR.compare(source, target) == 0;
     }
 
 }

@@ -23,8 +23,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.Collator;
 import java.util.ResourceBundle;
+
+import static sk.freemap.gpxAnimator.Utils.isEqual;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class FileFrameWriter implements FrameWriter {
@@ -39,7 +40,7 @@ public final class FileFrameWriter implements FrameWriter {
     private int frame;
 
     public FileFrameWriter(final String frameFilePattern, final String imageType, final double fps) throws UserException {
-        if (Collator.getInstance().compare(String.format(frameFilePattern, 100), String.format(frameFilePattern, 200)) != 0) {
+        if (!isEqual(String.format(frameFilePattern, 100), String.format(frameFilePattern, 200))) {
             throw new UserException(resourceBundle.getString("framewriter.error.outputpattern"));
         }
 

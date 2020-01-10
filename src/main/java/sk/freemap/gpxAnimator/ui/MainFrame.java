@@ -54,6 +54,8 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
+import static sk.freemap.gpxAnimator.Utils.isEqual;
+
 public final class MainFrame extends JFrame {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainFrame.class);
@@ -427,7 +429,7 @@ public final class MainFrame extends JFrame {
 
             swingWorker.addPropertyChangeListener(evt -> {
                 final String propertyName = evt.getPropertyName();
-                if (propertyName != null && Collator.getInstance().compare("progress", propertyName) == 0) { //NON-NLS
+                if (isEqual("progress", propertyName)) { //NON-NLS
                     progressBar.setValue((Integer) evt.getNewValue());
                 }
             });

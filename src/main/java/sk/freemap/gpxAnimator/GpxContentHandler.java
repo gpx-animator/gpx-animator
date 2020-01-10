@@ -21,6 +21,8 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static sk.freemap.gpxAnimator.Utils.isEqual;
+
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 final class GpxContentHandler extends DefaultHandler {
 
@@ -44,12 +46,12 @@ final class GpxContentHandler extends DefaultHandler {
 
     @Override
     public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) {
-        if (ELEM_TRKSEG.equals(qName)) {
+        if (isEqual(ELEM_TRKSEG, qName)) {
             timePointList = new ArrayList<>();
-        } else if (ELEM_TRKPT.equals(qName) || ELEM_WPT.equals(qName)) {
+        } else if (isEqual(ELEM_TRKPT, qName) || isEqual(ELEM_WPT, qName)) {
             lat = Double.parseDouble(attributes.getValue(ATTR_LAT));
             lon = Double.parseDouble(attributes.getValue(ATTR_LON));
-        } else if (ELEM_TIME.equals(qName) || ELEM_NAME.equals(qName)) {
+        } else if (isEqual(ELEM_TIME, qName) || isEqual(ELEM_NAME, qName)) {
             sb = new StringBuilder();
         }
     }
@@ -66,19 +68,19 @@ final class GpxContentHandler extends DefaultHandler {
     @Override
     @SuppressWarnings("PMD.NullAssignment") // XML parsing ending elements, it's okay here
     public void endElement(final String uri, final String localName, final String qName) {
-        if (ELEM_TRKSEG.equals(qName)) {
+        if (isEqual(ELEM_TRKSEG, qName)) {
             timePointListList.add(timePointList);
             timePointList = null;
-        } else if (ELEM_TRKPT.equals(qName)) {
+        } else if (isEqual(ELEM_TRKPT, qName)) {
             timePointList.add(new LatLon(lat, lon, time));
             time = Long.MIN_VALUE;
-        } else if (ELEM_WPT.equals(qName)) {
+        } else if (isEqual(ELEM_WPT, qName)) {
             waypointList.add(new Waypoint(lat, lon, time, name));
-        } else if (ELEM_TIME.equals(qName)) {
+        } else if (isEqual(ELEM_TIME, qName)) {
             final ZonedDateTime dateTime = ZonedDateTime.parse(sb.toString());
             time = dateTime.toInstant().toEpochMilli();
             sb = null;
-        } else if (ELEM_NAME.equals(qName)) {
+        } else if (isEqual(ELEM_NAME, qName)) {
             name = sb.toString();
             sb = null;
         }
