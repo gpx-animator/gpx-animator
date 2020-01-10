@@ -37,13 +37,16 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.Collator;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
@@ -52,6 +55,8 @@ public final class Renderer {
     private static final Logger LOGGER = LoggerFactory.getLogger(Renderer.class);
 
     private static final double MS = 1000d;
+
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final java.util.Map<Integer, Long> speedValues = new HashMap<>();
 
@@ -179,13 +184,15 @@ public final class Renderer {
         translateCoordinatesToZeroZero(scale, wpMap);
 
         final String frameFilePattern = cfg.getOutput().toString();
+        //noinspection MagicCharacter
         final int dot = frameFilePattern.lastIndexOf('.');
-        final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1);
-        final boolean toImages = "png".equalsIgnoreCase(ext) || "jpg".equalsIgnoreCase(ext);
+        final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1).toLowerCase(Locale.getDefault());
+        final Collator collator = Collator.getInstance();
+        final boolean toImages = ext != null && (collator.compare("png", ext) == 0 || collator.compare("jpg", ext) == 0); //NON-NLS
 
         final int realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
         final int realHeight = calculateRealHeight(scale, toImages);
-        LOGGER.info("{}x{};{}", realWidth, realHeight, scale);
+        LOGGER.info("{}x{};{}", realWidth, realHeight, scale); //NON-NLS
 
         final FrameWriter frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
@@ -218,13 +225,14 @@ public final class Renderer {
                         break skip;
                     }
                 }
-                rc.setProgress1((int) (100.0 * frame / frames), "Skipping unused Frame: " + frame + "/" + (frames - 1));
+                rc.setProgress1((int) (100.0 * frame / frames),
+                        String.format(resourceBundle.getString("renderer.progress.unusedframes"), frame, (frames - 1)));
                 skip = 1f;
                 continue;
             }
 
             final int pct = (int) (100.0 * frame / frames);
-            rc.setProgress1(pct, "Rendering Frame: " + frame + "/" + (frames - 1));
+            rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.frame"), frame, (frames - 1)));
 
             paint(bi, frame, 0, null);
             final BufferedImage bi2 = Utils.deepCopy(bi);
@@ -244,7 +252,7 @@ public final class Renderer {
 
         keepLastFrame(rc, frameWriter, bi, frames);
         frameWriter.close();
-        LOGGER.info("Done.");
+        LOGGER.info(resourceBundle.getString("renderer.progress.done"));
     }
 
     private float renderFlashback(final float skip, final BufferedImage bi2) {
@@ -277,7 +285,7 @@ public final class Renderer {
             try {
                 image = ImageIO.read(logo);
             } catch (final IOException e) {
-                throw new UserException("Can't read logo: " + e.getMessage());
+                throw new UserException("Can't read logo: ".concat(e.getMessage()));
             }
             final Graphics2D g2 = getGraphics(bi);
             g2.drawImage(image, cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
@@ -375,7 +383,7 @@ public final class Renderer {
             } else {
                 zoom = (int) Math.floor(Math.log(Math.PI / 128.0 * (width - cfg.getMargin() * 2) / (maxX - minX)) / Math.log(2));
             }
-            rc.setProgress1(0, "computed zoom is " + zoom);
+            rc.setProgress1(0, String.format(resourceBundle.getString("renderer.progress.zoom"), zoom));
         } else {
             zoom = cfg.getZoom();
         }
@@ -417,7 +425,7 @@ public final class Renderer {
             final long stillFrames = ms / 1_000 * fps;
             for (long stillFrame = 0; stillFrame < stillFrames; stillFrame++) {
                 final int pct = (int) (100.0 * stillFrame / stillFrames);
-                rc.setProgress1(pct, "Rendering Keep Last Frame: " + stillFrame + "/" + stillFrames);
+                rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.keeplastframe"), stillFrame, stillFrames));
                 frameWriter.addFrame(bi);
                 if (rc.isCancelled1()) {
                     return;
@@ -548,7 +556,7 @@ public final class Renderer {
         if (point instanceof GpxPoint) {
             final GpxPoint gpxPoint = (GpxPoint) point;
             final long speed = calculateSpeedForDisplay(gpxPoint, frame);
-            return String.format("%d km/h", speed);
+            return String.format("%d km/h", speed); //NON-NLS
         } else {
             return "";
         }
@@ -559,7 +567,7 @@ public final class Renderer {
         if (point instanceof GpxPoint) {
             final GpxPoint gpxPoint = (GpxPoint) point;
             final LatLon latLon = gpxPoint.getLatLon();
-            return String.format("%.4f, %.4f", latLon.getLat(), latLon.getLon());
+            return String.format("%.4f, %.4f", latLon.getLat(), latLon.getLon()); //NON-NLS
         } else {
             return "";
         }
