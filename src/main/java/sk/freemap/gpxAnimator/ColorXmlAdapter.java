@@ -27,7 +27,7 @@ public final class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
     @Override
     public String marshal(final Color color) {
-        return "#" + Integer.toHexString(color.getRGB()).toUpperCase(Locale.getDefault());
+        return "#".concat(Integer.toHexString(color.getRGB()).toUpperCase(Locale.getDefault()));
     }
 
 }

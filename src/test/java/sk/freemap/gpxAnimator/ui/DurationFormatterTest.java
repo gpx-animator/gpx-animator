@@ -1,5 +1,6 @@
 package sk.freemap.gpxAnimator.ui;
 
+import org.jetbrains.annotations.NonNls;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DurationFormatterTest {
 
+    @NonNls
+    private static final String TEST_DATA_GENERATOR = "generateTestData";
+
+    @SuppressWarnings("unused") // used via reflection to generate test data
     private static Stream<Arguments> generateTestData() {
         return Stream.of(
             Arguments.of(Long.MIN_VALUE, "-106751991167d -7h -12m -55s -808ms"), //NON-NLS
@@ -23,7 +28,7 @@ class DurationFormatterTest {
     }
 
     @ParameterizedTest
-    @MethodSource("generateTestData") //NON-NLS
+    @MethodSource(TEST_DATA_GENERATOR) //NON-NLS
     void stringToValue(final Long timestamp, final String timeText) {
         final DurationFormatter testee = new DurationFormatter();
         try {
@@ -34,7 +39,7 @@ class DurationFormatterTest {
     }
 
     @ParameterizedTest
-    @MethodSource("generateTestData") //NON-NLS
+    @MethodSource(TEST_DATA_GENERATOR) //NON-NLS
     void valueToString(final Long timestamp, final String timeText) {
         final DurationFormatter testee = new DurationFormatter();
         assertEquals(timeText, testee.valueToString(timestamp));
