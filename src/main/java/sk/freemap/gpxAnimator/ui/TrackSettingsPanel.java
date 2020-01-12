@@ -289,7 +289,7 @@ abstract class TrackSettingsPanel extends JPanel {
         add(btnNewButton, gbcButtonNewButton);
 
         final PropertyChangeListener propertyChangeListener = evt -> configurationChanged();
-        inputGpxFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
+        inputGpxFileSelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
 
         labelTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override

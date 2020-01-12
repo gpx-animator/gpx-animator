@@ -14,6 +14,7 @@
  */
 package sk.freemap.gpxAnimator.ui;
 
+import org.jetbrains.annotations.NonNls;
 import sk.freemap.gpxAnimator.Preferences;
 
 import javax.swing.Box;
@@ -30,6 +31,10 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public abstract class FileSelector extends JPanel {
+
+    @NonNls
+    public static final String PROPERTY_FILENAME = "filename";
+
     private static final long serialVersionUID = 3157365691996396016L;
 
     private final transient JTextField fileTextField;
@@ -71,7 +76,7 @@ public abstract class FileSelector extends JPanel {
             }
 
             private void fire() {
-                firePropertyChange("filename", oldText, fileTextField.getText()); //NON-NLS
+                firePropertyChange(PROPERTY_FILENAME, oldText, fileTextField.getText()); //NON-NLS
                 oldText = fileTextField.getText();
             }
         });

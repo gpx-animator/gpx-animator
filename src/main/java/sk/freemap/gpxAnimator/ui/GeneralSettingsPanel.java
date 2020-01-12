@@ -156,7 +156,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(outputFileSelector, gbcOutputFileSelector);
 
         final PropertyChangeListener propertyChangeListener = evt -> configurationChanged();
-        outputFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
+        outputFileSelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
 
         final JLabel lblWidthHeight = new JLabel(resourceBundle.getString("ui.panel.generalsettings.widthheight.label"));
         final GridBagConstraints gbcLabelWidthHeight = new GridBagConstraints();
@@ -745,7 +745,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLogoFileSelector.gridy = 21;
         add(logoFileSelector, gbcLogoFileSelector);
 
-        logoFileSelector.addPropertyChangeListener("filename", propertyChangeListener);
+        logoFileSelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
 
         final JLabel lblPhotosDirectorySelector = new JLabel(resourceBundle.getString("ui.panel.generalsettings.photodirectory.label"));
         final GridBagConstraints gbcLabelPhotosDirectorySelector = new GridBagConstraints();
@@ -772,7 +772,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcPhotosDirectorySelector.gridy = 22;
         add(photosDirectorySelector, gbcPhotosDirectorySelector);
 
-        photosDirectorySelector.addPropertyChangeListener("filename", propertyChangeListener);
+        photosDirectorySelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
 
         final JLabel lblPhotoTime = new JLabel(resourceBundle.getString("ui.panel.generalsettings.phototime.label"));
         final GridBagConstraints gbcLabelPhotoTime = new GridBagConstraints();
