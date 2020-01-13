@@ -14,6 +14,8 @@
  */
 package sk.freemap.gpxAnimator.ui;
 
+import org.jetbrains.annotations.NonNls;
+import sk.freemap.gpxAnimator.Option;
 import sk.freemap.gpxAnimator.Preferences;
 
 import javax.swing.Box;
@@ -31,6 +33,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public final class ColorSelector extends JPanel {
+
+    @NonNls
+    public static final String PROPERTY_COLOR = Option.COLOR.getName();
 
     private static final long serialVersionUID = 6506364764640471311L;
 
@@ -80,7 +85,7 @@ public final class ColorSelector extends JPanel {
         final double l = color.getRed() / 255.0 * 0.299 + color.getGreen() / 255.0 * 0.587 + color.getBlue() / 255.0 * 0.114;
         colorTextField.setForeground(l > 0.5 ? Color.BLACK : Color.WHITE);
         colorTextField.setText("#".concat(Integer.toHexString(color.getRGB()).toUpperCase(Locale.getDefault())));
-        firePropertyChange("color", oldColor, color); //NON-NLS
+        firePropertyChange(PROPERTY_COLOR, oldColor, color); //NON-NLS
     }
 
     @Override

@@ -308,7 +308,7 @@ abstract class TrackSettingsPanel extends JPanel {
             }
         });
 
-        colorSelector.addPropertyChangeListener("color", propertyChangeListener);
+        colorSelector.addPropertyChangeListener(ColorSelector.PROPERTY_COLOR, propertyChangeListener);
 
         final ChangeListener changeListener = e -> configurationChanged();
 

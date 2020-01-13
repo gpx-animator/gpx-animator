@@ -497,7 +497,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcTailColorSelector.gridx = 1;
         gbcTailColorSelector.gridy = 9;
         add(tailColorSelector, gbcTailColorSelector);
-        tailColorSelector.addPropertyChangeListener("tail-color", propertyChangeListener);
+        tailColorSelector.addPropertyChangeListener(ColorSelector.PROPERTY_COLOR, propertyChangeListener);
 
         final JLabel lblTailDuration = new JLabel(resourceBundle.getString("ui.panel.generalsettings.tailduration.label"));
         final GridBagConstraints gbcLabelTailDuration = new GridBagConstraints();
@@ -655,7 +655,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcBackgroundColorSelector.gridx = 1;
         gbcBackgroundColorSelector.gridy = 17;
         add(backgroundColorSelector, gbcBackgroundColorSelector);
-        backgroundColorSelector.addPropertyChangeListener("color", propertyChangeListener);
+        backgroundColorSelector.addPropertyChangeListener(ColorSelector.PROPERTY_COLOR, propertyChangeListener);
 
         final JLabel lblFlashbackColor = new JLabel(resourceBundle.getString("ui.panel.generalsettings.flashbackcolor.label"));
         final GridBagConstraints gbcLabelFlashbackColor = new GridBagConstraints();
@@ -673,7 +673,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcFlashbackColorSelector.gridx = 1;
         gbcFlashbackColorSelector.gridy = 18;
         add(flashbackColorSelector, gbcFlashbackColorSelector);
-        flashbackColorSelector.addPropertyChangeListener("color", propertyChangeListener);
+        flashbackColorSelector.addPropertyChangeListener(ColorSelector.PROPERTY_COLOR, propertyChangeListener);
 
         final JLabel lblFlashbackDuration = new JLabel(resourceBundle.getString("ui.panel.generalsettings.flashbackduration.label"));
         final GridBagConstraints gbcLabelFlashbackDuration = new GridBagConstraints();
