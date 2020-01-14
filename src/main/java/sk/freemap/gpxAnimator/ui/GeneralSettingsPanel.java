@@ -139,7 +139,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 if ((filename.toLowerCase(Locale.getDefault()).endsWith(".png") //NON-NLS
                         || filename.toLowerCase(Locale.getDefault()).endsWith(".jpg")) //NON-NLS
                         && isEqual(String.format(filename, 100), String.format(filename, 200))) {
-                    final int n = filename.lastIndexOf('.');
+                    @SuppressWarnings("MagicCharacter") final int n = filename.lastIndexOf('.');
                     return String.format("%s%%08d%s", filename.substring(0, n), filename.substring(n)); //NON-NLS
                 } else {
                     return filename;
