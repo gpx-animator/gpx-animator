@@ -14,6 +14,7 @@
  */
 package sk.freemap.gpxAnimator;
 
+import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sk.freemap.gpxAnimator.ui.MainFrame;
@@ -25,6 +26,7 @@ import java.util.ResourceBundle;
 
 public final class Main {
 
+    @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     private Main() throws InstantiationException {
@@ -64,7 +66,7 @@ public final class Main {
                 });
             }
         } catch (final UserException e) {
-            LOGGER.error(resourceBundle.getString("main.exception.log"), e);
+            LOGGER.error("Very bad, exception caught in main method!", e);
             System.exit(1); // NOPMD -- We can't recover here
         }
     }

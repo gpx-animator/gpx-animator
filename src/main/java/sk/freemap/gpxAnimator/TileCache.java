@@ -32,6 +32,7 @@
 
 package sk.freemap.gpxAnimator;
 
+import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,12 +45,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.util.ResourceBundle;
 
 public final class TileCache {
 
-    private static final ResourceBundle RESOURCE_BUNDLE = Preferences.getResourceBundle();
-
+    @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(TileCache.class);
 
     private TileCache() throws InstantiationException {
@@ -86,7 +85,7 @@ public final class TileCache {
                     if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(CACHED_FILE_EXTENSION))) {
                         ageCacheFile(cacheEntry, tileCacheTimeLimit);
                     } else {
-                        LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.unknownfile"), cacheFilename);
+                        LOGGER.error("Error: Unknown file in tile cache: {}", cacheFilename);
                     }
                 }
             }
@@ -142,9 +141,10 @@ public final class TileCache {
                 // Treat as non-fatal, we will notify the user then attempt to
                 // remove the file we could not read.
 
-                LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.readfailed"), url, path, e);
+                LOGGER.error("Error: Failed to read cached tile {} ({})", url, path, e);
                 if (cacheFile.exists() && !cacheFile.delete()) {
-                    LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.deletefailed"), cacheFile);
+                    //noinspection DuplicateStringLiteralInspection
+                    LOGGER.error("Can't delete tile cache file: {}", cacheFile);
                 }
             }
         }
@@ -161,7 +161,7 @@ public final class TileCache {
             } catch (final IOException e) {
                 // Treat as non-fatal. This should revert the behavior to the same
                 // as running without a cache.
-                LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.writingfailed"), url, path, e);
+                LOGGER.error("Error writing cached tile {} ({})", url, path, e);
             }
         }
 
@@ -187,7 +187,7 @@ public final class TileCache {
                 result = cacheDir.isDirectory();
             } else {
                 if (!cacheDir.mkdirs()) {
-                    LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.mkdirfailed"), cacheDir);
+                    LOGGER.error("Can't create tile cache directory '{}'. Fallback to not caching the tiles!", cacheDir);
                     result = false;
                 }
             }
@@ -203,7 +203,8 @@ public final class TileCache {
         long msBetweenDates = new Date().getTime() - fileDate.getTime();
         if ((msBetweenDates) > tileCacheTimeLimit) {
             if (cacheFile.exists() && !cacheFile.delete()) {
-                LOGGER.error(RESOURCE_BUNDLE.getString("tilecache.error.deletefailed"), cacheFile);
+                //noinspection DuplicateStringLiteralInspection
+                LOGGER.error("Can't delete tile cache file: {}", cacheFile);
             }
         }
     }

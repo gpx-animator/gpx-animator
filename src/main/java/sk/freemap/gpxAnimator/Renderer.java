@@ -14,6 +14,7 @@
  */
 package sk.freemap.gpxAnimator;
 
+import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sk.freemap.gpxAnimator.frameWriter.FileFrameWriter;
@@ -53,6 +54,7 @@ import static sk.freemap.gpxAnimator.Utils.isEqual;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class Renderer {
 
+    @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(Renderer.class);
 
     private static final double MS = 1000d;
@@ -192,7 +194,7 @@ public final class Renderer {
 
         final int realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
         final int realHeight = calculateRealHeight(scale, toImages);
-        LOGGER.info("{}x{};{}", realWidth, realHeight, scale); //NON-NLS
+        LOGGER.info("{}x{};{}", realWidth, realHeight, scale);
 
         final FrameWriter frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
@@ -252,7 +254,7 @@ public final class Renderer {
 
         keepLastFrame(rc, frameWriter, bi, frames);
         frameWriter.close();
-        LOGGER.info(resourceBundle.getString("renderer.progress.done"));
+        LOGGER.info("Done.");
     }
 
     private float renderFlashback(final float skip, final BufferedImage bi2) {

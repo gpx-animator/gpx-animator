@@ -14,6 +14,7 @@
  */
 package sk.freemap.gpxAnimator.frameWriter;
 
+import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sk.freemap.gpxAnimator.Preferences;
@@ -30,9 +31,8 @@ import static sk.freemap.gpxAnimator.Utils.isEqual;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class FileFrameWriter implements FrameWriter {
 
+    @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(FileFrameWriter.class);
-
-    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final String frameFilePattern;
     private final String imageType;
@@ -41,6 +41,7 @@ public final class FileFrameWriter implements FrameWriter {
 
     public FileFrameWriter(final String frameFilePattern, final String imageType, final double fps) throws UserException {
         if (!isEqual(String.format(frameFilePattern, 100), String.format(frameFilePattern, 200))) {
+            final ResourceBundle resourceBundle = Preferences.getResourceBundle();
             throw new UserException(resourceBundle.getString("framewriter.error.outputpattern"));
         }
 
@@ -61,7 +62,7 @@ public final class FileFrameWriter implements FrameWriter {
 
     @Override
     public void close() {
-        LOGGER.info(resourceBundle.getString("framewriter.info.encodingframes"));
+        LOGGER.info("To encode generated frames you may run this command:");
         LOGGER.info("ffmpeg -i {} -vcodec mpeg4 -b 3000k -r {} video.avi", frameFilePattern, fps); //NON-NLS
     }
 }

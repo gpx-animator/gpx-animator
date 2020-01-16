@@ -19,6 +19,7 @@ import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import org.imgscalr.Scalr;
+import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sk.freemap.gpxAnimator.frameWriter.FrameWriter;
@@ -47,6 +48,7 @@ import static java.util.stream.Collectors.groupingBy;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class Photos {
 
+    @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(Photos.class);
 
     private static final String SYSTEM_ZONE_OFFSET;
@@ -78,7 +80,7 @@ public final class Photos {
                     allPhotos = new HashMap<>();
                 }
             } else {
-                LOGGER.error(resourceBundle.getString("photos.error.nodirectory"), directory);
+                LOGGER.error("'{}' is not a directory!", directory);
                 allPhotos = new HashMap<>();
             }
         }
@@ -99,7 +101,7 @@ public final class Photos {
                     DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x")); //NON-NLS
             return zonedDateTime.toEpochSecond() * 1_000;
         } catch (ImageProcessingException | IOException | NullPointerException e) { // NOPMD -- NPEs can happen quite often in image metadata handling
-            LOGGER.error(resourceBundle.getString("photos.error.fileprocessing"), file.getAbsoluteFile(), e);
+            LOGGER.error("Error processing file '{}}'!", file.getAbsoluteFile(), e);
             return 0L;
         }
     }
@@ -127,7 +129,7 @@ public final class Photos {
                     frameWriter.addFrame(bi2);
                 }
             } catch (final UserException e) {
-                LOGGER.error(resourceBundle.getString("photos.error.rendering"), photo, e);
+                LOGGER.error("Problems rendering photo '{}'!", photo, e);
             }
         }
     }
@@ -143,7 +145,7 @@ public final class Photos {
                 return addBorder(scaledImage);
             }
         } catch (final IOException e) {
-            LOGGER.error(resourceBundle.getString("photos.error.reading"), photo, e);
+            LOGGER.error("Problems reading photo '{}'!", photo, e);
         }
         return null;
     }
