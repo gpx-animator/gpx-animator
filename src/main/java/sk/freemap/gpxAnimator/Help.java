@@ -24,6 +24,7 @@ public final class Help {
         throw new InstantiationException("Help is a Utility class and can't be instantiated!");
     }
 
+    @SuppressWarnings("DuplicateStringLiteralInspection")
     public static void printHelp(final OptionHelpWriter w) {
         final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 

@@ -21,7 +21,6 @@ import sk.freemap.gpxAnimator.ui.MainFrame;
 
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
-import java.util.ResourceBundle;
 
 
 public final class Main {
@@ -34,8 +33,6 @@ public final class Main {
     }
 
     public static void main(final String[] args) {
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
-
         try {
             final CommandLineConfigurationFactory cf = new CommandLineConfigurationFactory(args);
             final Configuration configuration = cf.getConfiguration();

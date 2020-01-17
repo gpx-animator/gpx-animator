@@ -16,6 +16,7 @@ package sk.freemap.gpxAnimator;
 
 import com.drew.lang.annotations.NotNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.jetbrains.annotations.NonNls;
 
 import java.text.Collator;
 import java.util.Objects;
@@ -24,8 +25,14 @@ import java.util.Vector;
 
 public final class TrackIcon {
 
-    private static final String[] KEYS = {"airplane", "bicycle", "bus", "car", "jogging", "riding", "sailing", "ship", "train", "tramway", //NON-NLS
-            "trekking"}; //NON-NLS
+    private static final ResourceBundle RESOURCE_BUNDLE = Preferences.getResourceBundle();
+
+    @NonNls
+    private static final String[] KEYS = {"airplane", "bicycle", "bus", "car", "jogging", "riding", "sailing", "ship", "train", "tramway",
+            "trekking"};
+
+    @NonNls
+    private static final String RESOURCE_BUNDLE_TRACKICON_PREFIX = "trackicon.icon.";
 
     private static Vector<TrackIcon> trackIcons = null;
 
@@ -34,10 +41,9 @@ public final class TrackIcon {
         if (trackIcons == null) {
             synchronized (TrackIcon.class) {
                 if (trackIcons == null) {
-                    final ResourceBundle resourceBundle = Preferences.getResourceBundle();
                     trackIcons = new Vector<>();
                     for (final String key : KEYS) {
-                        trackIcons.add(new TrackIcon(key, resourceBundle.getString("trackicon.icon.".concat(key)))); //NON-NLS
+                        trackIcons.add(new TrackIcon(key, RESOURCE_BUNDLE.getString(RESOURCE_BUNDLE_TRACKICON_PREFIX.concat(key))));
                     }
                     final Collator collator = Collator.getInstance();
                     trackIcons.sort((a, b) -> collator.compare(a.name, b.name));
@@ -55,7 +61,7 @@ public final class TrackIcon {
     private final String name;
 
     public TrackIcon(@NotNull final String key) {
-        this(key, Preferences.getResourceBundle().getString("trackicon.icon.".concat(key))); //NON-NLS
+        this(key, RESOURCE_BUNDLE.getString(RESOURCE_BUNDLE_TRACKICON_PREFIX.concat(key)));
     }
 
     public TrackIcon(@NotNull final String key, @NotNull final String name) {

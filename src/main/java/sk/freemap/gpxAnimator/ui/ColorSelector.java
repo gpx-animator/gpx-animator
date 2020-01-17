@@ -15,7 +15,6 @@
 package sk.freemap.gpxAnimator.ui;
 
 import org.jetbrains.annotations.NonNls;
-import sk.freemap.gpxAnimator.Option;
 import sk.freemap.gpxAnimator.Preferences;
 
 import javax.swing.Box;
@@ -35,7 +34,8 @@ import java.util.ResourceBundle;
 public final class ColorSelector extends JPanel {
 
     @NonNls
-    public static final String PROPERTY_COLOR = Option.COLOR.getName();
+    @SuppressWarnings("DuplicateStringLiteralInspection")
+    public static final String PROPERTY_COLOR = "color";
 
     private static final long serialVersionUID = 6506364764640471311L;
 
