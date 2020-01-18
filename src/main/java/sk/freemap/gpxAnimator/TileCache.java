@@ -111,7 +111,9 @@ public final class TileCache {
     private static BufferedImage unCachedGetTile(final String url) throws UserException {
         BufferedImage mapTile;
 
-        System.setProperty("http.agent", "GPX Animator " + Constants.VERSION);
+        final String userAgent = String.format("%s %s on %s %s (%s)", //NON-NLS
+                Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH);
+        System.setProperty("http.agent", userAgent);
         try {
             mapTile = ImageIO.read(new URL(url));
         } catch (final IOException e) {
