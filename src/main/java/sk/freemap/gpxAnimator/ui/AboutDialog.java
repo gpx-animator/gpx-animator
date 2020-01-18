@@ -39,7 +39,7 @@ public class AboutDialog extends JDialog {
     public AboutDialog() {
         final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-        setTitle(resourceBundle.getString("ui.dialog.about.title"));
+        setTitle(String.format(resourceBundle.getString("ui.dialog.about.title"), Constants.APPNAME));
         setBounds(100, 100, 450, 300);
         getContentPane().setLayout(new BorderLayout());
         final JPanel contentPanel = new JPanel();
