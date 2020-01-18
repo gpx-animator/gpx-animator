@@ -18,6 +18,7 @@ Release date: not yet released
 * Tile cache now enabled by default (24 hour caching)
 * New application wide settings (_File > Preferences_)
 * New installers for Windows, macOS and Linux systems
+* New translation for German users (give feedback, please)
 
 **Most important changes for developers:**
 * GPX-Animator now uses Gradle to build the project
