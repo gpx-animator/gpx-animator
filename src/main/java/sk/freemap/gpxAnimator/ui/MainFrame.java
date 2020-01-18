@@ -217,7 +217,7 @@ public final class MainFrame extends JFrame {
         final JMenu mnHelp = new JMenu(resourceBundle.getString("ui.mainframe.menu.help"));
         menuBar.add(mnHelp);
 
-        final JMenuItem mntmAbout = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.about"));
+        final JMenuItem mntmAbout = new JMenuItem(String.format(resourceBundle.getString("ui.mainframe.menu.help.about"), Constants.APPNAME));
         mntmAbout.addActionListener(e -> {
             final AboutDialog aboutDialog = new AboutDialog();
             aboutDialog.setLocationRelativeTo(MainFrame.this);
