@@ -19,6 +19,7 @@ Release date: not yet released
 * New application wide settings (_File > Preferences_)
 * New installers for Windows, macOS and Linux systems
 * New translation for German users (give feedback, please)
+* New support e-mail address on the website
 
 **Most important changes for developers:**
 * GPX-Animator now uses Gradle to build the project
