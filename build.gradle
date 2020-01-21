@@ -11,7 +11,7 @@ plugins {
 version = '1.5-SNAPSHOT'
 group = 'app.gpx-animator'
 
-mainClassName = 'sk.freemap.gpxAnimator.Main'
+mainClassName = 'app.gpx_animator.Main'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
