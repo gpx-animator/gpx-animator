@@ -27,6 +27,9 @@ You can open this project in a preconfigured Gitpod online IDE based on Theia (V
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/zdila/gpx-animator)
 
+For your first contribution to this repository, you can take a look at the issues listed here: [Good first issue](https://github.com/zdila/gpx-animator/contribute)
+
+
 Build
 -----------
 
