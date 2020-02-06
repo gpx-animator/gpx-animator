@@ -26,16 +26,19 @@ You can open this project in a preconfigured Gitpod online IDE based on Theia (V
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/zdila/gpx-animator)
 
+For your first contribution to this repository, you can take a look at the issues listed here: [Good first issue](https://github.com/zdila/gpx-animator/contribute)
+
+
 Build
 -----------
 
-GPX Animator uses the [Maven](https://maven.apache.org/) build system to create the JAR file. You don't need to have Maven installed on your system, this project makes use of the Maven Wrapper.
+GPX Animator uses the [Gradle](https://gradle.org/) build system to create the JAR file. You don't need to have Gradle installed on your system, this project makes use of the Gradle Wrapper.
 
 ```
-./mvnw clean package
+./gradlew assemble
 ```
 
-After a successful build, the JAR file can be found in the `target` directory.
+After a successful build, the JAR file can be found in the `build/libs` directory.
 
 Run
 -----------
@@ -43,10 +46,10 @@ Run
 To start GPX Animator from the sources, simply run the following command:
 
 ```
-./mvnw exec:java
+./gradlew run
 ```
 
-The artifact must have been created before (see [Build](#build) section).
+If not already done, the project will be compiled automatically.
 
 Test
 -----------
@@ -54,7 +57,7 @@ Test
 In the directory `src/test/` tests are located that can be run with the following command:
 
 ```
-./mvnw test
+./gradlew test
 ```
 
 Features
@@ -74,6 +77,18 @@ Credits
 --------
 Icons included in application and their source:
 
+* Airplane icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
 * Bicycle icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
+* Bus icon made by [monkik](https://www.flaticon.com/authors/monkik) from [flaticon](https://www.flaticon.com/).
+* Car icon made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [flaticon](https://www.flaticon.com/).
 * Jogging icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
-* Trekking icon made by [monki](https://www.flaticon.com/authors/monkik) from [flaticon](https://www.flaticon.com/).
+* Riding icon made by [mynamepong](https://www.flaticon.com/authors/mynamepong) from [flaticon](https://www.flaticon.com/).
+* Sailing icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
+* Ship icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
+* Tramway icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
+* Train icon made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [flaticon](https://www.flaticon.com/).
+* Trekking icon made by [monkik](https://www.flaticon.com/authors/monkik) from [flaticon](https://www.flaticon.com/).
+
+To create the installers, we use a free license of [Install4J](https://www.ej-technologies.com/products/install4j/overview.html) for open-source projects.
+
+[![Install4J multi-platform installer builder](https://www.ej-technologies.com/images/product_banners/install4j_large.png)](https://www.ej-technologies.com/products/install4j/overview.html)

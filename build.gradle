@@ -1,0 +1,94 @@
+import com.github.spotbugs.SpotBugsTask
+
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id 'com.github.spotbugs' version '3.0.0'
+    id 'pmd'
+    id 'checkstyle'
+}
+
+version = '1.5-SNAPSHOT'
+group = 'app.gpx-animator'
+
+mainClassName = 'app.gpx_animator.Main'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://www.dcm4che.org/maven2/' }
+}
+
+configurations {
+    developmentOnly
+}
+
+dependencies {
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:3.1.12'
+    implementation 'xuggle:xuggle-xuggler:5.4'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+    implementation 'javax.activation:activation:1.1.1'
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:slf4j-simple:1.7.30'
+    implementation 'com.drewnoakes:metadata-extractor:2.11.0'
+    implementation 'org.imgscalr:imgscalr-lib:4.2'
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'com.jgoodies:jgoodies-forms:1.9.0'
+    implementation 'com.vladsch.flexmark:flexmark-all:0.50.44'
+    implementation 'org.jetbrains:annotations:18.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
+}
+
+test.classpath += configurations.developmentOnly
+run.classpath += configurations.developmentOnly
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}
+
+task copyChangelog(type: Copy) {
+    from "."
+    include "CHANGELOG.md"
+    into "./src/main/resources"
+}
+
+assemble.dependsOn copyChangelog
+
+task deleteChangelog(type: Delete) {
+    delete "./src/main/resources/CHANGELOG.md"
+}
+
+clean.dependsOn deleteChangelog
+assemble.dependsOn check
+
+tasks.withType(SpotBugsTask) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+pmd {
+    ruleSets = []
+    ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
+}
+
+task installGitHooks(type: Copy) {
+    from new File(rootProject.rootDir, 'config/git/pre-push')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    fileMode 0755
+}
+
+check.dependsOn installGitHooks

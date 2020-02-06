@@ -1,5 +1,34 @@
 # Changelog
 
+## Version 1.5
+
+Release date: not yet released
+
+**Most important changes for users:**
+* Show the changelog on the first start after install/update
+* Adding a button to easily select common video resolutions
+* Adding a bunch of new track icons
+* Adding profile picture / logo to the animation
+* Making video background color configurable
+* Saving a configuration as a default setting
+* Integration of automatic application updates
+* Fixing UI on HiDPI (high-resolution) displays
+* Fixing loading of *Keep Last Frame* configuration option
+* Default output directory is no longer the application directory
+* Tile cache now enabled by default (24 hour caching)
+* New application wide settings (_File > Preferences_)
+* New installers for Windows, macOS and Linux systems
+* New translation for German users (give feedback, please)
+* New support e-mail address on the website
+
+**Most important changes for developers:**
+* GPX-Animator now uses Gradle to build the project
+* Integrating Spotbugs to search for potential bugs automatically
+* Integrating PMD to search for potential bugs automatically
+* Default Java version for GPX Animator is now Java 11 LTS
+* Using logging instead direct console output
+* Internationalizing the codebase for easier translation
+
 ## Version 1.4
 
 Release date: 2019-12-20

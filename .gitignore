@@ -1,3 +1,6 @@
+# Gradle build system
+/.gradle
+
 # Build artefacts
 /bin
 /build
@@ -30,3 +33,11 @@ Thumbs.db
 
 # Default animation output
 video.mp4
+
+# Files copied at build time
+/src/main/resources/CHANGELOG.md
+
+# Install4J
+/install/gpx-animator.install4j~
+/install/install4j_images/
+/install/media/

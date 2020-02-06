@@ -2,7 +2,7 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: ./mvnw clean package
+  - init: ./gradlew assemble
 
 ports:
   - port: 6080
