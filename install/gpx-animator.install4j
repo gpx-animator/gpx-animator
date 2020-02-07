@@ -15,7 +15,7 @@
   <launchers>
     <launcher name="${compiler:sys.shortName}" id="59" checkUpdater="true">
       <executable name="${compiler:sys.shortName}" iconSet="true" executableMode="gui" changeWorkingDirectory="false" />
-      <java mainClass="sk.freemap.gpxAnimator.Main">
+      <java mainClass="app.gpx_animator.Main">
         <classPath>
           <archive location="gpx-animator-1.5-SNAPSHOT-all.jar" failOnError="false" />
         </classPath>
