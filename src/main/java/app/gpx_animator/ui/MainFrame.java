@@ -47,8 +47,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.Collator;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.CancellationException;
@@ -217,11 +219,18 @@ public final class MainFrame extends JFrame {
         final JMenu mnHelp = new JMenu(resourceBundle.getString("ui.mainframe.menu.help"));
         menuBar.add(mnHelp);
 
-        final JMenuItem mntmAbout = new JMenuItem(String.format(resourceBundle.getString("ui.mainframe.menu.help.about"), Constants.APPNAME));
+        final String aboutText = String.format(resourceBundle.getString("ui.mainframe.menu.help.about"), Constants.APPNAME);
+        final JMenuItem mntmAbout = new JMenuItem(aboutText);
         mntmAbout.addActionListener(e -> {
-            final AboutDialog aboutDialog = new AboutDialog();
-            aboutDialog.setLocationRelativeTo(MainFrame.this);
-            aboutDialog.setVisible(true);
+            final Map<String, String> variables = new HashMap<>();
+            variables.put("APPNAME", Constants.APPNAME); //NON-NLS
+            variables.put("VERSION", Constants.VERSION); //NON-NLS
+            variables.put("YEAR", Constants.YEAR); //NON-NLS
+            variables.put("DESCRIPTION", resourceBundle.getString("ui.dialog.about.description"));
+            variables.put("LINK", String.format(resourceBundle.getString("ui.dialog.about.link"), //NON-NLS
+                    "<a href=\"https://gpx-animator.app\">https://gpx-animator.app</a>")); //NON-NLS
+            SwingUtilities.invokeLater(() -> new MarkdownDialog(this,
+                    aboutText, "ABOUT.md", variables, 550, 330));
         });
         mnHelp.add(mntmAbout);
 
