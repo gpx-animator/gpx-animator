@@ -680,7 +680,9 @@ public final class MainFrame extends JFrame {
     }
 
     private void showChangelog() {
-        SwingUtilities.invokeLater(() -> new ChangelogDialog(this).setVisible(true));
+        SwingUtilities.invokeLater(() -> new MarkdownDialog(this,
+                String.format(resourceBundle.getString("ui.dialog.changelog.title"), Constants.APPNAME_VERSION),
+                "CHANGELOG.md", this.getWidth() - 150, this.getHeight() - 150));
     }
 
     private void showChangelogOnce() {
