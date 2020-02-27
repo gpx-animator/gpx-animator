@@ -99,4 +99,9 @@ public final class ColorSelector extends JPanel {
         selectButton.setToolTipText(text);
     }
 
+    @Override
+    public void setEnabled(final boolean enabled) {
+        colorTextField.setEnabled(enabled);
+        selectButton.setEnabled(enabled);
+    }
 }
