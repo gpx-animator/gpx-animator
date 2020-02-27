@@ -91,10 +91,15 @@ public final class MainFrame extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
+                final Color trackColor = Preferences.getTrackColorRandom()
+                        ? Color.getHSBColor(hue, 0.8f, 0.8f)
+                        : Preferences.getTrackColorDefault();
+
                 addTrackSettingsTab(TrackConfiguration
                         .createBuilder()
-                        .color(Color.getHSBColor(hue, 0.8f, 0.8f))
+                        .color(trackColor)
                         .build());
+
                 hue += 0.275f;
                 while (hue >= 1f) {
                     hue -= 1f;
