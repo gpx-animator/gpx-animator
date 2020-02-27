@@ -1,5 +1,6 @@
 package app.gpx_animator;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,8 @@ public final class Preferences {
     private static final String RECENT_FILES = "recent_files"; //NON-NLS
     private static final String TILE_CACHE_DIR = "tile_cache_dir"; //NON-NLS
     private static final String TILE_CACHE_TIME_LIMIT = "tile_cache_time_limit"; //NON-NLS
+    private static final String TRACK_COLOR_RANDOM = "track_color_random"; //NON-NLS
+    private static final String TRACK_COLOR_DEFAULT = "track_color_default"; //NON-NLS
 
     public static ResourceBundle getResourceBundle() {
         return ResourceBundle.getBundle("i18n/Messages"); //NON-NLS
@@ -87,6 +90,26 @@ public final class Preferences {
 
     public static void setTileCacheTimeLimit(final long tileCacheTimeLimit) {
         PREFS.putLong(TILE_CACHE_TIME_LIMIT, tileCacheTimeLimit);
+    }
+
+    public static boolean getTrackColorRandom() {
+        return PREFS.getBoolean(TRACK_COLOR_RANDOM, true);
+    }
+
+    public static void setTrackColorRandom(final boolean trackColorRandom) {
+        PREFS.putBoolean(TRACK_COLOR_RANDOM, trackColorRandom);
+    }
+
+    public static Color getTrackColorDefault() {
+        final String colorCode = PREFS.get(TRACK_COLOR_DEFAULT, "#FF0000"); //NON-NLS
+        final ColorXmlAdapter xmlAdapter = new ColorXmlAdapter();
+        return xmlAdapter.unmarshal(colorCode);
+    }
+
+    public static void setTrackColorDefault(final Color trackColorDefault) {
+        final ColorXmlAdapter xmlAdapter = new ColorXmlAdapter();
+        final String colorCode = xmlAdapter.marshal(trackColorDefault);
+        PREFS.put(TRACK_COLOR_DEFAULT, colorCode);
     }
 
     private Preferences() {
