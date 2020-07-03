@@ -15,13 +15,17 @@
   <launchers>
     <launcher name="${compiler:sys.shortName}" id="59" checkUpdater="true">
       <executable name="${compiler:sys.shortName}" iconSet="true" executableMode="gui" changeWorkingDirectory="false" />
+      <splashScreen show="true" bitmapFile="D:/dev/gpx-animator/src/main/resources/splash.png" />
       <java mainClass="app.gpx_animator.Main">
         <classPath>
           <archive location="gpx-animator-1.5-SNAPSHOT-all.jar" failOnError="false" />
         </classPath>
       </java>
       <iconImageFiles>
-        <file path="/home/mcpringle/dev/gpx-animator/src/main/resources/icon_32.png" />
+        <file path="D:/dev/gpx-animator/src/main/resources/icon_16.png" />
+        <file path="D:/dev/gpx-animator/src/main/resources/icon_32.png" />
+        <file path="D:/dev/gpx-animator/src/main/resources/icon_48.png" />
+        <file path="D:/dev/gpx-animator/src/main/resources/icon_128.png" />
       </iconImageFiles>
     </launcher>
   </launchers>

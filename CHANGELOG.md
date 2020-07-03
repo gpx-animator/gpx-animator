@@ -22,6 +22,7 @@ Release date: not yet released
 * Integration of automatic application updates using the installer
 * New translation for German users (give feedback, please)
 * New support e-mail address on the website
+* New application icon and splash screen
 
 **Most important changes for developers:**
 * GPX-Animator now uses Gradle to build the project
