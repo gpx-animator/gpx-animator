@@ -2,7 +2,7 @@
 
 ## Version 1.5
 
-Release date: not yet released
+Release date: 2020-07-03
 
 **Most important changes for users:**
 * Show the changelog on the first start after install/update
