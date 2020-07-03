@@ -64,7 +64,7 @@ task copyChangelog(type: Copy) {
     into "./src/main/resources"
 }
 
-assemble.dependsOn copyChangelog
+build.dependsOn copyChangelog
 
 task deleteChangelog(type: Delete) {
     delete "./src/main/resources/CHANGELOG.md"
