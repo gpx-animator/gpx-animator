@@ -729,14 +729,17 @@ file.getParent() != null || (file.getName().endsWith(".app") &amp;&amp; director
     <unixInstaller name="Unix Installer" id="60">
       <jreBundle jreBundleSource="generated" />
     </unixInstaller>
-    <macosFolder name="macOS Folder" id="61">
-      <jreBundle jreBundleSource="generated" />
-    </macosFolder>
     <windows name="Windows 64 Bit" id="62">
       <jreBundle jreBundleSource="generated" />
     </windows>
     <windows name="Windows 32 Bit" id="63" jreBitType="32">
       <jreBundle jreBundleSource="generated" />
     </windows>
+    <macosArchive name="macOS Single Bundle Archive" id="246" launcherId="59">
+      <jreBundle jreBundleSource="generated" />
+      <topLevelFiles>
+        <symlink name="Applications" target="/Applications" />
+      </topLevelFiles>
+    </macosArchive>
   </mediaSets>
 </install4j>
