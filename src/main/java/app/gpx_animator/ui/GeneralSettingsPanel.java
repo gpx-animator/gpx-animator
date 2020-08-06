@@ -872,6 +872,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         totalTimeSpinner.setValue(c.getTotalTime());
         keepLastFrameSpinner.setValue(c.getKeepLastFrame());
         backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
+        photosDirectorySelector.setFilename(c.getPhotoDirectory());
         photoTimeSpinner.setValue(c.getPhotoTime());
 
         final String tmsUrlTemplate = c.getTmsUrlTemplate();

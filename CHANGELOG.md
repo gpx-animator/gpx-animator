@@ -6,6 +6,7 @@ Release date: not yet released
 
 **Most important changes for users:**
 * Fixing a bug that prevents photos from being shown in the animation
+* Fixing a bug that does not load the photos directory from saved files
 
 ## Version 1.5
 
