@@ -216,7 +216,9 @@ public final class CommandLineConfigurationFactory {
             tcb.label(i < labelList.size() ? labelList.get(i) : "");
             tcb.timeOffset(i < timeOffsetList.size() ? timeOffsetList.get(i) : Long.valueOf(0));
             tcb.forcedPointInterval(i < forcedPointIntervalList.size() ? forcedPointIntervalList.get(i) : null); // NOPMD -- null = not set
-            tcb.trackIcon(trackIconList.get(i));
+            if (!trackIconList.isEmpty()) {
+                tcb.trackIcon(trackIconList.get(i));
+            }
 
             cfg.addTrackConfiguration(tcb.build());
         }
