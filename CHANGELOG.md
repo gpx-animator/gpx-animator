@@ -1,4 +1,11 @@
-# Changelog
+# 
+
+## Version 1.5.1
+
+Release date: not yet released
+
+**Most important changes for users:**
+* Fixing a bug that prevents photos from being shown in the animation
 
 ## Version 1.5
 

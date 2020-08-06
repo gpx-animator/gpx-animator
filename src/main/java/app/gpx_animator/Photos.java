@@ -14,6 +14,7 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.frameWriter.FrameWriter;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
@@ -22,16 +23,12 @@ import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import app.gpx_animator.frameWriter.FrameWriter;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -136,14 +133,13 @@ public final class Photos {
 
     private BufferedImage readPhoto(final Photo photo, final int width, final int height) {
         try {
-            final byte[] rawData = getRawBytesFromFile(photo.getFile());
-            try (ImageInputStream input = ImageIO.createImageInputStream(new ByteArrayInputStream(rawData))) {
-                final BufferedImage image = ImageIO.read(input);
-                final int scaledWidth = Math.round(width * 0.7f);
-                final int scaledHeight = Math.round(height * 0.7f);
-                final BufferedImage scaledImage = scaleImage(image, scaledWidth, scaledHeight);
-                return addBorder(scaledImage);
-            }
+            final BufferedImage image = ImageIO.read(photo.getFile());
+            final int scaledWidth = Math.round(width * 0.7f);
+            final int scaledHeight = Math.round(height * 0.7f);
+            final BufferedImage scaledImage = scaleImage(image, scaledWidth, scaledHeight);
+            final BufferedImage borderedImage = addBorder(scaledImage);
+            borderedImage.flush();
+            return borderedImage;
         } catch (final IOException e) {
             LOGGER.error("Problems reading photo '{}'!", photo, e);
         }
@@ -176,15 +172,6 @@ public final class Photos {
         return Scalr.resize(Scalr.resize(image,
                 Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, width),
                 Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, height);
-    }
-
-    private static byte[] getRawBytesFromFile(final File file) throws IOException {
-        final byte[] image = new byte[(int) file.length()];
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            //noinspection ResultOfMethodCallIgnored
-            fileInputStream.read(image);
-        }
-        return image;
     }
 
     public void render(final Long gpsTime, final Configuration cfg, final BufferedImage bi,
