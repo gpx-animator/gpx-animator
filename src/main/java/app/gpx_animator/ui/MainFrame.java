@@ -448,6 +448,8 @@ public final class MainFrame extends JFrame {
                 }
             });
 
+            progressBar.setString("");
+            progressBar.setValue(0);
             progressBar.setVisible(true);
             renderButton.setText(resourceBundle.getString("ui.mainframe.button.cancel"));
             swingWorker.execute();
