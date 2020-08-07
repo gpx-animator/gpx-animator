@@ -1,10 +1,9 @@
-# 
+# Changelog
 
 ## Version 1.5.1
 
-Release date: not yet released
+Release date: 2020-08-07
 
-**Most important changes for users:**
 * Fixing a bug that prevents photos from being shown in the animation
 * Fixing a bug that does not load the photos directory from saved files
 * Fixing a bug that broke the command line use since v1.4

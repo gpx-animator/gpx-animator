@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="8.0.7" transformSequenceNumber="8">
-  <directoryPresets config="D:/dev/gpx-animator/build/libs/gpx-animator-1.5-all.jar" />
-  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.5" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="11" javaMaxVersion="13">
+<install4j version="8.0.8" transformSequenceNumber="8">
+  <directoryPresets config="D:/dev/gpx-animator/build/libs/gpx-animator-1.5.1-all.jar" />
+  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.5.1" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="11" javaMaxVersion="13">
     <jreBundles jdkProviderId="JBR" release="11.0.5-b665.1" />
   </application>
   <files keepModificationTimes="true" missingFilesStrategy="error">
@@ -9,16 +9,16 @@
       <mountPoint id="58" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="58" file="D:/dev/gpx-animator/build/libs/gpx-animator-1.5-all.jar" />
+      <fileEntry mountPoint="58" file="D:/dev/gpx-animator/build/libs/gpx-animator-1.5.1-all.jar" />
     </entries>
   </files>
   <launchers>
-    <launcher name="${compiler:sys.shortName}" id="59" checkUpdater="true">
+    <launcher name="${compiler:sys.shortName}" id="59" menuName="GPX Animator" checkUpdater="true">
       <executable name="${compiler:sys.shortName}" iconSet="true" executableMode="gui" changeWorkingDirectory="false" />
       <splashScreen show="true" bitmapFile="D:/dev/gpx-animator/src/main/resources/splash.png" />
       <java mainClass="app.gpx_animator.Main">
         <classPath>
-          <archive location="gpx-animator-1.5-all.jar" failOnError="false" />
+          <archive location="gpx-animator-1.5.1-all.jar" failOnError="false" />
         </classPath>
       </java>
       <iconImageFiles>
