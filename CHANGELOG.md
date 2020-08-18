@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.5.2
+
+Release date: not yet released
+
+* Improved error messages
+
 ## Version 1.5.1
 
 Release date: 2020-08-07

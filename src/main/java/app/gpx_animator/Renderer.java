@@ -513,7 +513,9 @@ public final class Renderer {
             } else {
                 time = latLon.getTime();
                 if (time == Long.MIN_VALUE) {
-                    throw new UserException("missing time for point; specify --forced-point-time-interval option");
+                    final String filename = trackConfiguration.getInputGpx().getName();
+                    throw new UserException(
+                            String.format(resourceBundle.getString("error.missingtime"), filename));
                 }
             }
 
