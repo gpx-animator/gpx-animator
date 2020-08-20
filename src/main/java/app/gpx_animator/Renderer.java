@@ -254,7 +254,13 @@ public final class Renderer {
 
         keepLastFrame(rc, frameWriter, bi, frames);
         frameWriter.close();
-        LOGGER.info("Done.");
+
+        if (!rc.isCancelled1()) {
+            rc.setProgress1(100, "Finished");
+            LOGGER.info("Done.");
+        } else {
+            LOGGER.info("Canceled.");
+        }
     }
 
     private float renderFlashback(final float skip, final BufferedImage bi2) {
