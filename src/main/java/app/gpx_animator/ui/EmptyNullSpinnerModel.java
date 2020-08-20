@@ -24,6 +24,8 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
     private final transient Number stepSize;
     private final transient Comparable minimum;
     private final transient Comparable maximum;
+    private final transient int fractions;
+    private final transient double fractionValue;
     private transient Number value;
     private transient Object object = new Object();
 
@@ -35,6 +37,11 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
     public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize,
                                  final boolean zeroEmpty) {
+        this(value, minimum, maximum, stepSize, true, -1);
+    }
+
+    public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize,
+                                 final boolean zeroEmpty, final int fractions) {
         if (stepSize == null) {
             throw new IllegalArgumentException("value and stepSize must be non-null");
         }
@@ -46,6 +53,17 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
         this.minimum = minimum;
         this.maximum = maximum;
         this.stepSize = stepSize;
+        this.fractions = fractions;
+
+        if (fractions < 0) {
+            fractionValue = 0.0;
+        } else {
+            double fv = 1.0;
+            for (int i = fractions; i > 0; i--) {
+                fv *= 10.0;
+            }
+            fractionValue = fv;
+        }
     }
 
     @Override
@@ -61,7 +79,7 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
     private Number incrValue(final int dir) {
         final Number newValue;
         if ((value instanceof Float) || (value instanceof Double)) {
-            final double v = value.doubleValue() + (stepSize.doubleValue() * dir);
+            final double v = round(value.doubleValue() + (stepSize.doubleValue() * dir));
             if (value instanceof Double) {
                 newValue = v;
             } else {
@@ -89,6 +107,10 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
         } else {
             return newValue;
         }
+    }
+
+    private double round(final double value) {
+        return (fractions < 0) ? value : Math.round(value * fractionValue) / fractionValue;
     }
 
     @Override

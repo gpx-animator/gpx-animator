@@ -7,6 +7,7 @@ Release date: not yet released
 * Improved error messages
 * Fixing a bug which prevented disabling the text in the animation.
 * Fixing a bug in percentage calculator (never reached 100%)
+* Fixing crazy behaviour of Latitude and Longitude spinner
 
 ## Version 1.5.1
 
