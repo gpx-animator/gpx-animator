@@ -612,7 +612,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         fontSizeSpinner = new JSpinner();
         fontSizeSpinner.setToolTipText(Option.FONT_SIZE.getHelp());
-        fontSizeSpinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
+        fontSizeSpinner.setModel(new SpinnerNumberModel(1, 0, null, 1));
         final GridBagConstraints gbcFontSizeSpinner = new GridBagConstraints();
         gbcFontSizeSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcFontSizeSpinner.insets = new Insets(0, 0, 5, 0);
