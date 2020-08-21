@@ -48,13 +48,16 @@
 
 <h3>Latest Stable Version</h3>
 
-<p>It is recommended, to download the latest stable version. As of today, this is v1.5.1, released on August 7th, 2020. This is a bugfix release:</p>
+<p>It is recommended, to download the latest stable version. As of today, this is v1.5.2, released on August 21st, 2020. This is a bugfix release:</p>
 
 <ul>
-  <li>Fixing a bug that prevents photos from being shown in the animation</li>
-  <li>Fixing a bug that does not load the photos directory from saved files</li>
-  <li>Fixing a bug that broke the command line use since v1.4</li>
-  <li>Fixing a bug that shows an old status message on the progress bar</li>
+  <li>Improved error messages</li>
+  <li>Fixing a bug which prevented disabling the text in the animation.</li>
+  <li>Fixing a bug in percentage calculator (never reached 100%)</li>
+  <li>Fixing crazy behaviour of Latitude and Longitude spinner</li>
+  <li>Fixing spinners not being able to go negative using the down arrow on first attempt</li>
+  <li>Automatic repair of broken files produced by Sigma Rox 12 bicycle computer</li>
+  <li>Show correct version number when using a saved file from an older version</li>
 </ul>
 
 <p>
@@ -62,11 +65,11 @@
 </p>
 
 <p>
-  <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_5_1.exe" download="gpx-animator_windows-x64_1_5_1.exe"><button><i class="fa fa-windows"></i> Windows 64 Bit</button></a>
-  <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_5_1.exe" download="gpx-animator_windows-x32_1_5_1.exe"><button><i class="fa fa-windows"></i> Windows 32 Bit</button></a><br/>
-  <a href="https://download.gpx-animator.app/gpx-animator_macos_1_5_1.dmg" download="gpx-animator_macos_1_5_1.dmg"><button><i class="fa fa-apple"></i> macOS</button></a>
-  <a href="https://download.gpx-animator.app/gpx-animator_unix_1_5_1.sh" download="gpx-animator_unix_1_5_1.sh"><button><i class="fa fa-linux"></i> Linux</button></a><br/>
-  <a href="https://download.gpx-animator.app/gpx-animator-1.5.1-all.jar" download="gpx-animator-1.5.1-all.jar"><button><i class="fa fa-download"></i> Java Archive</button></a>
+  <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_5_2.exe" download="gpx-animator_windows-x64_1_5_2.exe"><button><i class="fa fa-windows"></i> Windows 64 Bit</button></a>
+  <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_5_2.exe" download="gpx-animator_windows-x32_1_5_2.exe"><button><i class="fa fa-windows"></i> Windows 32 Bit</button></a><br/>
+  <a href="https://download.gpx-animator.app/gpx-animator_macos_1_5_2.dmg" download="gpx-animator_macos_1_5_2.dmg"><button><i class="fa fa-apple"></i> macOS</button></a>
+  <a href="https://download.gpx-animator.app/gpx-animator_unix_1_5_2.sh" download="gpx-animator_unix_1_5_2.sh"><button><i class="fa fa-linux"></i> Linux</button></a><br/>
+  <a href="https://download.gpx-animator.app/gpx-animator-1.5.2-all.jar" download="gpx-animator-1.5.2-all.jar"><button><i class="fa fa-download"></i> Java Archive</button></a>
 </p>
 
 <p>
@@ -78,18 +81,18 @@
 <p>If you have used the installer for Windows, macOS, or Linux, you will find a program icon in your application starter menu, which you can click to start GPX Animator. For the OS independent Java Archive, please use the command line:</p>
 
 <p>For default GUI run:</p>
-<pre><code>java -jar gpx-animator-1.5.1-all.jar</code></pre>
+<pre><code>java -jar gpx-animator-1.5.2-all.jar</code></pre>
 
 <p>For program help run:</p>
-<pre><code>java -jar gpx-animator-1.5.1-all.jar --help</code></pre>
+<pre><code>java -jar gpx-animator-1.5.2-all.jar --help</code></pre>
 
 <p>For direct rendering run:</p>
-<pre><code>java -jar gpx-animator-1.5.1-all.jar --input track.gpx</code></pre>
+<pre><code>java -jar gpx-animator-1.5.2-all.jar --input track.gpx</code></pre>
 
 <h2 id="faq">FAQ</h2>
 <h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
 <p>
-	Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.5.1-all.jar</code>.
+	Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.5.2-all.jar</code>.
 	If the problem persists, try higher value or check if your GPX trace doesn't cover too big area.
 	If it does then try to specify lower zoom, width and/or height.
 </p>
@@ -105,7 +108,7 @@
 
 <h3>The UI is too small on a high DPI screen</h3>
 <p>Some (older) Java versions have problems with the resolution of a high DPI screen. Until we find a solution to do it programmatically, you can force Java to double the size of the UI using this command:</p>
-<pre><code>GDK_SCALE=2 java -jar gpx-animator-1.5.1-all.jar</code></pre>
+<pre><code>GDK_SCALE=2 java -jar gpx-animator-1.5.2-all.jar</code></pre>
 
 <h3>I have some other problem</h3>
 <p>Feel free to open an issue in the <a href="https://github.com/zdila/gpx-animator/issues">GitHub Issue Tracker</a> (highly preferred) or write us at support<span>@</span>gpx-animator.app.</p>
