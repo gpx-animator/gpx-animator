@@ -2,7 +2,7 @@
 
 ## Version 1.5.2
 
-Release date: not yet released
+Release date: 2020-08-21
 
 * Improved error messages
 * Fixing a bug which prevented disabling the text in the animation.

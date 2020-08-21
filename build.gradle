@@ -8,7 +8,7 @@ plugins {
     id 'checkstyle'
 }
 
-version = '1.5.1'
+version = '1.5.2'
 group = 'app.gpx-animator'
 
 mainClassName = 'app.gpx_animator.Main'
