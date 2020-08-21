@@ -73,7 +73,18 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
     @Override
     public Object getPreviousValue() {
-        return value == null ? 0 : incrValue(-1);
+        return value == null ? getZero() : incrValue(-1);
+    }
+
+    @SuppressWarnings("UnnecessaryBoxing") // We need this for later compares in this "ungeneric generic" class... :-(
+    private Object getZero() {
+        if (minimum instanceof Byte) return Byte.valueOf((byte) 0);
+        if (minimum instanceof Short) return Short.valueOf((short) 0);
+        if (minimum instanceof Integer) return Integer.valueOf(0);
+        if (minimum instanceof Long) return Long.valueOf(0l);
+        if (minimum instanceof Float) return Float.valueOf(0.0f);
+        if (minimum instanceof Double) return Double.valueOf(0.0);
+        throw new IllegalStateException("Incorrect number type of class: " + maximum.getClass().getName());
     }
 
     private Number incrValue(final int dir) {
