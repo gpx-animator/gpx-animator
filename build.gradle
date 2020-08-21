@@ -1,9 +1,7 @@
-import com.github.spotbugs.SpotBugsTask
-
 plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
-    id 'com.github.spotbugs' version '3.0.0'
+    id 'com.github.spotbugs' version '4.5.0'
     id 'pmd'
     id 'checkstyle'
 }
@@ -25,7 +23,7 @@ configurations {
 }
 
 dependencies {
-    compileOnly 'com.github.spotbugs:spotbugs-annotations:3.1.12'
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.1.2'
     implementation 'xuggle:xuggle-xuggler:5.4'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
@@ -73,7 +71,14 @@ task deleteChangelog(type: Delete) {
 clean.dependsOn deleteChangelog
 assemble.dependsOn check
 
-tasks.withType(SpotBugsTask) {
+spotbugsMain {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+spotbugsTest {
     reports {
         xml.enabled = false
         html.enabled = true
