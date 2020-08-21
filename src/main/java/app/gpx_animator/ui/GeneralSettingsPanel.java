@@ -943,7 +943,10 @@ abstract class GeneralSettingsPanel extends JPanel {
     }
 
     private String generateAttributionText(final boolean replacePlaceholders, final Object tmsItem) {
-        if (!replacePlaceholders) return attributionTextArea.getText().trim();
+        if (!replacePlaceholders) {
+            return attributionTextArea.getText().trim();
+        }
+
         return attributionTextArea.getText()
                 .replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION)  //NON-NLS
                 .replace("%MAP_ATTRIBUTION%", //NON-NLS

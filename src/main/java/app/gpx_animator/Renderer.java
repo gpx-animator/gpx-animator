@@ -336,6 +336,7 @@ public final class Renderer {
      *
      * @param latLonList list of track points loaded from the GPX file
      */
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition") // here 2 is magic :-)
     private void sigmaRoxRepair(final List<LatLon> latLonList) {
         if (latLonList.size() >= 2) {
             final LatLon first = latLonList.get(0);
