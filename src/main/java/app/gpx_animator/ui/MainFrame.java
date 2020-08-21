@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -91,18 +92,59 @@ public final class MainFrame extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                final Color trackColor = Preferences.getTrackColorRandom()
-                        ? Color.getHSBColor(hue, 0.8f, 0.8f)
-                        : Preferences.getTrackColorDefault();
 
-                addTrackSettingsTab(TrackConfiguration
-                        .createBuilder()
-                        .color(trackColor)
-                        .build());
+                final JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fileChooser.setMultiSelectionEnabled(true);
+                fileChooser.setCurrentDirectory(new File(Preferences.getLastWorkingDir()));
 
-                hue += 0.275f;
-                while (hue >= 1f) {
-                    hue -= 1f;
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                fileChooser.addChoosableFileFilter(new FileFilter() {
+                    @Override
+                    public String getDescription() {
+                        return resourceBundle.getString("ui.panel.tracksettings.gpxfile.format.all");
+                    }
+
+                    @Override
+                    public boolean accept(final File f) {
+                        return f.isDirectory() || f.getName().endsWith(".gpx") || f.getName().endsWith(".gpx.gz"); //NON-NLS
+                    }
+                });
+                fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
+                        resourceBundle.getString("ui.panel.tracksettings.gpxfile.format.gpx"), "gpx")); //NON-NLS
+                fileChooser.addChoosableFileFilter(new FileFilter() {
+                    @Override
+                    public String getDescription() {
+                        return resourceBundle.getString("ui.panel.tracksettings.gpxfile.format.gpxgz");
+                    }
+
+                    @Override
+                    public boolean accept(final File f) {
+                        return f.isDirectory() || f.getName().endsWith(".gpx.gz"); //NON-NLS
+                    }
+                });
+
+                if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                    final File[] files = fileChooser.getSelectedFiles();
+                    if (files != null && files.length > 0) {
+                        Preferences.setLastWorkingDir(files[0].getParent());
+                        for (final File file : files) {
+                            final Color trackColor = Preferences.getTrackColorRandom()
+                                    ? Color.getHSBColor(hue, 0.8f, 0.8f)
+                                    : Preferences.getTrackColorDefault();
+
+                            addTrackSettingsTab(TrackConfiguration
+                                    .createBuilder()
+                                    .inputGpx(file)
+                                    .color(trackColor)
+                                    .build());
+
+                            hue += 0.275f;
+                            while (hue >= 1f) {
+                                hue -= 1f;
+                            }
+                        }
+                    }
                 }
             }
         };
