@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NonNls;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import app.gpx_animator.Configuration;
+import app.gpx_animator.Constants;
 import app.gpx_animator.Option;
 import app.gpx_animator.Preferences;
 
@@ -909,11 +910,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final Long td = (Long) tailDurationSpinner.getValue();
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
-        final String attribution = replacePlaceholders
-                ? attributionTextArea.getText().replace("%MAP_ATTRIBUTION%", //NON-NLS
-                    tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
-                            ? ((MapTemplate) tmsItem).getAttributionText() : "").trim()
-                : attributionTextArea.getText().trim();
+        final String attribution = generateAttributionText(replacePlaceholders, tmsItem);
 
         builder.height((Integer) heightSpinner.getValue())
                 .width((Integer) widthSpinner.getValue())
@@ -943,6 +940,16 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .photoDirectory(photosDirectorySelector.getFilename())
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .attribution(attribution);
+    }
+
+    private String generateAttributionText(final boolean replacePlaceholders, final Object tmsItem) {
+        if (!replacePlaceholders) return attributionTextArea.getText().trim();
+        return attributionTextArea.getText()
+                .replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION)  //NON-NLS
+                .replace("%MAP_ATTRIBUTION%", //NON-NLS
+                        tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
+                                ? ((MapTemplate) tmsItem).getAttributionText() : "")
+                .trim();
     }
 
     protected abstract void configurationChanged();

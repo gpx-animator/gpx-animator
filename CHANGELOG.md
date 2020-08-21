@@ -10,6 +10,7 @@ Release date: not yet released
 * Fixing crazy behaviour of Latitude and Longitude spinner
 * Fixing spinners not being able to go negative using the down arrow on first attempt
 * Automatic repair of broken files produced by Sigma Rox 12 bicycle computer
+* Show correct version number when using a saved file from an older version
 
 ## Version 1.5.1
 

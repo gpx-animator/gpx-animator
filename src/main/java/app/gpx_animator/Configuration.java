@@ -303,7 +303,7 @@ public final class Configuration {
         private Long flashbackDuration = 250L;
         private Long keepLastFrame;
         private File output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
-        private String attribution = String.format(resourceBundle.getString("configuration.attribution"), Constants.APPNAME_VERSION);
+        private String attribution = resourceBundle.getString("configuration.attribution");
         private int fontSize = 12;
         private Double markerSize = 8.0;
         private Double waypointSize = 6.0;
