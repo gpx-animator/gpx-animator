@@ -71,31 +71,7 @@ abstract class TrackSettingsPanel extends JPanel {
 
             @Override
             protected Type configure(final JFileChooser gpxFileChooser) {
-                gpxFileChooser.setAcceptAllFileFilterUsed(false);
-                gpxFileChooser.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public String getDescription() {
-                        return resourceBundle.getString("ui.panel.tracksettings.gpxfile.format.all");
-                    }
-
-                    @Override
-                    public boolean accept(final File f) {
-                        return f.isDirectory() || f.getName().endsWith(".gpx") || f.getName().endsWith(".gpx.gz"); //NON-NLS
-                    }
-                });
-                gpxFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-                        resourceBundle.getString("ui.panel.tracksettings.gpxfile.format.gpx"), "gpx")); //NON-NLS
-                gpxFileChooser.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public String getDescription() {
-                        return resourceBundle.getString("ui.panel.tracksettings.gpxfile.format.gpxgz");
-                    }
-
-                    @Override
-                    public boolean accept(final File f) {
-                        return f.isDirectory() || f.getName().endsWith(".gpx.gz"); //NON-NLS
-                    }
-                });
+                configureGpxFileChooser(resourceBundle, gpxFileChooser);
                 return Type.OPEN;
             }
         };
@@ -318,6 +294,35 @@ abstract class TrackSettingsPanel extends JPanel {
         trimGpxStartSpinner.addChangeListener(changeListener);
         trimGpxEndSpinner.addChangeListener(changeListener);
         trackIconComboBox.addItemListener(e -> configurationChanged());
+    }
+
+    public static void configureGpxFileChooser(final ResourceBundle resourceBundle, final JFileChooser fileChooser) {
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileFilter() {
+            @Override
+            public String getDescription() {
+                return resourceBundle.getString("ui.panel.tracksettings.gpxfile.format.all");
+            }
+
+            @Override
+            public boolean accept(final File f) {
+                return f.isDirectory() || f.getName().endsWith(".gpx") || f.getName().endsWith(".gpx.gz"); //NON-NLS
+            }
+        });
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
+                resourceBundle.getString("ui.panel.tracksettings.gpxfile.format.gpx"), "gpx")); //NON-NLS
+        fileChooser.addChoosableFileFilter(new FileFilter() {
+            @Override
+            public String getDescription() {
+                return resourceBundle.getString("ui.panel.tracksettings.gpxfile.format.gpxgz");
+            }
+
+            @Override
+            public boolean accept(final File f) {
+                return f.isDirectory() || f.getName().endsWith(".gpx.gz"); //NON-NLS
+            }
+        });
     }
 
 
