@@ -311,6 +311,7 @@ public final class Renderer {
             final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
             for (final List<LatLon> latLonList : gch.getPointLists()) {
+                sigmaRoxRepair(latLonList);
                 final TreeMap<Long, Point2D> timePointMap = new TreeMap<>();
                 toTimePointMap(timePointMap, trackIndex, latLonList);
                 trimGpxData(timePointMap, trackConfiguration);
@@ -321,6 +322,36 @@ public final class Renderer {
 
             Collections.reverse(timePointMapList); // reversing because of last known location drawing
             timePointMapListList.add(timePointMapList);
+        }
+    }
+
+    /**
+     * There is an error in the Sigma Rox 12 (and maybe other models) which
+     * does not save the timestamd on the first and last track points in the
+     * GPX files. The second track point has an identical position to the first
+     * one with a time, so the first entry can be ignored. Same with the
+     * penultimate and last entry, so the last entry can be ignored, too. The
+     * result is a fixed list of track points containing the correct track and
+     * timestamps.
+     *
+     * @param latLonList list of track points loaded from the GPX file
+     */
+    private void sigmaRoxRepair(final List<LatLon> latLonList) {
+        if (latLonList.size() >= 2) {
+            final LatLon first = latLonList.get(0);
+            final LatLon second = latLonList.get(1);
+            if (first.getTime() == Long.MIN_VALUE && second.getTime() > Long.MIN_VALUE
+                    && first.getLat() == second.getLat() && first.getLon() == second.getLon()) {
+                latLonList.remove(0);
+            }
+        }
+        if (latLonList.size() >= 2) {
+            final LatLon last = latLonList.get(latLonList.size() - 1);
+            final LatLon penultimate = latLonList.get(latLonList.size() - 2);
+            if (last.getTime() == Long.MIN_VALUE && penultimate.getTime() > Long.MIN_VALUE
+                    && last.getLat() == penultimate.getLat() && last.getLon() == penultimate.getLon()) {
+                latLonList.remove(latLonList.size() - 1);
+            }
         }
     }
 
