@@ -445,9 +445,9 @@ public final class MainFrame extends JFrame {
                                 resourceBundle.getString("ui.mainframe.dialog.interrupted.title"), JOptionPane.ERROR_MESSAGE);
                     } catch (final ExecutionException e) {
                         e.printStackTrace();
-                        JOptionPane.showMessageDialog(MainFrame.this,
-                                String.format(resourceBundle.getString("ui.mainframe.dialog.rendering.error.message"), e.getCause().getMessage()),
-                                errorTitle, JOptionPane.ERROR_MESSAGE);
+                        new ErrorDialog(MainFrame.this, String.format(
+                                resourceBundle.getString("ui.mainframe.dialog.rendering.error.message"),
+                                e.getCause().getMessage()), e);
                     } catch (final CancellationException e) {
                         JOptionPane.showMessageDialog(MainFrame.this,
                                 resourceBundle.getString("ui.mainframe.dialog.cancelled.message"),
