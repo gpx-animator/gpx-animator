@@ -643,9 +643,9 @@ public final class MainFrame extends JFrame {
             }
         } catch (final UserException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                    String.format(resourceBundle.getString("ui.mainframe.dialog.message.saveconfig.error"), e.getMessage()),
-                    errorTitle, JOptionPane.ERROR_MESSAGE);
+            new ErrorDialog(this,
+                    String.format(resourceBundle.getString("ui.mainframe.dialog.message.saveconfig.error"),
+                            e.getMessage()), e);
         }
     }
 
@@ -661,9 +661,9 @@ public final class MainFrame extends JFrame {
             }
         } catch (final UserException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                    String.format(resourceBundle.getString("ui.mainframe.dialog.message.savedefault.error"), e.getMessage()),
-                    errorTitle, JOptionPane.ERROR_MESSAGE);
+            new ErrorDialog(this,
+                    String.format(resourceBundle.getString("ui.mainframe.dialog.message.savedefault.error"),
+                            e.getMessage()), e);
         }
     }
 
