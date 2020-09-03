@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.6.0
+
+Release date: not yet released
+
+* Add multiple GPX files at once
+* New error dialog with additional internal information for better error reports
+
 ## Version 1.5.2
 
 Release date: 2020-08-21
