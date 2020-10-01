@@ -52,17 +52,19 @@ shadowJar {
     mergeServiceFiles()
 }
 
-tasks.withType(JavaCompile){
-    options.encoding = "UTF-8"
-}
-
 task copyChangelog(type: Copy) {
     from "."
     include "CHANGELOG.md"
     into "./src/main/resources"
 }
 
-build.dependsOn copyChangelog
+compileJava{
+    dependsOn copyChangelog
+}
+
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}
 
 task deleteChangelog(type: Delete) {
     delete "./src/main/resources/CHANGELOG.md"
