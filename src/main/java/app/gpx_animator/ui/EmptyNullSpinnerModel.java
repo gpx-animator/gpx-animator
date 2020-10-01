@@ -14,7 +14,7 @@
  */
 package app.gpx_animator.ui;
 
-import javax.swing.*;
+import javax.swing.AbstractSpinnerModel;
 import java.math.BigDecimal;
 
 public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
@@ -142,7 +142,7 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
         fireStateChanged();
     }
 
-    public int compareTo(Number n1, Number n2) {
+    public int compareTo(final Number n1, final Number n2) {
         BigDecimal b1 = BigDecimal.valueOf(n1.doubleValue());
         BigDecimal b2 = BigDecimal.valueOf(n2.doubleValue());
         return b1.compareTo(b2);
