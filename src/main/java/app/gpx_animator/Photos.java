@@ -120,15 +120,51 @@ public final class Photos {
             final long ms = cfg.getPhotoTime();
             final long fps = Double.valueOf(cfg.getFps()).longValue();
             final long frames = ms * fps / 1_000;
+            final long inOutFrames = cfg.getPhotoAnimationDuration() * fps / 1_000;
 
             try {
+                renderAnimationIn(bi, frameWriter, image, inOutFrames);
                 for (long frame = 0; frame < frames; frame++) {
                     frameWriter.addFrame(bi2);
                 }
+                renderAnimationOut(bi, frameWriter, image, inOutFrames);
             } catch (final UserException e) {
                 LOGGER.error("Problems rendering photo '{}'!", photo, e);
             }
         }
+    }
+
+    private void renderAnimationIn(final BufferedImage bi, final FrameWriter frameWriter, final BufferedImage image, final long frames)
+            throws UserException {
+        for (long frame = 1; frame <= frames; frame++) {
+            renderAnimation(bi, frameWriter, image, frames, frame);
+        }
+    }
+
+    private void renderAnimationOut(final BufferedImage bi, final FrameWriter frameWriter, final BufferedImage image, final long frames)
+            throws UserException {
+        for (long frame = frames; frame >= 1; frame--) {
+            renderAnimation(bi, frameWriter, image, frames, frame);
+        }
+    }
+
+    private void renderAnimation(final BufferedImage bi, final FrameWriter frameWriter,
+                                 final BufferedImage image, final long frames, final long frame)
+            throws UserException {
+        final int width = (int) (image.getWidth() * frame / frames);
+        final int height = (int) (image.getHeight() * frame / frames);
+        final BufferedImage scaledImage = scaleImage(image, width, height);
+
+        final int posX = (bi.getWidth() - scaledImage.getWidth()) / 2;
+        final int posY = (bi.getHeight() - scaledImage.getHeight()) / 2;
+
+        final BufferedImage bi2 = Utils.deepCopy(bi);
+        final Graphics2D g2d = bi2.createGraphics();
+
+        g2d.drawImage(scaledImage, posX, posY, null);
+        g2d.dispose();
+
+        frameWriter.addFrame(bi2);
     }
 
     private BufferedImage readPhoto(final Photo photo, final int width, final int height) {

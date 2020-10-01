@@ -161,6 +161,9 @@ public final class CommandLineConfigurationFactory {
                         case PHOTO_TIME:
                             cfg.photoTime(Long.parseLong(args[++i]));
                             break;
+                        case PHOTO_ANIMATION_DURATION:
+                            cfg.photoAnimationDuration(Long.parseLong(args[++i]));
+                            break;
                         case SPEEDUP:
                             cfg.speedup(Double.parseDouble(args[++i]));
                             break;

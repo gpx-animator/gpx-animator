@@ -81,6 +81,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient FileSelector logoFileSelector;
     private final transient FileSelector photosDirectorySelector;
     private final transient JSpinner photoTimeSpinner;
+    private final transient JSpinner photoAnimationDurationSpinner;
     private final transient JTextArea attributionTextArea;
     private final transient List<MapTemplate> mapTemplateList;
     private final transient JSpinner maxLatSpinner;
@@ -97,7 +98,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gridBagLayout.columnWidths = new int[]{91, 100, 0, 0};
         gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 0};
         gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                 Double.MIN_VALUE};
         setLayout(gridBagLayout);
 
@@ -793,6 +794,25 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcPhotoTimeSpinner.gridy = 23;
         add(photoTimeSpinner, gbcPhotoTimeSpinner);
         photoTimeSpinner.addChangeListener(changeListener);
+
+        final JLabel lblPhotoAnimationDuration = new JLabel(resourceBundle.getString("ui.panel.generalsettings.photoanimationduration.label"));
+        final GridBagConstraints gbcLabelPhotoAnimationDuration = new GridBagConstraints();
+        gbcLabelPhotoAnimationDuration.anchor = GridBagConstraints.LINE_END;
+        gbcLabelPhotoAnimationDuration.insets = new Insets(0, 0, 0, 5);
+        gbcLabelPhotoAnimationDuration.gridx = 0;
+        gbcLabelPhotoAnimationDuration.gridy = 24;
+        add(lblPhotoAnimationDuration, gbcLabelPhotoAnimationDuration);
+
+        photoAnimationDurationSpinner = new JSpinner();
+        photoAnimationDurationSpinner.setToolTipText(Option.PHOTO_ANIMATION_DURATION.getHelp());
+        photoAnimationDurationSpinner.setModel(new DurationSpinnerModel());
+        photoAnimationDurationSpinner.setEditor(new DurationEditor(photoAnimationDurationSpinner));
+        final GridBagConstraints gbcPhotoAnimationDurationSpinner = new GridBagConstraints();
+        gbcPhotoAnimationDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcPhotoAnimationDurationSpinner.gridx = 1;
+        gbcPhotoAnimationDurationSpinner.gridy = 24;
+        add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
+        photoAnimationDurationSpinner.addChangeListener(changeListener);
     }
 
     private void setVideoSize(final int width, final int height) {
@@ -875,6 +895,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
         photosDirectorySelector.setFilename(c.getPhotoDirectory());
         photoTimeSpinner.setValue(c.getPhotoTime());
+        photoAnimationDurationSpinner.setValue(c.getPhotoAnimationDuration());
 
         final String tmsUrlTemplate = c.getTmsUrlTemplate();
         found:
@@ -939,6 +960,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .logo(new File(logoFileSelector.getFilename()))
                 .photoDirectory(photosDirectorySelector.getFilename())
                 .photoTime((Long) photoTimeSpinner.getValue())
+                .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
                 .attribution(attribution);
     }
 

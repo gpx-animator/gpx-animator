@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 public final class Configuration {
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
+    public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
 
     private int margin;
     private Integer width;
@@ -78,6 +79,7 @@ public final class Configuration {
 
     private String photoDirectory;
     private Long photoTime;
+    private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
 
     @XmlElementWrapper
     @XmlElement(name = "trackConfiguration") //NON-NLS
@@ -87,11 +89,10 @@ public final class Configuration {
     // for JAXB
     @SuppressWarnings("unused")
     private Configuration() {
-
     }
 
     @SuppressWarnings("checkstyle:ParameterNumber")
-    public Configuration(
+    private Configuration(
             final int margin, final Integer width, final Integer height, final Integer zoom,
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
@@ -99,7 +100,7 @@ public final class Configuration {
             final Long keepLastFrame, final File output, final String attribution,
             final int fontSize, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
-            final File logo, final String photoDirectory, final Long photoTime,
+            final File logo, final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
@@ -131,6 +132,7 @@ public final class Configuration {
         this.logo = logo;
         this.photoDirectory = photoDirectory;
         this.photoTime = photoTime;
+        this.photoAnimationDuration = photoAnimationDuration;
     }
 
     public static Builder createBuilder() {
@@ -249,6 +251,10 @@ public final class Configuration {
         return photoTime;
     }
 
+    public Long getPhotoAnimationDuration() {
+        return photoAnimationDuration;
+    }
+
     public List<TrackConfiguration> getTrackConfigurationList() {
         return trackConfigurationList;
     }
@@ -278,6 +284,7 @@ public final class Configuration {
                 + ", logo=" + logo
                 + ", photoDirectory=" + photoDirectory
                 + ", photoTime=" + photoTime
+                + ", photoAnimationDuration=" + photoAnimationDuration
                 + ", trackConfigurationList=" + trackConfigurationList
                 + "]";
     }
@@ -314,6 +321,7 @@ public final class Configuration {
         private File logo;
         private String photoDirectory;
         private Long photoTime = 3_000L;
+        private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
 
         public Configuration build() {
             return new Configuration(
@@ -324,7 +332,7 @@ public final class Configuration {
                     keepLastFrame, output, attribution,
                     fontSize, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
-                    logo, photoDirectory, photoTime,
+                    logo, photoDirectory, photoTime, photoAnimationDuration,
 
                     Collections.unmodifiableList(trackConfigurationList)
             );
@@ -468,6 +476,11 @@ public final class Configuration {
 
         public Builder photoTime(final Long photoTime) {
             this.photoTime = photoTime;
+            return this;
+        }
+
+        public Builder photoAnimationDuration(final Long photoAnimationDuration) {
+            this.photoAnimationDuration = photoAnimationDuration;
             return this;
         }
 

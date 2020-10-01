@@ -46,6 +46,7 @@ public enum Option {
     LOGO("logo"),
     PHOTO_DIR("photo-dir"),
     PHOTO_TIME("photo-time"),
+    PHOTO_ANIMATION_DURATION("photo-animation-duration"),
     HELP("help"),
     TRACK_ICON("track-icon");
 
