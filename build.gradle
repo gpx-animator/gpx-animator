@@ -10,8 +10,8 @@ version = '1.6.0-SNAPSHOT'
 group = 'app.gpx-animator'
 
 mainClassName = 'app.gpx_animator.Main'
-sourceCompatibility = '11'
-targetCompatibility = '11'
+sourceCompatibility = '15'
+targetCompatibility = '15'
 
 repositories {
     mavenCentral()
