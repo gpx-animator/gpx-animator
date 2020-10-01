@@ -44,15 +44,7 @@ dependencies {
 test.classpath += configurations.developmentOnly
 run.classpath += configurations.developmentOnly
 
-test {
-    useJUnitPlatform()
-}
-
-shadowJar {
-    mergeServiceFiles()
-}
-
-tasks.withType(JavaCompile){
+tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
@@ -62,10 +54,26 @@ task copyChangelog(type: Copy) {
     into "./src/main/resources"
 }
 
-build.dependsOn copyChangelog
-
 task deleteChangelog(type: Delete) {
     delete "./src/main/resources/CHANGELOG.md"
+}
+
+task installGitHooks(type: Copy) {
+    from new File(rootProject.rootDir, 'config/git/pre-push')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    fileMode 0755
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+compileJava {
+    dependsOn copyChangelog
 }
 
 clean.dependsOn deleteChangelog
@@ -88,12 +96,6 @@ spotbugsTest {
 pmd {
     ruleSets = []
     ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
-}
-
-task installGitHooks(type: Copy) {
-    from new File(rootProject.rootDir, 'config/git/pre-push')
-    into { new File(rootProject.rootDir, '.git/hooks') }
-    fileMode 0755
 }
 
 check.dependsOn installGitHooks
