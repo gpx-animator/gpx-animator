@@ -14,7 +14,8 @@
  */
 package app.gpx_animator.ui;
 
-import javax.swing.AbstractSpinnerModel;
+import javax.swing.*;
+import java.math.BigDecimal;
 
 public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
@@ -22,30 +23,24 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
     private final transient boolean zeroEmpty;
     private final transient Number stepSize;
-    private final transient Comparable minimum;
-    private final transient Comparable maximum;
+    private final transient Number minimum;
+    private final transient Number maximum;
     private final transient int fractions;
     private final transient double fractionValue;
     private transient Number value;
     private transient Object object = new Object();
 
 
-    public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize) {
-        this(value, minimum, maximum, stepSize, true);
-    }
-
-
-    public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize,
-                                 final boolean zeroEmpty) {
+    public EmptyNullSpinnerModel(final Number value, final Number minimum, final Number maximum, final Number stepSize) {
         this(value, minimum, maximum, stepSize, true, -1);
     }
 
-    public EmptyNullSpinnerModel(final Number value, final Comparable minimum, final Comparable maximum, final Number stepSize,
+    public EmptyNullSpinnerModel(final Number value, final Number minimum, final Number maximum, final Number stepSize,
                                  final boolean zeroEmpty, final int fractions) {
         if (stepSize == null) {
             throw new IllegalArgumentException("value and stepSize must be non-null");
         }
-        if (value != null && !((minimum == null || minimum.compareTo(value) <= 0) && (maximum == null || maximum.compareTo(value) >= 0))) {
+        if (value != null && !((minimum == null || compareTo(minimum, value) <= 0) && (maximum == null || compareTo(maximum, value) >= 0))) {
             throw new IllegalArgumentException("(minimum <= value <= maximum) is false");
         }
         this.zeroEmpty = zeroEmpty;
@@ -73,30 +68,7 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
     @Override
     public Object getPreviousValue() {
-        return value == null ? getZero() : incrValue(-1);
-    }
-
-    @SuppressWarnings("UnnecessaryBoxing") // We need this for later compares in this "ungeneric generic" class... :-(
-    private Object getZero() {
-        if (minimum instanceof Byte) {
-            return Byte.valueOf((byte) 0);
-        }
-        if (minimum instanceof Short) {
-            return Short.valueOf((short) 0);
-        }
-        if (minimum instanceof Integer) {
-            return Integer.valueOf(0);
-        }
-        if (minimum instanceof Long) {
-            return Long.valueOf(0L);
-        }
-        if (minimum instanceof Float) {
-            return Float.valueOf(0.0f);
-        }
-        if (minimum instanceof Double) {
-            return Double.valueOf(0.0);
-        }
-        throw new IllegalStateException("Incorrect number type of class: " + maximum.getClass().getName());
+        return value == null ? 0 : incrValue(-1);
     }
 
     private Number incrValue(final int dir) {
@@ -122,11 +94,11 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
             }
         }
 
-        if ((maximum != null) && (maximum.compareTo(newValue) < 0)) {
-            return (Number) maximum;
+        if ((maximum != null) && compareTo(maximum, newValue) < 0) {
+            return maximum;
         }
-        if ((minimum != null) && (minimum.compareTo(newValue) > 0)) {
-            return (Number) minimum;
+        if ((minimum != null) && compareTo(minimum, newValue) > 0) {
+            return minimum;
         } else {
             return newValue;
         }
@@ -148,20 +120,31 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
             return;
         }
 
-        if (o == null || !o.equals(object)) {
-            object = o;
-            Object newValue = o == null || ((Number) o).doubleValue() == 0.0 && zeroEmpty ? null : o;
-            if (newValue != null) {
-                if ((maximum != null) && (maximum.compareTo(newValue) < 0)) {
-                    newValue = maximum;
-                }
-                if ((minimum != null) && (minimum.compareTo(newValue) > 0)) {
-                    newValue = minimum;
-                }
-            }
-            value = (Number) newValue;
-            fireStateChanged();
+        if (o != null && !(o instanceof Number)) {
+            throw new IllegalArgumentException(String.format("setValue was called with invalid Argument not of type Number. o: %s", o));
         }
+
+        object = o;
+        Number newValue = (Number) o;
+        if (newValue != null && zeroEmpty && newValue.doubleValue() == 0.0) {
+            newValue = null;
+        }
+
+        if (newValue != null) {
+            if ((maximum != null) && compareTo(maximum, newValue) < 0) {
+                newValue = maximum;
+            }
+            if ((minimum != null) && compareTo(minimum, newValue) > 0) {
+                newValue = minimum;
+            }
+        }
+        value = newValue;
+        fireStateChanged();
     }
 
+    public int compareTo(Number n1, Number n2) {
+        BigDecimal b1 = BigDecimal.valueOf(n1.doubleValue());
+        BigDecimal b2 = BigDecimal.valueOf(n2.doubleValue());
+        return b1.compareTo(b2);
+    }
 }
