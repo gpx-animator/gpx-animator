@@ -114,6 +114,7 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
     }
 
     @Override
+    @SuppressWarnings("PMD.NullAssignment")
     public void setValue(final Object o) {
         if (object == null && o == null || object != null && object.equals(o)) {
             // no change
