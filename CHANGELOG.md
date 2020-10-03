@@ -4,8 +4,13 @@
 
 Release date: not yet released
 
-* Add multiple GPX files at once
+* Adding multiple GPX files at once
+* Adding an animation to smoothly fade photos in and out
 * New error dialog with additional internal information for better error reports
+* Fixing `NullPointerException` when starting GPX Animator the first time
+* Fixing `NullPointerException` when showing the Changelog
+* Migrating to Java 15
+* Fixing a bunch of compiler warnings
 
 ## Version 1.5.2
 
