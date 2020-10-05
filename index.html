@@ -101,9 +101,15 @@
 
         <h2 id="usage">Basic usage</h2>
 
+        <p>GPX Animator can be used in two ways: Either with a GUI (Graphical User Interface), or via CLI (Command Line Interface). Using the GUI is highly recommended for end-users, while CLI usage is perfect for automatization.</p>
+
+        <h3>GUI usage</h3>
+
         <p>If you have used the installer for Windows, macOS, or Linux, you will find a program icon in your application
             starter menu, which you can click to start GPX Animator. For the OS independent Java Archive, please use the
-            command line:</p>
+            command line to start the GUI.</p>
+
+        <h3>CLI usage</h3>
 
         <p>For default GUI run:</p>
         <pre><code>java -jar gpx-animator-1.5.2-all.jar</code></pre>
@@ -113,6 +119,245 @@
 
         <p>For direct rendering run:</p>
         <pre><code>java -jar gpx-animator-1.5.2-all.jar --input track.gpx</code></pre>
+
+        <h4>Command line parameters</h4>
+
+        <dl>
+            <dt>
+                --attribution &lt;text&gt;
+            </dt>
+            <dd>
+                map attribution text; %MAP_ATTRIBUTION% placeholder is replaced by
+                attribution of selected pre-defined map (only from GUI); default:
+<pre>Created by %APPNAME_VERSION%
+%MAP_ATTRIBUTION%</pre>
+            </dd>
+            <dt>
+                --background-map-visibility &lt;visibility&gt;
+            </dt>
+            <dd>
+                opacity of the background map from 0.0 to 1.0; default 0.5
+            </dd>
+            <dt>
+                --color &lt;color&gt;
+            </dt>
+            <dd>
+                track color in #RRGGBB representation; can be specified multiple times
+                if multiple tracks are provided; default some nice color :-)
+            </dd>
+            <dt>
+                --flashback-color &lt;ARGBcolor&gt;
+            </dt>
+            <dd>
+                transition color between non-idle parts; default opaque white -
+                #ffffffff
+            </dd>
+            <dt>
+                --flashback-duration &lt;duration&gt;
+            </dt>
+            <dd>
+                color of the idle-skipping flashback effect in #AARRGGBB
+                representation; default 250
+            </dd>
+            <dt>
+                --font-size &lt;size&gt;
+            </dt>
+            <dd>
+                text font size; set to 0 for no text; default 12
+            </dd>
+            <dt>
+                --forced-point-time-interval &lt;milliseconds&gt;
+            </dt>
+            <dd>
+                interval between adjanced GPS points in milliseconds - useful for GPX
+                files with missing point time information; if specified then time
+                offset must be set representing absolute; empty for no forcing; can be
+                specified multiple times if multiple tracks are provided
+            </dd>
+            <dt>
+                --fps &lt;fps&gt;
+            </dt>
+            <dd>
+                frames per second; default 30.0
+            </dd>
+            <dt>
+                --gui
+            </dt>
+            <dd>
+                show GUI; default if no argument is specified
+            </dd>
+            <dt>
+                --height &lt;height&gt;
+            </dt>
+            <dd>
+                video height in pixels; if unspecified, it is derived from width, GPX
+                bounding box and margin
+            </dd>
+            <dt>
+                --help
+            </dt>
+            <dd>
+                list of command line parameters, including description (same as here)
+            </dd>
+            <dt>
+                --input &lt;input&gt;
+            </dt>
+            <dd>
+                input GPX filename; can be specified multiple times if multiple tracks
+                are provided
+            </dd>
+            <dt>
+                --track-icon &lt;trackIcon&gt;
+            </dt>
+            <dd>
+                enables an icon that replaces the standard circle of the current
+                position (valid values: Airplane, Bicycle, Bus, Car, Jogging, Riding,
+                Sailing, Ship, Train, Tramway, Trekking); can be specified multiple
+                times if multiple tracks are provided
+            </dd>
+            <dt>
+                --label &lt;label&gt;
+            </dt>
+            <dd>
+                text displayed next to marker; can be specified multiple times if
+                multiple tracks are provided
+            </dd>
+            <dt>
+                --line-width &lt;width&gt;
+            </dt>
+            <dd>
+                track line width in pixels; can be specified multiple times if
+                multiple tracks are provided; default 2.0
+            </dd>
+            <dt>
+                --margin &lt;margin&gt;
+            </dt>
+            <dd>
+                margin in pixels; default 20
+            </dd>
+            <dt>
+                --marker-size &lt;size&gt;
+            </dt>
+            <dd>
+                marker size in pixels; default 8.0
+            </dd>
+            <dt>
+                --max-lat &lt;latitude&gt;
+            </dt>
+            <dd>
+                maximal latitude; leave empty if it should be automatically computed
+                from the GPX tracks
+            </dd>
+            <dt>
+                --max-lon &lt;longitude&gt;
+            </dt>
+            <dd>
+                maximal longitude; leave empty if it should be automatically computed
+                from the GPX tracks
+            </dd>
+            <dt>
+                --min-lat &lt;latitude&gt;
+            </dt>
+            <dd>
+                minimal latitude; leave empty if it should be automatically computed
+                from the GPX tracks
+            </dd>
+            <dt>
+                --min-lon &lt;longitude&gt;
+            </dt>
+            <dd>
+                minimal longitude; leave empty if it should be automatically computed
+                from the GPX tracks
+            </dd>
+            <dt>
+                --output &lt;output&gt;
+            </dt>
+            <dd>
+                filename for generated video or filename template for saved image
+                frames where %06d will be replaced by frame sequence number; default
+                /Users/mcpringle/tmp/GPX-Animation.mp4
+            </dd>
+            <dt>
+                --photo-time &lt;milliseconds&gt;
+            </dt>
+            <dd>
+                the amount of time, a photo should be shown above the map; default 3000
+            </dd>
+            <dt>
+                --photo-dir &lt;directory&gt;
+            </dt>
+            <dd>
+                a directory containing photos to be added to the animation (must
+                contain EXIF information with date and time of photo taken)
+            </dd>
+            <dt>
+                --skip-idle
+            </dt>
+            <dd>
+                idle-skipping flashback effect duration in milliseconds; set to empty
+                for no flashback; default true
+            </dd>
+            <dt>
+                --speedup &lt;speedup&gt;
+            </dt>
+            <dd>
+                speed multiplication of the real time; complementary to specifying
+                total time; default 1000.0
+            </dd>
+            <dt>
+                --tail-duration &lt;time&gt;
+            </dt>
+            <dd>
+                highlighted tail length in real time milliseconds; default 3600000
+            </dd>
+            <dt>
+                --tail-color &lt;tail-color&gt;
+            </dt>
+            <dd>
+                highlighted tail color; default java.awt.Color[r=0,g=0,b=0]
+            </dd>
+            <dt>
+                --time-offset &lt;milliseconds&gt;
+            </dt>
+            <dd>
+                time offset for track in milliseconds; can be specified multiple times
+                if multiple tracks are provided
+            </dd>
+            <dt>
+                --tms-url-template &lt;template&gt;
+            </dt>
+            <dd>
+                slippymap (TMS) URL template for background map where {x}, {y} and
+                {zoom} placeholders will be replaced; for example use
+                http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap
+            </dd>
+            <dt>
+                --total-time &lt;time&gt;
+            </dt>
+            <dd>
+                total length of video in milliseconds; complementary to speedup
+            </dd>
+            <dt>
+                --waypoint-size &lt;size&gt;
+            </dt>
+            <dd>
+                waypoint size in pixels; for no waypoints specify 0; default 6.0
+            </dd>
+            <dt>
+                --width &lt;width&gt;
+            </dt>
+            <dd>
+                video width in pixels; if not specified but zoom is specified, then
+                computed from GPX bounding box and margin, otherwise 800; default (800)
+            </dd>
+            <dt>
+                --zoom &lt;zoom&gt;
+            </dt>
+            <dd>
+                map zoom typically from 1 to 18; if not specified and TMS URL Template
+                (Background Map) is specified then it is computed from width
+            </dd>
+        </dl>
 
         <h2 id="faq">FAQ</h2>
         <h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
