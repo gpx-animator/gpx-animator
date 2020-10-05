@@ -1,0 +1,23 @@
+# Eclipse project file
+/.settings
+/.classpath
+/.project
+
+# IntelliJ IDEA project files
+/*.iml
+/*.iws
+/*.ipr
+/.idea
+
+# Theia project files
+/.theia
+
+# VS Code project files
+/.vscode
+
+# OS files
+.DS_Store
+$RECYCLE.BIN
+[Dd]esktop.ini
+Thumbs.db
+*.lnk
