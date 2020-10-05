@@ -1,149 +1,179 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<head>
+    <meta charset='utf-8'/>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
     <meta name="keywords" content="gpx,animate,animator,video,party render,map,openstreetmap,gps,track">
-    <meta name="description" content="GPX Animator" />
+    <meta name="description" content="GPX Animator"/>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css"/>
 
     <title>GPX Animator</title>
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/zdila/gpx-animator">View on GitHub</a>
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+    <header class="inner">
+        <a id="forkme_banner" href="https://github.com/zdila/gpx-animator">View on GitHub</a>
 
-          <h1 id="project_title">GPX Animator</h1>
-          <h2 id="project_tagline">Advanced GPX to Video convertor</h2>
-        </header>
-    </div>
+        <h1 id="project_title">GPX Animator</h1>
+        <h2 id="project_tagline">Advanced GPX to Video convertor</h2>
+    </header>
+</div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
         <h1>GPX Animator</h1>
 
-<h2 id="intro">Introduction</h2>
+        <h2 id="intro">Introduction</h2>
 
-<p>GPX Animator generates video from GPX files.</p>
+        <p>GPX Animator generates video from GPX files.</p>
 
-<h2 id="features">Features</h2>
+        <h2 id="features">Features</h2>
 
-<ul>
-<li>supports multiple GPX tracks with mutliple track segments</li>
-<li>skipping idle parts</li>
-<li>configurable color, label, width and time offset per track</li>
-<li>configurable video size, fps and speedup or total video time</li>
-<li>background map from any public TMS server</li>
-</ul>
+        <ul>
+            <li>supports multiple GPX tracks with mutliple track segments</li>
+            <li>skipping idle parts</li>
+            <li>configurable color, label, width and time offset per track</li>
+            <li>configurable video size, fps and speedup or total video time</li>
+            <li>background map from any public TMS server</li>
+        </ul>
 
-<h2 id="downloads">Downloads</h2>
+        <h2 id="downloads">Downloads</h2>
 
-<h3>Latest Stable Version</h3>
+        <h3>Latest Stable Version</h3>
 
-<p>It is recommended, to download the latest stable version. As of today, this is v1.5.2, released on August 21st, 2020. This is a bugfix release:</p>
+        <p>It is recommended, to download the latest stable version. As of today, this is v1.5.2, released on August
+            21st, 2020. This is a bugfix release:</p>
 
-<ul>
-  <li>Improved error messages</li>
-  <li>Fixing a bug which prevented disabling the text in the animation.</li>
-  <li>Fixing a bug in percentage calculator (never reached 100%)</li>
-  <li>Fixing crazy behaviour of Latitude and Longitude spinner</li>
-  <li>Fixing spinners not being able to go negative using the down arrow on first attempt</li>
-  <li>Automatic repair of broken files produced by Sigma Rox 12 bicycle computer</li>
-  <li>Show correct version number when using a saved file from an older version</li>
-</ul>
+        <ul>
+            <li>Improved error messages</li>
+            <li>Fixing a bug which prevented disabling the text in the animation.</li>
+            <li>Fixing a bug in percentage calculator (never reached 100%)</li>
+            <li>Fixing crazy behaviour of Latitude and Longitude spinner</li>
+            <li>Fixing spinners not being able to go negative using the down arrow on first attempt</li>
+            <li>Automatic repair of broken files produced by Sigma Rox 12 bicycle computer</li>
+            <li>Show correct version number when using a saved file from an older version</li>
+        </ul>
 
-<p>
-  Important information for Windows and macOS users: The installer is not signed. If you start the installation, you'll get a warning, but you can go over it and continue the installation. GPX Animator is open source and free to use, we don't earn money with it and thus can't afford to pay the yearly fee of round about € 270 (for Windows) and € 100 (for macOS) for the code signing certificate! If you know a better solution, please let us know. Thank you very much for your understanding.
-</p>
+        <p>
+            Important information for Windows and macOS users: The installer is not signed. If you start the
+            installation, you'll get a warning, but you can go over it and continue the installation. GPX Animator is
+            open source and free to use, we don't earn money with it and thus can't afford to pay the yearly fee of
+            round about € 270 (for Windows) and € 100 (for macOS) for the code signing certificate! If you know a better
+            solution, please let us know. Thank you very much for your understanding.
+        </p>
 
-<p>
-  <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_5_2.exe" download="gpx-animator_windows-x64_1_5_2.exe"><button><i class="fa fa-windows"></i> Windows 64 Bit</button></a>
-  <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_5_2.exe" download="gpx-animator_windows-x32_1_5_2.exe"><button><i class="fa fa-windows"></i> Windows 32 Bit</button></a><br/>
-  <a href="https://download.gpx-animator.app/gpx-animator_macos_1_5_2.dmg" download="gpx-animator_macos_1_5_2.dmg"><button><i class="fa fa-apple"></i> macOS</button></a>
-  <a href="https://download.gpx-animator.app/gpx-animator_unix_1_5_2.sh" download="gpx-animator_unix_1_5_2.sh"><button><i class="fa fa-linux"></i> Linux</button></a><br/>
-  <a href="https://download.gpx-animator.app/gpx-animator-1.5.2-all.jar" download="gpx-animator-1.5.2-all.jar"><button><i class="fa fa-download"></i> Java Archive</button></a>
-</p>
+        <p>
+            <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_5_2.exe"
+               download="gpx-animator_windows-x64_1_5_2.exe">
+                <button><i class="fa fa-windows"></i> Windows 64 Bit</button>
+            </a>
+            <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_5_2.exe"
+               download="gpx-animator_windows-x32_1_5_2.exe">
+                <button><i class="fa fa-windows"></i> Windows 32 Bit</button>
+            </a><br/>
+            <a href="https://download.gpx-animator.app/gpx-animator_macos_1_5_2.dmg"
+               download="gpx-animator_macos_1_5_2.dmg">
+                <button><i class="fa fa-apple"></i> macOS</button>
+            </a>
+            <a href="https://download.gpx-animator.app/gpx-animator_unix_1_5_2.sh"
+               download="gpx-animator_unix_1_5_2.sh">
+                <button><i class="fa fa-linux"></i> Linux</button>
+            </a><br/>
+            <a href="https://download.gpx-animator.app/gpx-animator-1.5.2-all.jar"
+               download="gpx-animator-1.5.2-all.jar">
+                <button><i class="fa fa-download"></i> Java Archive</button>
+            </a>
+        </p>
 
-<p>
-  ej-technologies provides us a free license for <a href="https://www.ej-technologies.com/products/install4j/overview.html" target="_blank" alt="Install4J multi-platform installer builder" title="Install4J multi-platform installer builder">Install4J</a>. Thank you very much for your support!
-</p>
+        <p>
+            ej-technologies provides us a free license for <a
+                href="https://www.ej-technologies.com/products/install4j/overview.html" target="_blank"
+                alt="Install4J multi-platform installer builder" title="Install4J multi-platform installer builder">Install4J</a>.
+            Thank you very much for your support!
+        </p>
 
-<h2 id="usage">Basic usage</h2>
+        <h2 id="usage">Basic usage</h2>
 
-<p>If you have used the installer for Windows, macOS, or Linux, you will find a program icon in your application starter menu, which you can click to start GPX Animator. For the OS independent Java Archive, please use the command line:</p>
+        <p>If you have used the installer for Windows, macOS, or Linux, you will find a program icon in your application
+            starter menu, which you can click to start GPX Animator. For the OS independent Java Archive, please use the
+            command line:</p>
 
-<p>For default GUI run:</p>
-<pre><code>java -jar gpx-animator-1.5.2-all.jar</code></pre>
+        <p>For default GUI run:</p>
+        <pre><code>java -jar gpx-animator-1.5.2-all.jar</code></pre>
 
-<p>For program help run:</p>
-<pre><code>java -jar gpx-animator-1.5.2-all.jar --help</code></pre>
+        <p>For program help run:</p>
+        <pre><code>java -jar gpx-animator-1.5.2-all.jar --help</code></pre>
 
-<p>For direct rendering run:</p>
-<pre><code>java -jar gpx-animator-1.5.2-all.jar --input track.gpx</code></pre>
+        <p>For direct rendering run:</p>
+        <pre><code>java -jar gpx-animator-1.5.2-all.jar --input track.gpx</code></pre>
 
-<h2 id="faq">FAQ</h2>
-<h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
-<p>
-	Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.5.2-all.jar</code>.
-	If the problem persists, try higher value or check if your GPX trace doesn't cover too big area.
-	If it does then try to specify lower zoom, width and/or height.
-</p>
+        <h2 id="faq">FAQ</h2>
+        <h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
+        <p>
+            Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.5.2-all.jar</code>.
+            If the problem persists, try higher value or check if your GPX trace doesn't cover too big area.
+            If it does then try to specify lower zoom, width and/or height.
+        </p>
 
-<h3>Does it run on Linux, Windows, WhateverOS?</h3>
-<p>Application will run on any platform where you can run Java.</p>
+        <h3>Does it run on Linux, Windows, WhateverOS?</h3>
+        <p>Application will run on any platform where you can run Java.</p>
 
-<h3>My GPX is missing point timestamps</h3>
-<p>No problem. Add --forced-point-time-interval option.</p>
+        <h3>My GPX is missing point timestamps</h3>
+        <p>No problem. Add --forced-point-time-interval option.</p>
 
-<h3>Video is very short or long</h3>
-<p>Fine-tune speedup or specify exact total time in seconds.</p>
+        <h3>Video is very short or long</h3>
+        <p>Fine-tune speedup or specify exact total time in seconds.</p>
 
-<h3>The UI is too small on a high DPI screen</h3>
-<p>Some (older) Java versions have problems with the resolution of a high DPI screen. Until we find a solution to do it programmatically, you can force Java to double the size of the UI using this command:</p>
-<pre><code>GDK_SCALE=2 java -jar gpx-animator-1.5.2-all.jar</code></pre>
+        <h3>The UI is too small on a high DPI screen</h3>
+        <p>Some (older) Java versions have problems with the resolution of a high DPI screen. Until we find a solution
+            to do it programmatically, you can force Java to double the size of the UI using this command:</p>
+        <pre><code>GDK_SCALE=2 java -jar gpx-animator-1.5.2-all.jar</code></pre>
 
-<h3>I have some other problem</h3>
-<p>Feel free to open an issue in the <a href="https://github.com/zdila/gpx-animator/issues">GitHub Issue Tracker</a> (highly preferred) or write us at support<span>@</span>gpx-animator.app.</p>
+        <h3>I have some other problem</h3>
+        <p>Feel free to open an issue in the <a href="https://github.com/zdila/gpx-animator/issues">GitHub Issue
+            Tracker</a> (highly preferred) or write us at support<span>@</span>gpx-animator.app.</p>
 
-<h2 id="demos">Demos</h2>
+        <h2 id="demos">Demos</h2>
 
-<ul>
+        <ul>
 
-	<li><a href="https://www.youtube.com/watch?v=4ZM9lI1GppA">Freemap Mapping Party Oščadnica 2015</a></li>
-	<li><a href="https://www.facebook.com/video.php?v=824039954308819">Mapping party Revúca 2014</a></li>
-	<li><a href="http://vimeo.com/77485518">Freemap Slovakia Mapping Party in Low Tatras 2013</a></li>
-	<li><a href="https://www.facebook.com/photo.php?v=10151681029118769">Mapping party Kysuce 2013</a></li>
-	<li><a href="https://www.facebook.com/photo.php?v=10151420417858769">Demo of GPX Animator 0.4</a></li>
-	<li><a href="http://www.youtube.com/watch?v=YWZzUpNi0yA&amp;hd=1&amp;wide=1">Medzi mestami 2011</a></li>
-</ul>
+            <li><a href="https://www.youtube.com/watch?v=4ZM9lI1GppA">Freemap Mapping Party Oščadnica 2015</a></li>
+            <li><a href="https://www.facebook.com/video.php?v=824039954308819">Mapping party Revúca 2014</a></li>
+            <li><a href="http://vimeo.com/77485518">Freemap Slovakia Mapping Party in Low Tatras 2013</a></li>
+            <li><a href="https://www.facebook.com/photo.php?v=10151681029118769">Mapping party Kysuce 2013</a></li>
+            <li><a href="https://www.facebook.com/photo.php?v=10151420417858769">Demo of GPX Animator 0.4</a></li>
+            <li><a href="http://www.youtube.com/watch?v=YWZzUpNi0yA&amp;hd=1&amp;wide=1">Medzi mestami 2011</a></li>
+        </ul>
 
-<h2 id="tutorials">Tutorials</h2>
+        <h2 id="tutorials">Tutorials</h2>
 
-<ul>
-  <li><a href="https://www.youtube.com/watch?v=AtcBVrbB6bg">GPS Tracks Animation mit "GPX Animator" (Marcus Bersheim) 🇩🇪</a></li>
-</ul>
+        <ul>
+            <li><a href="https://www.youtube.com/watch?v=AtcBVrbB6bg">GPS Tracks Animation mit "GPX Animator" (Marcus
+                Bersheim) 🇩🇪</a></li>
+        </ul>
 
-          <h2 id="changelog">Changelog</h2>
+        <h2 id="changelog">Changelog</h2>
 
-<p><a href="https://github.com/zdila/gpx-animator/blob/master/CHANGELOG.md">https://github.com/zdila/gpx-animator/blob/master/CHANGELOG.md</a></p>
-      </section>
-    </div>
+        <p><a href="https://github.com/zdila/gpx-animator/blob/master/CHANGELOG.md">https://github.com/zdila/gpx-animator/blob/master/CHANGELOG.md</a>
+        </p>
+    </section>
+</div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">GPX Animator is maintained by <a href="https://github.com/zdila">zdila</a> and <a href="https://github.com/McPringle">McPringle</a></p>
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+    <footer class="inner">
+        <p class="copyright">GPX Animator is maintained by <a href="https://github.com/zdila">zdila</a> and <a
+                href="https://github.com/McPringle">McPringle</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+    </footer>
+</div>
 
-  </body>
+</body>
 </html>
