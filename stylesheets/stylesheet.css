@@ -292,7 +292,7 @@ Full-Width Styles
   margin: 0 auto;
 }
 
-#forkme_banner {
+#forkme_banner, #downloads_banner {
   display: block;
   position: absolute;
   top:0;
@@ -305,6 +305,16 @@ Full-Width Styles
   box-shadow: 0 0 10px rgba(0,0,0,.5);
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
+}
+
+#forkme_banner {
+  right: 10px;
+  background: url('../images/blacktocat.png') #0090ff no-repeat 95% 50%;
+}
+
+#downloads_banner {
+  right: 195px;
+  background: url('../images/downloads.png') #0090ff no-repeat 95% 50%;
 }
 
 #header_wrap {
