@@ -305,12 +305,17 @@ public final class Renderer {
         for (final TrackConfiguration trackConfiguration : cfg.getTrackConfigurationList()) {
             trackIndex++;
 
+            final File inputGpxFile = trackConfiguration.getInputGpx();
             final GpxContentHandler gch = new GpxContentHandler();
-            GpxParser.parseGpx(trackConfiguration.getInputGpx(), gch);
+            GpxParser.parseGpx(inputGpxFile, gch);
 
             final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
-            for (final List<LatLon> latLonList : gch.getPointLists()) {
+            final List<List<LatLon>> pointLists = gch.getPointLists();
+            if (pointLists.isEmpty()) {
+                throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
+            }
+            for (final List<LatLon> latLonList : pointLists) {
                 sigmaRoxRepair(latLonList);
                 final TreeMap<Long, Point2D> timePointMap = new TreeMap<>();
                 toTimePointMap(timePointMap, trackIndex, latLonList);
