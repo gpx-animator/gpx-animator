@@ -399,6 +399,9 @@
             to do it programmatically, you can force Java to double the size of the UI using this command:</p>
         <pre><code>GDK_SCALE=2 java -jar gpx-animator-1.5.2-all.jar</code></pre>
 
+        <h3>Error While Rendering - Invalid frame size (0x0)</h3>
+        <p>A GPX file is like a container and can contain a lot of different information. GPX Animator needs track data to work properly. If you get this error message, it is likely that your file does not contain a track. Maybe it contains just waypoints and no track information. The next version of GPX Animator will show a much better error message (The GPX file "foobar.gpx" does not contain valid track data!).</p>
+
         <h3>I have some other problem</h3>
         <p>Feel free to open an issue in the <a href="https://github.com/zdila/gpx-animator/issues">GitHub Issue
             Tracker</a> (highly preferred) or write us at support<span>@</span>gpx-animator.app.</p>
