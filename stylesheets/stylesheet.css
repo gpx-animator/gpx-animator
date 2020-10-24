@@ -322,6 +322,12 @@ Full-Width Styles
   padding: 50px 10px 30px 10px;
 }
 
+#animation {
+    position: absolute;
+    margin-left: calc(50vw - 10px);
+    transform: translate(-50%);
+}
+
 #project_title {
   margin: 0;
   color: #fff;
