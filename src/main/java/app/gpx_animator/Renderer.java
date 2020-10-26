@@ -244,7 +244,14 @@ public final class Renderer {
             final Point2D marker = drawMarker(bi2, frame);
             if (font != null) {
                 drawInfo(bi2, frame, marker);
-                drawAttribution(bi2, cfg.getAttribution());
+
+                String att = resourceBundle.getString("configuration.attribution");
+                String getAt = cfg.getAttribution();
+                if (att.equals(getAt)) {
+                    drawAttribution(bi2, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
+                } else {
+                    drawAttribution(bi2, getAt);
+                }
             }
 
             skip = renderFlashback(skip, bi2);
@@ -305,17 +312,12 @@ public final class Renderer {
         for (final TrackConfiguration trackConfiguration : cfg.getTrackConfigurationList()) {
             trackIndex++;
 
-            final File inputGpxFile = trackConfiguration.getInputGpx();
             final GpxContentHandler gch = new GpxContentHandler();
-            GpxParser.parseGpx(inputGpxFile, gch);
+            GpxParser.parseGpx(trackConfiguration.getInputGpx(), gch);
 
             final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
-            final List<List<LatLon>> pointLists = gch.getPointLists();
-            if (pointLists.isEmpty()) {
-                throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
-            }
-            for (final List<LatLon> latLonList : pointLists) {
+            for (final List<LatLon> latLonList : gch.getPointLists()) {
                 sigmaRoxRepair(latLonList);
                 final TreeMap<Long, Point2D> timePointMap = new TreeMap<>();
                 toTimePointMap(timePointMap, trackIndex, latLonList);
@@ -332,7 +334,7 @@ public final class Renderer {
 
     /**
      * There is an error in the Sigma Rox 12 (and maybe other models) which
-     * does not save the timestamp on the first and last track points in the
+     * does not save the timestamd on the first and last track points in the
      * GPX files. The second track point has an identical position to the first
      * one with a time, so the first entry can be ignored. Same with the
      * penultimate and last entry, so the last entry can be ignored, too. The
@@ -463,7 +465,13 @@ public final class Renderer {
             final Point2D marker = drawMarker(bi, frames);
             if (font != null) {
                 drawInfo(bi, frames, marker);
-                drawAttribution(bi, cfg.getAttribution());
+
+                String att = resourceBundle.getString("configuration.attribution");
+                if (cfg.getAttribution().equals(att)) {
+                    drawAttribution(bi, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
+                } else {
+                    drawAttribution(bi, cfg.getAttribution());
+                }
             }
             final long ms = cfg.getKeepLastFrame();
             final long fps = Double.valueOf(cfg.getFps()).longValue();
