@@ -305,12 +305,17 @@ public final class Renderer {
         for (final TrackConfiguration trackConfiguration : cfg.getTrackConfigurationList()) {
             trackIndex++;
 
+            final File inputGpxFile = trackConfiguration.getInputGpx();
             final GpxContentHandler gch = new GpxContentHandler();
-            GpxParser.parseGpx(trackConfiguration.getInputGpx(), gch);
+            GpxParser.parseGpx(inputGpxFile, gch);
 
             final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
-            for (final List<LatLon> latLonList : gch.getPointLists()) {
+            final List<List<LatLon>> pointLists = gch.getPointLists();
+            if (pointLists.isEmpty()) {
+                throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
+            }
+            for (final List<LatLon> latLonList : pointLists) {
                 sigmaRoxRepair(latLonList);
                 final TreeMap<Long, Point2D> timePointMap = new TreeMap<>();
                 toTimePointMap(timePointMap, trackIndex, latLonList);
@@ -327,7 +332,7 @@ public final class Renderer {
 
     /**
      * There is an error in the Sigma Rox 12 (and maybe other models) which
-     * does not save the timestamd on the first and last track points in the
+     * does not save the timestamp on the first and last track points in the
      * GPX files. The second track point has an identical position to the first
      * one with a time, so the first entry can be ignored. Same with the
      * penultimate and last entry, so the last entry can be ignored, too. The
