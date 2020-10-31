@@ -11,8 +11,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
@@ -36,7 +36,7 @@ abstract class TrackSettingsPanel extends JPanel {
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient JTextField labelTextField;
+    private final transient JTextArea labelTextField;
     private final transient JSpinner forcedPointTimeIntervalSpinner;
     private final transient JSpinner timeOffsetSpinner;
     private final transient JSpinner lineWidthSpinner;
@@ -93,7 +93,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcLabelLabel.gridy = 1;
         add(lblLabel, gbcLabelLabel);
 
-        labelTextField = new JTextField();
+        labelTextField = new JTextArea();
         labelTextField.setToolTipText(Option.LABEL.getHelp());
         lblLabel.setLabelFor(labelTextField);
         final GridBagConstraints gbcLabelTextField = new GridBagConstraints();
