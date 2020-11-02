@@ -1,11 +1,8 @@
 package app.gpx_animator.ui;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.jetbrains.annotations.NonNls;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 import app.gpx_animator.Configuration;
 import app.gpx_animator.Constants;
+import app.gpx_animator.MapUtil;
 import app.gpx_animator.Option;
 import app.gpx_animator.Preferences;
 
@@ -28,9 +25,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -40,17 +34,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static app.gpx_animator.Utils.isEqual;
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 import static javax.swing.JFileChooser.FILES_ONLY;
-import static app.gpx_animator.Utils.isEqual;
 
 abstract class GeneralSettingsPanel extends JPanel {
 
@@ -91,7 +81,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
-        mapTemplateList = readMaps();
+        mapTemplateList = MapUtil.readMaps();
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final GridBagLayout gridBagLayout = new GridBagLayout();
@@ -819,56 +809,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         widthSpinner.setValue(width);
         heightSpinner.setValue(height);
     }
-
-    private List<MapTemplate> readMaps() {
-        final SAXParserFactory factory = SAXParserFactory.newInstance();
-        final SAXParser saxParser;
-        try {
-            saxParser = factory.newSAXParser();
-        } catch (final ParserConfigurationException | SAXException e) {
-            throw new RuntimeException(e);
-        }
-
-        final List<MapTemplate> labeledItems = new ArrayList<>();
-
-        try {
-            try (InputStream is = getClass().getResourceAsStream("/maps.xml")) { //NON-NLS
-                saxParser.parse(is, new DefaultHandler() {
-                    private final StringBuilder sb = new StringBuilder();
-                    private String name;
-                    private String url;
-                    private String attributionText;
-
-                    @Override
-                    @SuppressWarnings("checkstyle:MissingSwitchDefault") // Every other case can be ignored!
-                    @SuppressFBWarnings(value = "SF_SWITCH_NO_DEFAULT", justification = "Every other case can be ignored!") //NON-NLS NON-NLS
-                    public void endElement(final String uri, final String localName, @NonNls final String qName) {
-                        switch (qName) {
-                            case "name" -> name = sb.toString().trim();
-                            case "url" -> url = sb.toString().trim();
-                            case "attribution-text" -> attributionText = sb.toString().trim();
-                            case "entry" -> labeledItems.add(new MapTemplate(name, url, attributionText));
-                        }
-                        sb.setLength(0);
-                    }
-
-                    @Override
-                    public void characters(final char[] ch, final int start, final int length) {
-                        sb.append(ch, start, length);
-                    }
-                });
-            } catch (final SAXException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        labeledItems.sort(Comparator.comparing(MapTemplate::toString));
-
-        return labeledItems;
-    }
-
 
     public void setConfiguration(final Configuration c) {
         heightSpinner.setValue(c.getHeight());
