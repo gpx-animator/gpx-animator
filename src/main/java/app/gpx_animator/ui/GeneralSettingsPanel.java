@@ -2,6 +2,7 @@ package app.gpx_animator.ui;
 
 import app.gpx_animator.Configuration;
 import app.gpx_animator.Constants;
+import app.gpx_animator.MapTemplate;
 import app.gpx_animator.MapUtil;
 import app.gpx_animator.Option;
 import app.gpx_animator.Preferences;
