@@ -844,18 +844,10 @@ abstract class GeneralSettingsPanel extends JPanel {
                     @SuppressFBWarnings(value = "SF_SWITCH_NO_DEFAULT", justification = "Every other case can be ignored!") //NON-NLS NON-NLS
                     public void endElement(final String uri, final String localName, @NonNls final String qName) {
                         switch (qName) {
-                            case "name":
-                                name = sb.toString().trim();
-                                break;
-                            case "url":
-                                url = sb.toString().trim();
-                                break;
-                            case "attribution-text":
-                                attributionText = sb.toString().trim();
-                                break;
-                            case "entry":
-                                labeledItems.add(new MapTemplate(name, url, attributionText));
-                                break;
+                            case "name" -> name = sb.toString().trim();
+                            case "url" -> url = sb.toString().trim();
+                            case "attribution-text" -> attributionText = sb.toString().trim();
+                            case "entry" -> labeledItems.add(new MapTemplate(name, url, attributionText));
                         }
                         sb.setLength(0);
                     }
