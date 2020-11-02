@@ -21,10 +21,10 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class Map {
+public final class MapUtil {
 
-    private Map() throws InstantiationException {
-        throw new InstantiationException("Map is a utility class and can't be instantiated!");
+    private MapUtil() throws InstantiationException {
+        throw new InstantiationException("MapUtils a utility class and can't be instantiated!");
     }
 
     @SuppressWarnings({"RegExpAnonymousGroup", "RegExpRedundantEscape"})
