@@ -144,7 +144,7 @@
     <map>
         <id>Waymarked_Trails-Winter_Sports</id>
         <validation>
-            <url>http://tile.waymarkedtrails.org/slopemap/10/535/359.png</url>
+            <url>http://tile.waymarkedtrails.org/slopes/10/535/359.png</url>
         </validation>
     </map>
 </maps>

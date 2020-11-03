@@ -266,9 +266,9 @@
         <name>Waymarked Trails: Winter Sports</name>
         <id>Waymarked_Trails-Winter_Sports</id>
         <type>tms</type>
-        <url>http://tile.waymarkedtrails.org/slopemap/{zoom}/{x}/{y}.png</url>
+        <url>http://tile.waymarkedtrails.org/slopes/{zoom}/{x}/{y}.png</url>
         <attribution-text mandatory="true">© Michael Spreng, CC by-SA 3.0, map data OpenStreetMap contributors, ODbL 1.0</attribution-text>
-        <attribution-url>http://slopemap.waymarkedtrails.org/en/help/legal</attribution-url>
+        <attribution-url>http://slopes.waymarkedtrails.org/en/help/legal</attribution-url>
         <max-zoom>17</max-zoom>
     </entry>
     <entry>
