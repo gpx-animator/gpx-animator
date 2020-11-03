@@ -205,7 +205,23 @@ public final class Renderer {
         drawBackground(rc, zoom, bi, ga);
 
         if (cfg.getFontSize() > 0) {
-            font = new Font(Font.MONOSPACED, Font.PLAIN, cfg.getFontSize()); // TODO https://github.com/zdila/gpx-animator/issues/154
+            final String fontName = cfg.getFontName();
+            final String fontStyle = cfg.getFontStyle();
+            final String plain = "PLAIN";
+            final String bold = "BOLD";
+            final String italic = "ITALIC";
+            final String boldItalic = "BOLD|ITALIC";
+
+            if (fontStyle.equals(plain)) {
+                font = new Font(fontName, Font.PLAIN, cfg.getFontSize());
+            } else if (fontStyle.equals(bold)) {
+                font = new Font(fontName, Font.BOLD, cfg.getFontSize());
+            } else if (fontStyle.equals(italic)) {
+                font = new Font(fontName, Font.ITALIC, cfg.getFontSize());
+            } else {
+                font = new Font(fontName, Font.BOLD + Font.ITALIC, cfg.getFontSize());
+            }
+
             fontMetrics = ga.getFontMetrics(font);
         }
 
