@@ -158,6 +158,7 @@ public final class MapUtil {
             try (InputStream is = MapUtil.class.getResourceAsStream("/maps.xml")) { //NON-NLS
                 saxParser.parse(is, new DefaultHandler() {
                     private final StringBuilder sb = new StringBuilder();
+                    private String id;
                     private String name;
                     private String url;
                     private String attributionText;
@@ -167,10 +168,11 @@ public final class MapUtil {
                     @SuppressFBWarnings(value = "SF_SWITCH_NO_DEFAULT", justification = "Every other case can be ignored!") //NON-NLS NON-NLS
                     public void endElement(final String uri, final String localName, @NonNls final String qName) {
                         switch (qName) {
+                            case "id" -> id = sb.toString().trim();
                             case "name" -> name = sb.toString().trim();
                             case "url" -> url = sb.toString().trim();
                             case "attribution-text" -> attributionText = sb.toString().trim();
-                            case "entry" -> labeledItems.add(new MapTemplate(name, url, attributionText));
+                            case "entry" -> labeledItems.add(new MapTemplate(id, name, url, attributionText));
                         }
                         sb.setLength(0);
                     }
