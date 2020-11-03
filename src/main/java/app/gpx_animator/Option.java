@@ -33,6 +33,8 @@ public enum Option {
     HEIGHT("height"),
     ZOOM("zoom"),
     FONT_SIZE("font-size"),
+    FONT_NAME("font-type"),
+    FONT_STYLE("font-style"),
     TMS_URL_TEMPLATE("tms-url-template"),
     ATTRIBUTION("attribution"),
     BACKGROUND_MAP_VISIBILITY("background-map-visibility"),
