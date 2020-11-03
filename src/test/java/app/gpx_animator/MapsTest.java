@@ -96,14 +96,17 @@ public class MapsTest {
                 saxParser.parse(is, new DefaultHandler() {
                     private final StringBuilder sb = new StringBuilder();
                     private String id;
-                    private final List<String> validationUrls = new ArrayList<>();
+                    private  List<String> validationUrls = new ArrayList<>();
 
                     @Override
                     public void endElement(final String uri, final String localName, @NonNls final String qName) {
                         switch (qName) {
                             case "id" -> id = sb.toString().trim();
                             case "url" -> validationUrls.add(sb.toString().trim());
-                            case "map" -> mapValidations.put(id, new MapValidation(validationUrls));
+                            case "map" -> {
+                                mapValidations.put(id, new MapValidation(validationUrls));
+                                validationUrls = new ArrayList<>();
+                            }
                         }
                         sb.setLength(0);
                     }
