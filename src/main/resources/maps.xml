@@ -137,16 +137,6 @@
         <attribution-url>https://opentopomap.org/</attribution-url>
     </entry>
     <entry>
-        <name>MapQuest OSM</name>
-        <id>mapquest-osm</id>
-        <type>tms</type>
-        <url>http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/osm/{zoom}/{x}/{y}.png</url>
-        <max-zoom>18</max-zoom>
-        <attribution-text mandatory="true">Tiles Courtesy of MapQuest, map data © OpenStreetMap contributors</attribution-text>
-        <attribution-url>https://open.mapquest.com/</attribution-url>
-        <icon>http://o.aolcdn.com/os/mapquest/marketing/MQ_Icon/Tiny/MQ_Icon_Tiny.png</icon>
-    </entry>
-    <entry>
         <name>Public Transport (ÖPNV)</name>
         <id>public_transport_oepnv</id>
         <type>tms</type>
