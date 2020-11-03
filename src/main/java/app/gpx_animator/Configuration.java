@@ -66,6 +66,9 @@ public final class Configuration {
     private String attribution;
 
     private int fontSize;
+    private String fontName;
+    private String fontStyle;
+    
     private Double markerSize;
     private Double waypointSize;
 
@@ -98,7 +101,7 @@ public final class Configuration {
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
             final Long keepLastFrame, final File output, final String attribution,
-            final int fontSize, final Double markerSize, final Double waypointSize,
+            final int fontSize, final String fontName, final String fontStyle final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final List<TrackConfiguration> trackConfigurationList) {
@@ -122,6 +125,8 @@ public final class Configuration {
         this.output = output;
         this.attribution = attribution;
         this.fontSize = fontSize;
+        this.fontStyle = fontStyle;
+        this.fontName = fontName;
         this.markerSize = markerSize;
         this.waypointSize = waypointSize;
         this.trackConfigurationList = trackConfigurationList;
@@ -214,6 +219,14 @@ public final class Configuration {
     public int getFontSize() {
         return fontSize;
     }
+    
+    public String getFontStyle() {
+        return fontStyle;
+    }
+
+    public String getFontName() {
+        return fontName;
+    }
 
     public Double getMarkerSize() {
         return markerSize;
@@ -278,6 +291,8 @@ public final class Configuration {
                 + ", flashbackDuration=" + flashbackDuration
                 + ", output=" + output
                 + ", fontSize=" + fontSize
+                + ", fontName=" + fontName
+                + ", fontStyle=" + fontStyle
                 + ", markerSize=" + markerSize
                 + ", waypointSize=" + waypointSize
                 + ", keepLastFrame=" + keepLastFrame
@@ -312,6 +327,8 @@ public final class Configuration {
         private File output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
         private String attribution = resourceBundle.getString("configuration.attribution");
         private int fontSize = 12;
+        private String fontStyle;
+        private String fontName;
         private Double markerSize = 8.0;
         private Double waypointSize = 6.0;
         private Double minLon;
@@ -330,7 +347,7 @@ public final class Configuration {
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, flashbackColor, flashbackDuration,
                     keepLastFrame, output, attribution,
-                    fontSize, markerSize, waypointSize,
+                    fontSize, fontName, fontStyle, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, photoDirectory, photoTime, photoAnimationDuration,
 
@@ -431,6 +448,16 @@ public final class Configuration {
 
         public Builder fontSize(final int fontSize) {
             this.fontSize = fontSize;
+            return this;
+        }
+        
+        public Builder fontName(final String fontName) {
+            this.fontName = fontName;
+            return this;
+        }
+
+        public Builder fontStyle(final String fontStyle) {
+            this.fontStyle = fontStyle;
             return this;
         }
 
