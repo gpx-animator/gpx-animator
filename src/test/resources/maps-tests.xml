@@ -85,12 +85,6 @@
         </validation>
     </map>
     <map>
-        <id>osm-sorbian</id>
-        <validation>
-            <url>http://map.dgpsonline.eu/osmsb/10/535/359.png</url>
-        </validation>
-    </map>
-    <map>
         <id>opencylemap</id>
         <validation>
             <url>http://tile.opencyclemap.org/cycle/10/535/359.png</url>

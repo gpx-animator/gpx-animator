@@ -12246,19 +12246,6 @@
         <country-code>DE</country-code>
     </entry>
     <entry>
-        <name>OpenStreetMap (Sorbian Language)</name>
-        <id>osm-sorbian</id>
-        <type>tms</type>
-        <icon>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFdElEQVRYhcVWW0wUVxj+zpmz7M6igGXVJRSXJpjaKFYEg0b7QCgKxmiKCURCvAR9APRBn3wxUWMkGhMTTZqGVBNNSUravjResGoqaUltLVVcCKlcugpIkVIWLNedc04fDrOzw7K0D5Vu8uc/Z8/MfN/332bI+vWfSPyPP7rQgKmpo6iqerTwBLKzX+LEiUZkZ/ejpKQNhMiFJRAIJCEn5yX27XuCYNCFtWsHAABsoQgMDbnR15eA5uYUcE6Rm9uHlhbvwhCIj5/G2Fgc/P7lePEiEU1NKyCEOiNvsgt8viBOnnyAFStGkZ+/d85r3lgESkraUFn5Mx4/9sIwtJjX/ecEli0bw+nT30LXQ6io2Indu9vx5En8/ARcLgaPxw2Pxx0+MAyBgYExDA6O/StgxgRKS1tRVuZHff0a1NVlgnOKjRt7cPz4h7Hva2zcj0WLnDEvEEKgp2cU7e2D8Ptfobm5H52df0LKmT6mEgUFXaiufoSOjrdw8OBO9PcvBgB4PONITJxCd/eS2ATmA1cAFD5fEny+JBQWrgQABAJB3L/fjY6Om9i793swJnD27Ad4+PBt273r1v0Ov385OI89blggEERv7yj6+19jeHgCU1M8fBgfHwePx43kZB0+XyK83kVgLIT09O9QUVEH4C8MDu7H0aNxaG//I+rhmZkDePp02bwCWWnpF+FwSqlMre3d6fGMo6ysA+XlzxAIAMHgR8jKOoilS524fl2goaELly79aKuZ1asHce3a+/MT0HVHGFCZIiGEhNM5jc2bf0NBQSc2bepBS4sXx47loqkpDVISpKR8iW3bMlBcvArbt69EXp4P58414caNDgACPl8QPT0J8xIgRUWfSQtY+czMHmzd2oYtW7owNuZEQ8Mq3Lr1Lp4/TwDnAkLYI6RpBHl576CycgPS05Nw924XLlz4BnfufIqcnEOQksQmUFz8ubQioPyRIw3IzAzg/PkdaGtLgRASnMsZL8C56e1kNI2gtHQNDh1aD8N4BkorY07AMIHy8q+iIiCESocQqg0t8GgCnEsYhvImkdTUxThzxo2MjI+xZ88B9PaOxiRAdd0BXXfA7VZe15ltbZ6rtWUuF4PL5YDTqdZOpwbGKAgh6Ot7jStXHoExHbW1O5CWFrsOmK6raWxGwK5ezoQ5Wr1SLWAYFIYhoGkCmsZhGBKGoVq5u3sSjY2/4vLlIhw48DWGhyeiCbjdDlv4TRKmmaDmWgErUAuYhI1SAUoJpqedSEycRG1tM0ZGplBTk4/q6pvgXM6OgNWGSj1s4JEkDEOAMaWQMYtEKKTUKwKKyMSEG4xJEEJQX9+KtLQEVFVtwOXLP9lrQOX7n3OtPIPLpc3kXOXdMoa4OC1sQ0NJSE4eh9OpgVKCixd/QEZGMrKyvNEETBKRxRcNzCKAWQSoWitgiwTnOkZGdHi9E3A4NEgJnDr1AIcP50LTrLlArl79Rc7OvVloQlgtZubfDLnyPLwPhXiUd7nGMTTkCP83Pc1RVJSBJUtcqKvzWzUQ2f9Wzu09bhgcmkZBKQelJMI4CCEgBCCzBt7kpBsOBw/XmJQUt293oqYmHy5XOyYnDdUFVuvN3W6q2q0KN0EpjR6xke8we2FrYZF1dU+xa9cq1Ne3qjlghR825ZH9HalaqSVRiu0TlYYjqp6v9pom0do6iMLClSCEWCmIVK/ajSAUIuHWUur5HKCRb1ITTIMQEoxZJDRN2ubFvXtdyMryWimYK+wWqF2t9c0AW/osIBMcM3tzWNHweUvLAIqL31MpMNVHhj0WcCRYtEILjHM6I0B91ln1Y6UxGJxUKTBVm+G2g9o/UqRUZBkzgcmsUUxBqZwxExCzOkft/f5X+Bs9L9WHO7OibgAAAABJRU5ErkJggg==</icon>
-        <url>http://map.dgpsonline.eu/osmsb/{zoom}/{x}/{y}.png</url>
-        <max-zoom>18</max-zoom>
-        <attribution-text mandatory="true">© Alberding GmbH, CC-BY-SA</attribution-text>
-        <attribution-url>http://www.alberding.eu/</attribution-url>
-        <logo-image>http://www.dstoecker.eu/leo_80x80.png</logo-image>
-        <logo-url>http://www.dstoecker.eu/sbmap.html</logo-url>
-        <country-code>DE</country-code>
-    </entry>
-    <entry>
         <name>Hamburg (40 cm)</name>
         <id>hamburg-40cm</id>
         <type>wms</type>
