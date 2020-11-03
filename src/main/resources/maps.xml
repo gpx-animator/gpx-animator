@@ -103,7 +103,7 @@
         <id>osm-mapnik-black_and_white</id>
         <type>tms</type>
         <default>true</default>
-        <url>http://{switch:a,b,c}.www.toolserver.org/tiles/bw-mapnik/{zoom}/{x}/{y}.png</url>
+        <url>https://tiles.wmflabs.org/bw-mapnik/{zoom}/{x}/{y}.png</url>
         <max-zoom>18</max-zoom>
         <attribution-text mandatory="true">© OpenStreetMap contributors, CC-BY-SA</attribution-text>
         <attribution-url>https://openstreetmap.org/</attribution-url>

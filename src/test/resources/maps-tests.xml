@@ -28,9 +28,7 @@
     <map>
         <id>osm-mapnik-black_and_white</id>
         <validation>
-            <url>http://a.www.toolserver.org/tiles/bw-mapnik/13/4283/2885.png</url>
-            <url>http://b.www.toolserver.org/tiles/bw-mapnik/13/4283/2885.png</url>
-            <url>http://c.www.toolserver.org/tiles/bw-mapnik/13/4283/2885.png</url>
+            <url>https://tiles.wmflabs.org/bw-mapnik/13/4283/2885.png</url>
         </validation>
     </map>
     <map>
