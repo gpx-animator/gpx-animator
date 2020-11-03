@@ -111,4 +111,10 @@
             <url>https://heatmap-external-c.strava.com/tiles/running/hot/10/536/358.png</url>
         </validation>
     </map>
+    <map>
+        <id>Waymarked_Trails-Hiking</id>
+        <validation>
+            <url>http://tile.waymarkedtrails.org/hiking/13/4283/2885.png</url>
+        </validation>
+    </map>
 </maps>
