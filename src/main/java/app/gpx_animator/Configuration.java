@@ -101,7 +101,7 @@ public final class Configuration {
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
             final Long keepLastFrame, final File output, final String attribution,
-            final int fontSize, final String fontName, final String fontStyle final Double markerSize, final Double waypointSize,
+            final int fontSize, final String fontName, final String fontStyle, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final List<TrackConfiguration> trackConfigurationList) {
