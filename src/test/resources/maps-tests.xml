@@ -89,4 +89,10 @@
             <url>http://tiles4-4001b3692e229e3215c9b7a73e528198.skobblermaps.com/TileService/tiles/2.0/00021210101/0/13/4283/2885.png</url>
         </validation>
     </map>
+    <map>
+        <id>strava_cycling_heatmap</id>
+        <validation>
+            <url>http://globalheat.strava.com/tiles/cycling/color2/13/4283/2885.png</url>
+        </validation>
+    </map>
 </maps>
