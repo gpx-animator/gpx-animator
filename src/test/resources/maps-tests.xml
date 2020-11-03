@@ -112,6 +112,12 @@
         </validation>
     </map>
     <map>
+        <id>Waymarked_Trails-Cycling</id>
+        <validation>
+            <url>http://tile.waymarkedtrails.org/cycling/10/535/359.png</url>
+        </validation>
+    </map>
+    <map>
         <id>Waymarked_Trails-Hiking</id>
         <validation>
             <url>http://tile.waymarkedtrails.org/hiking/10/535/359.png</url>
