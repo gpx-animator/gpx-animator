@@ -17787,7 +17787,7 @@
             <type>tms</type>
         </mirror>
     </entry>
-    <entry last-check="2015-01-28">
+    <entry>
         <name>South Tyrol Topomap</name>
         <id>sdi.provinz.bz.it-WMTS_TOPOMAP_APB-PAB</id>
         <type>wms</type>
