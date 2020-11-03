@@ -92,9 +92,9 @@
     <map>
         <id>strava_cycling_heatmap</id>
         <validation>
-            <url>https://heatmap-external-a.strava.com/tiles/all/hot/10/536/358.png</url>
-            <url>https://heatmap-external-b.strava.com/tiles/all/hot/10/536/358.png</url>
-            <url>https://heatmap-external-c.strava.com/tiles/all/hot/10/536/358.png</url>
+            <url>https://heatmap-external-a.strava.com/tiles/cycling/hot/10/536/358.png</url>
+            <url>https://heatmap-external-b.strava.com/tiles/cycling/hot/10/536/358.png</url>
+            <url>https://heatmap-external-c.strava.com/tiles/cycling/hot/10/536/358.png</url>
         </validation>
     </map>
 </maps>
