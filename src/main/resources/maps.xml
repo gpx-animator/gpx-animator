@@ -113,7 +113,7 @@
         <name>OpenStreetMap (Mapnik, no labels)</name>
         <id>osm-mapnik-no_labels</id>
         <type>tms</type>
-        <url>http://www.toolserver.org/tiles/osm-no-labels/{zoom}/{x}/{y}.png</url>
+        <url>https://tiles.wmflabs.org/osm-no-labels/{zoom}/{x}/{y}.png</url>
         <max-zoom>18</max-zoom>
         <attribution-text mandatory="true">© OpenStreetMap contributors, CC-BY-SA</attribution-text>
         <attribution-url>https://openstreetmap.org/</attribution-url>

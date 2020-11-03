@@ -43,7 +43,7 @@
     <map>
         <id>osm-mapnik-no_labels</id>
         <validation>
-            <url>http://www.toolserver.org/tiles/osm-no-labels/13/4283/2885.png</url>
+            <url>https://tiles.wmflabs.org/osm-no-labels/13/4283/2885.png</url>
         </validation>
     </map>
     <map>
