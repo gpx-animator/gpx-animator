@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <maps>
     <map>
+        <id>mapquest-osm</id>
+        <validation>
+            <url>http://otile1.mqcdn.com/tiles/1.0.0/osm/13/4283/2885.png</url>
+            <url>http://otile2.mqcdn.com/tiles/1.0.0/osm/13/4283/2885.png</url>
+            <url>http://otile3.mqcdn.com/tiles/1.0.0/osm/13/4283/2885.png</url>
+            <url>http://otile4.mqcdn.com/tiles/1.0.0/osm/13/4283/2885.png</url>
+        </validation>
+    </map>
+    <map>
         <id>osm-cambodia_laos_thailand_vietnam-bilingual</id>
         <validation>
             <url>http://a.tile.osm-tools.org/osm_then/13/4283/2885.png</url>
