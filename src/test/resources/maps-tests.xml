@@ -124,6 +124,12 @@
         </validation>
     </map>
     <map>
+        <id>Waymarked_Trails-Horse_Riding</id>
+        <validation>
+            <url>http://tile.waymarkedtrails.org/riding/10/535/359.png</url>
+        </validation>
+    </map>
+    <map>
         <id>Waymarked_Trails-MTB</id>
         <validation>
             <url>http://tile.waymarkedtrails.org/mtb/10/535/359.png</url>
