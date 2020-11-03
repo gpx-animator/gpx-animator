@@ -15,6 +15,14 @@
         </validation>
     </map>
     <map>
+        <id>Mapbox</id>
+        <validation>
+            <url>http://a.tiles.mapbox.com/v4/openstreetmap.map-inh7ifmo/10/535/359.png?access_token=pk.eyJ1Ijoib3BlbnN0cmVldG1hcCIsImEiOiJncjlmd0t3In0.DmZsIeOW-3x-C5eX-wAqTw</url>
+            <url>http://b.tiles.mapbox.com/v4/openstreetmap.map-inh7ifmo/10/535/359.png?access_token=pk.eyJ1Ijoib3BlbnN0cmVldG1hcCIsImEiOiJncjlmd0t3In0.DmZsIeOW-3x-C5eX-wAqTw</url>
+            <url>http://c.tiles.mapbox.com/v4/openstreetmap.map-inh7ifmo/10/535/359.png?access_token=pk.eyJ1Ijoib3BlbnN0cmVldG1hcCIsImEiOiJncjlmd0t3In0.DmZsIeOW-3x-C5eX-wAqTw</url>
+        </validation>
+    </map>
+    <map>
         <id>MAPNIK</id>
         <validation>
             <url>https://a.tile.openstreetmap.org/10/535/359.png</url>
