@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <maps>
     <map>
+        <id>osm-cambodia_laos_thailand_vietnam-bilingual</id>
+        <validation>
+            <url>http://a.tile.osm-tools.org/osm_then/13/4283/2885.png</url>
+            <url>http://b.tile.osm-tools.org/osm_then/13/4283/2885.png</url>
+            <url>http://c.tile.osm-tools.org/osm_then/13/4283/2885.png</url>
+            <url>http://d.tile.osm-tools.org/osm_then/13/4283/2885.png</url>
+        </validation>
+    </map>
+    <map>
         <id>osm-mapnik-german_style</id>
         <validation>
             <url>https://a.tile.openstreetmap.de/tiles/osmde/13/4283/2885.png</url>
