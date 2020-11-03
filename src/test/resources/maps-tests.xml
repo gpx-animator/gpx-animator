@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<maps>
+    <map>
+        <id>osm-mapnik-german_style</id>
+        <validation>
+            <url>https://a.tile.openstreetmap.de/tiles/osmde/13/4283/2885.png</url>
+            <url>https://b.tile.openstreetmap.de/tiles/osmde/13/4283/2885.png</url>
+            <url>https://c.tile.openstreetmap.de/tiles/osmde/13/4283/2885.png</url>
+            <url>https://d.tile.openstreetmap.de/tiles/osmde/13/4283/2885.png</url>
+        </validation>
+    </map>
+</maps>
