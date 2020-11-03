@@ -32,6 +32,7 @@ public final class Help {
         final TrackConfiguration tc = TrackConfiguration.createBuilder().build();
 
         w.writeOptionHelp(Option.ATTRIBUTION, "text", false, cfg.getAttribution()); //NON-NLS
+        w.writeOptionHelp(Option.ATTRIBUTION_POSITION, "position", false, cfg.getAttributionPosition()); //NON-NLS
         w.writeOptionHelp(Option.BACKGROUND_MAP_VISIBILITY, "visibility", false, cfg.getBackgroundMapVisibility()); //NON-NLS
         w.writeOptionHelp(Option.COLOR, "color", true, resourceBundle.getString("help.option.color.default")); //NON-NLS
         w.writeOptionHelp(Option.FLASHBACK_COLOR, "ARGBcolor", false, "opaque white - #ffffffff"); // TODO cfg.getFlashbackColor()  NON-NLS
@@ -43,9 +44,11 @@ public final class Help {
         w.writeOptionHelp(Option.HEIGHT, "height", false, cfg.getHeight()); //NON-NLS
         w.writeOptionHelp(Option.HELP, null, false, null);
         w.writeOptionHelp(Option.INPUT, "input", true, tc.getInputGpx()); //NON-NLS
+        w.writeOptionHelp(Option.INFORMATION_POSITION, "position", false, cfg.getInformationPosition());
         w.writeOptionHelp(Option.TRACK_ICON, "trackIcon", true, tc.getTrackIcon()); //NON-NLS
         w.writeOptionHelp(Option.LABEL, "label", true, tc.getLabel()); //NON-NLS
         w.writeOptionHelp(Option.LINE_WIDTH, "width", true, tc.getLineWidth()); //NON-NLS
+        w.writeOptionHelp(Option.LOGO_POSITION, "position", false, cfg.getLogoPosition()); //NON-NLS
         w.writeOptionHelp(Option.MARGIN, "margin", false, cfg.getMargin()); //NON-NLS
         w.writeOptionHelp(Option.MARKER_SIZE, "size", false, cfg.getMarkerSize()); //NON-NLS
         w.writeOptionHelp(Option.MAX_LAT, "latitude", false, cfg.getMaxLat()); //NON-NLS
