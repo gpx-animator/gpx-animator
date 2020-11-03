@@ -37,6 +37,8 @@ public final class Help {
         w.writeOptionHelp(Option.FLASHBACK_COLOR, "ARGBcolor", false, "opaque white - #ffffffff"); // TODO cfg.getFlashbackColor()  NON-NLS
         w.writeOptionHelp(Option.FLASHBACK_DURATION, "duration", false, cfg.getFlashbackDuration()); //NON-NLS
         w.writeOptionHelp(Option.FONT_SIZE, "size", false, cfg.getFontSize()); //NON-NLS
+        w.writeOptionHelp(Option.FONT_STYLE, "style", false, cfg.getFontStyle());
+        w.writeOptionHelp(Option.FONT_NAME, "type", false, cfg.getFontName());
         w.writeOptionHelp(Option.FORCED_POINT_TIME_INTERVAL, "milliseconds", true, tc.getForcedPointInterval()); //NON-NLS
         w.writeOptionHelp(Option.FPS, "fps", false, cfg.getFps()); //NON-NLS
         w.writeOptionHelp(Option.GUI, null, false, resourceBundle.getString("help.option.gui.default"));
