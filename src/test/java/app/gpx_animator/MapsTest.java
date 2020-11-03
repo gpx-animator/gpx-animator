@@ -1,6 +1,7 @@
 package app.gpx_animator;
 
 import org.jetbrains.annotations.NonNls;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,13 @@ public class MapsTest {
 
     @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(MapsTest.class);
+
+    @BeforeAll
+    public static void setup() {
+        final String userAgent = String.format("%s %s on %s %s (%s)", //NON-NLS
+                Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH);
+        System.setProperty("http.agent", userAgent);
+    }
 
     @Test
     public void validateMaps() {
