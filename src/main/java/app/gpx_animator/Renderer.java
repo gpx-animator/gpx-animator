@@ -78,6 +78,13 @@ public final class Renderer {
     private double maxX = Double.NEGATIVE_INFINITY;
     private double minY = Double.POSITIVE_INFINITY;
     private double maxY = Double.NEGATIVE_INFINITY;
+    
+    private String topLeft = "Top Left";
+    private String topCenter = "Top Center";
+    private String topRight = "Top Right";
+    private String bottomLeft = "Bottom Left";
+    private String bottomCenter = "Bottom Center";
+    private String bottomRight = "Bottom Right";
 
     private double speedup;
 
@@ -295,6 +302,7 @@ public final class Renderer {
 
     private void drawLogo(final BufferedImage bi) throws UserException {
         final File logo = cfg.getLogo();
+        final String logoPosition = cfg.getLogoPosition();
         if (logo != null && logo.exists()) {
             final BufferedImage image;
             try {
@@ -303,7 +311,21 @@ public final class Renderer {
                 throw new UserException("Can't read logo: ".concat(e.getMessage()));
             }
             final Graphics2D g2 = getGraphics(bi);
-            g2.drawImage(image, cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+            if (logoPosition.equals(topLeft)) {
+                g2.drawImage(image, cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+            } else if (logoPosition.equals(topCenter)) {
+                g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2, cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+            } else if (logoPosition.equals(topRight)) {
+                g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+            } else if (logoPosition.equals(bottomLeft)) {
+                g2.drawImage(image, cfg.getMargin(), bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+            } else if (logoPosition.equals(bottomCenter)) {
+                g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2, bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(),
+                image.getHeight(), null);
+            } else if (logoPosition.equals(bottomRight)) {
+                g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(), bi.getHeight() - image.getHeight() - cfg.getMargin(),
+                image.getWidth(), image.getHeight(), null);
+            }
         }
     }
 
@@ -603,12 +625,42 @@ public final class Renderer {
         final String latLongString = getLatLonString(marker);
         final String speedString = getSpeedString(marker, frame);
         final Graphics2D graphics = getGraphics(bi);
-        printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
-                bi.getHeight() - cfg.getMargin());
-        printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
-                bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
-        printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(),
-                bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+        
+        final String informationPosition = cfg.getInformationPosition();
+
+        if (informationPosition.equals(topLeft)) {
+            printText(graphics, dateString, cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight() * 2);
+            printText(graphics, latLongString, cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
+            printText(graphics, speedString, cfg.getMargin(), cfg.getMargin());
+        } else if (informationPosition.equals(topCenter)) {
+            printText(graphics, dateString, (float) (bi.getWidth() - fontMetrics.stringWidth(dateString)) / 2,
+            cfg.getMargin() + fontMetrics.getHeight() * 2);
+            printText(graphics, latLongString, (float) (bi.getWidth() - fontMetrics.stringWidth(latLongString)) / 2,
+            cfg.getMargin() + fontMetrics.getHeight());
+            printText(graphics, speedString, (float) (bi.getWidth() - fontMetrics.stringWidth(speedString)) / 2, cfg.getMargin());
+        } else if (informationPosition.equals(topRight)) {
+            printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
+            cfg.getMargin() + fontMetrics.getHeight() * 2);
+            printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
+            cfg.getMargin() + fontMetrics.getHeight());
+            printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(), cfg.getMargin());
+        } else if (informationPosition.equals(bottomLeft)) {
+            printText(graphics, dateString, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+            printText(graphics, latLongString, cfg.getMargin(), bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
+            printText(graphics, speedString, cfg.getMargin(), bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+        } else if (informationPosition.equals(bottomCenter)) {
+            printText(graphics, dateString, (float) (bi.getWidth() - fontMetrics.stringWidth(dateString)) / 2, bi.getHeight() - cfg.getMargin());
+            printText(graphics, latLongString, (float) (bi.getWidth() - fontMetrics.stringWidth(latLongString)) / 2,
+            bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
+            printText(graphics, speedString, (float) (bi.getWidth() - fontMetrics.stringWidth(speedString)) / 2,
+            bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+        } else if (informationPosition.equals(bottomRight)) {
+            printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+            printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
+            bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
+            printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(),
+            bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+        }
     }
 
 
@@ -635,10 +687,67 @@ public final class Renderer {
 
 
     private void drawAttribution(final BufferedImage bi, final String attribution) {
-        printText(getGraphics(bi), attribution, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+        final String attributionPosition = cfg.getAttributionPosition();
+        Boolean hasSplit = false;
+
+        for (int i = 0; i < attribution.length(); i++) {
+            if (attribution.contains("\n")) {
+                hasSplit = true;
+                break;
+            }
+        }
+
+        if (hasSplit) {
+            String[] lines = attribution.split("\n");
+            if (attributionPosition.equals(topLeft)) {
+                printText(getGraphics(bi), lines[0], cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
+                printText(getGraphics(bi), lines[1], cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight() * 2);
+            } else if (attributionPosition.equals(topCenter)) {
+                printText(getGraphics(bi), lines[0], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[0])) / 2,
+                cfg.getMargin() + fontMetrics.getHeight());
+                printText(getGraphics(bi), lines[1], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[1])) / 2,
+                cfg.getMargin() + fontMetrics.getHeight() * 2);
+            } else if (attributionPosition.equals(topRight)) {
+                printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getMargin(),
+                cfg.getMargin() + fontMetrics.getHeight());
+                printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getMargin(),
+                cfg.getMargin() + fontMetrics.getHeight() * 2);
+            } else if (attributionPosition.equals(bottomLeft)) {
+                printText(getGraphics(bi), lines[0], cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+                printText(getGraphics(bi), lines[1], cfg.getMargin(), bi.getHeight() - cfg.getMargin() * 2);
+            } else if (attributionPosition.equals(bottomCenter)) {
+                printText(getGraphics(bi), lines[0], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[0])) / 2,
+                bi.getHeight() - cfg.getMargin());
+                printText(getGraphics(bi), lines[1], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[1])) / 2,
+                bi.getHeight() - cfg.getMargin() * 2);
+            } else if (attributionPosition.equals(bottomRight)) {
+                printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getMargin(),
+                bi.getHeight() - cfg.getMargin());
+                printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getMargin(),
+                bi.getHeight() - cfg.getMargin() * 2);
+            }
+        } else {
+            if (attributionPosition.equals(topLeft)) {
+                printText(getGraphics(bi), attribution, cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
+            } else if (attributionPosition.equals(topCenter)) {
+                printText(getGraphics(bi), attribution, (float) (bi.getWidth() - fontMetrics.stringWidth(attribution)) / 2,
+                cfg.getMargin() + fontMetrics.getHeight());
+            } else if (attributionPosition.equals(topRight)) {
+                printText(getGraphics(bi), attribution, bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getMargin(),
+            cfg.getMargin() + fontMetrics.getHeight());
+            } else if (attributionPosition.equals(bottomLeft)) {
+                printText(getGraphics(bi), attribution, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+            } else if (attributionPosition.equals(bottomCenter)) {
+                printText(getGraphics(bi), attribution, (float) (bi.getWidth() - fontMetrics.stringWidth(attribution)) / 2,
+                bi.getHeight() - cfg.getMargin());
+            } else if (attributionPosition.equals(bottomRight)) {
+                printText(getGraphics(bi), attribution, bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getMargin(),
+                bi.getHeight() - cfg.getMargin());
+            }
+        }
     }
 
-
+    
     private Point2D drawMarker(final BufferedImage bi, final int frame) {
         if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {
             return null;
