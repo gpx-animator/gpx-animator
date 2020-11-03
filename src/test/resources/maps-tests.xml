@@ -10,6 +10,14 @@
         </validation>
     </map>
     <map>
+        <id>osm-gps</id>
+        <validation>
+            <url>https://gps-a.tile.openstreetmap.org/lines/13/4283/2885.png</url>
+            <url>https://gps-b.tile.openstreetmap.org/lines/13/4283/2885.png</url>
+            <url>https://gps-c.tile.openstreetmap.org/lines/13/4283/2885.png</url>
+        </validation>
+    </map>
+    <map>
         <id>osm-mapnik-german_style</id>
         <validation>
             <url>https://a.tile.openstreetmap.de/tiles/osmde/13/4283/2885.png</url>
