@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -23,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
@@ -31,7 +33,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -72,6 +76,9 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JComboBox<MapTemplate> tmsUrlTemplateComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient JSpinner fontSizeSpinner;
+    private final transient JComboBox logoLocationComboBox;
+    private final transient JComboBox attriLocationComboBox;
+    private final transient JComboBox infoLocationComboBox;
     private final transient JCheckBox skipIdleCheckBox;
     private final transient ColorSelector backgroundColorSelector;
     private final transient ColorSelector flashbackColorSelector;
@@ -813,6 +820,69 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcPhotoAnimationDurationSpinner.gridy = 24;
         add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
         photoAnimationDurationSpinner.addChangeListener(changeListener);
+        
+        final JLabel lblLogoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.logoPosition.label"));
+        final GridBagConstraints lblLogoPositionVisibility = new GridBagConstraints();
+        lblLogoPositionVisibility.anchor = GridBagConstraints.LINE_END;
+        lblLogoPositionVisibility.insets = new Insets(0, 0, 5, 5);
+        lblLogoPositionVisibility.gridx = 0;
+        add(lblLogoPosition, lblLogoPositionVisibility);
+
+        logoLocationComboBox = new JComboBox<>();
+        logoLocationComboBox.setToolTipText(Option.LOGO_POSITION.getHelp());
+        logoLocationComboBox.addItem("Top Left");
+        logoLocationComboBox.addItem("Top Center");
+        logoLocationComboBox.addItem("Top Right");
+        logoLocationComboBox.addItem("Bottom Left");
+        logoLocationComboBox.addItem("Bottom Center");
+        logoLocationComboBox.addItem("Bottom Right");
+        panel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbcLogoPositioning = new GridBagConstraints();
+        gbcLogoPositioning.fill = GridBagConstraints.HORIZONTAL;
+        gbcLogoPositioning.gridx = 1;
+        add(logoLocationComboBox, gbcLogoPositioning);
+        
+        final JLabel lblAttriPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionPosition.label"));
+        final GridBagConstraints attriPositionVisibility = new GridBagConstraints();
+        attriPositionVisibility.anchor = GridBagConstraints.LINE_END;
+        attriPositionVisibility.insets = new Insets(0, 0, 5, 5);
+        attriPositionVisibility.gridx = 0;
+        add(lblAttriPosition, attriPositionVisibility);
+
+        attriLocationComboBox = new JComboBox<>();
+        attriLocationComboBox.setToolTipText(Option.ATTRIBUTION_POSITION.getHelp());
+        attriLocationComboBox.addItem("Bottom Left");
+        attriLocationComboBox.addItem("Bottom Center");
+        attriLocationComboBox.addItem("Bottom Right");
+        attriLocationComboBox.addItem("Top Left");
+        attriLocationComboBox.addItem("Top Center");
+        attriLocationComboBox.addItem("Top Right");
+        panel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbcAttriPositioning = new GridBagConstraints();
+        gbcAttriPositioning.fill = GridBagConstraints.HORIZONTAL;
+        gbcAttriPositioning.gridx = 1;
+        add(attriLocationComboBox, gbcAttriPositioning);
+        
+        final JLabel lblinfoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.InformationPosition.label"));
+        final GridBagConstraints infoPositionVisibility = new GridBagConstraints();
+        infoPositionVisibility.anchor = GridBagConstraints.LINE_END;
+        infoPositionVisibility.insets = new Insets(0, 0, 5, 5);
+        infoPositionVisibility.gridx = 0;
+        add(lblinfoPosition, infoPositionVisibility);
+
+        infoLocationComboBox = new JComboBox<>();
+        infoLocationComboBox.setToolTipText(Option.INFORMATION_POSITION.getHelp());
+        infoLocationComboBox.addItem("Bottom Right");
+        infoLocationComboBox.addItem("Bottom Center");
+        infoLocationComboBox.addItem("Bottom Left");
+        infoLocationComboBox.addItem("Top Left");
+        infoLocationComboBox.addItem("Top Center");
+        infoLocationComboBox.addItem("Top Right");
+        panel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbcInfoPositioning = new GridBagConstraints();
+        gbcInfoPositioning.fill = GridBagConstraints.HORIZONTAL;
+        gbcInfoPositioning.gridx = 1;
+        add(infoLocationComboBox, gbcInfoPositioning);
     }
 
     private void setVideoSize(final int width, final int height) {
@@ -922,6 +992,9 @@ abstract class GeneralSettingsPanel extends JPanel {
     public void buildConfiguration(final Configuration.Builder builder, final boolean replacePlaceholders) {
         final Long td = (Long) tailDurationSpinner.getValue();
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
+        final Object logoPosItem = logoLocationComboBox.getSelectedItem();
+        final Object attriPosItem = attriLocationComboBox.getSelectedItem();
+        final Object inforPosItem = infoLocationComboBox.getSelectedItem();
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
         final String attribution = generateAttributionText(replacePlaceholders, tmsItem);
 
@@ -941,6 +1014,8 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .keepLastFrame((Long) keepLastFrameSpinner.getValue())
                 .backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f)
                 .tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate) // NOPMD -- null = not set
+                .logoPosition(logoPosItem.toString())
+                .informationPosition(inforPosItem.toString())
                 .skipIdle(skipIdleCheckBox.isSelected())
                 .backgroundColor(backgroundColorSelector.getColor())
                 .flashbackColor(flashbackColorSelector.getColor())
@@ -953,7 +1028,8 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .photoDirectory(photosDirectorySelector.getFilename())
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
-                .attribution(attribution);
+                .attribution(attribution)
+                .attributionPosition(attriPosItem.toString());
     }
 
     private String generateAttributionText(final boolean replacePlaceholders, final Object tmsItem) {
