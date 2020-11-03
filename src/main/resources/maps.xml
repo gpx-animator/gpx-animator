@@ -190,7 +190,7 @@
         <name>Strava cycling heatmap</name>
         <id>strava_cycling_heatmap</id>
         <type>tms</type>
-        <url>https://heatmap-external-c.strava.com/tiles/cycling/hot/{zoom}/{x}/{y}.png</url>
+        <url>https://heatmap-external-{switch:a,b,c}.strava.com/tiles/cycling/hot/{zoom}/{x}/{y}.png</url>
         <icon>https://d3nn82uaxijpm6.cloudfront.net/assets/website/mobile/icon-app-81cc8ba60200bed099176eb699e218ab.png</icon>
         <min-zoom>3</min-zoom>
         <max-zoom>12</max-zoom>
