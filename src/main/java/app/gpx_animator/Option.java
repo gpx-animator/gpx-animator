@@ -33,6 +33,8 @@ public enum Option {
     HEIGHT("height"),
     ZOOM("zoom"),
     FONT_SIZE("font-size"),
+    FONT_NAME("font-type"),
+    FONT_STYLE("font-style"),
     TMS_URL_TEMPLATE("tms-url-template"),
     ATTRIBUTION("attribution"),
     BACKGROUND_MAP_VISIBILITY("background-map-visibility"),
@@ -44,9 +46,11 @@ public enum Option {
     KEEP_LAST_FRAME("keep-last-frame"),
     SKIP_IDLE("skip-idle"),
     LOGO("logo"),
+    LOGO_POSITION("logo-location"),
+    ATTRIBUTION_POSITION("attribution-location"),
+    INFORMATION_POSITION("information-location"),
     PHOTO_DIR("photo-dir"),
     PHOTO_TIME("photo-time"),
-    PHOTO_ANIMATION_DURATION("photo-animation-duration"),
     HELP("help"),
     TRACK_ICON("track-icon");
 
