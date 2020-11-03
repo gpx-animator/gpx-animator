@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <maps>
     <map>
+        <id>AGRI-black_and_white-2.5m</id>
+        <validation>
+            <url>http://agri.openstreetmap.org/5/28/18.png</url>
+        </validation>
+    </map>
+    <map>
         <id>MAPNIK</id>
         <validation>
             <url>https://a.tile.openstreetmap.org/10/535/359.png</url>
