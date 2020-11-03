@@ -53,6 +53,12 @@
         </validation>
     </map>
     <map>
+        <id>openpt_map</id>
+        <validation>
+            <url>http://openptmap.de/tiles/13/4283/2885.png</url>
+        </validation>
+    </map>
+    <map>
         <id>opentopomap</id>
         <validation>
             <url>https://a.tile.opentopomap.org/13/4283/2885.png</url>
