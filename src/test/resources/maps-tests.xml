@@ -38,6 +38,12 @@
         </validation>
     </map>
     <map>
+        <id>OSM_Inspector-Multipolygon</id>
+        <validation>
+            <url>http://tools.geofabrik.de/osmi/tiles/multipolygon/10/535/359.png</url>
+        </validation>
+    </map>
+    <map>
         <id>OSM_Inspector-Places</id>
         <validation>
             <url>http://tools.geofabrik.de/osmi/tiles/places/10/535/359.png</url>
