@@ -7,6 +7,14 @@
         </validation>
     </map>
     <map>
+        <id>HDM_HOT</id>
+        <validation>
+            <url>https://a.tile.openstreetmap.fr/hot/10/535/359.png</url>
+            <url>https://b.tile.openstreetmap.fr/hot/10/535/359.png</url>
+            <url>https://c.tile.openstreetmap.fr/hot/10/535/359.png</url>
+        </validation>
+    </map>
+    <map>
         <id>MAPNIK</id>
         <validation>
             <url>https://a.tile.openstreetmap.org/10/535/359.png</url>
