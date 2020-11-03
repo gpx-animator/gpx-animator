@@ -41,6 +41,12 @@
         </validation>
     </map>
     <map>
+        <id>osm-mapnik-no_labels</id>
+        <validation>
+            <url>http://www.toolserver.org/tiles/osm-no-labels/13/4283/2885.png</url>
+        </validation>
+    </map>
+    <map>
         <id>skobbler</id>
         <validation>
             <url>http://tiles1-4001b3692e229e3215c9b7a73e528198.skobblermaps.com/TileService/tiles/2.0/00021210101/0/13/4283/2885.png</url>
