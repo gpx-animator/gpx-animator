@@ -612,15 +612,35 @@ public final class Renderer {
     }
 
 
-    private String getSpeedString(final Point2D point, final int frame) {
+private String getSpeedString(final Point2D point, final int frame) {
         if (point instanceof GpxPoint) {
             final GpxPoint gpxPoint = (GpxPoint) point;
             final long speed = calculateSpeedForDisplay(gpxPoint, frame);
-            return String.format("%d km/h", speed); //NON-NLS
+            final String calculation = calcKmPerHrToMinPerKm(speed);
+            return calculation;
         } else {
             return "";
         }
     }
+
+    private String calcKmPerHrToMinPerKm(final long speed) {
+        double minPerKm = speed;
+        double mins = (60 / minPerKm);
+        double secs = (mins - (int) mins) * 60;
+        double tenS = 10;
+        if (minPerKm != 0) {
+            if (secs == 0) {
+                return String.format("%d km/h | " + (int) mins + ":00 minutes/km", speed); //NON-NLS
+            } else if (secs >= tenS) {
+                return String.format("%d km/h | " + (int) mins + ":" + (int) secs + " minutes/km", speed); //NON-NLS
+            } else {
+                return String.format("%d km/h | " + (int) mins + ":0" + (int) secs + " minutes/km", speed); //NON-NLS
+            }
+        } else {
+            return String.format("%d km/h | 0:00 minutes/km", speed); //NON-NLS
+        }
+    }
+
 
 
     private String getLatLonString(final Point2D point) {
