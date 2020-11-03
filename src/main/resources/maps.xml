@@ -193,7 +193,7 @@
         <url>http://globalheat.strava.com/tiles/cycling/color2/{zoom}/{x}/{y}.png</url>
         <icon>https://d3nn82uaxijpm6.cloudfront.net/assets/website/mobile/icon-app-81cc8ba60200bed099176eb699e218ab.png</icon>
         <min-zoom>3</min-zoom>
-        <max-zoom>17</max-zoom>
+        <max-zoom>12</max-zoom>
         <attribution-text mandatory="true">http://labs.strava.com/heatmap/</attribution-text>
         <attribution-url>http://labs.strava.com/heatmap/</attribution-url>
     </entry>
