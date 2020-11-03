@@ -26,12 +26,6 @@
         </validation>
     </map>
     <map>
-        <id>OSM_Inspector-Boundaries</id>
-        <validation>
-            <url>http://tools.geofabrik.de/osmi/tiles/boundaries/10/535/359.png</url>
-        </validation>
-    </map>
-    <map>
         <id>OSM_Inspector-Geometry</id>
         <validation>
             <url>http://tools.geofabrik.de/osmi/tiles/geometry/10/535/359.png</url>

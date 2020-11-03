@@ -326,17 +326,6 @@
         <max-zoom>18</max-zoom>
     </entry>
     <entry>
-        <name>OSM Inspector: Boundaries (EU)</name>
-        <id>OSM_Inspector-Boundaries</id>
-        <type>tms</type>
-        <url>http://tools.geofabrik.de/osmi/tiles/boundaries/{zoom}/{x}/{y}.png</url>
-        <country-code>EU</country-code>
-        <attribution-text mandatory="true">© Geofabrik GmbH, OpenStreetMap contributors, CC-BY-SA</attribution-text>
-        <attribution-url>http://tools.geofabrik.de/osmi/</attribution-url>
-        <max-zoom>18</max-zoom>
-        <bounds max-lat="71.45" max-lon="41.75" min-lat="35.15" min-lon="-24.9" />
-    </entry>
-    <entry>
         <name>AGRI black-and-white 2.5m</name>
         <id>AGRI-black_and_white-2.5m</id>
         <type>tms</type>
