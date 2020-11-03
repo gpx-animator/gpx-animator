@@ -308,15 +308,6 @@
         <max-zoom>18</max-zoom>
     </entry>
     <entry>
-        <name>OSM Inspector: Multipolygon</name>
-        <id>OSM_Inspector-Multipolygon</id>
-        <type>tms</type>
-        <url>http://tools.geofabrik.de/osmi/tiles/multipolygon/{zoom}/{x}/{y}.png</url>
-        <attribution-text mandatory="true">© Geofabrik GmbH, OpenStreetMap contributors, CC-BY-SA</attribution-text>
-        <attribution-url>http://tools.geofabrik.de/osmi/</attribution-url>
-        <max-zoom>18</max-zoom>
-    </entry>
-    <entry>
         <name>OSM Inspector: Routing</name>
         <id>OSM_Inspector-Routing</id>
         <type>tms</type>
