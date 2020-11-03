@@ -201,7 +201,7 @@
         <name>Strava running heatmap</name>
         <id>strava_running_heatmap</id>
         <type>tms</type>
-        <url>http://globalheat.strava.com/tiles/running/color2/{zoom}/{x}/{y}.png</url>
+        <url>https://heatmap-external-{switch:a,b,c}.strava.com/tiles/running/hot/{zoom}/{x}/{y}.png</url>
         <icon>https://d3nn82uaxijpm6.cloudfront.net/assets/website/mobile/icon-app-81cc8ba60200bed099176eb699e218ab.png</icon>
         <min-zoom>3</min-zoom>
         <max-zoom>17</max-zoom>
