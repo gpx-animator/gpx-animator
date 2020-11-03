@@ -329,7 +329,7 @@
         <name>AGRI black-and-white 2.5m</name>
         <id>AGRI-black_and_white-2.5m</id>
         <type>tms</type>
-        <url>http://agri.openstreetmap.org/{zoom}/{x}/{y}.png</url>
+        <url>https://agri.openstreetmap.org/{zoom}/{x}/{y}.png</url>
         <country-code>AU</country-code>
         <bounds min-lat="-44.062107" min-lon="112.28778" max-lat="-9.992408" max-lon="156.62761">
             <shape>
