@@ -54,6 +54,8 @@ public class MapsTest {
             } else {
                 if (validateMap(mapTemplate, mapValidation)) {
                     testPassed.add(mapTemplate);
+                    LOGGER.info("All tests for map '{} (ID: {})' successfully passed",
+                            mapTemplate.toString(), mapTemplate.getId());
                 } else {
                     testFailed.add(mapTemplate);
                 }
@@ -74,9 +76,6 @@ public class MapsTest {
                     okay = false;
                     LOGGER.error("Failed test for map '{} (ID: {})' with URL '{}': {}",
                             mapTemplate.toString(), mapTemplate.getId(), url, "no image");
-                } else {
-                    LOGGER.info("Test for map '{} (ID: {})' with URL '{}' successfully passed",
-                            mapTemplate.toString(), mapTemplate.getId(), url);
                 }
             } catch (final Exception e) {
                 okay = false;
