@@ -102,7 +102,7 @@ public final class Configuration {
     }
 
     @SuppressWarnings("checkstyle:ParameterNumber")
-    public Configuration(
+    private Configuration(
             final int margin, final Integer width, final Integer height, final Integer zoom,
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
