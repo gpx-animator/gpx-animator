@@ -559,15 +559,15 @@ public final class Configuration {
         public Builder photoTime(final Long photoTime) {
             this.photoTime = photoTime;
             return this;
+        }        
+              
+      public Builder photoAnimationDuration(final Long photoAnimationDuration) {
+            this.photoAnimationDuration = photoAnimationDuration;
+            return this;
         }
 
         public Builder addTrackConfiguration(final TrackConfiguration trackConfiguration) {
             this.trackConfigurationList.add(trackConfiguration);
-            return this;
-        }
-      
-      public Builder photoAnimationDuration(final Long photoAnimationDuration) {
-            this.photoAnimationDuration = photoAnimationDuration;
             return this;
         }
 
