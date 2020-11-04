@@ -85,6 +85,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient FileSelector logoFileSelector;
     private final transient FileSelector photosDirectorySelector;
     private final transient JSpinner photoTimeSpinner;
+    private final transient JSpinner photoAnimationDurationSpinner;
     private final transient JTextArea attributionTextArea;
     private final transient List<MapTemplate> mapTemplateList;
     private final transient JSpinner maxLatSpinner;
