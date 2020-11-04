@@ -61,6 +61,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner tailDurationSpinner;
     private final transient JSpinner fpsSpinner;
     private final transient JComboBox<MapTemplate> tmsUrlTemplateComboBox;
+    private final transient JComboBox unitOfSpeedComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient JSpinner fontSizeSpinner;
     private final transient JCheckBox skipIdleCheckBox;
@@ -804,6 +805,25 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcPhotoAnimationDurationSpinner.gridy = 24;
         add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
         photoAnimationDurationSpinner.addChangeListener(changeListener);
+
+        final JLabel lblUnitofSpeed = new JLabel(resourceBundle.getString("ui.panel.generalsettings.unitofspeed.label"));
+        final GridBagConstraints lblUnitofSpeedVisibility = new GridBagConstraints();
+        lblUnitofSpeedVisibility.anchor = GridBagConstraints.LINE_END;
+        lblUnitofSpeedVisibility.insets = new Insets(0, 0, 5, 5);
+        lblUnitofSpeedVisibility.gridx = 0;
+        add(lblUnitofSpeed, lblUnitofSpeedVisibility);
+
+        unitOfSpeedComboBox = new JComboBox<>();
+        unitOfSpeedComboBox.setToolTipText(Option.UNIT_OF_SPEED.getHelp());
+        unitOfSpeedComboBox.addItem("Kilometer Per Hour");
+        unitOfSpeedComboBox.addItem("Miles Per Hour");
+        unitOfSpeedComboBox.addItem("Nautical Miles Per Hour");
+        panel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbcUnitofSpeed = new GridBagConstraints();
+        gbcUnitofSpeed.fill = GridBagConstraints.HORIZONTAL;
+        gbcUnitofSpeed.gridx = 1;
+        add(unitOfSpeedComboBox, gbcUnitofSpeed);
+
     }
 
     private void setVideoSize(final int width, final int height) {
@@ -865,6 +885,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
         final String attribution = generateAttributionText(replacePlaceholders, tmsItem);
+        final Object unitOfSpedItem = unitOfSpeedComboBox.getSelectedItem();
 
         builder.height((Integer) heightSpinner.getValue())
                 .width((Integer) widthSpinner.getValue())
@@ -894,7 +915,8 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .photoDirectory(photosDirectorySelector.getFilename())
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
-                .attribution(attribution);
+                .attribution(attribution)
+                .unitOfSpeed(unitOfSpedItem.toString());
     }
 
     private String generateAttributionText(final boolean replacePlaceholders, final Object tmsItem) {
