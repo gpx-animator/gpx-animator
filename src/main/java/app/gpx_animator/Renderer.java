@@ -248,7 +248,7 @@ public final class Renderer {
             ga.setColor(backgroundColor);
             ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
         } else {
-            Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
+            MapUtil.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
         }
         drawLogo(bi);
     }
