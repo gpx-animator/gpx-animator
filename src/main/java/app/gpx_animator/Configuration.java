@@ -86,7 +86,6 @@ public final class Configuration {
     private String photoDirectory;
     private Long photoTime;
     private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
-    private String unitOfSpeed;
 
     //@XmlJavaTypeAdapter(SpeedUnitAdapter.class)
     private SpeedUnit speedUnit;
