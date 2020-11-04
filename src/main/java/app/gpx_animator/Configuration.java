@@ -80,7 +80,7 @@ public final class Configuration {
     private String photoDirectory;
     private Long photoTime;
     private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
-    private String unitOfSpeed = "km/h";
+    private String unitOfSpeed;
 
     @XmlElementWrapper
     @XmlElement(name = "trackConfiguration") //NON-NLS
