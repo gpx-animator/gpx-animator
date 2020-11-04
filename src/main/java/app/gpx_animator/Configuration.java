@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 public final class Configuration {
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
+    public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
 
     private int margin;
     private Integer width;
