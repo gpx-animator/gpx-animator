@@ -48,7 +48,8 @@ public enum Option {
     PHOTO_TIME("photo-time"),
     PHOTO_ANIMATION_DURATION("photo-animation-duration"),
     HELP("help"),
-    TRACK_ICON("track-icon");
+    TRACK_ICON("track-icon"),
+    UNIT_OF_SPEED("unit-of-speed");
 
     private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();
 
