@@ -84,6 +84,11 @@ public final class Configuration {
 
     private String photoDirectory;
     private Long photoTime;
+    private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
+    private String unitOfSpeed;
+
+    //@XmlJavaTypeAdapter(SpeedUnitAdapter.class)
+    private SpeedUnit speedUnit;
 
     @XmlElementWrapper
     @XmlElement(name = "trackConfiguration") //NON-NLS
@@ -102,11 +107,11 @@ public final class Configuration {
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
-            final Long keepLastFrame, final File output, final String attribution,
+            final Long keepLastFrame, final File output, final String attribution, final SpeedUnit speedUnit,
             final int fontSize, final String fontName, final String fontStyle, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final String logoPosition, final String attributionPosition, final String informationPosition,
-            final String photoDirectory, final Long photoTime,
+            final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
@@ -143,6 +148,9 @@ public final class Configuration {
         this.informationPosition = informationPosition;
         this.photoDirectory = photoDirectory;
         this.photoTime = photoTime;
+        this.photoAnimationDuration = photoAnimationDuration;
+        this.speedUnit = speedUnit;
+
     }
 
     public static Builder createBuilder() {
@@ -167,6 +175,10 @@ public final class Configuration {
 
     public Double getSpeedup() {
         return speedup;
+    }
+
+    public SpeedUnit getSpeedUnit(){
+        return speedUnit;
     }
 
     public long getTailDuration() {
@@ -280,6 +292,10 @@ public final class Configuration {
     public Long getPhotoTime() {
         return photoTime;
     }
+  
+   public Long getPhotoAnimationDuration() {
+        return photoAnimationDuration;
+    }
 
     public List<TrackConfiguration> getTrackConfigurationList() {
         return trackConfigurationList;
@@ -312,10 +328,12 @@ public final class Configuration {
                 + ", logo=" + logo
                 + ", logoPosition=" + logoPosition
                 + ", attributionPosition=" + attributionPosition
+                + ", photoAnimationDuration=" + photoAnimationDuration
                 + ", informationPosition=" + informationPosition
                 + ", photoDirectory=" + photoDirectory
                 + ", photoTime=" + photoTime
                 + ", trackConfigurationList=" + trackConfigurationList
+                + ", unitOfSpeed=" + speedUnit
                 + "]";
     }
 
@@ -356,6 +374,9 @@ public final class Configuration {
         private String informationPosition;
         private String photoDirectory;
         private Long photoTime = 3_000L;
+        private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
+        private SpeedUnit speedUnit;
+
 
         public Configuration build() {
             return new Configuration(
@@ -363,10 +384,11 @@ public final class Configuration {
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, flashbackColor, flashbackDuration,
-                    keepLastFrame, output, attribution,
+                    keepLastFrame, output, attribution, speedUnit,
                     fontSize, fontName, fontStyle, markerSize, waypointSize,
-                    minLon, maxLon, minLat, maxLat,
+                    minLon, maxLon, minLat, maxLat,  photoAnimationDuration,
                     logo, logoPosition, attributionPosition, informationPosition, photoDirectory, photoTime,
+
 
                     Collections.unmodifiableList(trackConfigurationList)
             );
@@ -540,6 +562,16 @@ public final class Configuration {
 
         public Builder addTrackConfiguration(final TrackConfiguration trackConfiguration) {
             this.trackConfigurationList.add(trackConfiguration);
+            return this;
+        }
+      
+      public Builder photoAnimationDuration(final Long photoAnimationDuration) {
+            this.photoAnimationDuration = photoAnimationDuration;
+            return this;
+        }
+
+        public Builder speedUnit(final SpeedUnit speedUnit) {
+            this.speedUnit = speedUnit;
             return this;
         }
     }

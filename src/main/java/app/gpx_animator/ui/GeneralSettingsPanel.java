@@ -1,13 +1,12 @@
 package app.gpx_animator.ui;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.jetbrains.annotations.NonNls;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 import app.gpx_animator.Configuration;
 import app.gpx_animator.Constants;
+import app.gpx_animator.MapTemplate;
+import app.gpx_animator.MapUtil;
 import app.gpx_animator.Option;
 import app.gpx_animator.Preferences;
+import app.gpx_animator.SpeedUnit;
 
 import java.awt.Component;
 import java.awt.Font;
@@ -32,9 +31,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
@@ -45,17 +41,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static app.gpx_animator.Utils.isEqual;
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 import static javax.swing.JFileChooser.FILES_ONLY;
-import static app.gpx_animator.Utils.isEqual;
 
 abstract class GeneralSettingsPanel extends JPanel {
 
@@ -75,6 +68,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner tailDurationSpinner;
     private final transient JSpinner fpsSpinner;
     private final transient JComboBox<MapTemplate> tmsUrlTemplateComboBox;
+    private final transient JComboBox<SpeedUnit> speedUnitComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient JSpinner fontSizeSpinner;
     private final transient JComboBox fontNameComboBox;
@@ -103,7 +97,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
-        mapTemplateList = readMaps();
+        mapTemplateList = MapUtil.readMaps();
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final GridBagLayout gridBagLayout = new GridBagLayout();
@@ -807,6 +801,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(photoTimeSpinner, gbcPhotoTimeSpinner);
         photoTimeSpinner.addChangeListener(changeListener);
 
+
         final JLabel lblLogoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.logoPosition.label"));
         final GridBagConstraints lblLogoPositionVisibility = new GridBagConstraints();
         lblLogoPositionVisibility.anchor = GridBagConstraints.LINE_END;
@@ -916,12 +911,49 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcFontStyle.gridx = 1;
         add(fontStyleComboBox, gbcFontStyle);
 
+        final JLabel lblPhotoAnimationDuration = new JLabel(resourceBundle.getString("ui.panel.generalsettings.photoanimationduration.label"));
+        final GridBagConstraints gbcLabelPhotoAnimationDuration = new GridBagConstraints();
+        gbcLabelPhotoAnimationDuration.anchor = GridBagConstraints.LINE_END;
+        gbcLabelPhotoAnimationDuration.insets = new Insets(0, 0, 0, 5);
+        gbcLabelPhotoAnimationDuration.gridx = 0;
+        gbcLabelPhotoAnimationDuration.gridy = 24;
+        add(lblPhotoAnimationDuration, gbcLabelPhotoAnimationDuration);
+
+        photoAnimationDurationSpinner = new JSpinner();
+        photoAnimationDurationSpinner.setToolTipText(Option.PHOTO_ANIMATION_DURATION.getHelp());
+        photoAnimationDurationSpinner.setModel(new DurationSpinnerModel());
+        photoAnimationDurationSpinner.setEditor(new DurationEditor(photoAnimationDurationSpinner));
+        final GridBagConstraints gbcPhotoAnimationDurationSpinner = new GridBagConstraints();
+        gbcPhotoAnimationDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcPhotoAnimationDurationSpinner.gridx = 1;
+        gbcPhotoAnimationDurationSpinner.gridy = 24;
+        add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
+        photoAnimationDurationSpinner.addChangeListener(changeListener);
+
+        final JLabel lblSpeedUnit = new JLabel(resourceBundle.getString("ui.panel.generalsettings.speedunit.label"));
+        final GridBagConstraints lblSpeedUnitVisibility = new GridBagConstraints();
+        lblSpeedUnitVisibility.anchor = GridBagConstraints.LINE_END;
+        lblSpeedUnitVisibility.insets = new Insets(0, 0, 5, 5);
+        lblSpeedUnitVisibility.gridx = 0;
+        add(lblSpeedUnit, lblSpeedUnitVisibility);
+
+        speedUnitComboBox = new JComboBox<>();
+        speedUnitComboBox.setToolTipText(Option.SPEED_UNIT.getHelp());
+        Arrays.stream(SpeedUnit.values()).forEach(speedUnitComboBox::addItem);
+        panel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbcSpeedUnit = new GridBagConstraints();
+        gbcSpeedUnit.fill = GridBagConstraints.HORIZONTAL;
+        gbcSpeedUnit.gridx = 1;
+        add(speedUnitComboBox, gbcSpeedUnit);
+
+
     }
 
     private void setVideoSize(final int width, final int height) {
         widthSpinner.setValue(width);
         heightSpinner.setValue(height);
     }
+
 
     private List<MapTemplate> readMaps() {
         final SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -1026,6 +1058,11 @@ abstract class GeneralSettingsPanel extends JPanel {
         backgroundColorSelector.setColor(c.getBackgroundColor());
         flashbackColorSelector.setColor(c.getFlashbackColor());
         flashbackDurationSpinner.setValue(c.getFlashbackDuration());
+        if (c.getSpeedUnit() != null) { // old saved files may not include this setting
+            speedUnitComboBox.setSelectedItem(c.getSpeedUnit());
+        } else {
+            speedUnitComboBox.setSelectedItem(SpeedUnit.KMH);
+        }
     }
 
 
@@ -1039,6 +1076,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final Object fontStyleItem = fontStyleComboBox.getSelectedItem();
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
         final String attribution = generateAttributionText(replacePlaceholders, tmsItem);
+        final SpeedUnit speedUnit = (SpeedUnit) speedUnitComboBox.getSelectedItem();
 
         builder.height((Integer) heightSpinner.getValue())
                 .width((Integer) widthSpinner.getValue())
@@ -1072,7 +1110,9 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .photoDirectory(photosDirectorySelector.getFilename())
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .attribution(attribution)
-                .attributionPosition(attriPosItem.toString());
+                .attributionPosition(attriPosItem.toString())
+                .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())                
+                .speedUnit(speedUnit);
     }
 
     private String generateAttributionText(final boolean replacePlaceholders, final Object tmsItem) {

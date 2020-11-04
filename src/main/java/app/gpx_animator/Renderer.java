@@ -14,12 +14,12 @@
  */
 package app.gpx_animator;
 
-import org.jetbrains.annotations.NonNls;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import app.gpx_animator.frameWriter.FileFrameWriter;
 import app.gpx_animator.frameWriter.FrameWriter;
 import app.gpx_animator.frameWriter.VideoFrameWriter;
+import org.jetbrains.annotations.NonNls;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.BasicStroke;
@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -60,8 +59,6 @@ public final class Renderer {
     private static final double MS = 1000d;
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
-
-    private final java.util.Map<Integer, Long> speedValues = new HashMap<>();
 
     private final Configuration cfg;
 
@@ -90,59 +87,6 @@ public final class Renderer {
 
     public Renderer(final Configuration cfg) {
         this.cfg = cfg;
-    }
-
-    private GpxPoint lastSpeedPoint = null;
-
-    private long calculateSpeedForDisplay(final GpxPoint point, final int frame) {
-        final long speed = calculateSpeed(point, getTime(frame));
-        speedValues.put(frame, speed);
-
-        final long deleteBefore = frame - (Math.round(cfg.getFps())); // 1 second
-        speedValues.keySet().removeIf((f) -> f < deleteBefore);
-
-        return Math.round(speedValues.values().stream().mapToLong(Long::longValue).average().orElse(0));
-    }
-
-    private long calculateSpeed(final GpxPoint point, final long time) {
-        final long timeout = time - 1_000 * 60; // 1 minute
-        final long distance = calculateDistance(lastSpeedPoint, point);
-        final double timeDiff = lastSpeedPoint == null ? 0 : point.getTime() - lastSpeedPoint.getTime();
-
-        final long speed;
-        if (distance > 0 && point.getTime() > timeout) {
-            speed = Math.round((3_600 * distance) / timeDiff);
-        } else {
-            speed = 0;
-        }
-
-        lastSpeedPoint = point;
-        return speed;
-    }
-
-    private static long calculateDistance(final GpxPoint point1, final GpxPoint point2) {
-        if (point1 == null) {
-            return 0;
-        }
-
-        final double lat1 = point1.getLatLon().getLat();
-        final double lon1 = point1.getLatLon().getLon();
-        final double lat2 = point2.getLatLon().getLat();
-        final double lon2 = point2.getLatLon().getLon();
-
-        if ((lat1 == lat2) && (lon1 == lon2)) {
-            return 0;
-        } else {
-            final double theta = lon1 - lon2;
-            final double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
-                    + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
-            final double arcCosine = Math.acos(dist);
-            final double degrees = Math.toDegrees(arcCosine);
-            final double mi = degrees * 60 * 1.1515; // to miles
-            final double km = mi * 1.609344; // to kilometers
-            final double m = km * 1_000; // to meters
-            return Math.round(m); // round to full meters
-        }
     }
 
     private static double lonToX(final Double maxLon) {
@@ -621,7 +565,7 @@ public final class Renderer {
     private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) {
         final String dateString = dateFormat.format(getTime(frame));
         final String latLongString = getLatLonString(marker);
-        final String speedString = getSpeedString(marker, frame);
+        final String speedString = SpeedUtil.getSpeedString(marker, getTime(frame), frame, cfg.getFps(), cfg.getSpeedUnit());
         final Graphics2D graphics = getGraphics(bi);
         final String informationPosition = cfg.getInformationPosition();
 
@@ -660,13 +604,44 @@ public final class Renderer {
         }
     }
 
-    private String getSpeedString(final Point2D point, final int frame) {
+private String getSpeedString(final Point2D point, final int frame) {
         if (point instanceof GpxPoint) {
             final GpxPoint gpxPoint = (GpxPoint) point;
             final long speed = calculateSpeedForDisplay(gpxPoint, frame);
-            return String.format("%d km/h", speed); //NON-NLS
+            final String calculation = calcToMinPer(speed);
+            return calculation;
         } else {
             return "";
+        }
+    }
+
+    private String calcToMinPer(final long speed) {
+        final String speedUnit = cfg.getUnitofSpeed();
+        final String unitName;
+        double minPer = speed;
+        if (speedUnit.equals("Kilometer Per Hour")){
+            unitName = "km";
+        } else if (speedUnit.equals("Miles Per Hour")){
+            unitName = "mile";
+            minPer = minPer * 0.62137119223733;
+        } else {
+            unitName = "nm";
+            minPer = minPer * 0.53995680345572;
+        }
+        minPer = Math.round(minPer);
+        double mins = (60 / minPer);
+        double secs = (mins - (int) mins) * 60;
+        double tenS = 10;
+        if (minPer != 0) {
+            if (secs == 0) {
+                return String.format("%.0f "+ unitName + "/hour | " + (int) mins + ":00 minutes/" + unitName, minPer); //NON-NLS
+            } else if (secs >= tenS) {
+                return String.format("%.0f "+ unitName + "/hour | " + (int) mins + ":" + (int) secs + " minutes/" + unitName, minPer); //NON-NLS
+            } else {
+                return String.format("%.0f "+ unitName + "/hour | " + (int) mins + ":0" + (int) secs + " minutes/" + unitName, minPer); //NON-NLS
+            }
+        } else {
+            return String.format("%.0f "+ unitName + "/hour | 0:00 minutes/" + unitName, minPer); //NON-NLS
         }
     }
 
