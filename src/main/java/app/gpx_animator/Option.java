@@ -51,6 +51,7 @@ public enum Option {
     INFORMATION_POSITION("information-location"),
     PHOTO_DIR("photo-dir"),
     PHOTO_TIME("photo-time"),
+    PHOTO_ANIMATION_DURATION("photo-animation-duration"),
     HELP("help"),
     TRACK_ICON("track-icon"),
     SPEED_UNIT("speed-unit");
