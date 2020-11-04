@@ -609,47 +609,7 @@ public final class Renderer {
         }
     }
 
-private String getSpeedString(final Point2D point, final int frame) {
-        if (point instanceof GpxPoint) {
-            final GpxPoint gpxPoint = (GpxPoint) point;
-            final long speed = calculateSpeedForDisplay(gpxPoint, frame);
-            final String calculation = calcToMinPer(speed);
-            return calculation;
-        } else {
-            return "";
-        }
-    }
-
-    private String calcToMinPer(final long speed) {
-        final String speedUnit = cfg.getUnitofSpeed();
-        final String unitName;
-        double minPer = speed;
-        if (speedUnit.equals("Kilometer Per Hour")){
-            unitName = "km";
-        } else if (speedUnit.equals("Miles Per Hour")){
-            unitName = "mile";
-            minPer = minPer * 0.62137119223733;
-        } else {
-            unitName = "nm";
-            minPer = minPer * 0.53995680345572;
-        }
-        minPer = Math.round(minPer);
-        double mins = (60 / minPer);
-        double secs = (mins - (int) mins) * 60;
-        double tenS = 10;
-        if (minPer != 0) {
-            if (secs == 0) {
-                return String.format("%.0f "+ unitName + "/hour | " + (int) mins + ":00 minutes/" + unitName, minPer); //NON-NLS
-            } else if (secs >= tenS) {
-                return String.format("%.0f "+ unitName + "/hour | " + (int) mins + ":" + (int) secs + " minutes/" + unitName, minPer); //NON-NLS
-            } else {
-                return String.format("%.0f "+ unitName + "/hour | " + (int) mins + ":0" + (int) secs + " minutes/" + unitName, minPer); //NON-NLS
-            }
-        } else {
-            return String.format("%.0f "+ unitName + "/hour | 0:00 minutes/" + unitName, minPer); //NON-NLS
-        }
-    }
-
+    
     private String getLatLonString(final Point2D point) {
         if (point instanceof GpxPoint) {
             final GpxPoint gpxPoint = (GpxPoint) point;
