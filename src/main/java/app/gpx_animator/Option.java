@@ -49,7 +49,7 @@ public enum Option {
     PHOTO_ANIMATION_DURATION("photo-animation-duration"),
     HELP("help"),
     TRACK_ICON("track-icon"),
-    UNIT_OF_SPEED("unit-of-speed");
+    SPEED_UNIT("speed-unit");
 
     private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();
 

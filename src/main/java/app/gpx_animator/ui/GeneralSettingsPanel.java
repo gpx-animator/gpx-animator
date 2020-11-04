@@ -6,6 +6,7 @@ import app.gpx_animator.MapTemplate;
 import app.gpx_animator.MapUtil;
 import app.gpx_animator.Option;
 import app.gpx_animator.Preferences;
+import app.gpx_animator.SpeedUnit;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
@@ -35,6 +36,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -61,7 +63,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner tailDurationSpinner;
     private final transient JSpinner fpsSpinner;
     private final transient JComboBox<MapTemplate> tmsUrlTemplateComboBox;
-    private final transient JComboBox unitOfSpeedComboBox;
+    private final transient JComboBox<SpeedUnit> speedUnitComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient JSpinner fontSizeSpinner;
     private final transient JCheckBox skipIdleCheckBox;
@@ -806,23 +808,21 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
         photoAnimationDurationSpinner.addChangeListener(changeListener);
 
-        final JLabel lblUnitofSpeed = new JLabel(resourceBundle.getString("ui.panel.generalsettings.unitofspeed.label"));
-        final GridBagConstraints lblUnitofSpeedVisibility = new GridBagConstraints();
-        lblUnitofSpeedVisibility.anchor = GridBagConstraints.LINE_END;
-        lblUnitofSpeedVisibility.insets = new Insets(0, 0, 5, 5);
-        lblUnitofSpeedVisibility.gridx = 0;
-        add(lblUnitofSpeed, lblUnitofSpeedVisibility);
+        final JLabel lblSpeedUnit = new JLabel(resourceBundle.getString("ui.panel.generalsettings.speedunit.label"));
+        final GridBagConstraints lblSpeedUnitVisibility = new GridBagConstraints();
+        lblSpeedUnitVisibility.anchor = GridBagConstraints.LINE_END;
+        lblSpeedUnitVisibility.insets = new Insets(0, 0, 5, 5);
+        lblSpeedUnitVisibility.gridx = 0;
+        add(lblSpeedUnit, lblSpeedUnitVisibility);
 
-        unitOfSpeedComboBox = new JComboBox<>();
-        unitOfSpeedComboBox.setToolTipText(Option.UNIT_OF_SPEED.getHelp());
-        unitOfSpeedComboBox.addItem("Kilometer Per Hour");
-        unitOfSpeedComboBox.addItem("Miles Per Hour");
-        unitOfSpeedComboBox.addItem("Nautical Miles Per Hour");
+        speedUnitComboBox = new JComboBox<>();
+        speedUnitComboBox.setToolTipText(Option.SPEED_UNIT.getHelp());
+        Arrays.stream(SpeedUnit.values()).forEach(speedUnitComboBox::addItem);
         panel.setLayout(new GridBagLayout());
-        final GridBagConstraints gbcUnitofSpeed = new GridBagConstraints();
-        gbcUnitofSpeed.fill = GridBagConstraints.HORIZONTAL;
-        gbcUnitofSpeed.gridx = 1;
-        add(unitOfSpeedComboBox, gbcUnitofSpeed);
+        final GridBagConstraints gbcSpeedUnit = new GridBagConstraints();
+        gbcSpeedUnit.fill = GridBagConstraints.HORIZONTAL;
+        gbcSpeedUnit.gridx = 1;
+        add(speedUnitComboBox, gbcSpeedUnit);
 
     }
 
@@ -877,6 +877,11 @@ abstract class GeneralSettingsPanel extends JPanel {
         backgroundColorSelector.setColor(c.getBackgroundColor());
         flashbackColorSelector.setColor(c.getFlashbackColor());
         flashbackDurationSpinner.setValue(c.getFlashbackDuration());
+        if (c.getSpeedUnit() != null) { // old saved files may not include this setting
+            speedUnitComboBox.setSelectedItem(c.getSpeedUnit());
+        } else {
+            speedUnitComboBox.setSelectedItem(SpeedUnit.KMH);
+        }
     }
 
 
@@ -885,7 +890,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
         final String attribution = generateAttributionText(replacePlaceholders, tmsItem);
-        final Object unitOfSpedItem = unitOfSpeedComboBox.getSelectedItem();
+        final SpeedUnit speedUnit = (SpeedUnit) speedUnitComboBox.getSelectedItem();
 
         builder.height((Integer) heightSpinner.getValue())
                 .width((Integer) widthSpinner.getValue())
@@ -916,7 +921,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
                 .attribution(attribution)
-                .unitOfSpeed(unitOfSpedItem.toString());
+                .speedUnit(speedUnit);
     }
 
     private String generateAttributionText(final boolean replacePlaceholders, final Object tmsItem) {

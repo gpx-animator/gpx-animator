@@ -62,7 +62,7 @@ public final class Help {
         w.writeOptionHelp(Option.TIME_OFFSET, "milliseconds", true, tc.getTimeOffset()); //NON-NLS
         w.writeOptionHelp(Option.TMS_URL_TEMPLATE, "template", false, cfg.getTmsUrlTemplate()); //NON-NLS
         w.writeOptionHelp(Option.TOTAL_TIME, "time", false, cfg.getTotalTime()); //NON-NLS
-        w.writeOptionHelp(Option.UNIT_OF_SPEED, "SPEED", false, cfg.getUnitofSpeed()); //NON-NLS
+        w.writeOptionHelp(Option.SPEED_UNIT, "SPEED", false, cfg.getSpeedUnit()); //NON-NLS
         w.writeOptionHelp(Option.WAYPOINT_SIZE, "size", false, cfg.getWaypointSize()); //NON-NLS
         w.writeOptionHelp(Option.WIDTH, "width", false, "(800)"); // TODO cfg.getWidth() NON-NLS
         w.writeOptionHelp(Option.ZOOM, "zoom", false, cfg.getZoom()); //NON-NLS
