@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="8.0.8" transformSequenceNumber="8">
   <directoryPresets config="D:/dev/gpx-animator/build/libs/gpx-animator-1.6.0-SNAPSHOT-all.jar" />
-  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.6.0-SNAPSHOT" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="11" javaMaxVersion="13">
-    <jreBundles jdkProviderId="AdoptOpenJDK" release="openjdk11/jdk-11.0.8+10" />
+  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.6.0-SNAPSHOT" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="15" javaMaxVersion="15">
+    <jreBundles jdkProviderId="AdoptOpenJDK" release="openjdk15/jdk-15+36" />
   </application>
   <files keepModificationTimes="true" missingFilesStrategy="error">
     <mountPoints>
@@ -588,7 +588,7 @@ file.getParent() != null || (file.getName().endsWith(".app") &amp;&amp; director
                 <serializedBean>
                   <property name="labelFontSizePercent" type="int" value="130" />
                   <property name="labelFontStyle" type="enum" class="com.install4j.runtime.beans.formcomponents.FontStyle" value="BOLD" />
-                  <property name="labelFontName" type="enum" class="com.install4j.runtime.beans.formcomponents.FontName" value="DERIVED" />
+                  <property name="labelFontType" type="enum" class="com.install4j.runtime.beans.formcomponents.FontType" value="DERIVED" />
                 </serializedBean>
               </formComponent>
               <formComponent id="44" beanClass="com.install4j.runtime.beans.formcomponents.SeparatorComponent" />
@@ -659,7 +659,7 @@ file.getParent() != null || (file.getName().endsWith(".app") &amp;&amp; director
                   <formComponent name="Title" id="50" beanClass="com.install4j.runtime.beans.styles.ScreenTitleComponent">
                     <serializedBean>
                       <property name="labelFontStyle" type="enum" class="com.install4j.runtime.beans.formcomponents.FontStyle" value="BOLD" />
-                      <property name="labelFontName" type="enum" class="com.install4j.runtime.beans.formcomponents.FontName" value="DERIVED" />
+                      <property name="labelFontType" type="enum" class="com.install4j.runtime.beans.formcomponents.FontType" value="DERIVED" />
                     </serializedBean>
                   </formComponent>
                   <formComponent name="Subtitle" id="51" beanClass="com.install4j.runtime.beans.styles.ScreenTitleComponent" insetLeft="8">
