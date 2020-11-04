@@ -1031,6 +1031,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
         photosDirectorySelector.setFilename(c.getPhotoDirectory());
         photoTimeSpinner.setValue(c.getPhotoTime());
+        photoAnimationDurationSpinner.setValue(c.getPhotoAnimationDuration());
 
         final String tmsUrlTemplate = c.getTmsUrlTemplate();
         found:
@@ -1110,6 +1111,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .logo(new File(logoFileSelector.getFilename()))
                 .photoDirectory(photosDirectorySelector.getFilename())
                 .photoTime((Long) photoTimeSpinner.getValue())
+                .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
                 .attribution(attribution)
                 .attributionPosition(attriPosItem.toString())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())                
