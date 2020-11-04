@@ -80,6 +80,7 @@ public final class Configuration {
     private String photoDirectory;
     private Long photoTime;
     private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
+    private String unitOfSpeed = "km/h";
 
     @XmlElementWrapper
     @XmlElement(name = "trackConfiguration") //NON-NLS
@@ -97,7 +98,7 @@ public final class Configuration {
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
-            final Long keepLastFrame, final File output, final String attribution,
+            final Long keepLastFrame, final File output, final String attribution, final String unitOfSpeed,
             final int fontSize, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
@@ -133,6 +134,7 @@ public final class Configuration {
         this.photoDirectory = photoDirectory;
         this.photoTime = photoTime;
         this.photoAnimationDuration = photoAnimationDuration;
+        this.unitOfSpeed = unitOfSpeed;
     }
 
     public static Builder createBuilder() {
@@ -157,6 +159,10 @@ public final class Configuration {
 
     public Double getSpeedup() {
         return speedup;
+    }
+
+    public String getUnitofSpeed(){
+        return unitOfSpeed;
     }
 
     public long getTailDuration() {
@@ -286,6 +292,7 @@ public final class Configuration {
                 + ", photoTime=" + photoTime
                 + ", photoAnimationDuration=" + photoAnimationDuration
                 + ", trackConfigurationList=" + trackConfigurationList
+                + ", unitOfSpeed=" + unitOfSpeed
                 + "]";
     }
 
@@ -322,6 +329,7 @@ public final class Configuration {
         private String photoDirectory;
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
+        private String unitOfSpeed;
 
         public Configuration build() {
             return new Configuration(
@@ -329,9 +337,9 @@ public final class Configuration {
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, flashbackColor, flashbackDuration,
-                    keepLastFrame, output, attribution,
+                    keepLastFrame, output, attribution, unitOfSpeed,
                     fontSize, markerSize, waypointSize,
-                    minLon, maxLon, minLat, maxLat,
+                    minLon, maxLon, minLat, maxLat, 
                     logo, photoDirectory, photoTime, photoAnimationDuration,
 
                     Collections.unmodifiableList(trackConfigurationList)
@@ -486,6 +494,11 @@ public final class Configuration {
 
         public Builder addTrackConfiguration(final TrackConfiguration trackConfiguration) {
             this.trackConfigurationList.add(trackConfiguration);
+            return this;
+        }
+
+        public Builder unitOfSpeed(final String unitOfSpeed) {
+            this.unitOfSpeed = unitOfSpeed;
             return this;
         }
     }
