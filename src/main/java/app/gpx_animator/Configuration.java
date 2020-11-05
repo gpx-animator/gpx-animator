@@ -149,7 +149,6 @@ public final class Configuration {
         this.photoTime = photoTime;
         this.photoAnimationDuration = photoAnimationDuration;
         this.speedUnit = speedUnit;
-
     }
 
     public static Builder createBuilder() {
@@ -291,8 +290,8 @@ public final class Configuration {
     public Long getPhotoTime() {
         return photoTime;
     }
-  
-   public Long getPhotoAnimationDuration() {
+
+    public Long getPhotoAnimationDuration() {
         return photoAnimationDuration;
     }
 
@@ -327,10 +326,10 @@ public final class Configuration {
                 + ", logo=" + logo
                 + ", logoPosition=" + logoPosition
                 + ", attributionPosition=" + attributionPosition
-                + ", photoAnimationDuration=" + photoAnimationDuration
                 + ", informationPosition=" + informationPosition
                 + ", photoDirectory=" + photoDirectory
                 + ", photoTime=" + photoTime
+                + ", photoAnimationDuration=" + photoAnimationDuration
                 + ", trackConfigurationList=" + trackConfigurationList
                 + ", unitOfSpeed=" + speedUnit
                 + "]";
@@ -557,9 +556,9 @@ public final class Configuration {
         public Builder photoTime(final Long photoTime) {
             this.photoTime = photoTime;
             return this;
-        }        
-              
-      public Builder photoAnimationDuration(final Long photoAnimationDuration) {
+        }
+
+        public Builder photoAnimationDuration(final Long photoAnimationDuration) {
             this.photoAnimationDuration = photoAnimationDuration;
             return this;
         }
