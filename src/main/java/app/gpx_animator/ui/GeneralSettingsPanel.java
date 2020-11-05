@@ -8,8 +8,6 @@ import app.gpx_animator.Option;
 import app.gpx_animator.Preferences;
 import app.gpx_animator.SpeedUnit;
 
-import java.awt.Component;
-import java.awt.Font;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -31,7 +29,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -885,8 +885,8 @@ abstract class GeneralSettingsPanel extends JPanel {
             fontNameComboBox.addItem(array[i - 1]);
         }
 
-        ComboBoxRenderar renderar = new ComboBoxRenderar();
-        fontNameComboBox.setRenderer(renderar);
+        ComboBoxRenderer renderer = new ComboBoxRenderer();
+        fontNameComboBox.setRenderer(renderer);
 
         panel.setLayout(new GridBagLayout());
         final GridBagConstraints gbcFontName = new GridBagConstraints();
@@ -1072,7 +1072,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     protected abstract void configurationChanged();
 
-    private class ComboBoxRenderar extends JLabel implements ListCellRenderer {
+    private class ComboBoxRenderer extends JLabel implements ListCellRenderer {
 
         public static final long serialVersionUID = 1L;
         public Component getListCellRendererComponent(final JList list, final Object value,
