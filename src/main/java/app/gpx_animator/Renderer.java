@@ -211,7 +211,14 @@ public final class Renderer {
             final Point2D marker = drawMarker(bi2, frame);
             if (font != null) {
                 drawInfo(bi2, frame, marker);
-                drawAttribution(bi2, cfg.getAttribution());
+
+                String att = resourceBundle.getString("configuration.attribution");
+                String getAt = cfg.getAttribution();
+                if (att.equals(getAt)) {
+                    drawAttribution(bi2, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
+                } else {
+                    drawAttribution(bi2, getAt);
+                }
             }
 
             skip = renderFlashback(skip, bi2);
@@ -445,7 +452,13 @@ public final class Renderer {
             final Point2D marker = drawMarker(bi, frames);
             if (font != null) {
                 drawInfo(bi, frames, marker);
-                drawAttribution(bi, cfg.getAttribution());
+
+                String att = resourceBundle.getString("configuration.attribution");
+                if (cfg.getAttribution().equals(att)) {
+                    drawAttribution(bi, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
+                } else {
+                    drawAttribution(bi, cfg.getAttribution());
+                }
             }
             final long ms = cfg.getKeepLastFrame();
             final long fps = Double.valueOf(cfg.getFps()).longValue();
