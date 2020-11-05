@@ -947,14 +947,13 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcSpeedUnit.gridx = 1;
         add(speedUnitComboBox, gbcSpeedUnit);
 
-
     }
 
     private void setVideoSize(final int width, final int height) {
         widthSpinner.setValue(width);
         heightSpinner.setValue(height);
     }
-    
+
     public void setConfiguration(final Configuration c) {
         heightSpinner.setValue(c.getHeight());
         widthSpinner.setValue(c.getWidth());
