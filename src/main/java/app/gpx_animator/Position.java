@@ -1,0 +1,23 @@
+package app.gpx_animator;
+
+import javax.swing.JComboBox;
+import java.util.Arrays;
+
+public enum Position {
+
+    // TODO Position.HIDE -> don't show on the map
+
+    TOP_LEFT,
+    TOP_CENTER,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_CENTER,
+    BOTTOM_RIGHT;
+
+    // TODO toString() -> translation for UI
+
+    public static void fillComboBox(final JComboBox<Position> comboBox) {
+        Arrays.stream(values()).forEach(comboBox::addItem);
+    }
+
+}

@@ -64,8 +64,8 @@ public final class Configuration {
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File output;
     private String attribution;
-    private String attributionPosition = "Bottom Left";
-    private String informationPosition = "Bottom Right";
+    private Position attributionPosition = Position.BOTTOM_LEFT;
+    private Position informationPosition = Position.BOTTOM_RIGHT;
 
     private int fontSize;
     private String fontName;
@@ -81,7 +81,7 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File logo;
-    private String logoPosition = "Top Left";
+    private Position logoPosition = Position.TOP_LEFT;
 
     private String photoDirectory;
     private Long photoTime;
@@ -109,7 +109,7 @@ public final class Configuration {
             final Long keepLastFrame, final File output, final String attribution, final SpeedUnit speedUnit,
             final int fontSize, final String fontName, final String fontStyle, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
-            final File logo, final String logoPosition, final String attributionPosition, final String informationPosition,
+            final File logo, final Position logoPosition, final Position attributionPosition, final Position informationPosition,
             final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final List<TrackConfiguration> trackConfigurationList) {
 
@@ -271,15 +271,15 @@ public final class Configuration {
         return logo;
     }
 
-    public String getLogoPosition() {
+    public Position getLogoPosition() {
         return logoPosition;
     }
 
-    public String getAttributionPosition() {
+    public Position getAttributionPosition() {
         return attributionPosition;
     }
 
-    public String getInformationPosition() {
+    public Position getInformationPosition() {
         return informationPosition;
     }
 
@@ -367,9 +367,9 @@ public final class Configuration {
         private Double minLat;
         private Double maxLat;
         private File logo;
-        private String logoPosition;
-        private String attributionPosition;
-        private String informationPosition;
+        private Position logoPosition;
+        private Position attributionPosition;
+        private Position informationPosition;
         private String photoDirectory;
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
@@ -532,17 +532,17 @@ public final class Configuration {
             return this;
         }
 
-        public Builder logoPosition(final String logoPosition) {
+        public Builder logoPosition(final Position logoPosition) {
             this.logoPosition = logoPosition;
             return this;
         }
 
-        public Builder attributionPosition(final String attributionPosition) {
+        public Builder attributionPosition(final Position attributionPosition) {
             this.attributionPosition = attributionPosition;
             return this;
         }
 
-        public Builder informationPosition(final String informationPosition) {
+        public Builder informationPosition(final Position informationPosition) {
             this.informationPosition = informationPosition;
             return this;
         }
