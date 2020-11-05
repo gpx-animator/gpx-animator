@@ -8,6 +8,8 @@ import app.gpx_animator.Option;
 import app.gpx_animator.Preferences;
 import app.gpx_animator.SpeedUnit;
 
+import java.awt.Component;
+import java.awt.Font;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -15,6 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -22,12 +25,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -66,6 +71,11 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JComboBox<SpeedUnit> speedUnitComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient JSpinner fontSizeSpinner;
+    private final transient JComboBox fontNameComboBox;
+    private final transient JComboBox fontStyleComboBox;
+    private final transient JComboBox logoLocationComboBox;
+    private final transient JComboBox attriLocationComboBox;
+    private final transient JComboBox infoLocationComboBox;
     private final transient JCheckBox skipIdleCheckBox;
     private final transient ColorSelector backgroundColorSelector;
     private final transient ColorSelector flashbackColorSelector;
@@ -83,6 +93,9 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner maxLonSpinner;
     private final transient JSpinner minLatSpinner;
 
+    private transient String[] fontFamilyName;
+    private transient Integer[] array;
+
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
         mapTemplateList = MapUtil.readMaps();
@@ -92,7 +105,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gridBagLayout.columnWidths = new int[]{91, 100, 0, 0};
         gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 0};
         gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                 Double.MIN_VALUE};
         setLayout(gridBagLayout);
 
@@ -789,6 +802,116 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(photoTimeSpinner, gbcPhotoTimeSpinner);
         photoTimeSpinner.addChangeListener(changeListener);
 
+
+        final JLabel lblLogoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.logoPosition.label"));
+        final GridBagConstraints lblLogoPositionVisibility = new GridBagConstraints();
+        lblLogoPositionVisibility.anchor = GridBagConstraints.LINE_END;
+        lblLogoPositionVisibility.insets = new Insets(0, 0, 5, 5);
+        lblLogoPositionVisibility.gridx = 0;
+        add(lblLogoPosition, lblLogoPositionVisibility);
+
+        logoLocationComboBox = new JComboBox<>();
+        logoLocationComboBox.setToolTipText(Option.LOGO_POSITION.getHelp());
+        logoLocationComboBox.addItem("Top Left");
+        logoLocationComboBox.addItem("Top Center");
+        logoLocationComboBox.addItem("Top Right");
+        logoLocationComboBox.addItem("Bottom Left");
+        logoLocationComboBox.addItem("Bottom Center");
+        logoLocationComboBox.addItem("Bottom Right");
+        panel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbcLogoPositioning = new GridBagConstraints();
+        gbcLogoPositioning.fill = GridBagConstraints.HORIZONTAL;
+        gbcLogoPositioning.gridx = 1;
+        add(logoLocationComboBox, gbcLogoPositioning);
+
+        final JLabel lblAttriPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionPosition.label"));
+        final GridBagConstraints attriPositionVisibility = new GridBagConstraints();
+        attriPositionVisibility.anchor = GridBagConstraints.LINE_END;
+        attriPositionVisibility.insets = new Insets(0, 0, 5, 5);
+        attriPositionVisibility.gridx = 0;
+        add(lblAttriPosition, attriPositionVisibility);
+
+        attriLocationComboBox = new JComboBox<>();
+        attriLocationComboBox.setToolTipText(Option.ATTRIBUTION_POSITION.getHelp());
+        attriLocationComboBox.addItem("Bottom Left");
+        attriLocationComboBox.addItem("Bottom Center");
+        attriLocationComboBox.addItem("Bottom Right");
+        attriLocationComboBox.addItem("Top Left");
+        attriLocationComboBox.addItem("Top Center");
+        attriLocationComboBox.addItem("Top Right");
+        panel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbcAttriPositioning = new GridBagConstraints();
+        gbcAttriPositioning.fill = GridBagConstraints.HORIZONTAL;
+        gbcAttriPositioning.gridx = 1;
+        add(attriLocationComboBox, gbcAttriPositioning);
+
+        final JLabel lblinfoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.InformationPosition.label"));
+        final GridBagConstraints infoPositionVisibility = new GridBagConstraints();
+        infoPositionVisibility.anchor = GridBagConstraints.LINE_END;
+        infoPositionVisibility.insets = new Insets(0, 0, 5, 5);
+        infoPositionVisibility.gridx = 0;
+        add(lblinfoPosition, infoPositionVisibility);
+
+        infoLocationComboBox = new JComboBox<>();
+        infoLocationComboBox.setToolTipText(Option.INFORMATION_POSITION.getHelp());
+        infoLocationComboBox.addItem("Bottom Right");
+        infoLocationComboBox.addItem("Bottom Center");
+        infoLocationComboBox.addItem("Bottom Left");
+        infoLocationComboBox.addItem("Top Left");
+        infoLocationComboBox.addItem("Top Center");
+        infoLocationComboBox.addItem("Top Right");
+        panel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbcInfoPositioning = new GridBagConstraints();
+        gbcInfoPositioning.fill = GridBagConstraints.HORIZONTAL;
+        gbcInfoPositioning.gridx = 1;
+        add(infoLocationComboBox, gbcInfoPositioning);
+
+        final JLabel lblFontName = new JLabel(resourceBundle.getString("ui.panel.generalsettings.fontName.label"));
+        final GridBagConstraints infoFontNameVisibility = new GridBagConstraints();
+        infoFontNameVisibility.anchor = GridBagConstraints.LINE_END;
+        infoFontNameVisibility.insets = new Insets(0, 0, 5, 5);
+        infoFontNameVisibility.gridx = 0;
+        add(lblFontName, infoFontNameVisibility);
+
+        fontNameComboBox = new JComboBox<>();
+        fontNameComboBox.setToolTipText(Option.FONT_NAME.getHelp());
+
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        fontFamilyName = ge.getAvailableFontFamilyNames();
+
+        array = new Integer[fontFamilyName.length];
+        for (int i = 1; i <= fontFamilyName.length; i++) {
+            array[i - 1] = i;
+            fontNameComboBox.addItem(array[i - 1]);
+        }
+
+        ComboBoxRenderar renderar = new ComboBoxRenderar();
+        fontNameComboBox.setRenderer(renderar);
+
+        panel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbcFontName = new GridBagConstraints();
+        gbcFontName.fill = GridBagConstraints.HORIZONTAL;
+        gbcFontName.gridx = 1;
+        add(fontNameComboBox, gbcFontName);
+
+        final JLabel lblFontSytle = new JLabel(resourceBundle.getString("ui.panel.generalsettings.fontStyle.label"));
+        final GridBagConstraints fontStyleVisibility = new GridBagConstraints();
+        fontStyleVisibility.anchor = GridBagConstraints.LINE_END;
+        fontStyleVisibility.insets = new Insets(0, 0, 5, 5);
+        fontStyleVisibility.gridx = 0;
+        add(lblFontSytle, fontStyleVisibility);
+
+        fontStyleComboBox = new JComboBox<>();
+        fontStyleComboBox.setToolTipText(Option.FONT_NAME.getHelp());
+        fontStyleComboBox.addItem("PLAIN");
+        fontStyleComboBox.addItem("BOLD");
+        fontStyleComboBox.addItem("ITALIC");
+        fontStyleComboBox.addItem("BOLD|ITALIC");
+        final GridBagConstraints gbcFontStyle = new GridBagConstraints();
+        gbcFontStyle.fill = GridBagConstraints.HORIZONTAL;
+        gbcFontStyle.gridx = 1;
+        add(fontStyleComboBox, gbcFontStyle);
+
         final JLabel lblPhotoAnimationDuration = new JLabel(resourceBundle.getString("ui.panel.generalsettings.photoanimationduration.label"));
         final GridBagConstraints gbcLabelPhotoAnimationDuration = new GridBagConstraints();
         gbcLabelPhotoAnimationDuration.anchor = GridBagConstraints.LINE_END;
@@ -888,6 +1011,11 @@ abstract class GeneralSettingsPanel extends JPanel {
     public void buildConfiguration(final Configuration.Builder builder, final boolean replacePlaceholders) {
         final Long td = (Long) tailDurationSpinner.getValue();
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
+        final Object logoPosItem = logoLocationComboBox.getSelectedItem();
+        final Object attriPosItem = attriLocationComboBox.getSelectedItem();
+        final Object inforPosItem = infoLocationComboBox.getSelectedItem();
+        final Object fontNameItem = fontNameComboBox.getSelectedItem();
+        final Object fontStyleItem = fontStyleComboBox.getSelectedItem();
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
         final String attribution = generateAttributionText(replacePlaceholders, tmsItem);
         final SpeedUnit speedUnit = (SpeedUnit) speedUnitComboBox.getSelectedItem();
@@ -908,12 +1036,16 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .keepLastFrame((Long) keepLastFrameSpinner.getValue())
                 .backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f)
                 .tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate) // NOPMD -- null = not set
+                .logoPosition(logoPosItem.toString())
+                .informationPosition(inforPosItem.toString())
                 .skipIdle(skipIdleCheckBox.isSelected())
                 .backgroundColor(backgroundColorSelector.getColor())
                 .flashbackColor(flashbackColorSelector.getColor())
                 .flashbackDuration((Long) flashbackDurationSpinner.getValue())
                 .output(new File(outputFileSelector.getFilename()))
                 .fontSize((Integer) fontSizeSpinner.getValue())
+                .fontStyle(fontStyleItem.toString())
+                .fontName(fontFamilyName[(Integer) fontNameItem - 1])
                 .markerSize((Double) markerSizeSpinner.getValue())
                 .waypointSize((Double) waypointSizeSpinner.getValue())
                 .logo(new File(logoFileSelector.getFilename()))
@@ -921,6 +1053,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
                 .attribution(attribution)
+                .attributionPosition(attriPosItem.toString())
                 .speedUnit(speedUnit);
     }
 
@@ -938,5 +1071,18 @@ abstract class GeneralSettingsPanel extends JPanel {
     }
 
     protected abstract void configurationChanged();
+
+    private class ComboBoxRenderar extends JLabel implements ListCellRenderer {
+
+        public static final long serialVersionUID = 1L;
+        public Component getListCellRendererComponent(final JList list, final Object value,
+        final int index, final boolean isSelected, final boolean cellHasFocus) {
+           int offset = ((Integer) value).intValue() - 1;
+           String name = fontFamilyName[offset];
+           setText(name);
+           setFont(new Font(name, Font.PLAIN, 20));
+           return this;
+        }
+     }
 
 }
