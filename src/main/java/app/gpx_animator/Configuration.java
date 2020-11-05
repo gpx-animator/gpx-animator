@@ -384,10 +384,9 @@ public final class Configuration {
                     skipIdle, backgroundColor, flashbackColor, flashbackDuration,
                     keepLastFrame, output, attribution, speedUnit,
                     fontSize, fontName, fontStyle, markerSize, waypointSize,
-                    minLon, maxLon, minLat, maxLat,  photoAnimationDuration,
-                    logo, logoPosition, attributionPosition, informationPosition, photoDirectory, photoTime,
-
-
+                    minLon, maxLon, minLat, maxLat,
+                    logo, logoPosition, attributionPosition, informationPosition,
+                    photoDirectory, photoTime, photoAnimationDuration,
                     Collections.unmodifiableList(trackConfigurationList)
             );
         }
