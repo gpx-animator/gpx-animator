@@ -990,11 +990,10 @@ abstract class GeneralSettingsPanel extends JPanel {
         backgroundColorSelector.setColor(c.getBackgroundColor());
         flashbackColorSelector.setColor(c.getFlashbackColor());
         flashbackDurationSpinner.setValue(c.getFlashbackDuration());
-        if (c.getSpeedUnit() != null) { // old saved files may not include this setting
-            speedUnitComboBox.setSelectedItem(c.getSpeedUnit());
-        } else {
-            speedUnitComboBox.setSelectedItem(SpeedUnit.KMH);
-        }
+        logoLocationComboBox.setSelectedItem(c.getLogoPosition() != null ? c.getLogoPosition() : Position.TOP_LEFT);
+        attriLocationComboBox.setSelectedItem(c.getAttributionPosition() != null ? c.getAttributionPosition() : Position.BOTTOM_LEFT);
+        infoLocationComboBox.setSelectedItem(c.getInformationPosition() != null ? c.getInformationPosition() : Position.BOTTOM_RIGHT);
+        speedUnitComboBox.setSelectedItem(c.getSpeedUnit() != null ? c.getSpeedUnit() : SpeedUnit.KMH);
     }
 
 
