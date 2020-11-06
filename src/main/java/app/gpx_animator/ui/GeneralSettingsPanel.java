@@ -277,19 +277,19 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelBoundingBox.gridy = 3;
         add(lblBoundingBox, gbcLabelBoundingBox);
 
-        final JPanel panel = new JPanel();
+        final JPanel boundingboxPanel = new JPanel();
         final GridBagConstraints gbcPanel = new GridBagConstraints();
         gbcPanel.fill = GridBagConstraints.HORIZONTAL;
         gbcPanel.insets = new Insets(0, 0, 5, 0);
         gbcPanel.gridx = 1;
         gbcPanel.gridy = 3;
-        add(panel, gbcPanel);
+        add(boundingboxPanel, gbcPanel);
         final GridBagLayout gblPanel = new GridBagLayout();
         gblPanel.columnWidths = new int[]{0, 40, 40, 40, 0};
         gblPanel.rowHeights = new int[]{20, 0, 0, 0};
         gblPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
         gblPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-        panel.setLayout(gblPanel);
+        boundingboxPanel.setLayout(gblPanel);
 
         final JLabel lblMaxLat = new JLabel(resourceBundle.getString("ui.panel.generalsettings.latitude.max.label"));
         final GridBagConstraints gbcLabelMaxLat = new GridBagConstraints();
@@ -297,7 +297,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelMaxLat.anchor = GridBagConstraints.LINE_END;
         gbcLabelMaxLat.gridx = 1;
         gbcLabelMaxLat.gridy = 0;
-        panel.add(lblMaxLat, gbcLabelMaxLat);
+        boundingboxPanel.add(lblMaxLat, gbcLabelMaxLat);
 
         final JLabel lblMinLon = new JLabel(resourceBundle.getString("ui.panel.generalsettings.longitude.min.label"));
         final GridBagConstraints gbcLabelMinLon = new GridBagConstraints();
@@ -305,7 +305,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelMinLon.anchor = GridBagConstraints.LINE_END;
         gbcLabelMinLon.gridx = 0;
         gbcLabelMinLon.gridy = 1;
-        panel.add(lblMinLon, gbcLabelMinLon);
+        boundingboxPanel.add(lblMinLon, gbcLabelMinLon);
 
         minLonSpinner = new JSpinner();
         minLonSpinner.setToolTipText(Option.MIN_LON.getHelp());
@@ -316,7 +316,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcMinLonSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcMinLonSpinner.gridx = 1;
         gbcMinLonSpinner.gridy = 1;
-        panel.add(minLonSpinner, gbcMinLonSpinner);
+        boundingboxPanel.add(minLonSpinner, gbcMinLonSpinner);
         minLonSpinner.addChangeListener(changeListener);
 
         maxLatSpinner = new JSpinner();
@@ -329,7 +329,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcMaxLatSpinner.insets = new Insets(0, 0, 5, 5);
         gbcMaxLatSpinner.gridx = 2;
         gbcMaxLatSpinner.gridy = 0;
-        panel.add(maxLatSpinner, gbcMaxLatSpinner);
+        boundingboxPanel.add(maxLatSpinner, gbcMaxLatSpinner);
         maxLatSpinner.addChangeListener(changeListener);
 
         final JLabel lblMaxLon = new JLabel(resourceBundle.getString("ui.panel.generalsettings.longitude.max.label"));
@@ -338,7 +338,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelMaxLon.anchor = GridBagConstraints.LINE_END;
         gbcLabelMaxLon.gridx = 2;
         gbcLabelMaxLon.gridy = 1;
-        panel.add(lblMaxLon, gbcLabelMaxLon);
+        boundingboxPanel.add(lblMaxLon, gbcLabelMaxLon);
 
         final JLabel lblMinLat = new JLabel(resourceBundle.getString("ui.panel.generalsettings.latitude.min.label"));
         final GridBagConstraints gbcLabelMinLat = new GridBagConstraints();
@@ -346,7 +346,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelMinLat.anchor = GridBagConstraints.LINE_END;
         gbcLabelMinLat.gridx = 1;
         gbcLabelMinLat.gridy = 2;
-        panel.add(lblMinLat, gbcLabelMinLat);
+        boundingboxPanel.add(lblMinLat, gbcLabelMinLat);
 
         minLatSpinner = new JSpinner();
         minLatSpinner.setToolTipText(Option.MIN_LAT.getHelp());
@@ -357,7 +357,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcMinLatSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcMinLatSpinner.gridx = 2;
         gbcMinLatSpinner.gridy = 2;
-        panel.add(minLatSpinner, gbcMinLatSpinner);
+        boundingboxPanel.add(minLatSpinner, gbcMinLatSpinner);
         minLatSpinner.addChangeListener(changeListener);
 
         maxLonSpinner = new JSpinner();
@@ -369,7 +369,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcMaxLonSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcMaxLonSpinner.gridx = 3;
         gbcMaxLonSpinner.gridy = 1;
-        panel.add(maxLonSpinner, gbcMaxLonSpinner);
+        boundingboxPanel.add(maxLonSpinner, gbcMaxLonSpinner);
         maxLonSpinner.addChangeListener(changeListener);
 
         final JLabel lblMargin = new JLabel(resourceBundle.getString("ui.panel.generalsettings.margin.label"));
@@ -832,7 +832,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         logoLocationComboBox = new JComboBox<>();
         logoLocationComboBox.setToolTipText(Option.LOGO_POSITION.getHelp());
         Position.fillComboBox(logoLocationComboBox);
-        panel.setLayout(new GridBagLayout());
         final GridBagConstraints gbcLogoPositioning = new GridBagConstraints();
         gbcLogoPositioning.fill = GridBagConstraints.HORIZONTAL;
         gbcLogoPositioning.gridx = 1;
@@ -850,7 +849,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         attriLocationComboBox = new JComboBox<>();
         attriLocationComboBox.setToolTipText(Option.ATTRIBUTION_POSITION.getHelp());
         Position.fillComboBox(attriLocationComboBox);
-        panel.setLayout(new GridBagLayout());
         final GridBagConstraints gbcAttributionPositioning = new GridBagConstraints();
         gbcAttributionPositioning.fill = GridBagConstraints.HORIZONTAL;
         gbcAttributionPositioning.gridx = 1;
@@ -868,7 +866,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         infoLocationComboBox = new JComboBox<>();
         infoLocationComboBox.setToolTipText(Option.INFORMATION_POSITION.getHelp());
         Position.fillComboBox(infoLocationComboBox);
-        panel.setLayout(new GridBagLayout());
         final GridBagConstraints gbcInfoPosition = new GridBagConstraints();
         gbcInfoPosition.fill = GridBagConstraints.HORIZONTAL;
         gbcInfoPosition.gridx = 1;
@@ -898,7 +895,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         ComboBoxRenderer renderer = new ComboBoxRenderer();
         fontNameComboBox.setRenderer(renderer);
 
-        panel.setLayout(new GridBagLayout());
         final GridBagConstraints gbcFontName = new GridBagConstraints();
         gbcFontName.fill = GridBagConstraints.HORIZONTAL;
         gbcFontName.gridx = 1;
@@ -936,7 +932,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         speedUnitComboBox = new JComboBox<>();
         speedUnitComboBox.setToolTipText(Option.SPEED_UNIT.getHelp());
         Arrays.stream(SpeedUnit.values()).forEach(speedUnitComboBox::addItem);
-        panel.setLayout(new GridBagLayout());
         final GridBagConstraints gbcSpeedUnit = new GridBagConstraints();
         gbcSpeedUnit.fill = GridBagConstraints.HORIZONTAL;
         gbcSpeedUnit.gridx = 1;
