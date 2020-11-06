@@ -103,11 +103,10 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final GridBagLayout gridBagLayout = new GridBagLayout();
-        gridBagLayout.columnWidths = new int[]{91, 100, 0, 0};
-        gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 0};
-        gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                Double.MIN_VALUE};
+        gridBagLayout.columnWidths  = new int[]    {  91, 100,  0,  0 };
+        gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
+        gridBagLayout.rowHeights    = new int[]    {  14,  20,  20,  20,  14,  20,  20,  20,  20,  20,  20,  20,  20,  50,  45,  20,  21,  23,  20, 0 };
+        gridBagLayout.rowWeights    = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
         setLayout(gridBagLayout);
 
         final JLabel lblOutput = new JLabel(resourceBundle.getString("ui.panel.generalsettings.output.label"));
@@ -803,13 +802,32 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(photoTimeSpinner, gbcPhotoTimeSpinner);
         photoTimeSpinner.addChangeListener(changeListener);
 
+        final JLabel lblPhotoAnimationDuration = new JLabel(resourceBundle.getString("ui.panel.generalsettings.photoanimationduration.label"));
+        final GridBagConstraints gbcLabelPhotoAnimationDuration = new GridBagConstraints();
+        gbcLabelPhotoAnimationDuration.anchor = GridBagConstraints.LINE_END;
+        gbcLabelPhotoAnimationDuration.insets = new Insets(0, 0, 0, 5);
+        gbcLabelPhotoAnimationDuration.gridx = 0;
+        gbcLabelPhotoAnimationDuration.gridy = 24;
+        add(lblPhotoAnimationDuration, gbcLabelPhotoAnimationDuration);
+
+        photoAnimationDurationSpinner = new JSpinner();
+        photoAnimationDurationSpinner.setToolTipText(Option.PHOTO_ANIMATION_DURATION.getHelp());
+        photoAnimationDurationSpinner.setModel(new DurationSpinnerModel());
+        photoAnimationDurationSpinner.setEditor(new DurationEditor(photoAnimationDurationSpinner));
+        final GridBagConstraints gbcPhotoAnimationDurationSpinner = new GridBagConstraints();
+        gbcPhotoAnimationDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcPhotoAnimationDurationSpinner.gridx = 1;
+        gbcPhotoAnimationDurationSpinner.gridy = 24;
+        add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
+        photoAnimationDurationSpinner.addChangeListener(changeListener);
 
         final JLabel lblLogoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.logoPosition.label"));
-        final GridBagConstraints lblLogoPositionVisibility = new GridBagConstraints();
-        lblLogoPositionVisibility.anchor = GridBagConstraints.LINE_END;
-        lblLogoPositionVisibility.insets = new Insets(0, 0, 5, 5);
-        lblLogoPositionVisibility.gridx = 0;
-        add(lblLogoPosition, lblLogoPositionVisibility);
+        final GridBagConstraints gbcLabelLogoPosition = new GridBagConstraints();
+        gbcLabelLogoPosition.anchor = GridBagConstraints.LINE_END;
+        gbcLabelLogoPosition.insets = new Insets(0, 0, 5, 5);
+        gbcLabelLogoPosition.gridx = 0;
+        gbcLabelLogoPosition.gridy = 25;
+        add(lblLogoPosition, gbcLabelLogoPosition);
 
         logoLocationComboBox = new JComboBox<>();
         logoLocationComboBox.setToolTipText(Option.LOGO_POSITION.getHelp());
@@ -818,46 +836,52 @@ abstract class GeneralSettingsPanel extends JPanel {
         final GridBagConstraints gbcLogoPositioning = new GridBagConstraints();
         gbcLogoPositioning.fill = GridBagConstraints.HORIZONTAL;
         gbcLogoPositioning.gridx = 1;
+        gbcLogoPositioning.gridy = 25;
         add(logoLocationComboBox, gbcLogoPositioning);
 
         final JLabel lblAttriPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionPosition.label"));
-        final GridBagConstraints attriPositionVisibility = new GridBagConstraints();
-        attriPositionVisibility.anchor = GridBagConstraints.LINE_END;
-        attriPositionVisibility.insets = new Insets(0, 0, 5, 5);
-        attriPositionVisibility.gridx = 0;
-        add(lblAttriPosition, attriPositionVisibility);
+        final GridBagConstraints gbcLabelAttributionPosition = new GridBagConstraints();
+        gbcLabelAttributionPosition.anchor = GridBagConstraints.LINE_END;
+        gbcLabelAttributionPosition.insets = new Insets(0, 0, 5, 5);
+        gbcLabelAttributionPosition.gridx = 0;
+        gbcLabelAttributionPosition.gridy = 26;
+        add(lblAttriPosition, gbcLabelAttributionPosition);
 
         attriLocationComboBox = new JComboBox<>();
         attriLocationComboBox.setToolTipText(Option.ATTRIBUTION_POSITION.getHelp());
         Position.fillComboBox(attriLocationComboBox);
         panel.setLayout(new GridBagLayout());
-        final GridBagConstraints gbcAttriPositioning = new GridBagConstraints();
-        gbcAttriPositioning.fill = GridBagConstraints.HORIZONTAL;
-        gbcAttriPositioning.gridx = 1;
-        add(attriLocationComboBox, gbcAttriPositioning);
+        final GridBagConstraints gbcAttributionPositioning = new GridBagConstraints();
+        gbcAttributionPositioning.fill = GridBagConstraints.HORIZONTAL;
+        gbcAttributionPositioning.gridx = 1;
+        gbcAttributionPositioning.gridy = 26;
+        add(attriLocationComboBox, gbcAttributionPositioning);
 
         final JLabel lblinfoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.InformationPosition.label"));
-        final GridBagConstraints infoPositionVisibility = new GridBagConstraints();
-        infoPositionVisibility.anchor = GridBagConstraints.LINE_END;
-        infoPositionVisibility.insets = new Insets(0, 0, 5, 5);
-        infoPositionVisibility.gridx = 0;
-        add(lblinfoPosition, infoPositionVisibility);
+        final GridBagConstraints gbcLabelInfoPosition = new GridBagConstraints();
+        gbcLabelInfoPosition.anchor = GridBagConstraints.LINE_END;
+        gbcLabelInfoPosition.insets = new Insets(0, 0, 5, 5);
+        gbcLabelInfoPosition.gridx = 0;
+        gbcLabelInfoPosition.gridy = 27;
+        add(lblinfoPosition, gbcLabelInfoPosition);
 
         infoLocationComboBox = new JComboBox<>();
         infoLocationComboBox.setToolTipText(Option.INFORMATION_POSITION.getHelp());
         Position.fillComboBox(infoLocationComboBox);
         panel.setLayout(new GridBagLayout());
-        final GridBagConstraints gbcInfoPositioning = new GridBagConstraints();
-        gbcInfoPositioning.fill = GridBagConstraints.HORIZONTAL;
-        gbcInfoPositioning.gridx = 1;
-        add(infoLocationComboBox, gbcInfoPositioning);
+        final GridBagConstraints gbcInfoPosition = new GridBagConstraints();
+        gbcInfoPosition.fill = GridBagConstraints.HORIZONTAL;
+        gbcInfoPosition.gridx = 1;
+        gbcInfoPosition.gridy = 27;
+        add(infoLocationComboBox, gbcInfoPosition);
 
         final JLabel lblFontName = new JLabel(resourceBundle.getString("ui.panel.generalsettings.fontName.label"));
-        final GridBagConstraints infoFontNameVisibility = new GridBagConstraints();
-        infoFontNameVisibility.anchor = GridBagConstraints.LINE_END;
-        infoFontNameVisibility.insets = new Insets(0, 0, 5, 5);
-        infoFontNameVisibility.gridx = 0;
-        add(lblFontName, infoFontNameVisibility);
+        final GridBagConstraints gbcLabelFontName = new GridBagConstraints();
+        gbcLabelFontName.anchor = GridBagConstraints.LINE_END;
+        gbcLabelFontName.insets = new Insets(0, 0, 5, 5);
+        gbcLabelFontName.gridx = 0;
+        gbcLabelFontName.gridy = 28;
+        add(lblFontName, gbcLabelFontName);
 
         fontNameComboBox = new JComboBox<>();
         fontNameComboBox.setToolTipText(Option.FONT_NAME.getHelp());
@@ -878,14 +902,16 @@ abstract class GeneralSettingsPanel extends JPanel {
         final GridBagConstraints gbcFontName = new GridBagConstraints();
         gbcFontName.fill = GridBagConstraints.HORIZONTAL;
         gbcFontName.gridx = 1;
+        gbcFontName.gridy = 28;
         add(fontNameComboBox, gbcFontName);
 
         final JLabel lblFontSytle = new JLabel(resourceBundle.getString("ui.panel.generalsettings.fontStyle.label"));
-        final GridBagConstraints fontStyleVisibility = new GridBagConstraints();
-        fontStyleVisibility.anchor = GridBagConstraints.LINE_END;
-        fontStyleVisibility.insets = new Insets(0, 0, 5, 5);
-        fontStyleVisibility.gridx = 0;
-        add(lblFontSytle, fontStyleVisibility);
+        final GridBagConstraints gbcLabelFontStyle = new GridBagConstraints();
+        gbcLabelFontStyle.anchor = GridBagConstraints.LINE_END;
+        gbcLabelFontStyle.insets = new Insets(0, 0, 5, 5);
+        gbcLabelFontStyle.gridx = 0;
+        gbcLabelFontStyle.gridy = 29;
+        add(lblFontSytle, gbcLabelFontStyle);
 
         fontStyleComboBox = new JComboBox<>();
         fontStyleComboBox.setToolTipText(Option.FONT_NAME.getHelp());
@@ -896,33 +922,16 @@ abstract class GeneralSettingsPanel extends JPanel {
         final GridBagConstraints gbcFontStyle = new GridBagConstraints();
         gbcFontStyle.fill = GridBagConstraints.HORIZONTAL;
         gbcFontStyle.gridx = 1;
+        gbcFontStyle.gridy = 29;
         add(fontStyleComboBox, gbcFontStyle);
 
-        final JLabel lblPhotoAnimationDuration = new JLabel(resourceBundle.getString("ui.panel.generalsettings.photoanimationduration.label"));
-        final GridBagConstraints gbcLabelPhotoAnimationDuration = new GridBagConstraints();
-        gbcLabelPhotoAnimationDuration.anchor = GridBagConstraints.LINE_END;
-        gbcLabelPhotoAnimationDuration.insets = new Insets(0, 0, 0, 5);
-        gbcLabelPhotoAnimationDuration.gridx = 0;
-        gbcLabelPhotoAnimationDuration.gridy = 24;
-        add(lblPhotoAnimationDuration, gbcLabelPhotoAnimationDuration);
-
-        photoAnimationDurationSpinner = new JSpinner();
-        photoAnimationDurationSpinner.setToolTipText(Option.PHOTO_ANIMATION_DURATION.getHelp());
-        photoAnimationDurationSpinner.setModel(new DurationSpinnerModel());
-        photoAnimationDurationSpinner.setEditor(new DurationEditor(photoAnimationDurationSpinner));
-        final GridBagConstraints gbcPhotoAnimationDurationSpinner = new GridBagConstraints();
-        gbcPhotoAnimationDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
-        gbcPhotoAnimationDurationSpinner.gridx = 1;
-        gbcPhotoAnimationDurationSpinner.gridy = 24;
-        add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
-        photoAnimationDurationSpinner.addChangeListener(changeListener);
-
         final JLabel lblSpeedUnit = new JLabel(resourceBundle.getString("ui.panel.generalsettings.speedunit.label"));
-        final GridBagConstraints lblSpeedUnitVisibility = new GridBagConstraints();
-        lblSpeedUnitVisibility.anchor = GridBagConstraints.LINE_END;
-        lblSpeedUnitVisibility.insets = new Insets(0, 0, 5, 5);
-        lblSpeedUnitVisibility.gridx = 0;
-        add(lblSpeedUnit, lblSpeedUnitVisibility);
+        final GridBagConstraints gbcLabelSpeedUnit = new GridBagConstraints();
+        gbcLabelSpeedUnit.anchor = GridBagConstraints.LINE_END;
+        gbcLabelSpeedUnit.insets = new Insets(0, 0, 5, 5);
+        gbcLabelSpeedUnit.gridx = 0;
+        gbcLabelSpeedUnit.gridy = 30;
+        add(lblSpeedUnit, gbcLabelSpeedUnit);
 
         speedUnitComboBox = new JComboBox<>();
         speedUnitComboBox.setToolTipText(Option.SPEED_UNIT.getHelp());
@@ -931,8 +940,8 @@ abstract class GeneralSettingsPanel extends JPanel {
         final GridBagConstraints gbcSpeedUnit = new GridBagConstraints();
         gbcSpeedUnit.fill = GridBagConstraints.HORIZONTAL;
         gbcSpeedUnit.gridx = 1;
+        gbcSpeedUnit.gridy = 30;
         add(speedUnitComboBox, gbcSpeedUnit);
-
     }
 
     private void setVideoSize(final int width, final int height) {
