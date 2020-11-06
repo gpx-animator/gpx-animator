@@ -22,8 +22,6 @@ public enum Position {
         return resourceBundle.getString("position.".concat(name().toLowerCase()));
     }
 
-    // TODO toString() -> translation for UI
-
     public static void fillComboBox(final JComboBox<Position> comboBox) {
         Arrays.stream(values()).forEach(comboBox::addItem);
     }
