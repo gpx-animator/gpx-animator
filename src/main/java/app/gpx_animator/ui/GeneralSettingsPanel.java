@@ -42,7 +42,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -931,7 +930,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         speedUnitComboBox = new JComboBox<>();
         speedUnitComboBox.setToolTipText(Option.SPEED_UNIT.getHelp());
-        Arrays.stream(SpeedUnit.values()).forEach(speedUnitComboBox::addItem);
+        SpeedUnit.fillComboBox(speedUnitComboBox);
         final GridBagConstraints gbcSpeedUnit = new GridBagConstraints();
         gbcSpeedUnit.fill = GridBagConstraints.HORIZONTAL;
         gbcSpeedUnit.gridx = 1;
