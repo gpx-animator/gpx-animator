@@ -16,7 +16,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -24,15 +23,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
-import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -45,6 +41,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.stream.IntStream;
 
 import static app.gpx_animator.Utils.isEqual;
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
@@ -71,7 +68,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JComboBox<SpeedUnit> speedUnitComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient JSpinner fontSizeSpinner;
-    private final transient JComboBox fontNameComboBox;
+    private final transient JComboBox<Integer> fontNameComboBox;
     private final transient JComboBox fontStyleComboBox;
     private final transient JComboBox<Position> logoLocationComboBox;
     private final transient JComboBox<Position> attriLocationComboBox;
@@ -93,8 +90,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner maxLonSpinner;
     private final transient JSpinner minLatSpinner;
 
-    private transient String[] fontFamilyName;
-    private transient Integer[] array;
+    private transient String[] fontFamilyNames;
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
@@ -881,32 +877,23 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         fontNameComboBox = new JComboBox<>();
         fontNameComboBox.setToolTipText(Option.FONT_NAME.getHelp());
-
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        fontFamilyName = ge.getAvailableFontFamilyNames();
-
-        array = new Integer[fontFamilyName.length];
-        for (int i = 1; i <= fontFamilyName.length; i++) {
-            array[i - 1] = i;
-            fontNameComboBox.addItem(array[i - 1]);
-        }
-
-        ComboBoxRenderer renderer = new ComboBoxRenderer();
-        fontNameComboBox.setRenderer(renderer);
-
+        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        fontFamilyNames = ge.getAvailableFontFamilyNames();
+        IntStream.range(0, fontFamilyNames.length).forEach(fontNameComboBox::addItem);
+        fontNameComboBox.setRenderer(new FontComboBoxRenderer(fontFamilyNames));
         final GridBagConstraints gbcFontName = new GridBagConstraints();
         gbcFontName.fill = GridBagConstraints.HORIZONTAL;
         gbcFontName.gridx = 1;
         gbcFontName.gridy = 28;
         add(fontNameComboBox, gbcFontName);
 
-        final JLabel lblFontSytle = new JLabel(resourceBundle.getString("ui.panel.generalsettings.fontStyle.label"));
+        final JLabel lblFontStyle = new JLabel(resourceBundle.getString("ui.panel.generalsettings.fontStyle.label"));
         final GridBagConstraints gbcLabelFontStyle = new GridBagConstraints();
         gbcLabelFontStyle.anchor = GridBagConstraints.LINE_END;
         gbcLabelFontStyle.insets = new Insets(0, 0, 5, 5);
         gbcLabelFontStyle.gridx = 0;
         gbcLabelFontStyle.gridy = 29;
-        add(lblFontSytle, gbcLabelFontStyle);
+        add(lblFontStyle, gbcLabelFontStyle);
 
         fontStyleComboBox = new JComboBox<>();
         fontStyleComboBox.setToolTipText(Option.FONT_NAME.getHelp());
@@ -1030,7 +1017,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .output(new File(outputFileSelector.getFilename()))
                 .fontSize((Integer) fontSizeSpinner.getValue())
                 .fontStyle(fontStyleItem.toString())
-                .fontName(fontFamilyName[(Integer) fontNameItem - 1])
+                .fontName(fontFamilyNames[(Integer) fontNameItem - 1])
                 .markerSize((Double) markerSizeSpinner.getValue())
                 .waypointSize((Double) waypointSizeSpinner.getValue())
                 .logo(new File(logoFileSelector.getFilename()))
@@ -1056,18 +1043,5 @@ abstract class GeneralSettingsPanel extends JPanel {
     }
 
     protected abstract void configurationChanged();
-
-    private class ComboBoxRenderer extends JLabel implements ListCellRenderer {
-
-        public static final long serialVersionUID = 1L;
-        public Component getListCellRendererComponent(final JList list, final Object value,
-        final int index, final boolean isSelected, final boolean cellHasFocus) {
-           int offset = ((Integer) value).intValue() - 1;
-           String name = fontFamilyName[offset];
-           setText(name);
-           setFont(new Font(name, Font.PLAIN, 20));
-           return this;
-        }
-     }
 
 }
