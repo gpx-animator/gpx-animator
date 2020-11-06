@@ -105,8 +105,8 @@ abstract class GeneralSettingsPanel extends JPanel {
         final GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths  = new int[]    {  91, 100,  0,  0 };
         gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
-        gridBagLayout.rowHeights    = new int[]    {  14,  20,  20,  20,  14,  20,  20,  20,  20,  20,  20,  20,  20,  50,  45,  20,  21,  23,  20, 0 };
-        gridBagLayout.rowWeights    = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+        gridBagLayout.rowHeights    = new int[]    {  14,  20,  20,  20,  14,  20,  20,  20,  20,  20,  20,  20,  20,  50,  45,  20,  21,  23,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20, 0 };
+        gridBagLayout.rowWeights    = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
         setLayout(gridBagLayout);
 
         final JLabel lblOutput = new JLabel(resourceBundle.getString("ui.panel.generalsettings.output.label"));
