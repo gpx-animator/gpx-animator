@@ -2,6 +2,7 @@ package app.gpx_animator;
 
 import javax.swing.JComboBox;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
 public enum Position {
 
@@ -13,6 +14,13 @@ public enum Position {
     BOTTOM_LEFT,
     BOTTOM_CENTER,
     BOTTOM_RIGHT;
+
+    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
+
+    @Override
+    public String toString() {
+        return resourceBundle.getString("position.".concat(name().toLowerCase()));
+    }
 
     // TODO toString() -> translation for UI
 
