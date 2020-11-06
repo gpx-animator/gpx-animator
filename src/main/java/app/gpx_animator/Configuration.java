@@ -87,7 +87,6 @@ public final class Configuration {
     private Long photoTime;
     private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
 
-    //@XmlJavaTypeAdapter(SpeedUnitAdapter.class)
     private SpeedUnit speedUnit;
 
     @XmlElementWrapper
