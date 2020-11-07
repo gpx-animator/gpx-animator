@@ -94,6 +94,11 @@ spotbugsTest {
     }
 }
 
+checkstyle {
+    configFile file("${projectDir}/config/checkstyle/checkstyle.xml");
+    toolVersion "8.37";
+}
+
 pmd {
     ruleSets = []
     ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
