@@ -32,6 +32,7 @@ import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -658,7 +659,7 @@ public final class Renderer {
                         drawSimpleCircleOnGraphics2D(point, g2);
                     } else {
                         try {
-                            drawIconOnGraphics2D(point, g2, trackIcon);
+                            drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.getFlipIcon());
                         } catch (final IOException e) {
                             drawSimpleCircleOnGraphics2D(point, g2);
                         }
@@ -687,14 +688,19 @@ public final class Renderer {
         g2.draw(marker);
     }
 
-    private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon) throws IOException {
-        final BufferedImage icon = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
-        final AffineTransform at = new AffineTransform();
+    private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon, final boolean flip) throws IOException {
+        BufferedImage icon = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
+        AffineTransform at = new AffineTransform();
         at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
         at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
+        if (flip) {
+            AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+            tx.translate(-icon.getWidth(null), 0);
+            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            icon = op.filter(icon, null);
+        }
         g2.drawImage(icon, at, null);
     }
-
 
     private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor) {
         final Graphics2D g2 = getGraphics(bi);

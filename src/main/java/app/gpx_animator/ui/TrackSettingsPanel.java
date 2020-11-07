@@ -8,6 +8,7 @@ import app.gpx_animator.TrackIcon;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,7 +46,7 @@ abstract class TrackSettingsPanel extends JPanel {
     private final transient JSpinner trimGpxStartSpinner;
     private final transient JSpinner trimGpxEndSpinner;
     private final transient JComboBox<TrackIcon> trackIconComboBox;
-
+    private final transient JCheckBox flipIcon;
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     TrackSettingsPanel() {
@@ -254,6 +255,15 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcLabelEnableIcon.gridy = 8;
         add(lblEnableIcon, gbcLabelEnableIcon);
 
+        flipIcon = new JCheckBox(resourceBundle.getString("ui.panel.tracksettings.flip.label"));
+        flipIcon.setToolTipText(Option.FLIP_ICON.getHelp());
+        final GridBagConstraints gbcFlipIconCheckBox = new GridBagConstraints();
+        gbcFlipIconCheckBox.fill = GridBagConstraints.HORIZONTAL;
+        gbcFlipIconCheckBox.insets = new Insets(0, 0, 5, 5);
+        gbcFlipIconCheckBox.gridx = 1;
+        gbcFlipIconCheckBox.gridy = 9;
+        add(flipIcon, gbcFlipIconCheckBox);
+
         final JButton btnNewButton = new JButton(resourceBundle.getString("ui.panel.tracksettings.button.remove"));
         btnNewButton.addActionListener(e -> remove());
         final GridBagConstraints gbcButtonNewButton = new GridBagConstraints();
@@ -261,7 +271,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcButtonNewButton.gridwidth = 3;
         gbcButtonNewButton.insets = new Insets(0, 0, 0, 5);
         gbcButtonNewButton.gridx = 0;
-        gbcButtonNewButton.gridy = 9;
+        gbcButtonNewButton.gridy = 10;
         add(btnNewButton, gbcButtonNewButton);
 
         final PropertyChangeListener propertyChangeListener = evt -> configurationChanged();
@@ -294,6 +304,7 @@ abstract class TrackSettingsPanel extends JPanel {
         trimGpxStartSpinner.addChangeListener(changeListener);
         trimGpxEndSpinner.addChangeListener(changeListener);
         trackIconComboBox.addItemListener(e -> configurationChanged());
+        flipIcon.addChangeListener(changeListener);
     }
 
     public static void configureGpxFileChooser(final ResourceBundle resourceBundle, final JFileChooser fileChooser) {
@@ -341,6 +352,7 @@ abstract class TrackSettingsPanel extends JPanel {
         b.trimGpxStart((Long) trimGpxStartSpinner.getValue());
         b.trimGpxEnd((Long) trimGpxEndSpinner.getValue());
         b.trackIcon((TrackIcon) trackIconComboBox.getSelectedItem());
+        b.flipIcon((boolean) flipIcon.isSelected());
         return b.build();
     }
 
@@ -355,6 +367,7 @@ abstract class TrackSettingsPanel extends JPanel {
         trimGpxStartSpinner.setValue(c.getTrimGpxStart());
         trimGpxEndSpinner.setValue(c.getTrimGpxEnd());
         trackIconComboBox.setSelectedItem(c.getTrackIcon());
+        flipIcon.setSelected(c.getFlipIcon());
         labelChanged(c.getLabel());
     }
 

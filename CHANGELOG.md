@@ -12,6 +12,8 @@ Release date: work in progress 🚧
 * Fixing `NullPointerException` when showing the Changelog
 * Migrating to Java 15
 * Fixing a bunch of compiler warnings
+* Addition of a Motorcycle icon
+* New flip icon checkbox on the track so the icon can be flipped to match the general direction
 
 ## Version 1.5.2
 

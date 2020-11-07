@@ -89,6 +89,7 @@ Icons included in application and their source:
 * Tramway icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
 * Train icon made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [flaticon](https://www.flaticon.com/).
 * Trekking icon made by [monkik](https://www.flaticon.com/authors/monkik) from [flaticon](https://www.flaticon.com/).
+* Motorcycle icon made by [poorlymac](https://github.com/poorlymac) using images from [ducati](https://www.ducati.com/us/en/bikes/multistrada)
 
 To create the installers, we use a free license of [Install4J](https://www.ej-technologies.com/products/install4j/overview.html) for open-source projects.
 

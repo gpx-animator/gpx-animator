@@ -28,7 +28,7 @@ public final class TrackIcon {
     private static final ResourceBundle RESOURCE_BUNDLE = Preferences.getResourceBundle();
 
     @NonNls
-    private static final String[] KEYS = {"airplane", "bicycle", "bus", "car", "jogging", "motorcycleleft", "motorcycleright",
+    private static final String[] KEYS = {"airplane", "bicycle", "bus", "car", "jogging", "motorcycle",
            "riding", "sailing", "ship", "train", "tramway", "trekking"};
 
     @NonNls

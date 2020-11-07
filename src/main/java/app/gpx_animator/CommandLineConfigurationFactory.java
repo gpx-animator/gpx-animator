@@ -53,6 +53,7 @@ public final class CommandLineConfigurationFactory {
         final List<Long> timeOffsetList = new ArrayList<>();
         final List<Long> forcedPointIntervalList = new ArrayList<>();
         final List<TrackIcon> trackIconList = new ArrayList<>();
+        final List<Boolean> flipIcon = new ArrayList<>();
 
         for (int i = 0; i < args.length; i++) {
             final String arg = args[i];
@@ -121,6 +122,9 @@ public final class CommandLineConfigurationFactory {
                             break;
                         case TRACK_ICON:
                             trackIconList.add(new TrackIcon(args[++i]));
+                            break;
+                        case FLIP_ICON:
+                            flipIcon.add(true);
                             break;
                         case KEEP_IDLE:
                             cfg.skipIdle(false);
@@ -222,6 +226,7 @@ public final class CommandLineConfigurationFactory {
             if (!trackIconList.isEmpty()) {
                 tcb.trackIcon(trackIconList.get(i));
             }
+            tcb.flipIcon(flipIcon.get(i));
 
             cfg.addTrackConfiguration(tcb.build());
         }
