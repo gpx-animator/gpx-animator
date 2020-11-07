@@ -38,6 +38,7 @@ public final class TrackConfiguration {
     private Long trimGpxEnd;
     private float lineWidth;
     private boolean flipIcon;
+    private File inputIcon;
 
     @XmlJavaTypeAdapter(TrackIconXmlAdapter.class)
     private TrackIcon trackIcon;
@@ -50,7 +51,7 @@ public final class TrackConfiguration {
     @SuppressWarnings("checkstyle:ParameterNumber") // TODO This is too much and just a temporary solution not to break the build...
     private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval,
                                final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth, final TrackIcon trackIcon,
-                               final boolean flipIcon) {
+                               final File inputIcon, final boolean flipIcon) {
         this.inputGpx = inputGpx;
         this.label = label;
         this.color = color;
@@ -60,6 +61,7 @@ public final class TrackConfiguration {
         this.trimGpxEnd = trimGpxEnd;
         this.lineWidth = lineWidth;
         this.trackIcon = trackIcon;
+        this.inputIcon = inputIcon;
         this.flipIcon = flipIcon;
     }
 
@@ -77,6 +79,10 @@ public final class TrackConfiguration {
 
     public File getInputGpx() {
         return inputGpx;
+    }
+
+    public File getInputIcon() {
+        return inputIcon;
     }
 
     public String getLabel() {
@@ -122,6 +128,7 @@ public final class TrackConfiguration {
         private Long trimGpxEnd;
         private float lineWidth = 2f;
         private TrackIcon trackIcon = null;
+        private File inputIcon;
         private boolean flipIcon = false;
 
 
@@ -131,7 +138,7 @@ public final class TrackConfiguration {
 
         public TrackConfiguration build() {
             return new TrackConfiguration(
-                inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, trackIcon, flipIcon
+                inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, trackIcon, inputIcon, flipIcon
             );
         }
 
@@ -140,7 +147,6 @@ public final class TrackConfiguration {
             this.inputGpx = inputGpx;
             return this;
         }
-
 
         public Builder label(final String label) {
             this.label = label;
@@ -185,6 +191,11 @@ public final class TrackConfiguration {
 
         public Builder trackIcon(final TrackIcon trackIcon) {
             this.trackIcon = trackIcon;
+            return this;
+        }
+
+        public Builder inputIcon(final File inputIcon) {
+            this.inputIcon = inputIcon;
             return this;
         }
 

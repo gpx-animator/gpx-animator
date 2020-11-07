@@ -655,14 +655,17 @@ public final class Renderer {
                     g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 
                     final TrackIcon trackIcon = trackConfiguration.getTrackIcon();
-                    if (trackIcon == null || trackIcon.getKey().isEmpty()) {
-                        drawSimpleCircleOnGraphics2D(point, g2);
-                    } else {
-                        try {
+                    final File trackIconFile = trackConfiguration.getInputIcon();
+                    try {
+                        if (trackIconFile != null && trackIconFile.exists()) {
+                            drawIconFileOnGraphics2D(point, g2, trackIconFile, trackConfiguration.getFlipIcon());
+                        } else if (trackIcon != null && !trackIcon.getKey().isEmpty()) {
                             drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.getFlipIcon());
-                        } catch (final IOException e) {
+                        } else {
                             drawSimpleCircleOnGraphics2D(point, g2);
                         }
+                    } catch (final IOException e) {
+                        drawSimpleCircleOnGraphics2D(point, g2);
                     }
 
                     final String label = trackConfiguration.getLabel();
@@ -690,6 +693,16 @@ public final class Renderer {
 
     private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon, final boolean flip) throws IOException {
         BufferedImage icon = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
+        drawImageOnGraphics2D(point, g2, flip, icon);
+    }
+
+    private void drawIconFileOnGraphics2D(final Point2D point, final Graphics2D g2, final File trackIconFile, final boolean flip) throws IOException {
+        BufferedImage icon = ImageIO.read(trackIconFile);
+        drawImageOnGraphics2D(point, g2, flip, icon);
+    }
+
+    private void drawImageOnGraphics2D(final Point2D point, final Graphics2D g2, final boolean flip, final BufferedImage icon) throws IOException {
+        BufferedImage image = icon;
         AffineTransform at = new AffineTransform();
         at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
         at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
@@ -697,9 +710,9 @@ public final class Renderer {
             AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
             tx.translate(-icon.getWidth(null), 0);
             AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-            icon = op.filter(icon, null);
+            image = op.filter(icon, null);
         }
-        g2.drawImage(icon, at, null);
+        g2.drawImage(image, at, null);
     }
 
     private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor) {
