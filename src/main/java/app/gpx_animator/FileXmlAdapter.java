@@ -37,8 +37,15 @@ public final class FileXmlAdapter extends XmlAdapter<String, File> {
     @Override
     public String marshal(final File file) {
         return base != null
-                ? base.relativize(file.getAbsoluteFile().toPath()).toString()
+                ? relativize(file.getAbsoluteFile().toPath())
                 : file.getAbsolutePath();
+    }
+
+    private String relativize(final Path path) {
+        if (base.getRoot().equals(path.getRoot())) {
+            return base.relativize(path).toString();
+        }
+        return path.toString();
     }
 
 }

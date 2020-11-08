@@ -32,22 +32,27 @@ public final class Help {
         final TrackConfiguration tc = TrackConfiguration.createBuilder().build();
 
         w.writeOptionHelp(Option.ATTRIBUTION, "text", false, cfg.getAttribution()); //NON-NLS
+        w.writeOptionHelp(Option.ATTRIBUTION_POSITION, "position", false, cfg.getAttributionPosition()); //NON-NLS
         w.writeOptionHelp(Option.BACKGROUND_MAP_VISIBILITY, "visibility", false, cfg.getBackgroundMapVisibility()); //NON-NLS
         w.writeOptionHelp(Option.COLOR, "color", true, resourceBundle.getString("help.option.color.default")); //NON-NLS
         w.writeOptionHelp(Option.FLASHBACK_COLOR, "ARGBcolor", false, "opaque white - #ffffffff"); // TODO cfg.getFlashbackColor()  NON-NLS
         w.writeOptionHelp(Option.FLASHBACK_DURATION, "duration", false, cfg.getFlashbackDuration()); //NON-NLS
         w.writeOptionHelp(Option.FONT_SIZE, "size", false, cfg.getFontSize()); //NON-NLS
+        w.writeOptionHelp(Option.FONT_STYLE, "style", false, cfg.getFontStyle());
+        w.writeOptionHelp(Option.FONT_NAME, "type", false, cfg.getFontName());
         w.writeOptionHelp(Option.FORCED_POINT_TIME_INTERVAL, "milliseconds", true, tc.getForcedPointInterval()); //NON-NLS
         w.writeOptionHelp(Option.FPS, "fps", false, cfg.getFps()); //NON-NLS
         w.writeOptionHelp(Option.GUI, null, false, resourceBundle.getString("help.option.gui.default"));
         w.writeOptionHelp(Option.HEIGHT, "height", false, cfg.getHeight()); //NON-NLS
         w.writeOptionHelp(Option.HELP, null, false, null);
         w.writeOptionHelp(Option.INPUT, "input", true, tc.getInputGpx()); //NON-NLS
+        w.writeOptionHelp(Option.INFORMATION_POSITION, "position", false, cfg.getInformationPosition());
         w.writeOptionHelp(Option.TRACK_ICON, "trackIcon", true, tc.getTrackIcon()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON_FILE, "trackIconFile", true, tc.getInputIcon()); //NON-NLS
         w.writeOptionHelp(Option.FLIP_ICON, "flipIcon", true, tc.getFlipIcon()); //NON-NLS
         w.writeOptionHelp(Option.LABEL, "label", true, tc.getLabel()); //NON-NLS
         w.writeOptionHelp(Option.LINE_WIDTH, "width", true, tc.getLineWidth()); //NON-NLS
+        w.writeOptionHelp(Option.LOGO_POSITION, "position", false, cfg.getLogoPosition()); //NON-NLS
         w.writeOptionHelp(Option.MARGIN, "margin", false, cfg.getMargin()); //NON-NLS
         w.writeOptionHelp(Option.MARKER_SIZE, "size", false, cfg.getMarkerSize()); //NON-NLS
         w.writeOptionHelp(Option.MAX_LAT, "latitude", false, cfg.getMaxLat()); //NON-NLS
@@ -64,6 +69,7 @@ public final class Help {
         w.writeOptionHelp(Option.TIME_OFFSET, "milliseconds", true, tc.getTimeOffset()); //NON-NLS
         w.writeOptionHelp(Option.TMS_URL_TEMPLATE, "template", false, cfg.getTmsUrlTemplate()); //NON-NLS
         w.writeOptionHelp(Option.TOTAL_TIME, "time", false, cfg.getTotalTime()); //NON-NLS
+        w.writeOptionHelp(Option.SPEED_UNIT, "SPEED", false, cfg.getSpeedUnit()); //NON-NLS
         w.writeOptionHelp(Option.WAYPOINT_SIZE, "size", false, cfg.getWaypointSize()); //NON-NLS
         w.writeOptionHelp(Option.WIDTH, "width", false, "(800)"); // TODO cfg.getWidth() NON-NLS
         w.writeOptionHelp(Option.ZOOM, "zoom", false, cfg.getZoom()); //NON-NLS

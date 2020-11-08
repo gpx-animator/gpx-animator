@@ -81,9 +81,11 @@ public class ErrorDialog extends JDialog {
     private String getStrackTrace() {
         final StringWriter sw = new StringWriter();
         final PrintWriter pw = new PrintWriter(sw);
-        pw.write(exception.getMessage());
-        pw.write("\n");
-        exception.printStackTrace(pw);
+        if (exception != null) {
+            pw.write(exception.getMessage() != null ? exception.getMessage() : exception.toString());
+            pw.write("\n");
+            exception.printStackTrace(pw);
+        }
         return sw.toString();
     }
 

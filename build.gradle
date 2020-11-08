@@ -1,7 +1,7 @@
 plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '6.0.0'
-    id 'com.github.spotbugs' version '4.5.0'
+    id 'com.github.spotbugs' version '4.6.0'
     id 'pmd'
     id 'checkstyle'
 }
@@ -39,6 +39,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:18.0.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
+    testImplementation 'org.junit.platform:junit-platform-engine:+'
 }
 
 test.classpath += configurations.developmentOnly
@@ -91,6 +92,11 @@ spotbugsTest {
         xml.enabled = false
         html.enabled = true
     }
+}
+
+checkstyle {
+    configFile file("${projectDir}/config/checkstyle/checkstyle.xml");
+    toolVersion "8.37";
 }
 
 pmd {
