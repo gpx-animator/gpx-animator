@@ -1,7 +1,7 @@
 plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '6.0.0'
-    id 'com.github.spotbugs' version '4.5.0'
+    id 'com.github.spotbugs' version '4.6.0'
     id 'pmd'
     id 'checkstyle'
 }
@@ -37,8 +37,10 @@ dependencies {
     implementation 'com.jgoodies:jgoodies-forms:1.9.0'
     implementation 'com.vladsch.flexmark:flexmark-all:0.50.44'
     implementation 'org.jetbrains:annotations:18.0.0'
+    testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.1.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
+    testImplementation 'org.junit.platform:junit-platform-engine:+'
 }
 
 test.classpath += configurations.developmentOnly
@@ -46,6 +48,7 @@ run.classpath += configurations.developmentOnly
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
+    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
 }
 
 task copyChangelog(type: Copy) {
@@ -72,13 +75,6 @@ shadowJar {
     mergeServiceFiles()
 }
 
-compileJava {
-    dependsOn copyChangelog
-}
-
-clean.dependsOn deleteChangelog
-assemble.dependsOn check
-
 spotbugsMain {
     reports {
         xml.enabled = false
@@ -93,9 +89,17 @@ spotbugsTest {
     }
 }
 
+checkstyle {
+    configFile file("${projectDir}/config/checkstyle/checkstyle.xml")
+    toolVersion "8.37"
+}
+
 pmd {
     ruleSets = []
     ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
 }
 
+compileJava.dependsOn copyChangelog
+clean.dependsOn deleteChangelog
+assemble.dependsOn check
 check.dependsOn installGitHooks

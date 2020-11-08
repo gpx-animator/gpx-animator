@@ -14,12 +14,12 @@
  */
 package app.gpx_animator;
 
-import org.jetbrains.annotations.NonNls;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import app.gpx_animator.frameWriter.FileFrameWriter;
 import app.gpx_animator.frameWriter.FrameWriter;
 import app.gpx_animator.frameWriter.VideoFrameWriter;
+import org.jetbrains.annotations.NonNls;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.BasicStroke;
@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -61,8 +60,6 @@ public final class Renderer {
     private static final double MS = 1000d;
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
-
-    private final java.util.Map<Integer, Long> speedValues = new HashMap<>();
 
     private final Configuration cfg;
 
@@ -86,59 +83,6 @@ public final class Renderer {
         this.cfg = cfg;
     }
 
-    private GpxPoint lastSpeedPoint = null;
-
-    private long calculateSpeedForDisplay(final GpxPoint point, final int frame) {
-        final long speed = calculateSpeed(point, getTime(frame));
-        speedValues.put(frame, speed);
-
-        final long deleteBefore = frame - (Math.round(cfg.getFps())); // 1 second
-        speedValues.keySet().removeIf((f) -> f < deleteBefore);
-
-        return Math.round(speedValues.values().stream().mapToLong(Long::longValue).average().orElse(0));
-    }
-
-    private long calculateSpeed(final GpxPoint point, final long time) {
-        final long timeout = time - 1_000 * 60; // 1 minute
-        final long distance = calculateDistance(lastSpeedPoint, point);
-        final double timeDiff = lastSpeedPoint == null ? 0 : point.getTime() - lastSpeedPoint.getTime();
-
-        final long speed;
-        if (distance > 0 && point.getTime() > timeout) {
-            speed = Math.round((3_600 * distance) / timeDiff);
-        } else {
-            speed = 0;
-        }
-
-        lastSpeedPoint = point;
-        return speed;
-    }
-
-    private static long calculateDistance(final GpxPoint point1, final GpxPoint point2) {
-        if (point1 == null) {
-            return 0;
-        }
-
-        final double lat1 = point1.getLatLon().getLat();
-        final double lon1 = point1.getLatLon().getLon();
-        final double lat2 = point2.getLatLon().getLat();
-        final double lon2 = point2.getLatLon().getLon();
-
-        if ((lat1 == lat2) && (lon1 == lon2)) {
-            return 0;
-        } else {
-            final double theta = lon1 - lon2;
-            final double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
-                    + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
-            final double arcCosine = Math.acos(dist);
-            final double degrees = Math.toDegrees(arcCosine);
-            final double mi = degrees * 60 * 1.1515; // to miles
-            final double km = mi * 1.609344; // to kilometers
-            final double m = km * 1_000; // to meters
-            return Math.round(m); // round to full meters
-        }
-    }
-
     private static double lonToX(final Double maxLon) {
         return Math.toRadians(maxLon);
     }
@@ -156,6 +100,7 @@ public final class Renderer {
         return new Color((int) r, (int) g, (int) b, (int) a);
     }
 
+    @SuppressWarnings("checkstyle:InnerAssignment") // Checkstyle 8.37 can't handle the enhanced switch properly
     public void render(final RenderingContext rc) throws UserException {
         final List<Long[]> spanList = new ArrayList<>();
         final TreeMap<Long, Point2D> wpMap = new TreeMap<>();
@@ -206,7 +151,19 @@ public final class Renderer {
         drawBackground(rc, zoom, bi, ga);
 
         if (cfg.getFontSize() > 0) {
-            font = new Font(Font.MONOSPACED, Font.PLAIN, cfg.getFontSize()); // TODO https://github.com/zdila/gpx-animator/issues/154
+            final String fontName = cfg.getFontName();
+            final String fontStyle = cfg.getFontStyle();
+            final String plain = "PLAIN";
+            final String bold = "BOLD";
+            final String italic = "ITALIC";
+
+            switch (fontStyle) {
+                case plain -> font = new Font(fontName, Font.PLAIN, cfg.getFontSize());
+                case bold -> font = new Font(fontName, Font.BOLD, cfg.getFontSize());
+                case italic -> font = new Font(fontName, Font.ITALIC, cfg.getFontSize());
+                default -> font = new Font(fontName, Font.BOLD + Font.ITALIC, cfg.getFontSize());
+            }
+
             fontMetrics = ga.getFontMetrics(font);
         }
 
@@ -245,7 +202,14 @@ public final class Renderer {
             final Point2D marker = drawMarker(bi2, frame);
             if (font != null) {
                 drawInfo(bi2, frame, marker);
-                drawAttribution(bi2, cfg.getAttribution());
+
+                String att = resourceBundle.getString("configuration.attribution");
+                String getAt = cfg.getAttribution();
+                if (att.equals(getAt)) {
+                    drawAttribution(bi2, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
+                } else {
+                    drawAttribution(bi2, getAt);
+                }
             }
 
             skip = renderFlashback(skip, bi2);
@@ -282,7 +246,7 @@ public final class Renderer {
             ga.setColor(backgroundColor);
             ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
         } else {
-            Map.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
+            MapUtil.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
         }
         drawLogo(bi);
     }
@@ -297,7 +261,20 @@ public final class Renderer {
                 throw new UserException("Can't read logo: ".concat(e.getMessage()));
             }
             final Graphics2D g2 = getGraphics(bi);
-            g2.drawImage(image, cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+            switch (cfg.getLogoPosition()) {
+                case TOP_LEFT -> g2.drawImage(image, cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+                case TOP_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2, cfg.getMargin(), image.getWidth(),
+                        image.getHeight(), null);
+                case TOP_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(), cfg.getMargin(), image.getWidth(),
+                        image.getHeight(), null);
+                case BOTTOM_LEFT -> g2.drawImage(image, cfg.getMargin(), bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(),
+                        image.getHeight(), null);
+                case BOTTOM_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2,
+                        bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+                case BOTTOM_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(),
+                        bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+                default -> throw new UserException("Invalid logo position!");
+            }
         }
     }
 
@@ -464,7 +441,13 @@ public final class Renderer {
             final Point2D marker = drawMarker(bi, frames);
             if (font != null) {
                 drawInfo(bi, frames, marker);
-                drawAttribution(bi, cfg.getAttribution());
+
+                String att = resourceBundle.getString("configuration.attribution");
+                if (cfg.getAttribution().equals(att)) {
+                    drawAttribution(bi, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
+                } else {
+                    drawAttribution(bi, cfg.getAttribution());
+                }
             }
             final long ms = cfg.getKeepLastFrame();
             final long fps = Double.valueOf(cfg.getFps()).longValue();
@@ -586,27 +569,53 @@ public final class Renderer {
         }
     }
 
-    private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) {
+    private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) throws UserException {
         final String dateString = dateFormat.format(getTime(frame));
         final String latLongString = getLatLonString(marker);
-        final String speedString = getSpeedString(marker, frame);
+        final String speedString = SpeedUtil.getSpeedString(marker, getTime(frame), frame, cfg.getFps(), cfg.getSpeedUnit());
         final Graphics2D graphics = getGraphics(bi);
-        printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
-                bi.getHeight() - cfg.getMargin());
-        printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
-                bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
-        printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(),
-                bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
-    }
 
-
-    private String getSpeedString(final Point2D point, final int frame) {
-        if (point instanceof GpxPoint) {
-            final GpxPoint gpxPoint = (GpxPoint) point;
-            final long speed = calculateSpeedForDisplay(gpxPoint, frame);
-            return String.format("%d km/h", speed); //NON-NLS
-        } else {
-            return "";
+        switch (cfg.getInformationPosition()) {
+            case TOP_LEFT -> {
+                printText(graphics, dateString, cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight() * 2);
+                printText(graphics, latLongString, cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
+                printText(graphics, speedString, cfg.getMargin(), cfg.getMargin());
+            }
+            case TOP_CENTER -> {
+                printText(graphics, dateString, (float) (bi.getWidth() - fontMetrics.stringWidth(dateString)) / 2,
+                        cfg.getMargin() + fontMetrics.getHeight() * 2);
+                printText(graphics, latLongString, (float) (bi.getWidth() - fontMetrics.stringWidth(latLongString)) / 2,
+                        cfg.getMargin() + fontMetrics.getHeight());
+                printText(graphics, speedString, (float) (bi.getWidth() - fontMetrics.stringWidth(speedString)) / 2, cfg.getMargin());
+            }
+            case TOP_RIGHT -> {
+                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
+                        cfg.getMargin() + fontMetrics.getHeight() * 2);
+                printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
+                        cfg.getMargin() + fontMetrics.getHeight());
+                printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(), cfg.getMargin());
+            }
+            case BOTTOM_LEFT -> {
+                printText(graphics, dateString, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+                printText(graphics, latLongString, cfg.getMargin(), bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
+                printText(graphics, speedString, cfg.getMargin(), bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+            }
+            case BOTTOM_CENTER -> {
+                printText(graphics, dateString, (float) (bi.getWidth() - fontMetrics.stringWidth(dateString)) / 2, bi.getHeight() - cfg.getMargin());
+                printText(graphics, latLongString, (float) (bi.getWidth() - fontMetrics.stringWidth(latLongString)) / 2,
+                        bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
+                printText(graphics, speedString, (float) (bi.getWidth() - fontMetrics.stringWidth(speedString)) / 2,
+                        bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+            }
+            case BOTTOM_RIGHT -> {
+                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
+                        bi.getHeight() - cfg.getMargin());
+                printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
+                        bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
+                printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(),
+                        bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+            }
+            default -> throw new UserException("Invalid information position!");
         }
     }
 
@@ -622,10 +631,69 @@ public final class Renderer {
     }
 
 
-    private void drawAttribution(final BufferedImage bi, final String attribution) {
-        printText(getGraphics(bi), attribution, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
-    }
+    private void drawAttribution(final BufferedImage bi, final String attribution) throws UserException {
+        boolean hasSplit = false;
 
+        for (int i = 0; i < attribution.length(); i++) { // TODO Why this loop?
+            if (attribution.contains("\n")) {
+                hasSplit = true;
+                break;
+            }
+        }
+
+        if (hasSplit) {
+            final String[] lines = attribution.split("\n");
+            switch (cfg.getAttributionPosition()) {
+                case TOP_LEFT -> {
+                    printText(getGraphics(bi), lines[0], cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
+                    printText(getGraphics(bi), lines[1], cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight() * 2);
+                }
+                case TOP_CENTER -> {
+                    printText(getGraphics(bi), lines[0], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[0])) / 2,
+                            cfg.getMargin() + fontMetrics.getHeight());
+                    printText(getGraphics(bi), lines[1], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[1])) / 2,
+                            cfg.getMargin() + fontMetrics.getHeight() * 2);
+                }
+                case TOP_RIGHT -> {
+                    printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getMargin(),
+                            cfg.getMargin() + fontMetrics.getHeight());
+                    printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getMargin(),
+                            cfg.getMargin() + fontMetrics.getHeight() * 2);
+                }
+                case BOTTOM_LEFT -> {
+                    printText(getGraphics(bi), lines[0], cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+                    printText(getGraphics(bi), lines[1], cfg.getMargin(), bi.getHeight() - cfg.getMargin() * 2);
+                }
+                case BOTTOM_CENTER -> {
+                    printText(getGraphics(bi), lines[0], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[0])) / 2,
+                            bi.getHeight() - cfg.getMargin());
+                    printText(getGraphics(bi), lines[1], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[1])) / 2,
+                            bi.getHeight() - cfg.getMargin() * 2);
+                }
+                case BOTTOM_RIGHT -> {
+                    printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getMargin(),
+                            bi.getHeight() - cfg.getMargin());
+                    printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getMargin(),
+                            bi.getHeight() - cfg.getMargin() * 2);
+                }
+                default -> throw new UserException("Invalid attribution position!");
+            }
+        } else {
+            switch (cfg.getAttributionPosition()) {
+                case TOP_LEFT -> printText(getGraphics(bi), attribution, cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
+                case TOP_CENTER -> printText(getGraphics(bi), attribution, (float) (bi.getWidth() - fontMetrics.stringWidth(attribution)) / 2,
+                        cfg.getMargin() + fontMetrics.getHeight());
+                case TOP_RIGHT -> printText(getGraphics(bi), attribution, bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getMargin(),
+                        cfg.getMargin() + fontMetrics.getHeight());
+                case BOTTOM_LEFT -> printText(getGraphics(bi), attribution, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+                case BOTTOM_CENTER -> printText(getGraphics(bi), attribution, (float) (bi.getWidth() - fontMetrics.stringWidth(attribution)) / 2,
+                        bi.getHeight() - cfg.getMargin());
+                case BOTTOM_RIGHT -> printText(getGraphics(bi), attribution, bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getMargin(),
+                        bi.getHeight() - cfg.getMargin());
+                default -> throw new UserException("Invalid attribution position!");
+            }
+        }
+    }
 
     private Point2D drawMarker(final BufferedImage bi, final int frame) {
         if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {

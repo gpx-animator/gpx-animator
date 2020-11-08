@@ -67,48 +67,35 @@ public final class CommandLineConfigurationFactory {
                     throw new UserException(String.format(resourceBundle.getString("cli.error.option"), arg));
                 } else {
                     switch (option) {
-                        case ATTRIBUTION:
-                            cfg.attribution(args[++i]);
-                            break;
-                        case BACKGROUND_MAP_VISIBILITY:
-                            cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
-                            break;
-                        case COLOR:
-                            colorList.add(Color.decode(args[++i]));
-                            break;
-                        case BACKGROUND_COLOR:
+                        case ATTRIBUTION -> cfg.attribution(args[++i]);
+                        case BACKGROUND_MAP_VISIBILITY -> cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
+                        case COLOR -> colorList.add(Color.decode(args[++i]));
+                        case BACKGROUND_COLOR -> {
                             final long lv = Long.decode(args[++i]);
                             cfg.backgroundColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
-                            break;
-                        case FLASHBACK_COLOR:
+                        }
+                        case FLASHBACK_COLOR -> {
                             final long lv1 = Long.decode(args[++i]);
                             cfg.flashbackColor(new Color(lv1 < Integer.MAX_VALUE ? (int) lv1 : (int) (0xffffffff00000000L | lv1), true));
-                            break;
-                        case FLASHBACK_DURATION:
+                        }
+                        case FLASHBACK_DURATION -> {
                             final String s = args[++i];
                             cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s)); // NOPMD -- null = not set
-                            break;
-                        case FONT_SIZE:
-                            cfg.fontSize(Integer.parseInt(args[++i]));
-                            break;
-                        case FORCED_POINT_TIME_INTERVAL:
+                        }
+                        case FONT_SIZE -> cfg.fontSize(Integer.parseInt(args[++i]));
+                        case FORCED_POINT_TIME_INTERVAL -> {
                             final String s1 = args[++i].trim();
                             forcedPointIntervalList.add(s1.isEmpty() ? null : Long.valueOf(s1)); // NOPMD -- null = not set
-                            break;
-                        case FPS:
-                            cfg.fps(Double.parseDouble(args[++i]));
-                            break;
-                        case GUI:
+                        }
+                        case FPS -> cfg.fps(Double.parseDouble(args[++i]));
+                        case GUI -> {
                             if (GraphicsEnvironment.isHeadless()) {
                                 throw new UserException(resourceBundle.getString("cli.error.graphics"));
                             }
                             forceGui = true;
-                            break;
-                        case HEIGHT:
-                            cfg.height(Integer.valueOf(args[++i]));
-                            break;
-                        case HELP:
-                            //noinspection UseOfSystemOutOrSystemErr // okay for command line output
+                        }
+                        case HEIGHT -> cfg.height(Integer.valueOf(args[++i]));
+                        case HELP -> {
                             try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
                                 pw.println(Constants.APPNAME_VERSION);
                                 pw.println(Constants.COPYRIGHT);
@@ -118,94 +105,45 @@ public final class CommandLineConfigurationFactory {
                                 pw.flush();
                             }
                             exit();
-                            break;
-                        case INPUT:
-                            inputGpxList.add(args[++i]);
-                            break;
-                        case TRACK_ICON:
-                            trackIconList.add(new TrackIcon(args[++i]));
-                            break;
-                        case TRACK_ICON_FILE:
-                            inputIconList.add(args[++i]);
-                            break;
-                        case FLIP_ICON:
-                            flipIcon.add(true);
-                            break;
-                        case KEEP_IDLE:
-                            cfg.skipIdle(false);
-                            break;
-                        case LABEL:
-                            labelList.add(args[++i]);
-                            break;
-                        case LINE_WIDTH:
-                            lineWidthList.add(Float.valueOf(args[++i]));
-                            break;
-                        case MARGIN:
-                            cfg.margin(Integer.parseInt(args[++i]));
-                            break;
-                        case MARKER_SIZE:
-                            cfg.markerSize(Double.parseDouble(args[++i]));
-                            break;
-                        case MAX_LAT:
-                            cfg.maxLat(Double.parseDouble(args[++i]));
-                            break;
-                        case MAX_LON:
-                            cfg.maxLon(Double.parseDouble(args[++i]));
-                            break;
-                        case MIN_LAT:
-                            cfg.minLat(Double.parseDouble(args[++i]));
-                            break;
-                        case MIN_LON:
-                            cfg.minLon(Double.parseDouble(args[++i]));
-                            break;
-                        case OUTPUT:
-                            cfg.output(new File(args[++i]));
-                            break;
-                        case LOGO:
-                            cfg.logo(new File(args[++i]));
-                            break;
-                        case PHOTO_DIR:
-                            cfg.photoDirectory(args[++i]);
-                            break;
-                        case PHOTO_TIME:
-                            cfg.photoTime(Long.parseLong(args[++i]));
-                            break;
-                        case PHOTO_ANIMATION_DURATION:
-                            cfg.photoAnimationDuration(Long.parseLong(args[++i]));
-                            break;
-                        case SPEEDUP:
-                            cfg.speedup(Double.parseDouble(args[++i]));
-                            break;
-                        case TAIL_DURATION:
-                            cfg.tailDuration(Long.parseLong(args[++i]));
-                            break;
-                        case TAIL_COLOR:
+                        }
+                        case INPUT -> inputGpxList.add(args[++i]);
+                        case TRACK_ICON -> trackIconList.add(new TrackIcon(args[++i]));
+                        case TRACK_ICON_FILE -> inputIconList.add(args[++i]);
+                        case FLIP_ICON -> flipIcon.add(true);
+                        case KEEP_IDLE -> cfg.skipIdle(false);
+                        case LABEL -> labelList.add(args[++i]);
+                        case LINE_WIDTH -> lineWidthList.add(Float.valueOf(args[++i]));
+                        case MARGIN -> cfg.margin(Integer.parseInt(args[++i]));
+                        case MARKER_SIZE -> cfg.markerSize(Double.parseDouble(args[++i]));
+                        case MAX_LAT -> cfg.maxLat(Double.parseDouble(args[++i]));
+                        case MAX_LON -> cfg.maxLon(Double.parseDouble(args[++i]));
+                        case MIN_LAT -> cfg.minLat(Double.parseDouble(args[++i]));
+                        case MIN_LON -> cfg.minLon(Double.parseDouble(args[++i]));
+                        case OUTPUT -> cfg.output(new File(args[++i]));
+                        case LOGO -> cfg.logo(new File(args[++i]));
+                        case PHOTO_DIR -> cfg.photoDirectory(args[++i]);
+                        case PHOTO_TIME -> cfg.photoTime(Long.parseLong(args[++i]));
+                        case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
+                        case SPEEDUP -> cfg.speedup(Double.parseDouble(args[++i]));
+                        case TAIL_DURATION -> cfg.tailDuration(Long.parseLong(args[++i]));
+                        case TAIL_COLOR -> {
                             final long lvTailColor = Long.decode(args[++i]);
                             cfg.tailColor(new Color(lvTailColor < Integer.MAX_VALUE
                                     ? (int) lvTailColor : (int) (0xffffffff00000000L | lvTailColor), true));
-                            break;
-                        case TIME_OFFSET:
+                        }
+                        case TIME_OFFSET -> {
                             final String s2 = args[++i].trim();
                             timeOffsetList.add(s2.isEmpty() ? null : Long.valueOf(s2)); // NOPMD -- null = not set
-                            break;
-                        case TMS_URL_TEMPLATE:
-                            cfg.tmsUrlTemplate(args[++i]);
-                            break;
-                        case TOTAL_TIME:
+                        }
+                        case TMS_URL_TEMPLATE -> cfg.tmsUrlTemplate(args[++i]);
+                        case TOTAL_TIME -> {
                             final String s3 = args[++i].trim();
                             cfg.totalTime(s3.isEmpty() ? null : Long.valueOf(s3)); // NOPMD -- null = not set
-                            break;
-                        case WAYPOINT_SIZE:
-                            cfg.waypointSize(Double.parseDouble(args[++i]));
-                            break;
-                        case WIDTH:
-                            cfg.width(Integer.valueOf(args[++i]));
-                            break;
-                        case ZOOM:
-                            cfg.zoom(Integer.parseInt(args[++i]));
-                            break;
-                        default:
-                            throw new AssertionError();
+                        }
+                        case WAYPOINT_SIZE -> cfg.waypointSize(Double.parseDouble(args[++i]));
+                        case WIDTH -> cfg.width(Integer.valueOf(args[++i]));
+                        case ZOOM -> cfg.zoom(Integer.parseInt(args[++i]));
+                        default -> throw new AssertionError();
                     }
 
                     // TODO --configuration : args[++i];

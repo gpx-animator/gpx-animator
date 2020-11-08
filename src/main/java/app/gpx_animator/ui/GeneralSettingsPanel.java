@@ -1,13 +1,13 @@
 package app.gpx_animator.ui;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.jetbrains.annotations.NonNls;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 import app.gpx_animator.Configuration;
 import app.gpx_animator.Constants;
+import app.gpx_animator.MapTemplate;
+import app.gpx_animator.MapUtil;
 import app.gpx_animator.Option;
+import app.gpx_animator.Position;
 import app.gpx_animator.Preferences;
+import app.gpx_animator.SpeedUnit;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
@@ -28,10 +28,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -40,17 +38,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.stream.IntStream;
 
+import static app.gpx_animator.Utils.isEqual;
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 import static javax.swing.JFileChooser.FILES_ONLY;
-import static app.gpx_animator.Utils.isEqual;
 
 abstract class GeneralSettingsPanel extends JPanel {
 
@@ -70,8 +65,14 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner tailDurationSpinner;
     private final transient JSpinner fpsSpinner;
     private final transient JComboBox<MapTemplate> tmsUrlTemplateComboBox;
+    private final transient JComboBox<SpeedUnit> speedUnitComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient JSpinner fontSizeSpinner;
+    private final transient JComboBox<Integer> fontNameComboBox;
+    private final transient JComboBox<String> fontStyleComboBox;
+    private final transient JComboBox<Position> logoLocationComboBox;
+    private final transient JComboBox<Position> attriLocationComboBox;
+    private final transient JComboBox<Position> infoLocationComboBox;
     private final transient JCheckBox skipIdleCheckBox;
     private final transient ColorSelector backgroundColorSelector;
     private final transient ColorSelector flashbackColorSelector;
@@ -88,18 +89,20 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner minLonSpinner;
     private final transient JSpinner maxLonSpinner;
     private final transient JSpinner minLatSpinner;
+    private final transient String[] fontFamilyNames;
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
-        mapTemplateList = readMaps();
+        mapTemplateList = MapUtil.readMaps();
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final GridBagLayout gridBagLayout = new GridBagLayout();
-        gridBagLayout.columnWidths = new int[]{91, 100, 0, 0};
-        gridBagLayout.rowHeights = new int[]{14, 20, 20, 20, 14, 20, 20, 20, 20, 20, 20, 20, 20, 50, 45, 20, 21, 23, 20, 0};
-        gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-        gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                Double.MIN_VALUE};
+        gridBagLayout.columnWidths  = new int[]    {91,  100, 0,  0};
+        gridBagLayout.columnWeights = new double[] {0.0, 1.0, 0.0, Double.MIN_VALUE};
+        gridBagLayout.rowHeights    = new int[]    {14,  20,  20,  20,  14,  20,  20,  20,  20,  20,  20,  20,  20,  50,  45,  20,  21,  23,  20,
+                20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
+        gridBagLayout.rowWeights    = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         setLayout(gridBagLayout);
 
         final JLabel lblOutput = new JLabel(resourceBundle.getString("ui.panel.generalsettings.output.label"));
@@ -270,19 +273,19 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelBoundingBox.gridy = 3;
         add(lblBoundingBox, gbcLabelBoundingBox);
 
-        final JPanel panel = new JPanel();
+        final JPanel boundingboxPanel = new JPanel();
         final GridBagConstraints gbcPanel = new GridBagConstraints();
         gbcPanel.fill = GridBagConstraints.HORIZONTAL;
         gbcPanel.insets = new Insets(0, 0, 5, 0);
         gbcPanel.gridx = 1;
         gbcPanel.gridy = 3;
-        add(panel, gbcPanel);
+        add(boundingboxPanel, gbcPanel);
         final GridBagLayout gblPanel = new GridBagLayout();
         gblPanel.columnWidths = new int[]{0, 40, 40, 40, 0};
         gblPanel.rowHeights = new int[]{20, 0, 0, 0};
         gblPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
         gblPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-        panel.setLayout(gblPanel);
+        boundingboxPanel.setLayout(gblPanel);
 
         final JLabel lblMaxLat = new JLabel(resourceBundle.getString("ui.panel.generalsettings.latitude.max.label"));
         final GridBagConstraints gbcLabelMaxLat = new GridBagConstraints();
@@ -290,7 +293,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelMaxLat.anchor = GridBagConstraints.LINE_END;
         gbcLabelMaxLat.gridx = 1;
         gbcLabelMaxLat.gridy = 0;
-        panel.add(lblMaxLat, gbcLabelMaxLat);
+        boundingboxPanel.add(lblMaxLat, gbcLabelMaxLat);
 
         final JLabel lblMinLon = new JLabel(resourceBundle.getString("ui.panel.generalsettings.longitude.min.label"));
         final GridBagConstraints gbcLabelMinLon = new GridBagConstraints();
@@ -298,7 +301,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelMinLon.anchor = GridBagConstraints.LINE_END;
         gbcLabelMinLon.gridx = 0;
         gbcLabelMinLon.gridy = 1;
-        panel.add(lblMinLon, gbcLabelMinLon);
+        boundingboxPanel.add(lblMinLon, gbcLabelMinLon);
 
         minLonSpinner = new JSpinner();
         minLonSpinner.setToolTipText(Option.MIN_LON.getHelp());
@@ -309,7 +312,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcMinLonSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcMinLonSpinner.gridx = 1;
         gbcMinLonSpinner.gridy = 1;
-        panel.add(minLonSpinner, gbcMinLonSpinner);
+        boundingboxPanel.add(minLonSpinner, gbcMinLonSpinner);
         minLonSpinner.addChangeListener(changeListener);
 
         maxLatSpinner = new JSpinner();
@@ -322,7 +325,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcMaxLatSpinner.insets = new Insets(0, 0, 5, 5);
         gbcMaxLatSpinner.gridx = 2;
         gbcMaxLatSpinner.gridy = 0;
-        panel.add(maxLatSpinner, gbcMaxLatSpinner);
+        boundingboxPanel.add(maxLatSpinner, gbcMaxLatSpinner);
         maxLatSpinner.addChangeListener(changeListener);
 
         final JLabel lblMaxLon = new JLabel(resourceBundle.getString("ui.panel.generalsettings.longitude.max.label"));
@@ -331,7 +334,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelMaxLon.anchor = GridBagConstraints.LINE_END;
         gbcLabelMaxLon.gridx = 2;
         gbcLabelMaxLon.gridy = 1;
-        panel.add(lblMaxLon, gbcLabelMaxLon);
+        boundingboxPanel.add(lblMaxLon, gbcLabelMaxLon);
 
         final JLabel lblMinLat = new JLabel(resourceBundle.getString("ui.panel.generalsettings.latitude.min.label"));
         final GridBagConstraints gbcLabelMinLat = new GridBagConstraints();
@@ -339,7 +342,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelMinLat.anchor = GridBagConstraints.LINE_END;
         gbcLabelMinLat.gridx = 1;
         gbcLabelMinLat.gridy = 2;
-        panel.add(lblMinLat, gbcLabelMinLat);
+        boundingboxPanel.add(lblMinLat, gbcLabelMinLat);
 
         minLatSpinner = new JSpinner();
         minLatSpinner.setToolTipText(Option.MIN_LAT.getHelp());
@@ -350,7 +353,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcMinLatSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcMinLatSpinner.gridx = 2;
         gbcMinLatSpinner.gridy = 2;
-        panel.add(minLatSpinner, gbcMinLatSpinner);
+        boundingboxPanel.add(minLatSpinner, gbcMinLatSpinner);
         minLatSpinner.addChangeListener(changeListener);
 
         maxLonSpinner = new JSpinner();
@@ -362,7 +365,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcMaxLonSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcMaxLonSpinner.gridx = 3;
         gbcMaxLonSpinner.gridy = 1;
-        panel.add(maxLonSpinner, gbcMaxLonSpinner);
+        boundingboxPanel.add(maxLonSpinner, gbcMaxLonSpinner);
         maxLonSpinner.addChangeListener(changeListener);
 
         final JLabel lblMargin = new JLabel(resourceBundle.getString("ui.panel.generalsettings.margin.label"));
@@ -813,70 +816,120 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcPhotoAnimationDurationSpinner.gridy = 24;
         add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
         photoAnimationDurationSpinner.addChangeListener(changeListener);
+
+        final JLabel lblLogoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.logoPosition.label"));
+        final GridBagConstraints gbcLabelLogoPosition = new GridBagConstraints();
+        gbcLabelLogoPosition.anchor = GridBagConstraints.LINE_END;
+        gbcLabelLogoPosition.insets = new Insets(0, 0, 5, 5);
+        gbcLabelLogoPosition.gridx = 0;
+        gbcLabelLogoPosition.gridy = 25;
+        add(lblLogoPosition, gbcLabelLogoPosition);
+
+        logoLocationComboBox = new JComboBox<>();
+        logoLocationComboBox.setToolTipText(Option.LOGO_POSITION.getHelp());
+        Position.fillComboBox(logoLocationComboBox);
+        final GridBagConstraints gbcLogoPositioning = new GridBagConstraints();
+        gbcLogoPositioning.fill = GridBagConstraints.HORIZONTAL;
+        gbcLogoPositioning.gridx = 1;
+        gbcLogoPositioning.gridy = 25;
+        add(logoLocationComboBox, gbcLogoPositioning);
+
+        final JLabel lblAttriPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionPosition.label"));
+        final GridBagConstraints gbcLabelAttributionPosition = new GridBagConstraints();
+        gbcLabelAttributionPosition.anchor = GridBagConstraints.LINE_END;
+        gbcLabelAttributionPosition.insets = new Insets(0, 0, 5, 5);
+        gbcLabelAttributionPosition.gridx = 0;
+        gbcLabelAttributionPosition.gridy = 26;
+        add(lblAttriPosition, gbcLabelAttributionPosition);
+
+        attriLocationComboBox = new JComboBox<>();
+        attriLocationComboBox.setToolTipText(Option.ATTRIBUTION_POSITION.getHelp());
+        Position.fillComboBox(attriLocationComboBox);
+        final GridBagConstraints gbcAttributionPositioning = new GridBagConstraints();
+        gbcAttributionPositioning.fill = GridBagConstraints.HORIZONTAL;
+        gbcAttributionPositioning.gridx = 1;
+        gbcAttributionPositioning.gridy = 26;
+        add(attriLocationComboBox, gbcAttributionPositioning);
+
+        final JLabel lblinfoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.InformationPosition.label"));
+        final GridBagConstraints gbcLabelInfoPosition = new GridBagConstraints();
+        gbcLabelInfoPosition.anchor = GridBagConstraints.LINE_END;
+        gbcLabelInfoPosition.insets = new Insets(0, 0, 5, 5);
+        gbcLabelInfoPosition.gridx = 0;
+        gbcLabelInfoPosition.gridy = 27;
+        add(lblinfoPosition, gbcLabelInfoPosition);
+
+        infoLocationComboBox = new JComboBox<>();
+        infoLocationComboBox.setToolTipText(Option.INFORMATION_POSITION.getHelp());
+        Position.fillComboBox(infoLocationComboBox);
+        final GridBagConstraints gbcInfoPosition = new GridBagConstraints();
+        gbcInfoPosition.fill = GridBagConstraints.HORIZONTAL;
+        gbcInfoPosition.gridx = 1;
+        gbcInfoPosition.gridy = 27;
+        add(infoLocationComboBox, gbcInfoPosition);
+
+        final JLabel lblFontName = new JLabel(resourceBundle.getString("ui.panel.generalsettings.fontName.label"));
+        final GridBagConstraints gbcLabelFontName = new GridBagConstraints();
+        gbcLabelFontName.anchor = GridBagConstraints.LINE_END;
+        gbcLabelFontName.insets = new Insets(0, 0, 5, 5);
+        gbcLabelFontName.gridx = 0;
+        gbcLabelFontName.gridy = 28;
+        add(lblFontName, gbcLabelFontName);
+
+        fontNameComboBox = new JComboBox<>();
+        fontNameComboBox.setToolTipText(Option.FONT_NAME.getHelp());
+        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        fontFamilyNames = ge.getAvailableFontFamilyNames();
+        IntStream.range(0, fontFamilyNames.length).forEach(fontNameComboBox::addItem);
+        fontNameComboBox.setRenderer(new FontComboBoxRenderer(fontFamilyNames));
+        final GridBagConstraints gbcFontName = new GridBagConstraints();
+        gbcFontName.fill = GridBagConstraints.HORIZONTAL;
+        gbcFontName.gridx = 1;
+        gbcFontName.gridy = 28;
+        add(fontNameComboBox, gbcFontName);
+
+        final JLabel lblFontStyle = new JLabel(resourceBundle.getString("ui.panel.generalsettings.fontStyle.label"));
+        final GridBagConstraints gbcLabelFontStyle = new GridBagConstraints();
+        gbcLabelFontStyle.anchor = GridBagConstraints.LINE_END;
+        gbcLabelFontStyle.insets = new Insets(0, 0, 5, 5);
+        gbcLabelFontStyle.gridx = 0;
+        gbcLabelFontStyle.gridy = 29;
+        add(lblFontStyle, gbcLabelFontStyle);
+
+        fontStyleComboBox = new JComboBox<>();
+        fontStyleComboBox.setToolTipText(Option.FONT_NAME.getHelp());
+        fontStyleComboBox.addItem("PLAIN");
+        fontStyleComboBox.addItem("BOLD");
+        fontStyleComboBox.addItem("ITALIC");
+        fontStyleComboBox.addItem("BOLD|ITALIC");
+        final GridBagConstraints gbcFontStyle = new GridBagConstraints();
+        gbcFontStyle.fill = GridBagConstraints.HORIZONTAL;
+        gbcFontStyle.gridx = 1;
+        gbcFontStyle.gridy = 29;
+        add(fontStyleComboBox, gbcFontStyle);
+
+        final JLabel lblSpeedUnit = new JLabel(resourceBundle.getString("ui.panel.generalsettings.speedunit.label"));
+        final GridBagConstraints gbcLabelSpeedUnit = new GridBagConstraints();
+        gbcLabelSpeedUnit.anchor = GridBagConstraints.LINE_END;
+        gbcLabelSpeedUnit.insets = new Insets(0, 0, 5, 5);
+        gbcLabelSpeedUnit.gridx = 0;
+        gbcLabelSpeedUnit.gridy = 30;
+        add(lblSpeedUnit, gbcLabelSpeedUnit);
+
+        speedUnitComboBox = new JComboBox<>();
+        speedUnitComboBox.setToolTipText(Option.SPEED_UNIT.getHelp());
+        SpeedUnit.fillComboBox(speedUnitComboBox);
+        final GridBagConstraints gbcSpeedUnit = new GridBagConstraints();
+        gbcSpeedUnit.fill = GridBagConstraints.HORIZONTAL;
+        gbcSpeedUnit.gridx = 1;
+        gbcSpeedUnit.gridy = 30;
+        add(speedUnitComboBox, gbcSpeedUnit);
     }
 
     private void setVideoSize(final int width, final int height) {
         widthSpinner.setValue(width);
         heightSpinner.setValue(height);
     }
-
-    private List<MapTemplate> readMaps() {
-        final SAXParserFactory factory = SAXParserFactory.newInstance();
-        final SAXParser saxParser;
-        try {
-            saxParser = factory.newSAXParser();
-        } catch (final ParserConfigurationException | SAXException e) {
-            throw new RuntimeException(e);
-        }
-
-        final List<MapTemplate> labeledItems = new ArrayList<>();
-
-        try {
-            try (InputStream is = getClass().getResourceAsStream("/maps.xml")) { //NON-NLS
-                saxParser.parse(is, new DefaultHandler() {
-                    private final StringBuilder sb = new StringBuilder();
-                    private String name;
-                    private String url;
-                    private String attributionText;
-
-                    @Override
-                    @SuppressWarnings("checkstyle:MissingSwitchDefault") // Every other case can be ignored!
-                    @SuppressFBWarnings(value = "SF_SWITCH_NO_DEFAULT", justification = "Every other case can be ignored!") //NON-NLS NON-NLS
-                    public void endElement(final String uri, final String localName, @NonNls final String qName) {
-                        switch (qName) {
-                            case "name":
-                                name = sb.toString().trim();
-                                break;
-                            case "url":
-                                url = sb.toString().trim();
-                                break;
-                            case "attribution-text":
-                                attributionText = sb.toString().trim();
-                                break;
-                            case "entry":
-                                labeledItems.add(new MapTemplate(name, url, attributionText));
-                                break;
-                        }
-                        sb.setLength(0);
-                    }
-
-                    @Override
-                    public void characters(final char[] ch, final int start, final int length) {
-                        sb.append(ch, start, length);
-                    }
-                });
-            } catch (final SAXException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        labeledItems.sort(Comparator.comparing(MapTemplate::toString));
-
-        return labeledItems;
-    }
-
 
     public void setConfiguration(final Configuration c) {
         heightSpinner.setValue(c.getHeight());
@@ -924,14 +977,21 @@ abstract class GeneralSettingsPanel extends JPanel {
         backgroundColorSelector.setColor(c.getBackgroundColor());
         flashbackColorSelector.setColor(c.getFlashbackColor());
         flashbackDurationSpinner.setValue(c.getFlashbackDuration());
+        logoLocationComboBox.setSelectedItem(c.getLogoPosition() != null ? c.getLogoPosition() : Position.TOP_LEFT);
+        attriLocationComboBox.setSelectedItem(c.getAttributionPosition() != null ? c.getAttributionPosition() : Position.BOTTOM_LEFT);
+        infoLocationComboBox.setSelectedItem(c.getInformationPosition() != null ? c.getInformationPosition() : Position.BOTTOM_RIGHT);
+        speedUnitComboBox.setSelectedItem(c.getSpeedUnit() != null ? c.getSpeedUnit() : SpeedUnit.KMH);
     }
 
 
     public void buildConfiguration(final Configuration.Builder builder, final boolean replacePlaceholders) {
         final Long td = (Long) tailDurationSpinner.getValue();
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
+        final Object fontNameItem = fontNameComboBox.getSelectedItem() != null ? fontNameComboBox.getSelectedItem() : 1;
+        final Object fontStyleItem = fontStyleComboBox.getSelectedItem() != null ? fontStyleComboBox.getSelectedItem() : "PLAIN";
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
         final String attribution = generateAttributionText(replacePlaceholders, tmsItem);
+        final SpeedUnit speedUnit = (SpeedUnit) speedUnitComboBox.getSelectedItem();
 
         builder.height((Integer) heightSpinner.getValue())
                 .width((Integer) widthSpinner.getValue())
@@ -949,19 +1009,25 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .keepLastFrame((Long) keepLastFrameSpinner.getValue())
                 .backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f)
                 .tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isEmpty() ? null : tmsUrlTemplate) // NOPMD -- null = not set
+                .logoPosition((Position) logoLocationComboBox.getSelectedItem())
+                .informationPosition((Position) infoLocationComboBox.getSelectedItem())
                 .skipIdle(skipIdleCheckBox.isSelected())
                 .backgroundColor(backgroundColorSelector.getColor())
                 .flashbackColor(flashbackColorSelector.getColor())
                 .flashbackDuration((Long) flashbackDurationSpinner.getValue())
                 .output(new File(outputFileSelector.getFilename()))
                 .fontSize((Integer) fontSizeSpinner.getValue())
+                .fontStyle(fontStyleItem.toString())
+                .fontName(fontFamilyNames[(Integer) fontNameItem - 1])
                 .markerSize((Double) markerSizeSpinner.getValue())
                 .waypointSize((Double) waypointSizeSpinner.getValue())
                 .logo(new File(logoFileSelector.getFilename()))
                 .photoDirectory(photosDirectorySelector.getFilename())
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
-                .attribution(attribution);
+                .attribution(attribution)
+                .attributionPosition((Position) attriLocationComboBox.getSelectedItem())
+                .speedUnit(speedUnit);
     }
 
     private String generateAttributionText(final boolean replacePlaceholders, final Object tmsItem) {
