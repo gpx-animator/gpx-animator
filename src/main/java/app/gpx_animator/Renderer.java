@@ -99,6 +99,7 @@ public final class Renderer {
         return new Color((int) r, (int) g, (int) b, (int) a);
     }
 
+    @SuppressWarnings("checkstyle:InnerAssignment") // Checkstyle 8.37 can't handle the enhanced switch properly
     public void render(final RenderingContext rc) throws UserException {
         final List<Long[]> spanList = new ArrayList<>();
         final TreeMap<Long, Point2D> wpMap = new TreeMap<>();
