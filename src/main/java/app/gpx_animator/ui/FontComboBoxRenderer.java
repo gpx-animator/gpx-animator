@@ -10,14 +10,18 @@ public class FontComboBoxRenderer extends JLabel implements ListCellRenderer<Int
 
     public static final long serialVersionUID = 1L;
 
-    private final String[] fontFamilyNames;
+    private final transient String[] fontFamilyNames;
 
-    public FontComboBoxRenderer(String[] fontFamilyNames) {
-        this.fontFamilyNames = fontFamilyNames;
+    public FontComboBoxRenderer(final String[] fontFamilyNames) {
+        this.fontFamilyNames = fontFamilyNames.clone();
     }
 
-    public Component getListCellRendererComponent(final JList list, final Integer value,
-                                                      final int index, final boolean isSelected, final boolean cellHasFocus) {
+    /**
+     * @see ListCellRenderer#getListCellRendererComponent(JList, Object, int, boolean, boolean)
+     */
+    @Override
+    public Component getListCellRendererComponent(final JList list, final Integer value, final int index, final boolean isSelected,
+                                                  final boolean cellHasFocus) {
            int offset = value;
            final String name = fontFamilyNames[offset];
            setText(name);

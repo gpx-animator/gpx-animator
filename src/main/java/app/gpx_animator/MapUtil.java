@@ -164,7 +164,10 @@ public final class MapUtil {
                     private String attributionText;
 
                     @Override
-                    @SuppressWarnings("checkstyle:MissingSwitchDefault") // Every other case can be ignored!
+                    @SuppressWarnings({
+                            "checkstyle:MissingSwitchDefault", // Every other case can be ignored!
+                            "checkstyle:InnerAssignment"       // Checkstyle 8.37 can't handle the enhanced switch properly
+                    })
                     @SuppressFBWarnings(value = "SF_SWITCH_NO_DEFAULT", justification = "Every other case can be ignored!") //NON-NLS NON-NLS
                     public void endElement(final String uri, final String localName, @NonNls final String qName) {
                         switch (qName) {

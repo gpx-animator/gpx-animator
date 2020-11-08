@@ -174,7 +174,7 @@ public final class Configuration {
         return speedup;
     }
 
-    public SpeedUnit getSpeedUnit(){
+    public SpeedUnit getSpeedUnit() {
         return speedUnit;
     }
 

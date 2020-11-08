@@ -2,6 +2,7 @@ package app.gpx_animator;
 
 import javax.swing.JComboBox;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public enum SpeedUnit {
@@ -39,7 +40,7 @@ public enum SpeedUnit {
 
     @Override
     public String toString() {
-        return resourceBundle.getString("speedunit.".concat(name().toLowerCase()));
+        return resourceBundle.getString("speedunit.".concat(name().toLowerCase(Locale.getDefault())));
     }
 
     public double convertSpeed(final double speed) {
