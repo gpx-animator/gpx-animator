@@ -154,16 +154,12 @@ public final class Renderer {
             final String plain = "PLAIN";
             final String bold = "BOLD";
             final String italic = "ITALIC";
-            final String boldItalic = "BOLD|ITALIC";
 
-            if (fontStyle.equals(plain)) { // TODO switch would be nicer
-                font = new Font(fontName, Font.PLAIN, cfg.getFontSize());
-            } else if (fontStyle.equals(bold)) {
-                font = new Font(fontName, Font.BOLD, cfg.getFontSize());
-            } else if (fontStyle.equals(italic)) {
-                font = new Font(fontName, Font.ITALIC, cfg.getFontSize());
-            } else {
-                font = new Font(fontName, Font.BOLD + Font.ITALIC, cfg.getFontSize());
+            switch (fontStyle) {
+                case plain -> font = new Font(fontName, Font.PLAIN, cfg.getFontSize());
+                case bold -> font = new Font(fontName, Font.BOLD, cfg.getFontSize());
+                case italic -> font = new Font(fontName, Font.ITALIC, cfg.getFontSize());
+                default -> font = new Font(fontName, Font.BOLD + Font.ITALIC, cfg.getFontSize());
             }
 
             fontMetrics = ga.getFontMetrics(font);

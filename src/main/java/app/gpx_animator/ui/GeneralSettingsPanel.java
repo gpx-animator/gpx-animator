@@ -89,8 +89,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner minLonSpinner;
     private final transient JSpinner maxLonSpinner;
     private final transient JSpinner minLatSpinner;
-
-    private transient String[] fontFamilyNames;
+    private final transient String[] fontFamilyNames;
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
@@ -988,8 +987,8 @@ abstract class GeneralSettingsPanel extends JPanel {
     public void buildConfiguration(final Configuration.Builder builder, final boolean replacePlaceholders) {
         final Long td = (Long) tailDurationSpinner.getValue();
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
-        final Object fontNameItem = fontNameComboBox.getSelectedItem();
-        final Object fontStyleItem = fontStyleComboBox.getSelectedItem();
+        final Object fontNameItem = fontNameComboBox.getSelectedItem() != null ? fontNameComboBox.getSelectedItem() : 1;
+        final Object fontStyleItem = fontStyleComboBox.getSelectedItem() != null ? fontStyleComboBox.getSelectedItem() : "PLAIN";
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
         final String attribution = generateAttributionText(replacePlaceholders, tmsItem);
         final SpeedUnit speedUnit = (SpeedUnit) speedUnitComboBox.getSelectedItem();
