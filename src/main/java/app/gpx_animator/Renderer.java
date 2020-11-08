@@ -766,7 +766,7 @@ public final class Renderer {
 
     private void drawImageOnGraphics2D(final Point2D point, final Graphics2D g2, final boolean flip, final BufferedImage icon) throws IOException {
         BufferedImage image = icon;
-        AffineTransform at = new AffineTransform();
+        final AffineTransform at = new AffineTransform();
         at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
         at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
         if (flip) {
