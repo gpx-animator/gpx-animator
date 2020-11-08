@@ -19,7 +19,7 @@ ij_wrap_on_typing = false
 ij_css_align_closing_brace_with_properties = false
 ij_css_blank_lines_around_nested_selector = 1
 ij_css_blank_lines_between_blocks = 1
-ij_css_brace_placement = 0
+ij_css_brace_placement = end_of_line
 ij_css_enforce_quotes_on_format = false
 ij_css_hex_color_long_format = false
 ij_css_hex_color_lower_case = false
@@ -32,7 +32,7 @@ ij_css_properties_order = font,font-family,font-size,font-weight,font-style,font
 ij_css_space_after_colon = true
 ij_css_space_before_opening_brace = true
 ij_css_use_double_quotes = true
-ij_css_value_alignment = 0
+ij_css_value_alignment = do_not_align
 
 [*.java]
 ij_java_align_consecutive_assignments = false
