@@ -413,6 +413,7 @@ abstract class TrackSettingsPanel extends JPanel {
         trimGpxStartSpinner.setValue(c.getTrimGpxStart());
         trimGpxEndSpinner.setValue(c.getTrimGpxEnd());
         trackIconComboBox.setSelectedItem(c.getTrackIcon());
+        inputIconFileSelector.setFilename(c.getInputIcon() == null ? null : c.getInputIcon().toString());
         flipIcon.setSelected(c.getFlipIcon());
         labelChanged(c.getLabel());
     }

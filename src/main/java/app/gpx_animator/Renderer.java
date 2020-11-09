@@ -695,7 +695,7 @@ public final class Renderer {
         }
     }
 
-    private Point2D drawMarker(final BufferedImage bi, final int frame) {
+    private Point2D drawMarker(final BufferedImage bi, final int frame) throws UserException {
         if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {
             return null;
         }
@@ -724,15 +724,21 @@ public final class Renderer {
 
                     final TrackIcon trackIcon = trackConfiguration.getTrackIcon();
                     final File trackIconFile = trackConfiguration.getInputIcon();
-                    try {
-                        if (trackIconFile != null && trackIconFile.exists()) {
+                    if (trackIconFile != null && trackIconFile.exists() && trackIconFile.canRead()) {
+                        try {
                             drawIconFileOnGraphics2D(point, g2, trackIconFile, trackConfiguration.getFlipIcon());
-                        } else if (trackIcon != null && !trackIcon.getKey().isEmpty()) {
-                            drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.getFlipIcon());
-                        } else {
-                            drawSimpleCircleOnGraphics2D(point, g2);
+                        } catch (final IOException e) {
+                            e.printStackTrace();
+                            throw new UserException(resourceBundle.getString("renderer.error.iconfile").formatted(trackIconFile), e);
                         }
-                    } catch (final IOException e) {
+                    } else if (trackIcon != null && !trackIcon.getKey().isEmpty()) {
+                        try {
+                            drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.getFlipIcon());
+                        } catch (final IOException e) {
+                            e.printStackTrace();
+                            throw new UserException(resourceBundle.getString("renderer.error.icon"), e);
+                        }
+                    } else {
                         drawSimpleCircleOnGraphics2D(point, g2);
                     }
 
@@ -773,12 +779,16 @@ public final class Renderer {
         BufferedImage image = icon;
         final AffineTransform at = new AffineTransform();
         at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
-        at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
-        if (flip) {
-            AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-            tx.translate(-icon.getWidth(null), 0);
-            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-            image = op.filter(icon, null);
+        try {
+            at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
+            if (flip) {
+                AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+                tx.translate(-icon.getWidth(null), 0);
+                AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                image = op.filter(icon, null);
+            }
+        } catch (Exception e) {
+            throw new IOException(e.getMessage());
         }
         g2.drawImage(image, at, null);
     }
