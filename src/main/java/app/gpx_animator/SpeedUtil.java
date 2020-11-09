@@ -10,7 +10,7 @@ public final class SpeedUtil {
     }
 
 
-    private static final java.util.Map<Integer, Long> speedValues = new HashMap<>();
+    private static final java.util.Map<Integer, Long> SPEED_VALUES = new HashMap<>();
 
     private static GpxPoint lastSpeedPoint = null;
 
@@ -27,14 +27,15 @@ public final class SpeedUtil {
     }
 
 
-    private static double calculateSpeedForDisplay(final GpxPoint point, final long time, final int frame, final double fps, final SpeedUnit speedUnit) {
+    private static double calculateSpeedForDisplay(final GpxPoint point, final long time, final int frame, final double fps,
+                                                   final SpeedUnit speedUnit) {
         final long speed = calculateSpeed(point, time);
-        speedValues.put(frame, speed);
+        SPEED_VALUES.put(frame, speed);
 
         final long deleteBefore = frame - (Math.round(fps)); // 1 second
-        speedValues.keySet().removeIf((f) -> f < deleteBefore);
+        SPEED_VALUES.keySet().removeIf((f) -> f < deleteBefore);
 
-        return speedUnit.convertSpeed(Math.round(speedValues.values().stream().mapToLong(Long::longValue).average().orElse(0)));
+        return speedUnit.convertSpeed(Math.round(SPEED_VALUES.values().stream().mapToLong(Long::longValue).average().orElse(0)));
     }
 
 

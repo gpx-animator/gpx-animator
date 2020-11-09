@@ -66,7 +66,6 @@ public final class CommandLineConfigurationFactory {
                 if (option == null) {
                     throw new UserException(String.format(resourceBundle.getString("cli.error.option"), arg));
                 } else {
-                    //noinspection UseOfSystemOutOrSystemErr // okay for command line output
                     switch (option) {
                         case ATTRIBUTION -> cfg.attribution(args[++i]);
                         case BACKGROUND_MAP_VISIBILITY -> cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));

@@ -2,6 +2,7 @@ package app.gpx_animator;
 
 import javax.swing.JComboBox;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public enum Position {
@@ -19,7 +20,7 @@ public enum Position {
 
     @Override
     public String toString() {
-        return resourceBundle.getString("position.".concat(name().toLowerCase()));
+        return resourceBundle.getString("position.".concat(name().toLowerCase(Locale.getDefault())));
     }
 
     public static void fillComboBox(final JComboBox<Position> comboBox) {

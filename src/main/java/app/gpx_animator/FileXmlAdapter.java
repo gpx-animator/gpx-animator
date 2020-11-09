@@ -42,7 +42,8 @@ public final class FileXmlAdapter extends XmlAdapter<String, File> {
     }
 
     private String relativize(final Path path) {
-        if (base.getRoot().equals(path.getRoot())) {
+        final Path root = base.getRoot();
+        if (root != null && root.equals(path.getRoot())) {
             return base.relativize(path).toString();
         }
         return path.toString();

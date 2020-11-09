@@ -100,6 +100,7 @@ public final class Renderer {
         return new Color((int) r, (int) g, (int) b, (int) a);
     }
 
+    @SuppressWarnings("checkstyle:InnerAssignment") // Checkstyle 8.37 can't handle the enhanced switch properly
     public void render(final RenderingContext rc) throws UserException {
         final List<Long[]> spanList = new ArrayList<>();
         final TreeMap<Long, Point2D> wpMap = new TreeMap<>();
@@ -155,16 +156,12 @@ public final class Renderer {
             final String plain = "PLAIN";
             final String bold = "BOLD";
             final String italic = "ITALIC";
-            final String boldItalic = "BOLD|ITALIC";
 
-            if (fontStyle.equals(plain)) { // TODO switch would be nicer
-                font = new Font(fontName, Font.PLAIN, cfg.getFontSize());
-            } else if (fontStyle.equals(bold)) {
-                font = new Font(fontName, Font.BOLD, cfg.getFontSize());
-            } else if (fontStyle.equals(italic)) {
-                font = new Font(fontName, Font.ITALIC, cfg.getFontSize());
-            } else {
-                font = new Font(fontName, Font.BOLD + Font.ITALIC, cfg.getFontSize());
+            switch (fontStyle) {
+                case plain -> font = new Font(fontName, Font.PLAIN, cfg.getFontSize());
+                case bold -> font = new Font(fontName, Font.BOLD, cfg.getFontSize());
+                case italic -> font = new Font(fontName, Font.ITALIC, cfg.getFontSize());
+                default -> font = new Font(fontName, Font.BOLD + Font.ITALIC, cfg.getFontSize());
             }
 
             fontMetrics = ga.getFontMetrics(font);
@@ -266,13 +263,17 @@ public final class Renderer {
             final Graphics2D g2 = getGraphics(bi);
             switch (cfg.getLogoPosition()) {
                 case TOP_LEFT -> g2.drawImage(image, cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
-                case TOP_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2, cfg.getMargin(), image.getWidth(), image.getHeight(), null);
-                case TOP_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
-                case BOTTOM_LEFT -> g2.drawImage(image, cfg.getMargin(), bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(), image.getHeight(), null);
-                case BOTTOM_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2, bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(),
+                case TOP_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2, cfg.getMargin(), image.getWidth(),
                         image.getHeight(), null);
-                case BOTTOM_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(), bi.getHeight() - image.getHeight() - cfg.getMargin(),
-                        image.getWidth(), image.getHeight(), null);
+                case TOP_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(), cfg.getMargin(), image.getWidth(),
+                        image.getHeight(), null);
+                case BOTTOM_LEFT -> g2.drawImage(image, cfg.getMargin(), bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(),
+                        image.getHeight(), null);
+                case BOTTOM_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2,
+                        bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+                case BOTTOM_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(),
+                        bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+                default -> throw new UserException("Invalid logo position!");
             }
         }
     }
@@ -568,7 +569,7 @@ public final class Renderer {
         }
     }
 
-    private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) {
+    private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) throws UserException {
         final String dateString = dateFormat.format(getTime(frame));
         final String latLongString = getLatLonString(marker);
         final String speedString = SpeedUtil.getSpeedString(marker, getTime(frame), frame, cfg.getFps(), cfg.getSpeedUnit());
@@ -607,16 +608,18 @@ public final class Renderer {
                         bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
             }
             case BOTTOM_RIGHT -> {
-                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
+                        bi.getHeight() - cfg.getMargin());
                 printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
                         bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
                 printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(),
                         bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
             }
+            default -> throw new UserException("Invalid information position!");
         }
     }
 
-    
+
     private String getLatLonString(final Point2D point) {
         if (point instanceof GpxPoint) {
             final GpxPoint gpxPoint = (GpxPoint) point;
@@ -628,7 +631,7 @@ public final class Renderer {
     }
 
 
-    private void drawAttribution(final BufferedImage bi, final String attribution) {
+    private void drawAttribution(final BufferedImage bi, final String attribution) throws UserException {
         boolean hasSplit = false;
 
         for (int i = 0; i < attribution.length(); i++) { // TODO Why this loop?
@@ -673,6 +676,7 @@ public final class Renderer {
                     printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getMargin(),
                             bi.getHeight() - cfg.getMargin() * 2);
                 }
+                default -> throw new UserException("Invalid attribution position!");
             }
         } else {
             switch (cfg.getAttributionPosition()) {
@@ -686,6 +690,7 @@ public final class Renderer {
                         bi.getHeight() - cfg.getMargin());
                 case BOTTOM_RIGHT -> printText(getGraphics(bi), attribution, bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getMargin(),
                         bi.getHeight() - cfg.getMargin());
+                default -> throw new UserException("Invalid attribution position!");
             }
         }
     }

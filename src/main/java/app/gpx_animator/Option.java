@@ -66,8 +66,8 @@ public enum Option {
         }
     }
 
-    private String name;
-    private String help;
+    private final String name;
+    private final String help;
 
     Option(@NonNls final String key) {
         final ResourceBundle resourceBundle = Preferences.getResourceBundle();

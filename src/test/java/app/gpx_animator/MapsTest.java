@@ -1,5 +1,6 @@
 package app.gpx_animator;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -106,6 +107,11 @@ public class MapsTest {
                     private  List<String> validationUrls = new ArrayList<>();
 
                     @Override
+                    @SuppressWarnings({
+                            "checkstyle:MissingSwitchDefault", // Every other case can be ignored!
+                            "checkstyle:InnerAssignment"       // Checkstyle 8.37 can't handle the enhanced switch properly
+                    })
+                    @SuppressFBWarnings(value = "SF_SWITCH_NO_DEFAULT", justification = "Every other case can be ignored!") //NON-NLS NON-NLS
                     public void endElement(final String uri, final String localName, @NonNls final String qName) {
                         switch (qName) {
                             case "id" -> id = sb.toString().trim();
@@ -133,7 +139,7 @@ public class MapsTest {
         return mapValidations;
     }
 
-    private static class MapValidation {
+    private static final class MapValidation {
         private final List<String> validationUrls;
 
         private MapValidation(final List<String> validationUrls) {
