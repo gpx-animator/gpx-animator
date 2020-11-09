@@ -6,12 +6,16 @@ Release date: work in progress 🚧
 
 * Adding multiple GPX files at once
 * Adding an animation to smoothly fade photos in and out
+* Providing alternative speed units (km/h, mph, min/km, min/mi, knots...)
 * New error dialog with additional internal information for better error reports
 * New and clear error message on missing track data in GPX file
 * Fixing `NullPointerException` when starting GPX Animator the first time
 * Fixing `NullPointerException` when showing the Changelog
 * Migrating to Java 15
 * Fixing a bunch of compiler warnings
+* Addition of a Motorcycle icon
+* New flip icon checkbox on the track so the icon can be flipped to match the general direction
+* Added support for choosing an external PNG file as an icon
 
 ## Version 1.5.2
 
