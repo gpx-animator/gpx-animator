@@ -728,14 +728,12 @@ public final class Renderer {
                         try {
                             drawIconFileOnGraphics2D(point, g2, trackIconFile, trackConfiguration.getFlipIcon());
                         } catch (final IOException e) {
-                            e.printStackTrace();
                             throw new UserException(resourceBundle.getString("renderer.error.iconfile").formatted(trackIconFile), e);
                         }
                     } else if (trackIcon != null && !trackIcon.getKey().isEmpty()) {
                         try {
                             drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.getFlipIcon());
                         } catch (final IOException e) {
-                            e.printStackTrace();
                             throw new UserException(resourceBundle.getString("renderer.error.icon"), e);
                         }
                     } else {
