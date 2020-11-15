@@ -780,12 +780,12 @@ public final class Renderer {
         try {
             at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
             if (flip) {
-                AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+                final AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
                 tx.translate(-icon.getWidth(null), 0);
-                AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                final AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
                 image = op.filter(icon, null);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new IOException(e.getMessage());
         }
         g2.drawImage(image, at, null);
