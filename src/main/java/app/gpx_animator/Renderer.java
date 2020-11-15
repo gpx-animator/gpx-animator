@@ -32,6 +32,7 @@ import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -694,7 +695,7 @@ public final class Renderer {
         }
     }
 
-    private Point2D drawMarker(final BufferedImage bi, final int frame) {
+    private Point2D drawMarker(final BufferedImage bi, final int frame) throws UserException {
         if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {
             return null;
         }
@@ -722,14 +723,23 @@ public final class Renderer {
                     g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 
                     final TrackIcon trackIcon = trackConfiguration.getTrackIcon();
-                    if (trackIcon == null || trackIcon.getKey().isEmpty()) {
-                        drawSimpleCircleOnGraphics2D(point, g2);
-                    } else {
+                    final File trackIconFile = trackConfiguration.getInputIcon();
+                    if (trackIconFile != null && trackIconFile.exists() && trackIconFile.canRead()) {
                         try {
-                            drawIconOnGraphics2D(point, g2, trackIcon);
+                            drawIconFileOnGraphics2D(point, g2, trackIconFile, trackConfiguration.getFlipIcon());
                         } catch (final IOException e) {
-                            drawSimpleCircleOnGraphics2D(point, g2);
+                            e.printStackTrace();
+                            throw new UserException(resourceBundle.getString("renderer.error.iconfile").formatted(trackIconFile), e);
                         }
+                    } else if (trackIcon != null && !trackIcon.getKey().isEmpty()) {
+                        try {
+                            drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.getFlipIcon());
+                        } catch (final IOException e) {
+                            e.printStackTrace();
+                            throw new UserException(resourceBundle.getString("renderer.error.icon"), e);
+                        }
+                    } else {
+                        drawSimpleCircleOnGraphics2D(point, g2);
                     }
 
                     final String label = trackConfiguration.getLabel();
@@ -755,14 +765,33 @@ public final class Renderer {
         g2.draw(marker);
     }
 
-    private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon) throws IOException {
-        final BufferedImage icon = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
-        final AffineTransform at = new AffineTransform();
-        at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
-        at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
-        g2.drawImage(icon, at, null);
+    private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon, final boolean flip) throws IOException {
+        BufferedImage icon = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
+        drawImageOnGraphics2D(point, g2, flip, icon);
     }
 
+    private void drawIconFileOnGraphics2D(final Point2D point, final Graphics2D g2, final File trackIconFile, final boolean flip) throws IOException {
+        BufferedImage icon = ImageIO.read(trackIconFile);
+        drawImageOnGraphics2D(point, g2, flip, icon);
+    }
+
+    private void drawImageOnGraphics2D(final Point2D point, final Graphics2D g2, final boolean flip, final BufferedImage icon) throws IOException {
+        BufferedImage image = icon;
+        final AffineTransform at = new AffineTransform();
+        at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
+        try {
+            at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
+            if (flip) {
+                AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+                tx.translate(-icon.getWidth(null), 0);
+                AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                image = op.filter(icon, null);
+            }
+        } catch (Exception e) {
+            throw new IOException(e.getMessage());
+        }
+        g2.drawImage(image, at, null);
+    }
 
     private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor) {
         final Graphics2D g2 = getGraphics(bi);
