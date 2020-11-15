@@ -47,7 +47,7 @@ abstract class TrackSettingsPanel extends JPanel {
     private final transient JSpinner trimGpxEndSpinner;
     private final transient JComboBox<TrackIcon> trackIconComboBox;
     private final transient FileSelector inputIconFileSelector;
-    private final transient JCheckBox flipIcon;
+    private final transient JCheckBox mirrorIconCheckBox;
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     TrackSettingsPanel() {
@@ -283,14 +283,14 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcInputIconFileSelector.gridy = 9;
         add(inputIconFileSelector, gbcInputIconFileSelector);
 
-        flipIcon = new JCheckBox(resourceBundle.getString("ui.panel.tracksettings.flip.label"));
-        flipIcon.setToolTipText(Option.FLIP_ICON.getHelp());
-        final GridBagConstraints gbcFlipIconCheckBox = new GridBagConstraints();
-        gbcFlipIconCheckBox.fill = GridBagConstraints.HORIZONTAL;
-        gbcFlipIconCheckBox.insets = new Insets(0, 0, 5, 5);
-        gbcFlipIconCheckBox.gridx = 1;
-        gbcFlipIconCheckBox.gridy = 10;
-        add(flipIcon, gbcFlipIconCheckBox);
+        mirrorIconCheckBox = new JCheckBox(resourceBundle.getString("ui.panel.tracksettings.icon.mirror.label"));
+        mirrorIconCheckBox.setToolTipText(Option.TRACK_ICON_MIRROR.getHelp());
+        final GridBagConstraints gbcMirrorIconCheckBox = new GridBagConstraints();
+        gbcMirrorIconCheckBox.fill = GridBagConstraints.HORIZONTAL;
+        gbcMirrorIconCheckBox.insets = new Insets(0, 0, 5, 5);
+        gbcMirrorIconCheckBox.gridx = 1;
+        gbcMirrorIconCheckBox.gridy = 10;
+        add(mirrorIconCheckBox, gbcMirrorIconCheckBox);
 
         final JButton btnNewButton = new JButton(resourceBundle.getString("ui.panel.tracksettings.button.remove"));
         btnNewButton.addActionListener(e -> remove());
@@ -332,7 +332,7 @@ abstract class TrackSettingsPanel extends JPanel {
         trimGpxStartSpinner.addChangeListener(changeListener);
         trimGpxEndSpinner.addChangeListener(changeListener);
         trackIconComboBox.addItemListener(e -> configurationChanged());
-        flipIcon.addChangeListener(changeListener);
+        mirrorIconCheckBox.addChangeListener(changeListener);
     }
 
     public static void configureGpxFileChooser(final ResourceBundle resourceBundle, final JFileChooser fileChooser) {
@@ -398,7 +398,7 @@ abstract class TrackSettingsPanel extends JPanel {
         b.trimGpxEnd((Long) trimGpxEndSpinner.getValue());
         b.trackIcon((TrackIcon) trackIconComboBox.getSelectedItem());
         b.inputIcon(new File(inputIconFileSelector.getFilename()));
-        b.flipIcon((boolean) flipIcon.isSelected());
+        b.mirrorTrackIcon(mirrorIconCheckBox.isSelected());
         return b.build();
     }
 
@@ -414,7 +414,7 @@ abstract class TrackSettingsPanel extends JPanel {
         trimGpxEndSpinner.setValue(c.getTrimGpxEnd());
         trackIconComboBox.setSelectedItem(c.getTrackIcon());
         inputIconFileSelector.setFilename(c.getInputIcon() == null ? null : c.getInputIcon().toString());
-        flipIcon.setSelected(c.getFlipIcon());
+        mirrorIconCheckBox.setSelected(c.isTrackIconMirrored());
         labelChanged(c.getLabel());
     }
 

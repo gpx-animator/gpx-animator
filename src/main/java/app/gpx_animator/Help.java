@@ -49,7 +49,7 @@ public final class Help {
         w.writeOptionHelp(Option.INFORMATION_POSITION, "position", false, cfg.getInformationPosition());
         w.writeOptionHelp(Option.TRACK_ICON, "trackIcon", true, tc.getTrackIcon()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON_FILE, "trackIconFile", true, tc.getInputIcon()); //NON-NLS
-        w.writeOptionHelp(Option.FLIP_ICON, "flipIcon", true, tc.getFlipIcon()); //NON-NLS
+        w.writeOptionHelp(Option.TRACK_ICON_MIRROR, "mirrorTrackIcon", true, tc.isTrackIconMirrored()); //NON-NLS
         w.writeOptionHelp(Option.LABEL, "label", true, tc.getLabel()); //NON-NLS
         w.writeOptionHelp(Option.LINE_WIDTH, "width", true, tc.getLineWidth()); //NON-NLS
         w.writeOptionHelp(Option.LOGO_POSITION, "position", false, cfg.getLogoPosition()); //NON-NLS

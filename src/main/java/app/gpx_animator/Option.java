@@ -55,7 +55,7 @@ public enum Option {
     HELP("help"),
     TRACK_ICON("track-icon"),
     TRACK_ICON_FILE("track-icon-file"),
-    FLIP_ICON("flip-icon"),
+    TRACK_ICON_MIRROR("track-icon-mirror"),
     SPEED_UNIT("speed-unit");
 
     private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();

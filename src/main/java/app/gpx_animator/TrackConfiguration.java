@@ -37,8 +37,8 @@ public final class TrackConfiguration {
     private Long trimGpxStart;
     private Long trimGpxEnd;
     private float lineWidth;
-    private boolean flipIcon;
     private File inputIcon;
+    private boolean mirrorTrackIcon;
 
     @XmlJavaTypeAdapter(TrackIconXmlAdapter.class)
     private TrackIcon trackIcon;
@@ -51,7 +51,7 @@ public final class TrackConfiguration {
     @SuppressWarnings("checkstyle:ParameterNumber") // TODO This is too much and just a temporary solution not to break the build...
     private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval,
                                final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth, final TrackIcon trackIcon,
-                               final File inputIcon, final boolean flipIcon) {
+                               final File inputIcon, final boolean mirrorTrackIcon) {
         this.inputGpx = inputGpx;
         this.label = label;
         this.color = color;
@@ -62,7 +62,7 @@ public final class TrackConfiguration {
         this.lineWidth = lineWidth;
         this.trackIcon = trackIcon;
         this.inputIcon = inputIcon;
-        this.flipIcon = flipIcon;
+        this.mirrorTrackIcon = mirrorTrackIcon;
     }
 
     public static Builder createBuilder() {
@@ -73,8 +73,8 @@ public final class TrackConfiguration {
         return trackIcon;
     }
 
-    public boolean getFlipIcon() {
-        return flipIcon;
+    public boolean isTrackIconMirrored() {
+        return mirrorTrackIcon;
     }
 
     public File getInputGpx() {
@@ -129,7 +129,7 @@ public final class TrackConfiguration {
         private float lineWidth = 2f;
         private TrackIcon trackIcon = null;
         private File inputIcon;
-        private boolean flipIcon = false;
+        private boolean mirrorTrackIcon = false;
 
 
         private Builder() {
@@ -138,7 +138,7 @@ public final class TrackConfiguration {
 
         public TrackConfiguration build() {
             return new TrackConfiguration(
-                inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, trackIcon, inputIcon, flipIcon
+                inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, trackIcon, inputIcon, mirrorTrackIcon
             );
         }
 
@@ -199,8 +199,8 @@ public final class TrackConfiguration {
             return this;
         }
 
-        public Builder flipIcon(final boolean flipIcon) {
-            this.flipIcon = flipIcon;
+        public Builder mirrorTrackIcon(final boolean mirrorTrackIcon) {
+            this.mirrorTrackIcon = mirrorTrackIcon;
             return this;
         }
 

@@ -14,8 +14,8 @@ Release date: work in progress 🚧
 * Migrating to Java 15
 * Fixing a bunch of compiler warnings
 * Addition of a Motorcycle icon
-* New flip icon checkbox on the track so the icon can be flipped to match the general direction
-* Added support for choosing an external PNG file as an icon
+* New mirror icon checkbox on the track so the icon can be mirrored to match the general direction
+* Added support for choosing an external PNG file as a track icon
 
 ## Version 1.5.2
 

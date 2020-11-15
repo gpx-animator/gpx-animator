@@ -726,13 +726,13 @@ public final class Renderer {
                     final File trackIconFile = trackConfiguration.getInputIcon();
                     if (trackIconFile != null && trackIconFile.exists() && trackIconFile.canRead()) {
                         try {
-                            drawIconFileOnGraphics2D(point, g2, trackIconFile, trackConfiguration.getFlipIcon());
+                            drawIconFileOnGraphics2D(point, g2, trackIconFile, trackConfiguration.isTrackIconMirrored());
                         } catch (final IOException e) {
                             throw new UserException(resourceBundle.getString("renderer.error.iconfile").formatted(trackIconFile), e);
                         }
                     } else if (trackIcon != null && !trackIcon.getKey().isEmpty()) {
                         try {
-                            drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.getFlipIcon());
+                            drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.isTrackIconMirrored());
                         } catch (final IOException e) {
                             throw new UserException(resourceBundle.getString("renderer.error.icon"), e);
                         }
@@ -763,27 +763,30 @@ public final class Renderer {
         g2.draw(marker);
     }
 
-    private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon, final boolean flip) throws IOException {
-        BufferedImage icon = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
-        drawImageOnGraphics2D(point, g2, flip, icon);
+    private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon, final boolean mirrorTrackIcon)
+            throws IOException {
+        final BufferedImage trackIconImage = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
+        drawImageOnGraphics2D(point, g2, trackIconImage, mirrorTrackIcon);
     }
 
-    private void drawIconFileOnGraphics2D(final Point2D point, final Graphics2D g2, final File trackIconFile, final boolean flip) throws IOException {
-        BufferedImage icon = ImageIO.read(trackIconFile);
-        drawImageOnGraphics2D(point, g2, flip, icon);
+    private void drawIconFileOnGraphics2D(final Point2D point, final Graphics2D g2, final File trackIconFile, final boolean mirrorTrackIcon)
+            throws IOException {
+        final BufferedImage trackIconImage = ImageIO.read(trackIconFile);
+        drawImageOnGraphics2D(point, g2, trackIconImage, mirrorTrackIcon);
     }
 
-    private void drawImageOnGraphics2D(final Point2D point, final Graphics2D g2, final boolean flip, final BufferedImage icon) throws IOException {
-        BufferedImage image = icon;
+    private void drawImageOnGraphics2D(final Point2D point, final Graphics2D g2, final BufferedImage trackIconImage, final boolean mirrorTrackIcon)
+            throws IOException {
+        BufferedImage image = trackIconImage;
         final AffineTransform at = new AffineTransform();
         at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
         try {
-            at.translate(-icon.getWidth() / 2d, -icon.getHeight() / 2d);
-            if (flip) {
+            at.translate(-trackIconImage.getWidth() / 2d, -trackIconImage.getHeight() / 2d);
+            if (mirrorTrackIcon) {
                 final AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-                tx.translate(-icon.getWidth(null), 0);
+                tx.translate(-trackIconImage.getWidth(null), 0);
                 final AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-                image = op.filter(icon, null);
+                image = op.filter(trackIconImage, null);
             }
         } catch (final Exception e) {
             throw new IOException(e.getMessage());
