@@ -140,7 +140,7 @@ public final class Configuration {
         this.maxLon = maxLon;
         this.minLat = minLat;
         this.maxLat = maxLat;
-        this.logo = logo;
+        this.logo = validateLogo(logo);
         this.logoPosition = logoPosition;
         this.attributionPosition = attributionPosition;
         this.informationPosition = informationPosition;
@@ -267,7 +267,7 @@ public final class Configuration {
     }
 
     public File getLogo() {
-        return logo;
+        return validateLogo(logo);
     }
 
     public Position getLogoPosition() {
@@ -332,6 +332,10 @@ public final class Configuration {
                 + ", trackConfigurationList=" + trackConfigurationList
                 + ", unitOfSpeed=" + speedUnit
                 + "]";
+    }
+
+    private static File validateLogo(final File logo) {
+        return logo != null && logo.isFile() ? logo : null;
     }
 
     @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField", "UnusedReturnValue"}) // This is okay for the builder pattern
@@ -527,7 +531,7 @@ public final class Configuration {
         }
 
         public Builder logo(final File logo) {
-            this.logo = logo;
+            this.logo = validateLogo(logo);
             return this;
         }
 
