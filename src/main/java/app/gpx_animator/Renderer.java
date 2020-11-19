@@ -150,22 +150,8 @@ public final class Renderer {
         final Graphics2D ga = (Graphics2D) bi.getGraphics();
         drawBackground(rc, zoom, bi, ga);
 
-        if (cfg.getFontSize() > 0) {
-            final String fontName = cfg.getFontName();
-            final String fontStyle = cfg.getFontStyle();
-            final String plain = "PLAIN";
-            final String bold = "BOLD";
-            final String italic = "ITALIC";
-
-            switch (fontStyle) {
-                case plain -> font = new Font(fontName, Font.PLAIN, cfg.getFontSize());
-                case bold -> font = new Font(fontName, Font.BOLD, cfg.getFontSize());
-                case italic -> font = new Font(fontName, Font.ITALIC, cfg.getFontSize());
-                default -> font = new Font(fontName, Font.BOLD + Font.ITALIC, cfg.getFontSize());
-            }
-
-            fontMetrics = ga.getFontMetrics(font);
-        }
+        font = cfg.getFont();
+        fontMetrics = ga.getFontMetrics(font);
 
         speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / cfg.getTotalTime();
         final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
