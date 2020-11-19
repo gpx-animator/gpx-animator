@@ -14,9 +14,10 @@ Release date: work in progress 🚧
 * Fixing a bug causing image series export to stop working
 * Migrating to Java 15
 * Fixing a bunch of compiler warnings
-* Addition of a Motorcycle icon
-* New mirror icon checkbox on the track so the icon can be mirrored to match the general direction
-* Added support for choosing an external PNG file as a track icon
+* Adding a Motorcycle icon
+* Adding support for choosing an external PNG file as a track icon
+* Track icons can now be mirrored to match the general direction
+* Adding font selection for the text in the animation
 
 ## Version 1.5.2
 
