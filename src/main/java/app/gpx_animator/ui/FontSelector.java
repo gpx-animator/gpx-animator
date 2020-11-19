@@ -15,16 +15,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ResourceBundle;
 
-public class FontSelector extends JPanel {
+public final class FontSelector extends JPanel {
 
     @NonNls
     public static final String PROPERTY_FONT = "font";
 
     private static final long serialVersionUID = 4157235691776396086L;
 
-    private transient final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private transient final JTextField fontTextField;
+    private final transient JTextField fontTextField;
 
     private transient Font font;
 
@@ -61,20 +61,20 @@ public class FontSelector extends JPanel {
         return font;
     }
 
-    public void setSelectedFont(@Nullable final Font font) {
-        this.font = font;
-        if (font == null) {
+    public void setSelectedFont(@Nullable final Font selectedFont) {
+        this.font = selectedFont;
+        if (selectedFont == null) {
             fontTextField.setText("");
         } else {
-            final String name = font.getName();
-            final String style = getStyleText(font, resourceBundle);
-            final int size = font.getSize();
+            final String name = selectedFont.getName();
+            final String style = getStyleText(selectedFont, resourceBundle);
+            final int size = selectedFont.getSize();
             final String text = "%s, %s, %d".formatted(name, style, size);
             fontTextField.setText(text);
         }
     }
 
-    private static String getStyleText(@NotNull final Font font, @NotNull ResourceBundle resourceBundle) {
+    private static String getStyleText(@NotNull final Font font, @NotNull final ResourceBundle resourceBundle) {
         if (font.isBold() && font.isItalic()) {
             return resourceBundle.getString("ui.dialog.fontchooser.fontstyle.bolditalic");
         } else if (font.isBold()) {
