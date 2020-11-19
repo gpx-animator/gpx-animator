@@ -40,7 +40,7 @@ public final class FileFrameWriter implements FrameWriter {
     private int frame;
 
     public FileFrameWriter(final String frameFilePattern, final String imageType, final double fps) throws UserException {
-        if (!isEqual(String.format(frameFilePattern, 100), String.format(frameFilePattern, 200))) {
+        if (isEqual(String.format(frameFilePattern, 100), String.format(frameFilePattern, 200))) {
             final ResourceBundle resourceBundle = Preferences.getResourceBundle();
             throw new UserException(resourceBundle.getString("framewriter.error.outputpattern"));
         }

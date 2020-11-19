@@ -11,6 +11,7 @@ Release date: work in progress 🚧
 * New and clear error message on missing track data in GPX file
 * Fixing `NullPointerException` when starting GPX Animator the first time
 * Fixing `NullPointerException` when showing the Changelog
+* Fixing a bug causing image series export to stop working
 * Migrating to Java 15
 * Fixing a bunch of compiler warnings
 * Addition of a Motorcycle icon
