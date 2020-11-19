@@ -988,6 +988,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final Long td = (Long) tailDurationSpinner.getValue();
         final Object tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
         final Object fontNameItem = fontNameComboBox.getSelectedItem() != null ? fontNameComboBox.getSelectedItem() : 1;
+        final int fontNameIndex = (Integer) fontNameItem - 1;
         final Object fontStyleItem = fontStyleComboBox.getSelectedItem() != null ? fontStyleComboBox.getSelectedItem() : "PLAIN";
         final String tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
         final String attribution = generateAttributionText(replacePlaceholders, tmsItem);
@@ -1018,7 +1019,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .output(new File(outputFileSelector.getFilename()))
                 .fontSize((Integer) fontSizeSpinner.getValue())
                 .fontStyle(fontStyleItem.toString())
-                .fontName(fontFamilyNames[(Integer) fontNameItem - 1])
+                .fontName(fontFamilyNames[Math.max(fontNameIndex, 0)])
                 .markerSize((Double) markerSizeSpinner.getValue())
                 .waypointSize((Double) waypointSizeSpinner.getValue())
                 .logo(new File(logoFileSelector.getFilename()))
