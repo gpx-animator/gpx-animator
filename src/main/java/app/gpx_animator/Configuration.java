@@ -229,7 +229,7 @@ public final class Configuration {
     }
 
     public Font getFont() {
-        return font;
+        return font != null ? font : Constants.DEFAULT_FONT;
     }
 
     public Double getMarkerSize() {

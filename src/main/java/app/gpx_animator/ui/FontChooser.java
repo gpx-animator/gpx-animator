@@ -75,8 +75,6 @@ public final class FontChooser extends JComponent {
      */
     public static final int ERROR_OPTION = -1;
 
-    private static final Font DEFAULT_SELECTED_FONT = new Font("Serif", Font.PLAIN, 12);
-    private static final Font DEFAULT_FONT = new Font("Dialog", Font.PLAIN, 10);
     private static final int[] FONT_STYLE_CODES = {
             Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC
     };
@@ -135,7 +133,7 @@ public final class FontChooser extends JComponent {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.add(contentsPanel);
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        this.setSelectedFont(DEFAULT_SELECTED_FONT);
+        this.setSelectedFont(Constants.DEFAULT_FONT);
     }
 
     private JTextField getFontFamilyTextField() {
@@ -147,7 +145,6 @@ public final class FontChooser extends JComponent {
                     new TextFieldKeyHandlerForListSelectionUpDown(getFontFamilyList()));
             fontFamilyTextField.getDocument().addDocumentListener(
                     new ListSearchTextFieldDocumentHandler(getFontFamilyList()));
-            fontFamilyTextField.setFont(DEFAULT_FONT);
 
         }
         return fontFamilyTextField;
@@ -162,7 +159,6 @@ public final class FontChooser extends JComponent {
                     new TextFieldKeyHandlerForListSelectionUpDown(getFontStyleList()));
             fontStyleTextField.getDocument().addDocumentListener(
                     new ListSearchTextFieldDocumentHandler(getFontStyleList()));
-            fontStyleTextField.setFont(DEFAULT_FONT);
         }
         return fontStyleTextField;
     }
@@ -176,7 +172,6 @@ public final class FontChooser extends JComponent {
                     new TextFieldKeyHandlerForListSelectionUpDown(getFontSizeList()));
             fontSizeTextField.getDocument().addDocumentListener(
                     new ListSearchTextFieldDocumentHandler(getFontSizeList()));
-            fontSizeTextField.setFont(DEFAULT_FONT);
         }
         return fontSizeTextField;
     }
@@ -188,7 +183,6 @@ public final class FontChooser extends JComponent {
             fontNameList.addListSelectionListener(
                     new ListSelectionHandler(getFontFamilyTextField()));
             fontNameList.setSelectedIndex(0);
-            fontNameList.setFont(DEFAULT_FONT);
             fontNameList.setFocusable(false);
         }
         return fontNameList;
@@ -201,7 +195,6 @@ public final class FontChooser extends JComponent {
             fontStyleList.addListSelectionListener(
                     new ListSelectionHandler(getFontStyleTextField()));
             fontStyleList.setSelectedIndex(0);
-            fontStyleList.setFont(DEFAULT_FONT);
             fontStyleList.setFocusable(false);
         }
         return fontStyleList;
@@ -214,7 +207,6 @@ public final class FontChooser extends JComponent {
             fontSizeList.addListSelectionListener(
                     new ListSelectionHandler(getFontSizeTextField()));
             fontSizeList.setSelectedIndex(0);
-            fontSizeList.setFont(DEFAULT_FONT);
             fontSizeList.setFocusable(false);
         }
         return fontSizeList;
@@ -571,9 +563,7 @@ public final class FontChooser extends JComponent {
         final Action cancelAction = new DialogCancelAction(dialog);
 
         final JButton okButton = new JButton(okAction);
-        okButton.setFont(DEFAULT_FONT);
         final JButton cancelButton = new JButton(cancelAction);
-        cancelButton.setFont(DEFAULT_FONT);
 
         final JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(2, 1));
