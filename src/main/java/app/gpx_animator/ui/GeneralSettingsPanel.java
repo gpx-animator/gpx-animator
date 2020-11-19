@@ -29,8 +29,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -39,7 +37,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -68,7 +65,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JComboBox<MapTemplate> tmsUrlTemplateComboBox;
     private final transient JComboBox<SpeedUnit> speedUnitComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
-    private final transient JComboBox<Font> fontComboBox;
+    private final transient FontSelector fontSelector;
     private final transient JComboBox<Position> logoLocationComboBox;
     private final transient JComboBox<Position> attriLocationComboBox;
     private final transient JComboBox<Position> infoLocationComboBox;
@@ -854,15 +851,13 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelFont.gridy = 27;
         add(lblFont, gbcLabelFont);
 
-        fontComboBox = new JComboBox<>();
-        fontComboBox.setToolTipText(Option.FONT.getHelp());
-        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Arrays.stream(ge.getAvailableFontFamilyNames()).forEach(string -> fontComboBox.addItem(Font.decode(string)));
+        fontSelector = new FontSelector();
+        fontSelector.setToolTipText(Option.FONT.getHelp());
         final GridBagConstraints gbcFontName = new GridBagConstraints();
         gbcFontName.fill = GridBagConstraints.HORIZONTAL;
         gbcFontName.gridx = 1;
         gbcFontName.gridy = 27;
-        add(fontComboBox, gbcFontName);
+        add(fontSelector, gbcFontName);
 
         final JLabel lblSpeedUnit = new JLabel(resourceBundle.getString("ui.panel.generalsettings.speedunit.label"));
         final GridBagConstraints gbcLabelSpeedUnit = new GridBagConstraints();
@@ -927,7 +922,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         }
         outputFileSelector.setFilename(c.getOutput().toString());
         logoFileSelector.setFilename(c.getLogo() != null ? c.getLogo().toString() : "");
-        fontComboBox.setSelectedItem(c.getFont());
+        fontSelector.setSelectedFont(c.getFont());
         markerSizeSpinner.setValue(c.getMarkerSize());
         waypointSizeSpinner.setValue(c.getWaypointSize());
         backgroundColorSelector.setColor(c.getBackgroundColor());
@@ -970,7 +965,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .flashbackColor(flashbackColorSelector.getColor())
                 .flashbackDuration((Long) flashbackDurationSpinner.getValue())
                 .output(new File(outputFileSelector.getFilename()))
-                .font((Font) fontComboBox.getSelectedItem())
+                .font(fontSelector.getSelectedFont())
                 .markerSize((Double) markerSizeSpinner.getValue())
                 .waypointSize((Double) waypointSizeSpinner.getValue())
                 .logo(new File(logoFileSelector.getFilename()))
