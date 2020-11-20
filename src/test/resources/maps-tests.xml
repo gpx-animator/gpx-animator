@@ -46,6 +46,15 @@
         </validation>
     </map>
     <map>
+        <id>Freemap.sk-Ski</id>
+        <validation>
+            <url>http://t1.freemap.sk/K/14/9060/5728.jpeg</url>
+            <url>http://t2.freemap.sk/K/14/9060/5728.jpeg</url>
+            <url>http://t3.freemap.sk/K/14/9060/5728.jpeg</url>
+            <url>http://t4.freemap.sk/K/14/9060/5728.jpeg</url>
+        </validation>
+    </map>
+    <map>
         <id>HDM_HOT</id>
         <validation>
             <url>https://a.tile.openstreetmap.fr/hot/10/535/359.png</url>
