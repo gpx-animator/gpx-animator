@@ -1554,12 +1554,12 @@
         <id>wien.gv.at-gp</id>
         <country-code>AT</country-code>
         <type>tms</type>
-        <url>http://www.wien.gv.at/wmts/fmzk/pastell/google3857/{zoom}/{y}/{x}.jpeg</url>
+        <url>https://www.wien.gv.at/wmts/fmzk/pastell/google3857/{zoom}/{y}/{x}.jpeg</url>
         <max-zoom>19</max-zoom>
-        <icon>http://www.wien.gv.at/layout-a/logo/wappen-klein.gif</icon>
+        <icon>https://www.wien.gv.at/layout-a/logo/wappen-klein.gif</icon>
         <bounds min-lat="48.10" min-lon="16.17" max-lat="48.33" max-lon="16.58" />
         <attribution-text>Stadt Wien</attribution-text>
-        <attribution-url>http://data.wien.gv.at/</attribution-url>
+        <attribution-url>https://data.wien.gv.at/</attribution-url>
     </entry>
     <entry>
         <name>Vienna: Beschriftungen (annotations)</name>
