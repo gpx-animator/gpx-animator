@@ -28,6 +28,15 @@
         </validation>
     </map>
     <map>
+        <id>Freemap.sk-Cyclo</id>
+        <validation>
+            <url>http://t1.freemap.sk/C/14/9060/5728.jpeg</url>
+            <url>http://t2.freemap.sk/C/14/9060/5728.jpeg</url>
+            <url>http://t3.freemap.sk/C/14/9060/5728.jpeg</url>
+            <url>http://t4.freemap.sk/C/14/9060/5728.jpeg</url>
+        </validation>
+    </map>
+    <map>
         <id>Freemap.sk-Hiking</id>
         <validation>
             <url>http://t1.freemap.sk/T/14/9060/5728.jpeg</url>
