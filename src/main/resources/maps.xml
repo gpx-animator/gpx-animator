@@ -21767,7 +21767,7 @@
         <name>Freemap.sk Cyclo</name>
         <id>Freemap.sk-Cyclo</id>
         <type>tms</type>
-        <url>http://t{switch:1,2,3,4}.freemap.sk/C/{zoom}/{x}/{y}.jpeg</url>
+        <url>https://tile.freemap.sk/C/{zoom}/{x}/{y}.jpeg</url>
         <min-zoom>8</min-zoom>
         <max-zoom>16</max-zoom>
         <bounds min-lat="47.7145247" min-lon="16.7988747" max-lat="49.6375827" max-lon="22.5884098">
