@@ -215,4 +215,10 @@
             <url>https://www.wien.gv.at/wmts/fmzk/pastell/google3857/15/11364/17871.jpeg</url>
         </validation>
     </map>
+    <map>
+        <id>wien.gv.at-labels</id>
+        <validation>
+            <url>http://www.wien.gv.at/wmts/beschriftung/normal/google3857/15/11364/17871.png</url>
+        </validation>
+    </map>
 </maps>
