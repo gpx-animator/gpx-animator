@@ -13,6 +13,12 @@
         </validation>
     </map>
     <map>
+        <id>basemap.at-orthofoto</id>
+        <validation>
+            <url>http://maps.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/10/360/551.jpeg</url>
+        </validation>
+    </map>
+    <map>
         <id>HDM_HOT</id>
         <validation>
             <url>https://a.tile.openstreetmap.fr/hot/10/535/359.png</url>
