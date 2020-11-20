@@ -7,6 +7,12 @@
         </validation>
     </map>
     <map>
+        <id>basemap.at</id>
+        <validation>
+            <url>https://maps.wien.gv.at/basemap/basemaphidpi/normal/google3857/10/360/551.png</url>
+        </validation>
+    </map>
+    <map>
         <id>HDM_HOT</id>
         <validation>
             <url>https://a.tile.openstreetmap.fr/hot/10/535/359.png</url>
