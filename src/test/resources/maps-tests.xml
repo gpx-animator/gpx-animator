@@ -212,7 +212,7 @@
     <map>
         <id>wien.gv.at-aerial_image</id>
         <validation>
-            <url>http://www.wien.gv.at/wmts/lb/farbe/google3857/15/11364/17871.jpeg</url>
+            <url>https://www.wien.gv.at/wmts/lb/farbe/google3857/15/11364/17871.jpeg</url>
         </validation>
     </map>
     <map>
