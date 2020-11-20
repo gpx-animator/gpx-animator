@@ -599,14 +599,8 @@
         <id>basemap.at</id>
         <country-code>AT</country-code>
         <type>tms</type>
-        <url>http://maps.wien.gv.at/basemap/bmaphidpi/normal/google3857/{zoom}/{y}/{x}.jpeg</url>
-        <max-zoom>19</max-zoom>
-        <tile-size>512</tile-size>
-        <mirror>
-            <type>tms</type>
-            <url>http://maps.wien.gv.at/basemap/geolandbasemap/normal/google3857/{zoom}/{y}/{x}.png</url>
-            <tile-size>256</tile-size>
-        </mirror>
+        <url>http://maps.wien.gv.at/basemap/geolandbasemap/normal/google3857/{zoom}/{y}/{x}.png</url>
+        <tile-size>256</tile-size>
         <icon>http://basemap.at/images/basemap_logo_klein.jpg</icon>
         <attribution-text>basemap.at</attribution-text>
         <attribution-url>http://basemap.at/</attribution-url>
