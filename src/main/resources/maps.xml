@@ -31153,7 +31153,7 @@
         <name>7th Series (OS7)</name>
         <id>OS7</id>
         <type>tms</type>
-        <url>http://ooc.openstreetmap.org/os7/{zoom}/{x}/{y}.jpg</url>
+        <url>https://ooc.openstreetmap.org/os7/{zoom}/{x}/{y}.jpg</url>
         <bounds min-lat="49.8" min-lon="-9" max-lat="61.1" max-lon="1.9" />
         <country-code>GB</country-code>
         <bounds min-lat="49.3376206" min-lon="-9.2400913" max-lat="61.1166644" max-lon="2.0588303">
