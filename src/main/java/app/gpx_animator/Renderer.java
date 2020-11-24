@@ -203,7 +203,7 @@ public final class Renderer {
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
         }
 
-        keepLastFrame(rc, frameWriter, bi, frames);
+        keepLastFrame(rc, frameWriter, bi, frames, wpMap);
         frameWriter.close();
 
         if (!rc.isCancelled1()) {
@@ -420,10 +420,11 @@ public final class Renderer {
         }
     }
 
-    private void keepLastFrame(final RenderingContext rc, final FrameWriter frameWriter, final BufferedImage bi, final int frames)
-            throws UserException {
+    private void keepLastFrame(final RenderingContext rc, final FrameWriter frameWriter, final BufferedImage bi, final int frames,
+                               final TreeMap<Long, Point2D> wpMap) throws UserException {
         final boolean keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
         if (keepLastFrame) {
+            drawWaypoints(bi, frames, wpMap);
             final Point2D marker = drawMarker(bi, frames);
             if (font != null) {
                 drawInfo(bi, frames, marker);
