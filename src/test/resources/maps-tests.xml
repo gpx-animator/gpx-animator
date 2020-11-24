@@ -153,6 +153,12 @@
         </validation>
     </map>
     <map>
+        <id>OS7</id>
+        <validation>
+            <url>http://ooc.openstreetmap.org/os7/10/507/335.jpg</url>
+        </validation>
+    </map>
+    <map>
         <id>osmfr</id>
         <validation>
             <url>https://a.tile.openstreetmap.fr/osmfr/10/535/359.png</url>
