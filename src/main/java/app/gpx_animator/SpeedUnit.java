@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 interface Calculation {
-    double calc(final double kmh);
+    double calc(double kmh);
 }
 
 public enum SpeedUnit {
