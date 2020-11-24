@@ -10,13 +10,15 @@ interface Calculation {
 }
 
 public enum SpeedUnit {
-    KMH(kmh -> kmh),
-    MPH(kmh -> kmh * 0.62137119223733),
-    MIN_KM(kmh -> 3600 / kmh / 60),
-    MIN_MI(kmh -> 3600 / (kmh * 0.62137119223733) / 60),
-    KNOTS(kmh -> kmh * 0.53995680346039),
-    MACH(kmh -> kmh * 0.00081699346405229),
-    LIGHT(kmh -> kmh * 9.2656693110598E-10);
+    KMH("km/h", kmh -> kmh),
+    MPH("mph", kmh -> kmh * 0.62137119223733),
+    MIN_KM("min/km", kmh -> 3600 / kmh / 60),
+    MIN_MI("min/mi", kmh -> 3600 / (kmh * 0.62137119223733) / 60),
+    KNOTS("kn", kmh -> kmh * 0.53995680346039),
+    MACH("Ma", kmh -> kmh * 0.00081699346405229),
+    LIGHT("c", kmh -> kmh * 9.2656693110598E-10);
+
+    private final String abbreviation;
 
     private final Calculation calculation;
 
@@ -29,15 +31,21 @@ public enum SpeedUnit {
     /**
      * Define a speed unit.
      *
+     * @param abbreviation the abbreviation of the speed unit
      * @param calculation how to calculate the speed, based on KMH
      */
-    SpeedUnit(final Calculation calculation) {
+    SpeedUnit(final String abbreviation, final Calculation calculation) {
+        this.abbreviation = abbreviation;
         this.calculation = calculation;
     }
 
     @Override
     public String toString() {
         return resourceBundle.getString("speedunit.".concat(name().toLowerCase(Locale.getDefault())));
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
     }
 
     public double convertSpeed(final double speed) {

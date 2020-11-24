@@ -20,7 +20,7 @@ public final class SpeedUtil {
             final GpxPoint gpxPoint = (GpxPoint) point;
             final double speed = calculateSpeedForDisplay(gpxPoint, time, frame, fps, speedUnit);
             final String format = speed > 10 ? "%.0f %s" : "%.1f %s"; // with 1 decimal below 10, no decimals 10 and above
-            return format.formatted(speed, speedUnit);
+            return format.formatted(speed, speedUnit.getAbbreviation());
         } else {
             return "";
         }
