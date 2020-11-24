@@ -5,16 +5,20 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum SpeedUnit {
-    KMH(1.0),
-    MPH(0.62137119223733),
-    MIN_KM(60),
-    MIN_MI(96.56064),
-    KNOTS(0.53995680346039),
-    MACH(0.00081699346405229),
-    LIGHT(9.2656693110598E-10);
+interface Calculation {
+    double calc(final double kmh);
+}
 
-    private final double factor;
+public enum SpeedUnit {
+    KMH(kmh -> kmh),
+    MPH(kmh -> kmh * 0.62137119223733),
+    MIN_KM(kmh -> 3600 / kmh / 60),
+    MIN_MI(kmh -> 3600 / (kmh * 0.62137119223733) / 60),
+    KNOTS(kmh -> kmh * 0.53995680346039),
+    MACH(kmh -> kmh * 0.00081699346405229),
+    LIGHT(kmh -> kmh * 9.2656693110598E-10);
+
+    private final Calculation calculation;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
@@ -25,10 +29,10 @@ public enum SpeedUnit {
     /**
      * Define a speed unit.
      *
-     * @param factor the conversion factor, based on KMH
+     * @param calculation how to calculate the speed, based on KMH
      */
-    SpeedUnit(final double factor) {
-        this.factor = factor;
+    SpeedUnit(final Calculation calculation) {
+        this.calculation = calculation;
     }
 
     @Override
@@ -37,6 +41,6 @@ public enum SpeedUnit {
     }
 
     public double convertSpeed(final double speed) {
-        return speed * factor;
+        return calculation.calc(speed);
     }
 }
