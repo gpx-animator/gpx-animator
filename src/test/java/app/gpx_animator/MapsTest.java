@@ -55,8 +55,6 @@ public class MapsTest {
             } else {
                 if (validateMap(mapTemplate, mapValidation)) {
                     testPassed.add(mapTemplate);
-                    LOGGER.info("All tests for map '{} (ID: {})' successfully passed",
-                            mapTemplate.toString(), mapTemplate.getId());
                 } else {
                     testFailed.add(mapTemplate);
                 }
