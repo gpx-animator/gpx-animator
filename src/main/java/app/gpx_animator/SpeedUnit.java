@@ -14,9 +14,7 @@ public enum SpeedUnit {
     MPH("mph", kmh -> kmh * 0.62137119223733),
     MIN_KM("min/km", kmh -> 3600 / kmh / 60),
     MIN_MI("min/mi", kmh -> 3600 / (kmh * 0.62137119223733) / 60),
-    KNOTS("kn", kmh -> kmh * 0.53995680346039),
-    MACH("Ma", kmh -> kmh * 0.00081699346405229),
-    LIGHT("c", kmh -> kmh * 9.2656693110598E-10);
+    KNOTS("kn", kmh -> kmh * 0.53995680346039);
 
     private final String abbreviation;
 
