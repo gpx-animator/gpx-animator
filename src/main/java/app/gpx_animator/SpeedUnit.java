@@ -16,9 +16,9 @@ public enum SpeedUnit {
     MIN_MI("min/mi", kmh -> 3600 / (kmh * 0.62137119223733) / 60),
     KNOTS("kn", kmh -> kmh * 0.53995680346039);
 
-    private final String abbreviation;
+    private final transient String abbreviation;
 
-    private final Calculation calculation;
+    private final transient Calculation calculation;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
