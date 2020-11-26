@@ -28457,7 +28457,7 @@
         <name>Bonvillars Orthophoto 2013</name>
         <id>Bonvillars-2013</id>
         <type>tms</type>
-        <url>http://osmdata.asitvd.ch/tiles/bonvillars2013/{zoom}/{x}/{y}.png</url>
+        <url>https://osmdata.asitvd.ch/tiles/bonvillars2013/{zoom}/{x}/{y}.png</url>
         <min-zoom>14</min-zoom>
         <max-zoom>20</max-zoom>
         <country-code>CH</country-code>
@@ -28472,7 +28472,7 @@
             </shape>
         </bounds>
         <attribution-text>Bonvillars - Orthophoto technique 2013</attribution-text>
-        <attribution-url>http://osmdata.asitvd.ch/</attribution-url>
+        <attribution-url>https://osmdata.asitvd.ch/</attribution-url>
     </entry>
     <entry>
         <name>Fiez Orthophoto 2013</name>
