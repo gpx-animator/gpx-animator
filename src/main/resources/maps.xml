@@ -8504,7 +8504,7 @@
         <type>tms</type>
         <id>bano</id>
         <min-zoom>12</min-zoom>
-        <url>http://{switch:a,b,c}.layers.openstreetmap.fr/bano/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.layers.openstreetmap.fr/bano/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="41.3136241" min-lon="-5.3525496" max-lat="51.1761675" max-lon="9.6356823">
             <shape>
                 <point lat="49.0891892" lon="8.3247852" />

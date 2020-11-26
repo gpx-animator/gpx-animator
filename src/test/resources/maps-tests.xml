@@ -9,9 +9,9 @@
     <map>
         <id>bano</id>
         <validation>
-            <url>http://a.layers.openstreetmap.fr/bano/10/518/354.png</url>
-            <url>http://b.layers.openstreetmap.fr/bano/10/518/354.png</url>
-            <url>http://c.layers.openstreetmap.fr/bano/10/518/354.png</url>
+            <url>https://a.layers.openstreetmap.fr/bano/10/518/354.png</url>
+            <url>https://b.layers.openstreetmap.fr/bano/10/518/354.png</url>
+            <url>https://c.layers.openstreetmap.fr/bano/10/518/354.png</url>
         </validation>
     </map>
     <map>
