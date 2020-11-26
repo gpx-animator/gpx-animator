@@ -187,6 +187,14 @@
         </validation>
     </map>
     <map>
+        <id>route500hydro</id>
+        <validation>
+            <url>https://a.tile.openstreetmap.fr/route500hydro/10/519/349.png</url>
+            <url>https://b.tile.openstreetmap.fr/route500hydro/10/519/349.png</url>
+            <url>https://c.tile.openstreetmap.fr/route500hydro/10/519/349.png</url>
+        </validation>
+    </map>
+    <map>
         <id>skobbler</id>
         <validation>
             <url>http://tiles1-4001b3692e229e3215c9b7a73e528198.skobblermaps.com/TileService/tiles/2.0/00021210101/0/10/535/359.png</url>
