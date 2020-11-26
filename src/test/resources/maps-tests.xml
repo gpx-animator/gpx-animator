@@ -33,6 +33,12 @@
         </validation>
     </map>
     <map>
+        <id>Bordeaux_2012</id>
+        <validation>
+            <url>http://wms.openstreetmap.fr/tms/1.0.0/bordeaux_2012/13/4081/2951</url>
+        </validation>
+    </map>
+    <map>
         <id>Freemap.sk-Car</id>
         <validation>
             <url>https://tile.freemap.sk/A/15/18254/11318.jpeg</url>
