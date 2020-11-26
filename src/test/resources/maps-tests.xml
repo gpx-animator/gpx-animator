@@ -27,6 +27,12 @@
         </validation>
     </map>
     <map>
+        <id>Bonvillars-2013</id>
+        <validation>
+            <url>http://osmdata.asitvd.ch/tiles/bonvillars2013/16/33982/23093.png</url>
+        </validation>
+    </map>
+    <map>
         <id>Freemap.sk-Car</id>
         <validation>
             <url>https://tile.freemap.sk/A/15/18254/11318.jpeg</url>
