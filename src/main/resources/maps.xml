@@ -8691,7 +8691,7 @@
         <name>Bordeaux - 2012</name>
         <id>Bordeaux_2012</id>
         <type>tms</type>
-        <url>http://wms.openstreetmap.fr/tms/1.0.0/bordeaux_2012/{zoom}/{x}/{y}</url>
+        <url>https://wms.openstreetmap.fr/tms/1.0.0/bordeaux_2012/{zoom}/{x}/{y}</url>
         <bounds min-lat="44.7398854" min-lon="-0.8868477" max-lat="45.0419324" max-lon="-0.4554165">
             <shape>
                 <point lat="45.041932410852176" lon="-0.5992269128228901" />
