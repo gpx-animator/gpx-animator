@@ -82,7 +82,7 @@ public final class CommandLineConfigurationFactory {
                             final String s = args[++i];
                             cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s)); // NOPMD -- null = not set
                         }
-                        case FONT_SIZE -> cfg.fontSize(Integer.parseInt(args[++i]));
+                        case FONT -> cfg.font(new FontXmlAdapter().unmarshal(args[++i]));
                         case FORCED_POINT_TIME_INTERVAL -> {
                             final String s1 = args[++i].trim();
                             forcedPointIntervalList.add(s1.isEmpty() ? null : Long.valueOf(s1)); // NOPMD -- null = not set

@@ -1,5 +1,7 @@
 package app.gpx_animator;
 
+import java.awt.Font;
+
 @SuppressWarnings("checkstyle:NoWhitespaceBefore") // For the ";" after the class declaration which is needed to use an enum for constants only
 public enum Constants {
     ;
@@ -20,4 +22,5 @@ public enum Constants {
 
     public static final String OS_ARCH = System.getProperty("os.arch");
 
+    public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 }

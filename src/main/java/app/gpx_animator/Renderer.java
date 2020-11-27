@@ -150,22 +150,8 @@ public final class Renderer {
         final Graphics2D ga = (Graphics2D) bi.getGraphics();
         drawBackground(rc, zoom, bi, ga);
 
-        if (cfg.getFontSize() > 0) {
-            final String fontName = cfg.getFontName();
-            final String fontStyle = cfg.getFontStyle();
-            final String plain = "PLAIN";
-            final String bold = "BOLD";
-            final String italic = "ITALIC";
-
-            switch (fontStyle) {
-                case plain -> font = new Font(fontName, Font.PLAIN, cfg.getFontSize());
-                case bold -> font = new Font(fontName, Font.BOLD, cfg.getFontSize());
-                case italic -> font = new Font(fontName, Font.ITALIC, cfg.getFontSize());
-                default -> font = new Font(fontName, Font.BOLD + Font.ITALIC, cfg.getFontSize());
-            }
-
-            fontMetrics = ga.getFontMetrics(font);
-        }
+        font = cfg.getFont();
+        fontMetrics = ga.getFontMetrics(font);
 
         speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / cfg.getTotalTime();
         final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
@@ -217,7 +203,7 @@ public final class Renderer {
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
         }
 
-        keepLastFrame(rc, frameWriter, bi, frames);
+        keepLastFrame(rc, frameWriter, bi, frames, wpMap);
         frameWriter.close();
 
         if (!rc.isCancelled1()) {
@@ -434,10 +420,11 @@ public final class Renderer {
         }
     }
 
-    private void keepLastFrame(final RenderingContext rc, final FrameWriter frameWriter, final BufferedImage bi, final int frames)
-            throws UserException {
+    private void keepLastFrame(final RenderingContext rc, final FrameWriter frameWriter, final BufferedImage bi, final int frames,
+                               final TreeMap<Long, Point2D> wpMap) throws UserException {
         final boolean keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
         if (keepLastFrame) {
+            drawWaypoints(bi, frames, wpMap);
             final Point2D marker = drawMarker(bi, frames);
             if (font != null) {
                 drawInfo(bi, frames, marker);

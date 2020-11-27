@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,9 +68,8 @@ public final class Configuration {
     private Position attributionPosition = Position.BOTTOM_LEFT;
     private Position informationPosition = Position.BOTTOM_RIGHT;
 
-    private int fontSize;
-    private String fontName;
-    private String fontStyle;
+    @XmlJavaTypeAdapter(FontXmlAdapter.class)
+    private Font font;
 
     private Double markerSize;
     private Double waypointSize;
@@ -106,7 +106,7 @@ public final class Configuration {
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
             final Long keepLastFrame, final File output, final String attribution, final SpeedUnit speedUnit,
-            final int fontSize, final String fontName, final String fontStyle, final Double markerSize, final Double waypointSize,
+            final Font font, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final Position logoPosition, final Position attributionPosition, final Position informationPosition,
             final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
@@ -130,9 +130,7 @@ public final class Configuration {
         this.keepLastFrame = keepLastFrame;
         this.output = output;
         this.attribution = attribution;
-        this.fontSize = fontSize;
-        this.fontStyle = fontStyle;
-        this.fontName = fontName;
+        this.font = font;
         this.markerSize = markerSize;
         this.waypointSize = waypointSize;
         this.trackConfigurationList = trackConfigurationList;
@@ -140,7 +138,7 @@ public final class Configuration {
         this.maxLon = maxLon;
         this.minLat = minLat;
         this.maxLat = maxLat;
-        this.logo = logo;
+        this.logo = validateLogo(logo);
         this.logoPosition = logoPosition;
         this.attributionPosition = attributionPosition;
         this.informationPosition = informationPosition;
@@ -230,16 +228,8 @@ public final class Configuration {
         return attribution;
     }
 
-    public int getFontSize() {
-        return fontSize;
-    }
-
-    public String getFontStyle() {
-        return fontStyle;
-    }
-
-    public String getFontName() {
-        return fontName;
+    public Font getFont() {
+        return font != null ? font : Constants.DEFAULT_FONT;
     }
 
     public Double getMarkerSize() {
@@ -267,7 +257,7 @@ public final class Configuration {
     }
 
     public File getLogo() {
-        return logo;
+        return validateLogo(logo);
     }
 
     public Position getLogoPosition() {
@@ -316,9 +306,7 @@ public final class Configuration {
                 + ", flashbackColor=" + flashbackColor
                 + ", flashbackDuration=" + flashbackDuration
                 + ", output=" + output
-                + ", fontSize=" + fontSize
-                + ", fontName=" + fontName
-                + ", fontStyle=" + fontStyle
+                + ", font=" + font
                 + ", markerSize=" + markerSize
                 + ", waypointSize=" + waypointSize
                 + ", keepLastFrame=" + keepLastFrame
@@ -332,6 +320,10 @@ public final class Configuration {
                 + ", trackConfigurationList=" + trackConfigurationList
                 + ", unitOfSpeed=" + speedUnit
                 + "]";
+    }
+
+    private static File validateLogo(final File logo) {
+        return logo != null && logo.isFile() ? logo : null;
     }
 
     @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField", "UnusedReturnValue"}) // This is okay for the builder pattern
@@ -356,9 +348,7 @@ public final class Configuration {
         private Long keepLastFrame;
         private File output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
         private String attribution = resourceBundle.getString("configuration.attribution");
-        private int fontSize = 12;
-        private String fontStyle;
-        private String fontName;
+        private Font font;
         private Double markerSize = 8.0;
         private Double waypointSize = 6.0;
         private Double minLon;
@@ -382,7 +372,7 @@ public final class Configuration {
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, flashbackColor, flashbackDuration,
                     keepLastFrame, output, attribution, speedUnit,
-                    fontSize, fontName, fontStyle, markerSize, waypointSize,
+                    font, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, logoPosition, attributionPosition, informationPosition,
                     photoDirectory, photoTime, photoAnimationDuration,
@@ -481,18 +471,8 @@ public final class Configuration {
             return this;
         }
 
-        public Builder fontSize(final int fontSize) {
-            this.fontSize = fontSize;
-            return this;
-        }
-
-        public Builder fontName(final String fontName) {
-            this.fontName = fontName;
-            return this;
-        }
-
-        public Builder fontStyle(final String fontStyle) {
-            this.fontStyle = fontStyle;
+        public Builder font(final Font font) {
+            this.font = font;
             return this;
         }
 
@@ -527,7 +507,7 @@ public final class Configuration {
         }
 
         public Builder logo(final File logo) {
-            this.logo = logo;
+            this.logo = validateLogo(logo);
             return this;
         }
 

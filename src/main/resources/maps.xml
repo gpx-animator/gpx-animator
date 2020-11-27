@@ -45,18 +45,6 @@
         <icon>http://wiki.openstreetmap.org/w/images/thumb/c/c9/Hot_logo.svg/300px-Hot_logo.svg.png</icon>
     </entry>
     <entry>
-        <name>MapQuest Open Aerial</name>
-        <id>mapquest-oa</id>
-        <type>tms</type>
-        <default>true</default>
-        <url>http://oatile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/sat/{zoom}/{x}/{y}.png</url>
-        <icon>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAD9QTFRFAAAAi8ZBi8ZBi8ZBi8ZBkslMmc1YoNBkqNRwr9d8ttuIvd6UxeKgzOar0+m32u3D4vDP6fTb8Pfn9/vz////1BI4LwAAAAR0Uk5TAF+fzylxRuMAAADBSURBVDjLxZPRDoMgDEVVClRlgML/f+tKUTLNgGV72H0okXskLbTD8IFGAW8lxuxPUNXE/0ND6QzRAgQB0NS3gEbEBjDvkRSWGoDx0FwB3An4CrCRZ0wiKkC27oDSOX0F4MlyNqVZAMmfVvNi7JmDK4CPrypJbvIA1MWPATdeYlwPgAvPmxw1SEQpnTtPMFzzg68mEXh/iwwYtvyfgIU2d5kAy8AKJlwAKor6I0UNKsfl15a7AN227w5Od/T6w9vWE6pGGxHVqV03AAAAAElFTkSuQmCC</icon>
-        <permission-ref>http://wiki.openstreetmap.org/wiki/MapQuest#MapQuest-hosted_map_tiles</permission-ref>
-        <attribution-text mandatory="true">Tiles Courtesy of MapQuest. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency</attribution-text>
-        <attribution-url>http://open.mapquest.com/</attribution-url>
-        <no-tile-header name="ETag" value=".*?:OC4CjEZcEJv8Az5u7fOqgEP\+NpkA&quot;" />
-    </entry>
-    <entry>
         <name>OpenStreetMap GPS Traces</name>
         <id>osm-gps</id>
         <type>tms</type>
@@ -611,14 +599,8 @@
         <id>basemap.at</id>
         <country-code>AT</country-code>
         <type>tms</type>
-        <url>http://maps.wien.gv.at/basemap/bmaphidpi/normal/google3857/{zoom}/{y}/{x}.jpeg</url>
-        <max-zoom>19</max-zoom>
-        <tile-size>512</tile-size>
-        <mirror>
-            <type>tms</type>
-            <url>http://maps.wien.gv.at/basemap/geolandbasemap/normal/google3857/{zoom}/{y}/{x}.png</url>
-            <tile-size>256</tile-size>
-        </mirror>
+        <url>http://maps.wien.gv.at/basemap/geolandbasemap/normal/google3857/{zoom}/{y}/{x}.png</url>
+        <tile-size>256</tile-size>
         <icon>http://basemap.at/images/basemap_logo_klein.jpg</icon>
         <attribution-text>basemap.at</attribution-text>
         <attribution-url>http://basemap.at/</attribution-url>
@@ -1572,36 +1554,36 @@
         <id>wien.gv.at-gp</id>
         <country-code>AT</country-code>
         <type>tms</type>
-        <url>http://www.wien.gv.at/wmts/fmzk/pastell/google3857/{zoom}/{y}/{x}.jpeg</url>
+        <url>https://www.wien.gv.at/wmts/fmzk/pastell/google3857/{zoom}/{y}/{x}.jpeg</url>
         <max-zoom>19</max-zoom>
-        <icon>http://www.wien.gv.at/layout-a/logo/wappen-klein.gif</icon>
+        <icon>https://www.wien.gv.at/layout-a/logo/wappen-klein.gif</icon>
         <bounds min-lat="48.10" min-lon="16.17" max-lat="48.33" max-lon="16.58" />
         <attribution-text>Stadt Wien</attribution-text>
-        <attribution-url>http://data.wien.gv.at/</attribution-url>
+        <attribution-url>https://data.wien.gv.at/</attribution-url>
     </entry>
     <entry>
         <name>Vienna: Beschriftungen (annotations)</name>
         <id>wien.gv.at-labels</id>
         <country-code>AT</country-code>
         <type>tms</type>
-        <url>http://www.wien.gv.at/wmts/beschriftung/normal/google3857/{zoom}/{y}/{x}.png</url>
+        <url>https://www.wien.gv.at/wmts/beschriftung/normal/google3857/{zoom}/{y}/{x}.png</url>
         <max-zoom>19</max-zoom>
-        <icon>http://www.wien.gv.at/layout-a/logo/wappen-klein.gif</icon>
+        <icon>https://www.wien.gv.at/layout-a/logo/wappen-klein.gif</icon>
         <bounds min-lat="48.10" min-lon="16.17" max-lat="48.33" max-lon="16.58" />
         <attribution-text>Stadt Wien</attribution-text>
-        <attribution-url>http://data.wien.gv.at/</attribution-url>
+        <attribution-url>https://data.wien.gv.at/</attribution-url>
     </entry>
     <entry>
         <name>Vienna: Orthofoto (aerial image)</name>
         <id>wien.gv.at-aerial_image</id>
         <country-code>AT</country-code>
         <type>tms</type>
-        <url>http://www.wien.gv.at/wmts/lb/farbe/google3857/{zoom}/{y}/{x}.jpeg</url>
+        <url>https://www.wien.gv.at/wmts/lb/farbe/google3857/{zoom}/{y}/{x}.jpeg</url>
         <max-zoom>19</max-zoom>
-        <icon>http://www.wien.gv.at/layout-a/logo/wappen-klein.gif</icon>
+        <icon>https://www.wien.gv.at/layout-a/logo/wappen-klein.gif</icon>
         <bounds min-lat="48.10" min-lon="16.17" max-lat="48.33" max-lon="16.58" />
         <attribution-text>Stadt Wien</attribution-text>
-        <attribution-url>http://data.wien.gv.at/</attribution-url>
+        <attribution-url>https://data.wien.gv.at/</attribution-url>
     </entry>
     <entry>
         <name>VoGIS: Echtfarbenbild 2012 (12cm)</name>
@@ -8522,7 +8504,7 @@
         <type>tms</type>
         <id>bano</id>
         <min-zoom>12</min-zoom>
-        <url>http://{switch:a,b,c}.layers.openstreetmap.fr/bano/{zoom}/{x}/{y}.png</url>
+        <url>https://{switch:a,b,c}.layers.openstreetmap.fr/bano/{zoom}/{x}/{y}.png</url>
         <bounds min-lat="41.3136241" min-lon="-5.3525496" max-lat="51.1761675" max-lon="9.6356823">
             <shape>
                 <point lat="49.0891892" lon="8.3247852" />
@@ -8709,7 +8691,7 @@
         <name>Bordeaux - 2012</name>
         <id>Bordeaux_2012</id>
         <type>tms</type>
-        <url>http://wms.openstreetmap.fr/tms/1.0.0/bordeaux_2012/{zoom}/{x}/{y}</url>
+        <url>https://wms.openstreetmap.fr/tms/1.0.0/bordeaux_2012/{zoom}/{x}/{y}</url>
         <bounds min-lat="44.7398854" min-lon="-0.8868477" max-lat="45.0419324" max-lon="-0.4554165">
             <shape>
                 <point lat="45.041932410852176" lon="-0.5992269128228901" />
@@ -21661,7 +21643,7 @@
         <name>Freemap.sk Car</name>
         <id>Freemap.sk-Car</id>
         <type>tms</type>
-        <url>http://t{switch:1,2,3,4}.freemap.sk/A/{zoom}/{x}/{y}.jpeg</url>
+        <url>https://tile.freemap.sk/A/{zoom}/{x}/{y}.jpeg</url>
         <min-zoom>8</min-zoom>
         <max-zoom>16</max-zoom>
         <bounds min-lat="47.7145247" min-lon="16.7988747" max-lat="49.6375827" max-lon="22.5884098">
@@ -21723,7 +21705,7 @@
         <name>Freemap.sk Hiking</name>
         <id>Freemap.sk-Hiking</id>
         <type>tms</type>
-        <url>http://t{switch:1,2,3,4}.freemap.sk/T/{zoom}/{x}/{y}.jpeg</url>
+        <url>https://tile.freemap.sk/T/{zoom}/{x}/{y}.jpeg</url>
         <min-zoom>8</min-zoom>
         <max-zoom>16</max-zoom>
         <bounds min-lat="47.7145247" min-lon="16.7988747" max-lat="49.6375827" max-lon="22.5884098">
@@ -21785,7 +21767,7 @@
         <name>Freemap.sk Cyclo</name>
         <id>Freemap.sk-Cyclo</id>
         <type>tms</type>
-        <url>http://t{switch:1,2,3,4}.freemap.sk/C/{zoom}/{x}/{y}.jpeg</url>
+        <url>https://tile.freemap.sk/C/{zoom}/{x}/{y}.jpeg</url>
         <min-zoom>8</min-zoom>
         <max-zoom>16</max-zoom>
         <bounds min-lat="47.7145247" min-lon="16.7988747" max-lat="49.6375827" max-lon="22.5884098">
@@ -21847,7 +21829,7 @@
         <name>Freemap.sk Ski</name>
         <id>Freemap.sk-Ski</id>
         <type>tms</type>
-        <url>http://t{switch:1,2,3,4}.freemap.sk/K/{zoom}/{x}/{y}.jpeg</url>
+        <url>http://tile.freemap.sk/K/{zoom}/{x}/{y}.jpeg</url>
         <min-zoom>8</min-zoom>
         <max-zoom>16</max-zoom>
         <bounds min-lat="47.7145247" min-lon="16.7988747" max-lat="49.6375827" max-lon="22.5884098">
@@ -28475,7 +28457,7 @@
         <name>Bonvillars Orthophoto 2013</name>
         <id>Bonvillars-2013</id>
         <type>tms</type>
-        <url>http://osmdata.asitvd.ch/tiles/bonvillars2013/{zoom}/{x}/{y}.png</url>
+        <url>https://osmdata.asitvd.ch/tiles/bonvillars2013/{zoom}/{x}/{y}.png</url>
         <min-zoom>14</min-zoom>
         <max-zoom>20</max-zoom>
         <country-code>CH</country-code>
@@ -28490,7 +28472,7 @@
             </shape>
         </bounds>
         <attribution-text>Bonvillars - Orthophoto technique 2013</attribution-text>
-        <attribution-url>http://osmdata.asitvd.ch/</attribution-url>
+        <attribution-url>https://osmdata.asitvd.ch/</attribution-url>
     </entry>
     <entry>
         <name>Fiez Orthophoto 2013</name>
@@ -31171,7 +31153,7 @@
         <name>7th Series (OS7)</name>
         <id>OS7</id>
         <type>tms</type>
-        <url>http://ooc.openstreetmap.org/os7/{zoom}/{x}/{y}.jpg</url>
+        <url>https://ooc.openstreetmap.org/os7/{zoom}/{x}/{y}.jpg</url>
         <bounds min-lat="49.8" min-lon="-9" max-lat="61.1" max-lon="1.9" />
         <country-code>GB</country-code>
         <bounds min-lat="49.3376206" min-lon="-9.2400913" max-lat="61.1166644" max-lon="2.0588303">

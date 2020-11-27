@@ -5,16 +5,20 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum SpeedUnit {
-    KMH(1.0),
-    MPH(0.62137119223733),
-    MIN_KM(60),
-    MIN_MI(96.56064),
-    KNOTS(0.53995680346039),
-    MACH(0.00081699346405229),
-    LIGHT(9.2656693110598E-10);
+interface Calculation {
+    double calc(double kmh);
+}
 
-    private final double factor;
+public enum SpeedUnit {
+    KMH("km/h", kmh -> kmh),
+    MPH("mph", kmh -> kmh * 0.62137119223733),
+    MIN_KM("min/km", kmh -> 3600 / kmh / 60),
+    MIN_MI("min/mi", kmh -> 3600 / (kmh * 0.62137119223733) / 60),
+    KNOTS("kn", kmh -> kmh * 0.53995680346039);
+
+    private final transient String abbreviation;
+
+    private final transient Calculation calculation;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
@@ -25,10 +29,12 @@ public enum SpeedUnit {
     /**
      * Define a speed unit.
      *
-     * @param factor the conversion factor, based on KMH
+     * @param abbreviation the abbreviation of the speed unit
+     * @param calculation how to calculate the speed, based on KMH
      */
-    SpeedUnit(final double factor) {
-        this.factor = factor;
+    SpeedUnit(final String abbreviation, final Calculation calculation) {
+        this.abbreviation = abbreviation;
+        this.calculation = calculation;
     }
 
     @Override
@@ -36,7 +42,11 @@ public enum SpeedUnit {
         return resourceBundle.getString("speedunit.".concat(name().toLowerCase(Locale.getDefault())));
     }
 
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
     public double convertSpeed(final double speed) {
-        return speed * factor;
+        return calculation.calc(speed);
     }
 }
