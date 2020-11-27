@@ -71,7 +71,9 @@ public final class Photos {
                     return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png"); //NON-NLS
                 });
                 if (files != null) {
-                    allPhotos = Arrays.stream(files).map(this::toPhoto).filter(photo -> photo.getEpochSeconds() > 0)
+                    allPhotos = Arrays.stream(files)
+                            .map(this::toPhoto)
+                            .filter(this::validatePhotoTime)
                             .collect(groupingBy(Photo::getEpochSeconds));
                 } else {
                     allPhotos = new HashMap<>();
@@ -87,6 +89,15 @@ public final class Photos {
         return new Photo(timeOfPhotoInMilliSeconds(file), file);
     }
 
+    private boolean validatePhotoTime(final Photo photo) {
+        if (photo.getEpochSeconds() > 0) {
+            LOGGER.info("Photo '{}' has a timestamp, perfect.", photo);
+            return true;
+        }
+        LOGGER.warn("Ignoring photo '{}', because it has no timestamp.", photo);
+        return false;
+    }
+
     private Long timeOfPhotoInMilliSeconds(final File file) {
         try {
             final Metadata metadata = ImageMetadataReader.readMetadata(file);
@@ -98,7 +109,7 @@ public final class Photos {
                     DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x")); //NON-NLS
             return zonedDateTime.toEpochSecond() * 1_000;
         } catch (ImageProcessingException | IOException | NullPointerException e) { // NOPMD -- NPEs can happen quite often in image metadata handling
-            LOGGER.error("Error processing file '{}}'!", file.getAbsoluteFile(), e);
+            LOGGER.error("Error processing file '{}'!", file.getAbsoluteFile(), e);
             return 0L;
         }
     }
