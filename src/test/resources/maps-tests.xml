@@ -39,15 +39,6 @@
         </validation>
     </map>
     <map>
-        <id>British_Columbia_Mosaic</id>
-        <validation>
-            <url>http://a.imagery.paulnorman.ca/tiles/bc_mosaic/14/2600/5613.png</url>
-            <url>http://b.imagery.paulnorman.ca/tiles/bc_mosaic/14/2600/5613.png</url>
-            <url>http://c.imagery.paulnorman.ca/tiles/bc_mosaic/14/2600/5613.png</url>
-            <url>http://d.imagery.paulnorman.ca/tiles/bc_mosaic/14/2600/5613.png</url>
-        </validation>
-    </map>
-    <map>
         <id>Freemap.sk-Car</id>
         <validation>
             <url>https://tile.freemap.sk/A/15/18254/11318.jpeg</url>
