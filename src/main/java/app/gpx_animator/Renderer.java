@@ -59,6 +59,8 @@ public final class Renderer {
 
     private static final double MS = 1000d;
 
+    private final String jpg = "jpg";
+
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final Configuration cfg;
@@ -137,7 +139,7 @@ public final class Renderer {
         final int dot = frameFilePattern.lastIndexOf('.');
         final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1).toLowerCase(Locale.getDefault());
         LOGGER.info("ext = {}", ext);
-        final boolean toImages = ext != null && (isEqual("png", ext) || isEqual("jpg", ext)); //NON-NLS
+        final boolean toImages = ext != null && (isEqual("png", ext) || isEqual(jpg, ext)); //NON-NLS
 
         final int realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
         final int realHeight = calculateRealHeight(scale, toImages);
@@ -151,7 +153,7 @@ public final class Renderer {
         if (viewportHeight > realHeight) {
             viewportHeight = realHeight;
         }
-        LOGGER.info("viewPortWidth {} x viewPortHeight {}", viewportWidth, viewportHeight);
+        LOGGER.info("viewportWidth {} x viewportHeight {}", viewportWidth, viewportHeight);
 
         final FrameWriter frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
@@ -175,6 +177,7 @@ public final class Renderer {
         final Photos photos = new Photos(cfg.getPhotoDirectory());
 
         float skip = -1f;
+        LOGGER.info("skip = {}, frames = {}", skip, frames);
         for (int frame = 1; frame < frames; frame++) {
             if (rc.isCancelled1()) {
                 return;
@@ -198,9 +201,19 @@ public final class Renderer {
             rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.frame"), frame, (frames - 1)));
 
             paint(bi, frame, 0, null);
+
+            try {
+                final File outputfile = new File("bi.jpg");
+                ImageIO.write(bi, jpg, outputfile);
+            } catch (IOException e) {
+                LOGGER.info("IOException 3");
+            }
+
             final BufferedImage bi2 = Utils.deepCopy(bi);
+            LOGGER.info("bi2 before = {}", bi2);
             paint(bi2, frame, cfg.getTailDuration(), cfg.getTailColor());
             drawWaypoints(bi2, frame, wpMap);
+            LOGGER.info("bi2 after 1 = {}", bi2);
 
             final Point2D marker = drawMarker(bi2, frame);
             if (font != null) {
@@ -216,8 +229,28 @@ public final class Renderer {
             }
 
             skip = renderFlashback(skip, bi2);
-            frameWriter.addFrame(bi2);
-            // frameWriter.addFrame(bi2.getSubimage(0, 0, viewportWidth, viewportHeight));
+            LOGGER.info("bi2 after 2 = {}", bi2);
+            try {
+                final File outputfile = new File("subimage.jpg");
+                final BufferedImage subImage = bi2.getSubimage(0, 0, viewportWidth, viewportHeight);
+                ImageIO.write(subImage, jpg, outputfile);
+            } catch (IOException e) {
+                LOGGER.info("IOException 1");
+            }
+
+            try {
+                final File outputfile = new File("bi2.jpg");
+                ImageIO.write(bi2, jpg, outputfile);
+            } catch (IOException e) {
+                LOGGER.info("IOException 2");
+            }
+
+            LOGGER.info("bi2.getMinX = {}, bi2.getMinY = {}", bi2.getMinX(), bi2.getMinY());
+            final BufferedImage subImage = Utils.deepCopy(bi2.getSubimage(0, 0, viewportWidth, viewportHeight));
+            LOGGER.info("subImage = {}", subImage);
+            LOGGER.info("frameWriter = {}", frameWriter);
+            frameWriter.addFrame(subImage);
+            // frameWriter.addFrame(bi2);
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
         }
 
