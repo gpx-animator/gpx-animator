@@ -631,15 +631,12 @@ public final class Renderer {
     private void drawAttribution(final BufferedImage bi, final String attribution) throws UserException {
         boolean hasSplit = false;
 
-        for (int i = 0; i < attribution.length(); i++) { // TODO Why this loop?
-            if (attribution.contains("\n")) {
-                hasSplit = true;
-                break;
-            }
+        if (attribution.trim().contains("\n")) {
+            hasSplit = true;
         }
 
         if (hasSplit) {
-            final String[] lines = attribution.split("\n");
+            final String[] lines = attribution.trim().split("\n");
             switch (cfg.getAttributionPosition()) {
                 case TOP_LEFT -> {
                     printText(getGraphics(bi), lines[0], cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
