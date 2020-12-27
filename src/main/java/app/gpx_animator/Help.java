@@ -109,6 +109,7 @@ public final class Help {
             if (defaultValue != null) {
                 pw.print("; ");
                 pw.print(resourceBundle.getString("help.options.default"));
+                pw.print(" = ");
                 pw.print(defaultValue);
             }
             pw.println();
