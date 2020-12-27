@@ -195,7 +195,6 @@ public final class Renderer {
             drawWaypoints(bi2, frame, wpMap);
 
             final Point2D marker = drawMarker(bi2, frame);
-            LOGGER.info("marker = {}", marker);
             if (font != null) {
                 drawInfo(bi2, frame, marker);
 
