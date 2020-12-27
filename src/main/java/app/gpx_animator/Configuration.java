@@ -340,7 +340,7 @@ public final class Configuration {
         private double fps = 30.0;
         private Long totalTime;
         private float backgroundMapVisibility = 0.5f;
-        private String tmsUrlTemplate;
+        private String tmsUrlTemplate = "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png";
         private boolean skipIdle = true;
         private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
         private Color flashbackColor = Color.white;
@@ -356,13 +356,13 @@ public final class Configuration {
         private Double minLat;
         private Double maxLat;
         private File logo;
-        private Position logoPosition;
-        private Position attributionPosition;
-        private Position informationPosition;
+        private Position logoPosition = Position.TOP_LEFT;
+        private Position attributionPosition = Position.BOTTOM_LEFT;
+        private Position informationPosition = Position.BOTTOM_RIGHT;
         private String photoDirectory;
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
-        private SpeedUnit speedUnit;
+        private SpeedUnit speedUnit = SpeedUnit.KMH;
 
 
         public Configuration build() {

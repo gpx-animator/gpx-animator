@@ -136,11 +136,14 @@ public final class Renderer {
         //noinspection MagicCharacter
         final int dot = frameFilePattern.lastIndexOf('.');
         final String ext = dot == -1 ? null : frameFilePattern.substring(dot + 1).toLowerCase(Locale.getDefault());
+        LOGGER.info("ext = {}", ext);
         final boolean toImages = ext != null && (isEqual("png", ext) || isEqual("jpg", ext)); //NON-NLS
 
         final int realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
         final int realHeight = calculateRealHeight(scale, toImages);
         LOGGER.info("{}x{};{}", realWidth, realHeight, scale);
+        final int viewportWidth = 640;
+        final int viewportHeight = 640;
 
         final FrameWriter frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
@@ -149,12 +152,18 @@ public final class Renderer {
         final BufferedImage bi = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_3BYTE_BGR);
         final Graphics2D ga = (Graphics2D) bi.getGraphics();
         drawBackground(rc, zoom, bi, ga);
+        LOGGER.info("rc = {}", rc);
+        LOGGER.info("zoom = {}", zoom);
+        LOGGER.info("bi = {}", bi);
+        LOGGER.info("ga = {}", ga);
 
         font = cfg.getFont();
         fontMetrics = ga.getFontMetrics(font);
 
         speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / cfg.getTotalTime();
+        LOGGER.info("speedup = {}", speedup);
         final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
+        LOGGER.info("frames = {}", frames);
         final Photos photos = new Photos(cfg.getPhotoDirectory());
 
         float skip = -1f;
@@ -232,6 +241,7 @@ public final class Renderer {
             ga.setColor(backgroundColor);
             ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
         } else {
+            LOGGER.info("drawBackground calling MapUtil.drawMap: minX = {}, maxX = {}, minY = {}, maxY = {}", minX, maxX, minY, maxY);
             MapUtil.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
         }
         drawLogo(bi);
