@@ -41,7 +41,8 @@ public final class Utils {
         final ColorModel cm = bi.getColorModel();
         final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         final WritableRaster raster = (WritableRaster) bi.getData(new Rectangle(x, y, width, height));
-        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+        final WritableRaster movedRaster = raster.createWritableTranslatedChild(0, 0);
+        return new BufferedImage(cm, movedRaster, isAlphaPremultiplied, null);
     }
 
 

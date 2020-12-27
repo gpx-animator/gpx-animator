@@ -195,6 +195,7 @@ public final class Renderer {
             drawWaypoints(bi2, frame, wpMap);
 
             final Point2D marker = drawMarker(bi2, frame);
+            LOGGER.info("marker = {}", marker);
             if (font != null) {
                 drawInfo(bi2, frame, marker);
 
@@ -209,7 +210,22 @@ public final class Renderer {
 
             skip = renderFlashback(skip, bi2);
             if (viewportHeight != realHeight || viewportWidth != realWidth) {
-                final BufferedImage subImage = Utils.deepCopy(bi2, 0, 0, viewportWidth, viewportHeight);
+                double x = marker.getX() - viewportWidth / 2.0;
+                double y = marker.getY() - viewportHeight / 2.0;
+                if (x < 0) {
+                    x = 0;
+                }
+                if ((x + viewportWidth) > realWidth) {
+                    x = realWidth - viewportWidth;
+                }
+
+                if (y < 0) {
+                    y = 0;
+                }
+                if ((y + viewportHeight) > realHeight) {
+                    y = realHeight - viewportHeight;
+                }
+                final BufferedImage subImage = Utils.deepCopy(bi2, (int) x, (int) y, viewportWidth, viewportHeight);
                 frameWriter.addFrame(subImage);
             } else {
                 frameWriter.addFrame(bi2);
