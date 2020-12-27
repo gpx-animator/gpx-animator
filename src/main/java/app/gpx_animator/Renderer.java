@@ -157,7 +157,7 @@ public final class Renderer {
 
         final FrameWriter frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
-                : new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), realWidth, realHeight);
+                : new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), viewportWidth, viewportHeight);
 
         final BufferedImage bi = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_3BYTE_BGR);
         final Graphics2D ga = (Graphics2D) bi.getGraphics();
