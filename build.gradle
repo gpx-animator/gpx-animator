@@ -3,7 +3,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.0.0'
     id 'com.github.spotbugs' version '4.6.0'
     id 'pmd'
-    // id 'checkstyle'
+    id 'checkstyle'
 }
 
 version = '1.6.0-SNAPSHOT'
@@ -89,10 +89,10 @@ spotbugsTest {
     }
 }
 
-// checkstyle {
-//     configFile file("${projectDir}/config/checkstyle/checkstyle.xml")
-//     toolVersion "8.37"
-// }
+checkstyle {
+    configFile file("${projectDir}/config/checkstyle/checkstyle.xml")
+    toolVersion "8.37"
+}
 
 pmd {
     ruleSets = []
