@@ -231,7 +231,7 @@ public final class Renderer {
     private BufferedImage applyViewport(final BufferedImage bi, final Point2D marker,
                                         final int realWidth, final int realHeight,
                                         final int viewportWidth, final int viewportHeight) {
-        if (viewportHeight == realHeight || viewportWidth == realWidth) {
+        if (viewportHeight == realHeight && viewportWidth == realWidth) {
             return bi;
         }
 
