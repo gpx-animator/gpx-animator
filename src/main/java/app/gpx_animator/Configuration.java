@@ -41,6 +41,9 @@ public final class Configuration {
     private Integer height;
     private Integer zoom;
 
+    private Integer viewportWidth;
+    private Integer viewportHeight;
+
     private Double speedup;
     private long tailDuration;
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
@@ -102,6 +105,7 @@ public final class Configuration {
     @SuppressWarnings("checkstyle:ParameterNumber")
     private Configuration(
             final int margin, final Integer width, final Integer height, final Integer zoom,
+            final Integer viewportWidth, final Integer viewportHeight,
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
@@ -116,6 +120,8 @@ public final class Configuration {
         this.width = width;
         this.height = height;
         this.zoom = zoom;
+        this.viewportWidth = viewportWidth;
+        this.viewportHeight = viewportHeight;
         this.speedup = speedup;
         this.tailDuration = tailDuration;
         this.tailColor = tailColor;
@@ -162,6 +168,14 @@ public final class Configuration {
 
     public Integer getHeight() {
         return height;
+    }
+
+    public Integer getViewPortWidth() {
+        return viewportWidth;
+    }
+
+    public Integer getViewPortHeight() {
+        return viewportHeight;
     }
 
     public Integer getZoom() {
@@ -295,6 +309,8 @@ public final class Configuration {
                 + ", width=" + width
                 + ", height=" + height
                 + ", zoom=" + zoom
+                + ", viewportWidth=" + viewportWidth
+                + ", viewportHeight=" + viewportHeight
                 + ", speedup=" + speedup
                 + ", tailDuration=" + tailDuration
                 + ", tailColor=" + tailColor
@@ -334,6 +350,8 @@ public final class Configuration {
         private Integer height;
         private Integer width;
         private Integer zoom;
+        private Integer viewportHeight;
+        private Integer viewportWidth;
         private Double speedup = 1000.0;
         private long tailDuration = 3600000;
         private Color tailColor = Color.BLACK;
@@ -367,7 +385,7 @@ public final class Configuration {
 
         public Configuration build() {
             return new Configuration(
-                    margin, width, height, zoom,
+                    margin, width, height, zoom, viewportWidth, viewportHeight,
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, flashbackColor, flashbackDuration,
@@ -393,6 +411,16 @@ public final class Configuration {
 
         public Builder width(final Integer width) {
             this.width = width;
+            return this;
+        }
+
+        public Builder viewportHeight(final Integer viewportHeight) {
+            this.viewportHeight = viewportHeight;
+            return this;
+        }
+
+        public Builder viewportWidth(final Integer viewportWidth) {
+            this.viewportWidth = viewportWidth;
             return this;
         }
 

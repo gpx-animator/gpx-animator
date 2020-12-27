@@ -141,9 +141,17 @@ public final class Renderer {
 
         final int realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
         final int realHeight = calculateRealHeight(scale, toImages);
-        LOGGER.info("{}x{};{}", realWidth, realHeight, scale);
-        final int viewportWidth = 640;
-        final int viewportHeight = 640;
+        LOGGER.info("realwidth {} x realHeight {} @ scale {}", realWidth, realHeight, scale);
+
+        int viewportWidth = cfg.getViewPortWidth() == null ? realWidth : cfg.getViewPortWidth();
+        if (viewportWidth > realWidth) {
+            viewportWidth = realWidth;
+        }
+        int viewportHeight = cfg.getViewPortHeight() == null ? realHeight : cfg.getViewPortHeight();
+        if (viewportHeight > realHeight) {
+            viewportHeight = realHeight;
+        }
+        LOGGER.info("viewPortWidth {} x viewPortHeight {}", viewportWidth, viewportHeight);
 
         final FrameWriter frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
@@ -209,6 +217,7 @@ public final class Renderer {
 
             skip = renderFlashback(skip, bi2);
             frameWriter.addFrame(bi2);
+            // frameWriter.addFrame(bi2.getSubimage(0, 0, viewportWidth, viewportHeight));
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
         }
 
