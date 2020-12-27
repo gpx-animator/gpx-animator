@@ -130,6 +130,11 @@ public final class CommandLineConfigurationFactory {
                         case PHOTO_DIR -> cfg.photoDirectory(args[++i]);
                         case PHOTO_TIME -> cfg.photoTime(Long.parseLong(args[++i]));
                         case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
+                        case PRE_DRAW_TRACK -> cfg.preDrawTrack(true);
+                        case PRE_DRAW_TRACK_COLOR -> {
+                            final long tcv = Long.decode(args[++i]);
+                            cfg.preDrawTrackColor(new Color(tcv < Integer.MAX_VALUE ? (int) tcv : (int) (0xffffffff00000000L | tcv), true));
+                        }
                         case SPEEDUP -> cfg.speedup(Double.parseDouble(args[++i]));
                         case SPEED_UNIT -> {
                             // not yet implemented

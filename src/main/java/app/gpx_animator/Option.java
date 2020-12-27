@@ -45,6 +45,8 @@ public enum Option {
     FLASHBACK_DURATION("flashback-duration"),
     KEEP_LAST_FRAME("keep-last-frame"),
     SKIP_IDLE("skip-idle"),
+    PRE_DRAW_TRACK("predraw-track"),
+    PRE_DRAW_TRACK_COLOR("predraw-track-color"),
     LOGO("logo"),
     LOGO_POSITION("logo-location"),
     ATTRIBUTION_POSITION("attribution-location"),

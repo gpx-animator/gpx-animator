@@ -166,6 +166,11 @@ public final class Renderer {
         final int frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
         final Photos photos = new Photos(cfg.getPhotoDirectory());
 
+        // pre-draw the path in a different color
+        if (cfg.isPreDrawTrack()) {
+            paint(bi, frames - 1, getTime(frames - 1) - getTime(0), null, cfg.getPreDrawTrackColor());
+        }
+
         float skip = -1f;
         for (int frame = 1; frame < frames; frame++) {
             if (rc.isCancelled1()) {
@@ -189,9 +194,9 @@ public final class Renderer {
             final int pct = (int) (100.0 * frame / frames);
             rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.frame"), frame, (frames - 1)));
 
-            paint(bi, frame, 0, null);
+            paint(bi, frame, 0, null, null);
             final BufferedImage bi2 = Utils.deepCopy(bi);
-            paint(bi2, frame, cfg.getTailDuration(), cfg.getTailColor());
+            paint(bi2, frame, cfg.getTailDuration(), cfg.getTailColor(), null);
             drawWaypoints(bi2, frame, wpMap);
 
             final Point2D marker = drawMarker(bi2, frame);
@@ -815,7 +820,7 @@ public final class Renderer {
         g2.drawImage(image, at, null);
     }
 
-    private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor) {
+    private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor, final Color predrawnTrackColor) {
         final Graphics2D g2 = getGraphics(bi);
 
         final long time = getTime(frame);
@@ -858,11 +863,15 @@ public final class Renderer {
                 } else {
                     for (final Entry<Long, Point2D> entry : timePointMap.subMap(toTime - backTime, true, toTime, true).entrySet()) {
                         if (prevPoint != null) {
-                            final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
-                            if (ratio > 0) {
-                                g2.setPaint(blendTailColor(trackConfiguration.getColor(), overrideColor, ratio));
-                                g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
+                            if (predrawnTrackColor == null) {
+                                final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
+                                if (ratio > 0) {
+                                    g2.setPaint(blendTailColor(trackConfiguration.getColor(), overrideColor, ratio));
+                                }
+                            } else {
+                                g2.setColor(predrawnTrackColor);
                             }
+                            g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
                         }
                         prevPoint = entry.getValue();
                     }
