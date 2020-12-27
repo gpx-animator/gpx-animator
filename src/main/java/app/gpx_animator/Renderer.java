@@ -246,7 +246,7 @@ public final class Renderer {
             }
 
             LOGGER.info("bi2.getMinX = {}, bi2.getMinY = {}", bi2.getMinX(), bi2.getMinY());
-            final BufferedImage subImage = Utils.deepCopy(bi2.getSubimage(0, 0, viewportWidth, viewportHeight));
+            final BufferedImage subImage = Utils.deepCopy(bi2, 0, 0, viewportWidth, viewportHeight);
             LOGGER.info("subImage = {}", subImage);
             LOGGER.info("frameWriter = {}", frameWriter);
             frameWriter.addFrame(subImage);
