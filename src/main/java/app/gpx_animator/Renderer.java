@@ -195,40 +195,25 @@ public final class Renderer {
             drawWaypoints(bi2, frame, wpMap);
 
             final Point2D marker = drawMarker(bi2, frame);
+
+            skip = renderFlashback(skip, bi2);
+
+            // apply viewport over bi2 (which could be the full viewport)
+            final BufferedImage viewportImage = applyViewport(bi2, marker, realWidth, realHeight, viewportWidth, viewportHeight);
+
             if (font != null) {
-                drawInfo(bi2, frame, marker);
+                drawInfo(viewportImage, frame, marker);
 
                 String att = resourceBundle.getString("configuration.attribution");
                 String getAt = cfg.getAttribution();
                 if (att.equals(getAt)) {
-                    drawAttribution(bi2, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
+                    drawAttribution(viewportImage, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
                 } else {
-                    drawAttribution(bi2, getAt);
+                    drawAttribution(viewportImage, getAt);
                 }
             }
 
-            skip = renderFlashback(skip, bi2);
-            if (viewportHeight != realHeight || viewportWidth != realWidth) {
-                double x = marker.getX() - viewportWidth / 2.0;
-                double y = marker.getY() - viewportHeight / 2.0;
-                if (x < 0) {
-                    x = 0;
-                }
-                if ((x + viewportWidth) > realWidth) {
-                    x = realWidth - viewportWidth;
-                }
-
-                if (y < 0) {
-                    y = 0;
-                }
-                if ((y + viewportHeight) > realHeight) {
-                    y = realHeight - viewportHeight;
-                }
-                final BufferedImage subImage = Utils.deepCopy(bi2, (int) x, (int) y, viewportWidth, viewportHeight);
-                frameWriter.addFrame(subImage);
-            } else {
-                frameWriter.addFrame(bi2);
-            }
+            frameWriter.addFrame(viewportImage);
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
         }
 
@@ -241,6 +226,29 @@ public final class Renderer {
         } else {
             LOGGER.info("Canceled.");
         }
+    }
+
+    private BufferedImage applyViewport(final BufferedImage bi, final Point2D marker,
+                                        final int realWidth, final int realHeight,
+                                        final int viewportWidth, final int viewportHeight) {
+        if (viewportHeight == realHeight || viewportWidth == realWidth) {
+            return bi;
+        }
+
+        double x = marker.getX() - viewportWidth / 2.0;
+        double y = marker.getY() - viewportHeight / 2.0;
+        if (x < 0) {
+            x = 0;
+        } else if ((x + viewportWidth) > realWidth) {
+            x = realWidth - viewportWidth;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } else if ((y + viewportHeight) > realHeight) {
+            y = realHeight - viewportHeight;
+        }
+        return Utils.deepCopy(bi, (int) x, (int) y, viewportWidth, viewportHeight);
     }
 
     private float renderFlashback(final float skip, final BufferedImage bi2) {
