@@ -49,4 +49,13 @@ public enum SpeedUnit {
     public double convertSpeed(final double speed) {
         return calculation.calc(speed);
     }
+
+    public static SpeedUnit parse(final String unitString, final SpeedUnit defaultUnit) {
+        return Arrays.stream(SpeedUnit.values())
+                .filter(speedUnit -> speedUnit.name().equalsIgnoreCase(unitString)
+                        || speedUnit.getAbbreviation().equalsIgnoreCase(unitString))
+                .findAny()
+                .orElse(defaultUnit);
+    }
+
 }

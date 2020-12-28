@@ -127,10 +127,7 @@ public final class CommandLineConfigurationFactory {
                         case PHOTO_TIME -> cfg.photoTime(Long.parseLong(args[++i]));
                         case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
                         case SPEEDUP -> cfg.speedup(Double.parseDouble(args[++i]));
-                        case SPEED_UNIT -> {
-                            cfg.speedUnit(SpeedUnit.KMH);
-                            ++i;
-                        }
+                        case SPEED_UNIT -> cfg.speedUnit(SpeedUnit.parse(args[++i], SpeedUnit.KMH));
                         case TAIL_DURATION -> cfg.tailDuration(Long.parseLong(args[++i]));
                         case TAIL_COLOR -> {
                             final long lvTailColor = Long.decode(args[++i]);
