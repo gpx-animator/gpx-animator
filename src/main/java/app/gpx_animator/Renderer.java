@@ -820,7 +820,7 @@ public final class Renderer {
         g2.drawImage(image, at, null);
     }
 
-    private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor, final Color predrawnTrackColor) {
+    private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor, final Color preDrawTrackColor) {
         final Graphics2D g2 = getGraphics(bi);
 
         final long time = getTime(frame);
@@ -863,13 +863,13 @@ public final class Renderer {
                 } else {
                     for (final Entry<Long, Point2D> entry : timePointMap.subMap(toTime - backTime, true, toTime, true).entrySet()) {
                         if (prevPoint != null) {
-                            if (predrawnTrackColor == null) {
+                            if (preDrawTrackColor == null) {
                                 final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
                                 if (ratio > 0) {
                                     g2.setPaint(blendTailColor(trackConfiguration.getColor(), overrideColor, ratio));
                                 }
                             } else {
-                                g2.setColor(predrawnTrackColor);
+                                g2.setColor(preDrawTrackColor);
                             }
                             g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
                         }
