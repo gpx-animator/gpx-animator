@@ -29,6 +29,8 @@ import java.util.ResourceBundle;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {
 
+    private final List<TrackIcon> trackIconList = new ArrayList<>();
+    private final List<Boolean> mirrorTrackIconList = new ArrayList<>();
     private final List<String> inputGpxList = new ArrayList<>();
 
     private final List<String> inputIconList = new ArrayList<>();
@@ -54,8 +56,6 @@ public final class CommandLineConfigurationFactory {
         final List<String> labelList = new ArrayList<>();
         final List<Long> timeOffsetList = new ArrayList<>();
         final List<Long> forcedPointIntervalList = new ArrayList<>();
-        final List<TrackIcon> trackIconList = new ArrayList<>();
-        final List<Boolean> mirrorTrackIconList = new ArrayList<>();
 
         for (int i = 0; i < args.length; i++) {
             final String arg = args[i];
@@ -68,6 +68,8 @@ public final class CommandLineConfigurationFactory {
                 } else {
                     switch (option) {
                         case ATTRIBUTION -> cfg.attribution(args[++i]);
+                        case ATTRIBUTION_POSITION -> cfg.attributionPosition(Position.parse(args[++i]));
+                        case INFORMATION_POSITION -> cfg.informationPosition(Position.parse(args[++i]));
                         case BACKGROUND_MAP_VISIBILITY -> cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
                         case COLOR -> colorList.add(Color.decode(args[++i]));
                         case BACKGROUND_COLOR -> {
@@ -125,6 +127,10 @@ public final class CommandLineConfigurationFactory {
                         case PHOTO_TIME -> cfg.photoTime(Long.parseLong(args[++i]));
                         case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
                         case SPEEDUP -> cfg.speedup(Double.parseDouble(args[++i]));
+                        case SPEED_UNIT -> {
+                            cfg.speedUnit(SpeedUnit.KMH);
+                            ++i;
+                        }
                         case TAIL_DURATION -> cfg.tailDuration(Long.parseLong(args[++i]));
                         case TAIL_COLOR -> {
                             final long lvTailColor = Long.decode(args[++i]);
@@ -157,6 +163,9 @@ public final class CommandLineConfigurationFactory {
 
         normalizeColors();
         normalizeLineWidths();
+        normalizeTrackIcons();
+        normalizeInputIcons();
+        normalizeMirrorTrackIcons();
 
         for (int i = 0, n = inputGpxList.size(); i < n; i++) {
             final TrackConfiguration.Builder tcb = TrackConfiguration.createBuilder();
@@ -215,6 +224,47 @@ public final class CommandLineConfigurationFactory {
         }
     }
 
+    private void normalizeTrackIcons() {
+        final int size = inputGpxList.size();
+        final int size2 = trackIconList.size();
+        if (size2 == 0) {
+            for (int i = 0; i < size; i++) {
+                trackIconList.add(new TrackIcon("", ""));
+            }
+        } else if (size2 < size) {
+            for (int i = size2; i < size; i++) {
+                trackIconList.add(trackIconList.get(i - size2));
+            }
+        }
+    }
+
+    private void normalizeInputIcons() {
+        final int size = inputGpxList.size();
+        final int size2 = inputIconList.size();
+        if (size2 == 0) {
+            for (int i = 0; i < size; i++) {
+                inputIconList.add("dummy-input-icon");
+            }
+        } else if (size2 < size) {
+            for (int i = size2; i < size; i++) {
+                inputIconList.add(inputIconList.get(i - size2));
+            }
+        }
+    }
+
+    private void normalizeMirrorTrackIcons() {
+        final int size = inputGpxList.size();
+        final int size2 = mirrorTrackIconList.size();
+        if (size2 == 0) {
+            for (int i = 0; i < size; i++) {
+                mirrorTrackIconList.add(false);
+            }
+        } else if (size2 < size) {
+            for (int i = size2; i < size; i++) {
+                mirrorTrackIconList.add(mirrorTrackIconList.get(i - size2));
+            }
+        }
+    }
 
     public Configuration getConfiguration() {
         return configuration;
