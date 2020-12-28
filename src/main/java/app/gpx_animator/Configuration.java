@@ -35,6 +35,7 @@ public final class Configuration {
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
     private static final Color DEFAULT_PREDRAW_TRACK_COLOR = Color.lightGray;
+    private static final String DEFAULT_TMS_URL_TEMPLATE = "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png";
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
 
     private int margin;
@@ -46,7 +47,7 @@ public final class Configuration {
     private Integer viewportHeight;
 
     private boolean preDrawTrack;
-    private Color preDrawTrackColor = DEFAULT_PREDRAW_TRACK_COLOR;
+    private Color preDrawTrackColor;
 
     private Double speedup;
     private long tailDuration;
@@ -375,7 +376,7 @@ public final class Configuration {
         private double fps = 30.0;
         private Long totalTime;
         private float backgroundMapVisibility = 0.5f;
-        private String tmsUrlTemplate = "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png";
+        private String tmsUrlTemplate = DEFAULT_TMS_URL_TEMPLATE;
         private boolean skipIdle = true;
         private boolean preDrawTrack = false;
         private Color preDrawTrackColor = DEFAULT_PREDRAW_TRACK_COLOR;
@@ -404,7 +405,8 @@ public final class Configuration {
 
         public Configuration build() {
             return new Configuration(
-                    margin, width, height, zoom, viewportWidth, viewportHeight,
+                    margin, width, height, zoom,
+                    viewportWidth, viewportHeight,
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, flashbackColor, flashbackDuration,

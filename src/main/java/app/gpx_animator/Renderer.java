@@ -227,7 +227,11 @@ public final class Renderer {
 
         if (!rc.isCancelled1()) {
             rc.setProgress1(100, "Finished");
-            LOGGER.info("Done.");
+            if (toImages) {
+                LOGGER.info("Done. Images written to {}", frameFilePattern);
+            } else {
+                LOGGER.info("Done. Movie written to {}", cfg.getOutput());
+            }
         } else {
             LOGGER.info("Canceled.");
         }

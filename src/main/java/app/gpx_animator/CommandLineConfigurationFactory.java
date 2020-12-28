@@ -15,8 +15,6 @@
 package app.gpx_animator;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
@@ -31,7 +29,6 @@ import java.util.ResourceBundle;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommandLineConfigurationFactory.class);
     private final List<TrackIcon> trackIconList = new ArrayList<>();
     private final List<Boolean> mirrorTrackIconList = new ArrayList<>();
     private final List<String> inputGpxList = new ArrayList<>();
@@ -60,11 +57,8 @@ public final class CommandLineConfigurationFactory {
         final List<Long> timeOffsetList = new ArrayList<>();
         final List<Long> forcedPointIntervalList = new ArrayList<>();
 
-
         for (int i = 0; i < args.length; i++) {
             final String arg = args[i];
-
-            LOGGER.info("Checking option '{}'", arg);
 
             try {
                 final Option option = arg.startsWith("--") ? Option.fromName(arg.substring(2)) : null;
@@ -137,11 +131,7 @@ public final class CommandLineConfigurationFactory {
                             cfg.preDrawTrackColor(Color.decode(args[++i]));
                         }
                         case SPEEDUP -> cfg.speedup(Double.parseDouble(args[++i]));
-                        case SPEED_UNIT -> {
-                            // not yet implemented
-                            cfg.speedUnit(SpeedUnit.KMH);
-                            ++i;
-                        }
+                        case SPEED_UNIT -> cfg.speedUnit(SpeedUnit.parse(args[++i], SpeedUnit.KMH));
                         case TAIL_DURATION -> cfg.tailDuration(Long.parseLong(args[++i]));
                         case TAIL_COLOR -> {
                             final long lvTailColor = Long.decode(args[++i]);
@@ -162,10 +152,7 @@ public final class CommandLineConfigurationFactory {
                         case WAYPOINT_SIZE -> cfg.waypointSize(Double.parseDouble(args[++i]));
                         case WIDTH -> cfg.width(Integer.valueOf(args[++i]));
                         case ZOOM -> cfg.zoom(Integer.parseInt(args[++i]));
-                        default -> {
-                            LOGGER.error("Unknown option: {}", arg);
-                            throw new AssertionError();
-                        }
+                        default -> throw new AssertionError();
                     }
 
                     // TODO --configuration : args[++i];
@@ -203,8 +190,6 @@ public final class CommandLineConfigurationFactory {
         gui = args.length == 0 || forceGui;
 
         configuration = cfg.build();
-
-        LOGGER.info("configuration={}", configuration.toString());
     }
 
     @SuppressWarnings({"PMD.DoNotCallSystemExit", "DuplicateStringLiteralInspection"}) // Exit after printing command line help message
