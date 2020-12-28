@@ -32,6 +32,8 @@ public enum Option {
     WIDTH("width"),
     HEIGHT("height"),
     ZOOM("zoom"),
+    VIEWPORT_WIDTH("viewport-width"),
+    VIEWPORT_HEIGHT("viewport-height"),
     FONT("font"),
     TMS_URL_TEMPLATE("tms-url-template"),
     ATTRIBUTION("attribution"),

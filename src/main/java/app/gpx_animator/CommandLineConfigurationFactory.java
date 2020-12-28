@@ -143,6 +143,8 @@ public final class CommandLineConfigurationFactory {
                             final String s3 = args[++i].trim();
                             cfg.totalTime(s3.isEmpty() ? null : Long.valueOf(s3)); // NOPMD -- null = not set
                         }
+                        case VIEWPORT_WIDTH -> cfg.viewportWidth(Integer.valueOf(args[++i]));
+                        case VIEWPORT_HEIGHT -> cfg.viewportHeight(Integer.valueOf(args[++i]));
                         case WAYPOINT_SIZE -> cfg.waypointSize(Double.parseDouble(args[++i]));
                         case WIDTH -> cfg.width(Integer.valueOf(args[++i]));
                         case ZOOM -> cfg.zoom(Integer.parseInt(args[++i]));
