@@ -74,6 +74,8 @@ public final class CommandLineConfigurationFactory {
                 } else {
                     switch (option) {
                         case ATTRIBUTION -> cfg.attribution(args[++i]);
+                        case ATTRIBUTION_POSITION -> cfg.attributionPosition(Position.parse(args[++i]));
+                        case INFORMATION_POSITION -> cfg.informationPosition(Position.parse(args[++i]));
                         case BACKGROUND_MAP_VISIBILITY -> cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
                         case COLOR -> colorList.add(Color.decode(args[++i]));
                         case BACKGROUND_COLOR -> {
