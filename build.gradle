@@ -67,8 +67,17 @@ task installGitHooks(type: Copy) {
     fileMode 0755
 }
 
-test {
-    useJUnitPlatform()
+def test = tasks.named("test") {
+    useJUnitPlatform {
+        excludeTags "mapsTest"
+    }
+}
+
+def mapsTest = tasks.register("mapsTest", Test) {
+    useJUnitPlatform {
+        includeTags "mapsTest"
+    }
+    shouldRunAfter test
 }
 
 shadowJar {

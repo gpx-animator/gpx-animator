@@ -3,6 +3,7 @@ package app.gpx_animator;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("mapsTest")
 public class MapsTest {
 
     @NonNls
