@@ -34,6 +34,7 @@ import java.util.ResourceBundle;
 public final class Configuration {
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
+    private static final Color DEFAULT_PREDRAW_TRACK_COLOR = Color.lightGray;
     private static final String DEFAULT_TMS_URL_TEMPLATE = "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png";
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
 
@@ -44,6 +45,9 @@ public final class Configuration {
 
     private Integer viewportWidth;
     private Integer viewportHeight;
+
+    private boolean preDrawTrack;
+    private Color preDrawTrackColor;
 
     private Double speedup;
     private long tailDuration;
@@ -110,6 +114,7 @@ public final class Configuration {
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
+            final boolean preDrawTrack, final Color preDrawTrackColor,
             final Long keepLastFrame, final File output, final String attribution, final SpeedUnit speedUnit,
             final Font font, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
@@ -131,6 +136,8 @@ public final class Configuration {
         this.backgroundMapVisibility = backgroundMapVisibility;
         this.tmsUrlTemplate = tmsUrlTemplate;
         this.skipIdle = skipIdle;
+        this.preDrawTrack = preDrawTrack;
+        this.preDrawTrackColor = preDrawTrackColor;
         this.backgroundColor = backgroundColor;
         this.flashbackColor = flashbackColor;
         this.flashbackDuration = flashbackDuration;
@@ -217,6 +224,14 @@ public final class Configuration {
 
     public boolean isSkipIdle() {
         return skipIdle;
+    }
+
+    public boolean isPreDrawTrack() {
+        return preDrawTrack;
+    }
+
+    public Color getPreDrawTrackColor() {
+        return preDrawTrackColor;
     }
 
     public Color getBackgroundColor() {
@@ -319,6 +334,8 @@ public final class Configuration {
                 + ", backgroundMapVisibility=" + backgroundMapVisibility
                 + ", tmsUrlTemplate=" + tmsUrlTemplate
                 + ", skipIdle=" + skipIdle
+                + ", preDrawTrack=" + preDrawTrack
+                + ", preDrawTrackColor=" + preDrawTrackColor
                 + ", backgroundColor=" + backgroundColor
                 + ", flashbackColor=" + flashbackColor
                 + ", flashbackDuration=" + flashbackDuration
@@ -361,6 +378,8 @@ public final class Configuration {
         private float backgroundMapVisibility = 0.5f;
         private String tmsUrlTemplate = DEFAULT_TMS_URL_TEMPLATE;
         private boolean skipIdle = true;
+        private boolean preDrawTrack = false;
+        private Color preDrawTrackColor = DEFAULT_PREDRAW_TRACK_COLOR;
         private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
         private Color flashbackColor = Color.white;
         private Long flashbackDuration = 250L;
@@ -391,6 +410,7 @@ public final class Configuration {
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, flashbackColor, flashbackDuration,
+                    preDrawTrack, preDrawTrackColor,
                     keepLastFrame, output, attribution, speedUnit,
                     font, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
@@ -473,6 +493,16 @@ public final class Configuration {
 
         public Builder backgroundColor(final Color backgroundColor) {
             this.backgroundColor = backgroundColor;
+            return this;
+        }
+
+        public Builder preDrawTrack(final boolean preDrawTrack) {
+            this.preDrawTrack = preDrawTrack;
+            return this;
+        }
+
+        public Builder preDrawTrackColor(final Color preDrawTrackColor) {
+            this.preDrawTrackColor = preDrawTrackColor;
             return this;
         }
 
