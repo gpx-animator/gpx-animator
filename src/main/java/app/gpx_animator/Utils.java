@@ -33,8 +33,8 @@ public final class Utils {
 
     // copied from https://stackoverflow.com/questions/3514158/how-do-you-clone-a-bufferedimage
     public static BufferedImage deepCopy(final BufferedImage bi) {
-        BufferedImage b = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
-        Graphics2D g = (Graphics2D) b.getGraphics();
+        final BufferedImage b = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
+        final Graphics2D g = (Graphics2D) b.getGraphics();
         g.drawImage(bi, 0, 0, null);
         g.dispose();
         return b;
