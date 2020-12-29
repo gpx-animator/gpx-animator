@@ -16,6 +16,7 @@ package app.gpx_animator;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -30,11 +31,13 @@ public final class Utils {
         throw new InstantiationException("Utility classes can't be instantiated!");
     }
 
+    // copied from https://stackoverflow.com/questions/3514158/how-do-you-clone-a-bufferedimage
     public static BufferedImage deepCopy(final BufferedImage bi) {
-        final ColorModel cm = bi.getColorModel();
-        final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        final WritableRaster raster = bi.copyData(null);
-        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+        BufferedImage b = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
+        Graphics2D g = (Graphics2D) b.getGraphics();
+        g.drawImage(bi, 0, 0, null);
+        g.dispose();
+        return b;
     }
 
     public static BufferedImage deepCopy(final BufferedImage bi, final Integer x, final Integer y, final Integer width, final Integer height) {
