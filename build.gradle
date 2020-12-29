@@ -69,13 +69,20 @@ task installGitHooks(type: Copy) {
 
 def test = tasks.named("test") {
     useJUnitPlatform {
-        excludeTags "mapsTest"
+        excludeTags "mapsTest", "it"
     }
 }
 
 def mapsTest = tasks.register("mapsTest", Test) {
     useJUnitPlatform {
         includeTags "mapsTest"
+    }
+    shouldRunAfter test
+}
+
+def integration = tasks.register("integration", Test) {
+    useJUnitPlatform {
+        includeTags "it"
     }
     shouldRunAfter test
 }

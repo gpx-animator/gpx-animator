@@ -34,37 +34,41 @@ public final class Main {
 
     public static void main(final String[] args) {
         try {
-            final CommandLineConfigurationFactory cf = new CommandLineConfigurationFactory(args);
-            final Configuration configuration = cf.getConfiguration();
-
-            new Thread(TileCache::ageCache).start();
-
-            if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
-                EventQueue.invokeLater(() -> {
-                    try {
-                        final MainFrame frame = new MainFrame();
-                        frame.setVisible(true);
-                        frame.setConfiguration(configuration);
-                    } catch (final Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            } else {
-                new Renderer(configuration).render(new RenderingContext() {
-                    @Override
-                    public void setProgress1(final int pct, final String message) {
-                        LOGGER.info("{}% {}", pct, message);
-                    }
-
-                    @Override
-                    public boolean isCancelled1() {
-                        return false;
-                    }
-                });
-            }
-        } catch (final UserException e) {
+            start(args);
+        } catch (final Exception e) {
             LOGGER.error("Very bad, exception caught in main method!", e);
             System.exit(1); // NOPMD -- We can't recover here
+        }
+    }
+
+    public static void start(final String[] args) throws Exception {
+        final CommandLineConfigurationFactory cf = new CommandLineConfigurationFactory(args);
+        final Configuration configuration = cf.getConfiguration();
+
+        new Thread(TileCache::ageCache).start();
+
+        if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
+            EventQueue.invokeLater(() -> {
+                try {
+                    final MainFrame frame = new MainFrame();
+                    frame.setVisible(true);
+                    frame.setConfiguration(configuration);
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            new Renderer(configuration).render(new RenderingContext() {
+                @Override
+                public void setProgress1(final int pct, final String message) {
+                    LOGGER.info("{}% {}", pct, message);
+                }
+
+                @Override
+                public boolean isCancelled1() {
+                    return false;
+                }
+            });
         }
     }
 
