@@ -620,43 +620,48 @@ public final class Renderer {
 
         switch (cfg.getInformationPosition()) {
             case TOP_LEFT -> {
-                printText(graphics, dateString, cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight() * 2);
-                printText(graphics, latLongString, cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
-                printText(graphics, speedString, cfg.getMargin(), cfg.getMargin());
+                printText(graphics, dateString, cfg.getInformationMargin(), cfg.getInformationMargin() + fontMetrics.getHeight() * 2);
+                printText(graphics, latLongString, cfg.getInformationMargin(), cfg.getInformationMargin() + fontMetrics.getHeight());
+                printText(graphics, speedString, cfg.getInformationMargin(), cfg.getInformationMargin());
             }
             case TOP_CENTER -> {
                 printText(graphics, dateString, (float) (bi.getWidth() - fontMetrics.stringWidth(dateString)) / 2,
-                        cfg.getMargin() + fontMetrics.getHeight() * 2);
+                        cfg.getInformationMargin() + fontMetrics.getHeight() * 2);
                 printText(graphics, latLongString, (float) (bi.getWidth() - fontMetrics.stringWidth(latLongString)) / 2,
-                        cfg.getMargin() + fontMetrics.getHeight());
-                printText(graphics, speedString, (float) (bi.getWidth() - fontMetrics.stringWidth(speedString)) / 2, cfg.getMargin());
+                        cfg.getInformationMargin() + fontMetrics.getHeight());
+                printText(graphics, speedString, (float) (bi.getWidth() - fontMetrics.stringWidth(speedString)) / 2, cfg.getInformationMargin());
             }
             case TOP_RIGHT -> {
-                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
-                        cfg.getMargin() + fontMetrics.getHeight() * 2);
-                printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
-                        cfg.getMargin() + fontMetrics.getHeight());
-                printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(), cfg.getMargin());
+                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getInformationMargin(),
+                        cfg.getInformationMargin() + fontMetrics.getHeight() * 2);
+                printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getInformationMargin(),
+                        cfg.getInformationMargin() + fontMetrics.getHeight());
+                printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getInformationMargin(),
+                        cfg.getInformationMargin());
             }
             case BOTTOM_LEFT -> {
-                printText(graphics, dateString, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
-                printText(graphics, latLongString, cfg.getMargin(), bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
-                printText(graphics, speedString, cfg.getMargin(), bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+                printText(graphics, dateString, cfg.getInformationMargin(),
+                        bi.getHeight() - cfg.getInformationMargin());
+                printText(graphics, latLongString, cfg.getInformationMargin(),
+                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight());
+                printText(graphics, speedString, cfg.getInformationMargin(),
+                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight() * 2);
             }
             case BOTTOM_CENTER -> {
-                printText(graphics, dateString, (float) (bi.getWidth() - fontMetrics.stringWidth(dateString)) / 2, bi.getHeight() - cfg.getMargin());
+                printText(graphics, dateString, (float) (bi.getWidth() - fontMetrics.stringWidth(dateString)) / 2,
+                        bi.getHeight() - cfg.getInformationMargin());
                 printText(graphics, latLongString, (float) (bi.getWidth() - fontMetrics.stringWidth(latLongString)) / 2,
-                        bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
+                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight());
                 printText(graphics, speedString, (float) (bi.getWidth() - fontMetrics.stringWidth(speedString)) / 2,
-                        bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight() * 2);
             }
             case BOTTOM_RIGHT -> {
-                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getMargin(),
-                        bi.getHeight() - cfg.getMargin());
-                printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getMargin(),
-                        bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight());
-                printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getMargin(),
-                        bi.getHeight() - cfg.getMargin() - fontMetrics.getHeight() * 2);
+                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getInformationMargin(),
+                        bi.getHeight() - cfg.getInformationMargin());
+                printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getInformationMargin(),
+                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight());
+                printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getInformationMargin(),
+                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight() * 2);
             }
             default -> throw new UserException("Invalid information position!");
         }
@@ -685,51 +690,55 @@ public final class Renderer {
             final String[] lines = attribution.trim().split("\n");
             switch (cfg.getAttributionPosition()) {
                 case TOP_LEFT -> {
-                    printText(getGraphics(bi), lines[0], cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
-                    printText(getGraphics(bi), lines[1], cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight() * 2);
+                    printText(getGraphics(bi), lines[0], cfg.getAttributionMargin(), cfg.getAttributionMargin() + fontMetrics.getHeight());
+                    printText(getGraphics(bi), lines[1], cfg.getAttributionMargin(), cfg.getAttributionMargin() + fontMetrics.getHeight() * 2);
                 }
                 case TOP_CENTER -> {
                     printText(getGraphics(bi), lines[0], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[0])) / 2,
-                            cfg.getMargin() + fontMetrics.getHeight());
+                            cfg.getAttributionMargin() + fontMetrics.getHeight());
                     printText(getGraphics(bi), lines[1], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[1])) / 2,
-                            cfg.getMargin() + fontMetrics.getHeight() * 2);
+                            cfg.getAttributionMargin() + fontMetrics.getHeight() * 2);
                 }
                 case TOP_RIGHT -> {
-                    printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getMargin(),
-                            cfg.getMargin() + fontMetrics.getHeight());
-                    printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getMargin(),
-                            cfg.getMargin() + fontMetrics.getHeight() * 2);
+                    printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getAttributionMargin(),
+                            cfg.getAttributionMargin() + fontMetrics.getHeight());
+                    printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getAttributionMargin(),
+                            cfg.getAttributionMargin() + fontMetrics.getHeight() * 2);
                 }
                 case BOTTOM_LEFT -> {
-                    printText(getGraphics(bi), lines[0], cfg.getMargin(), bi.getHeight() - cfg.getMargin());
-                    printText(getGraphics(bi), lines[1], cfg.getMargin(), bi.getHeight() - cfg.getMargin() * 2);
+                    printText(getGraphics(bi), lines[0], cfg.getAttributionMargin(), bi.getHeight() - cfg.getAttributionMargin());
+                    printText(getGraphics(bi), lines[1], cfg.getAttributionMargin(), bi.getHeight() - cfg.getAttributionMargin() * 2);
                 }
                 case BOTTOM_CENTER -> {
                     printText(getGraphics(bi), lines[0], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[0])) / 2,
-                            bi.getHeight() - cfg.getMargin());
+                            bi.getHeight() - cfg.getAttributionMargin());
                     printText(getGraphics(bi), lines[1], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[1])) / 2,
-                            bi.getHeight() - cfg.getMargin() * 2);
+                            bi.getHeight() - cfg.getAttributionMargin() * 2);
                 }
                 case BOTTOM_RIGHT -> {
-                    printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getMargin(),
-                            bi.getHeight() - cfg.getMargin());
-                    printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getMargin(),
-                            bi.getHeight() - cfg.getMargin() * 2);
+                    printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getAttributionMargin(),
+                            bi.getHeight() - cfg.getAttributionMargin());
+                    printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getAttributionMargin(),
+                            bi.getHeight() - cfg.getAttributionMargin() * 2);
                 }
                 default -> throw new UserException("Invalid attribution position!");
             }
         } else {
             switch (cfg.getAttributionPosition()) {
-                case TOP_LEFT -> printText(getGraphics(bi), attribution, cfg.getMargin(), cfg.getMargin() + fontMetrics.getHeight());
+                case TOP_LEFT -> printText(getGraphics(bi), attribution, cfg.getAttributionMargin(),
+                        cfg.getAttributionMargin() + fontMetrics.getHeight());
                 case TOP_CENTER -> printText(getGraphics(bi), attribution, (float) (bi.getWidth() - fontMetrics.stringWidth(attribution)) / 2,
-                        cfg.getMargin() + fontMetrics.getHeight());
-                case TOP_RIGHT -> printText(getGraphics(bi), attribution, bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getMargin(),
-                        cfg.getMargin() + fontMetrics.getHeight());
-                case BOTTOM_LEFT -> printText(getGraphics(bi), attribution, cfg.getMargin(), bi.getHeight() - cfg.getMargin());
+                        cfg.getAttributionMargin() + fontMetrics.getHeight());
+                case TOP_RIGHT -> printText(getGraphics(bi), attribution,
+                        bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getAttributionMargin(),
+                        cfg.getAttributionMargin() + fontMetrics.getHeight());
+                case BOTTOM_LEFT -> printText(getGraphics(bi), attribution,
+                        cfg.getAttributionMargin(), bi.getHeight() - cfg.getAttributionMargin());
                 case BOTTOM_CENTER -> printText(getGraphics(bi), attribution, (float) (bi.getWidth() - fontMetrics.stringWidth(attribution)) / 2,
-                        bi.getHeight() - cfg.getMargin());
-                case BOTTOM_RIGHT -> printText(getGraphics(bi), attribution, bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getMargin(),
-                        bi.getHeight() - cfg.getMargin());
+                        bi.getHeight() - cfg.getAttributionMargin());
+                case BOTTOM_RIGHT -> printText(getGraphics(bi), attribution,
+                        bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getAttributionMargin(),
+                        bi.getHeight() - cfg.getAttributionMargin());
                 default -> throw new UserException("Invalid attribution position!");
             }
         }

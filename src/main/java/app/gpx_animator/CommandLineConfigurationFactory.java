@@ -69,7 +69,9 @@ public final class CommandLineConfigurationFactory {
                     switch (option) {
                         case ATTRIBUTION -> cfg.attribution(args[++i]);
                         case ATTRIBUTION_POSITION -> cfg.attributionPosition(Position.parse(args[++i]));
+                        case ATTRIBUTION_MARGIN -> cfg.attributionMargin(Integer.parseInt(args[++i]));
                         case INFORMATION_POSITION -> cfg.informationPosition(Position.parse(args[++i]));
+                        case INFORMATION_MARGIN -> cfg.informationMargin(Integer.parseInt(args[++i]));
                         case BACKGROUND_MAP_VISIBILITY -> cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
                         case COLOR -> colorList.add(Color.decode(args[++i]));
                         case BACKGROUND_COLOR -> {
@@ -96,7 +98,7 @@ public final class CommandLineConfigurationFactory {
                             }
                             forceGui = true;
                         }
-                        case HEIGHT -> cfg.height(Integer.valueOf(args[++i]));
+                        case HEIGHT -> cfg.height(Integer.parseInt(args[++i]));
                         case HELP -> {
                             try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
                                 pw.println(Constants.APPNAME_VERSION);
@@ -147,10 +149,10 @@ public final class CommandLineConfigurationFactory {
                             final String s3 = args[++i].trim();
                             cfg.totalTime(s3.isEmpty() ? null : Long.valueOf(s3)); // NOPMD -- null = not set
                         }
-                        case VIEWPORT_WIDTH -> cfg.viewportWidth(Integer.valueOf(args[++i]));
-                        case VIEWPORT_HEIGHT -> cfg.viewportHeight(Integer.valueOf(args[++i]));
+                        case VIEWPORT_WIDTH -> cfg.viewportWidth(Integer.parseInt(args[++i]));
+                        case VIEWPORT_HEIGHT -> cfg.viewportHeight(Integer.parseInt(args[++i]));
                         case WAYPOINT_SIZE -> cfg.waypointSize(Double.parseDouble(args[++i]));
-                        case WIDTH -> cfg.width(Integer.valueOf(args[++i]));
+                        case WIDTH -> cfg.width(Integer.parseInt(args[++i]));
                         case ZOOM -> cfg.zoom(Integer.parseInt(args[++i]));
                         default -> throw new AssertionError();
                     }
