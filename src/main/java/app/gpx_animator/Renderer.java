@@ -17,6 +17,11 @@ package app.gpx_animator;
 import app.gpx_animator.frameWriter.FileFrameWriter;
 import app.gpx_animator.frameWriter.FrameWriter;
 import app.gpx_animator.frameWriter.VideoFrameWriter;
+
+import java.time.LocalDateTime;
+
+import java.time.temporal.ChronoUnit;
+
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +107,8 @@ public final class Renderer {
 
     @SuppressWarnings("checkstyle:InnerAssignment") // Checkstyle 8.37 can't handle the enhanced switch properly
     public void render(final RenderingContext rc) throws UserException {
+        final LocalDateTime renderStartTime = LocalDateTime.now();
+
         final List<Long[]> spanList = new ArrayList<>();
         final TreeMap<Long, Point2D> wpMap = new TreeMap<>();
         parseGPX(spanList, wpMap);
@@ -225,15 +232,18 @@ public final class Renderer {
         keepLastFrame(rc, frameWriter, bi, frames, wpMap);
         frameWriter.close();
 
+        final LocalDateTime renderFinishTime = LocalDateTime.now();
+        final long runtimeSeconds = ChronoUnit.SECONDS.between(renderStartTime, renderFinishTime);
+
         if (!rc.isCancelled1()) {
-            rc.setProgress1(100, "Finished");
+            rc.setProgress1(100, "Finished in %d seconds".formatted(runtimeSeconds)); // TODO i18n
             if (toImages) {
-                LOGGER.info("Done. Images written to {}", frameFilePattern);
+                LOGGER.info("Done in {} seconds. Images written to {}", runtimeSeconds, frameFilePattern);
             } else {
-                LOGGER.info("Done. Movie written to {}", cfg.getOutput());
+                LOGGER.info("Done in {} seconds. Movie written to {}", runtimeSeconds, cfg.getOutput());
             }
         } else {
-            LOGGER.info("Canceled.");
+            LOGGER.info("Canceled after {} seconds.", runtimeSeconds);
         }
     }
 
