@@ -36,6 +36,7 @@ public final class Configuration {
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
     private static final Color DEFAULT_PREDRAW_TRACK_COLOR = Color.lightGray;
     private static final String DEFAULT_TMS_URL_TEMPLATE = "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png";
+    private static final int DEFAULT_MARGIN = 20;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
 
     private int margin;
@@ -74,7 +75,9 @@ public final class Configuration {
     private File output;
     private String attribution;
     private Position attributionPosition = Position.BOTTOM_LEFT;
+    private int attributionMargin;
     private Position informationPosition = Position.BOTTOM_RIGHT;
+    private int informationMargin;
 
     @XmlJavaTypeAdapter(FontXmlAdapter.class)
     private Font font;
@@ -119,6 +122,7 @@ public final class Configuration {
             final Font font, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final Position logoPosition, final Position attributionPosition, final Position informationPosition,
+            final int attributionMargin, final int informationMargin,
             final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final List<TrackConfiguration> trackConfigurationList) {
 
@@ -155,7 +159,9 @@ public final class Configuration {
         this.logo = validateLogo(logo);
         this.logoPosition = logoPosition;
         this.attributionPosition = attributionPosition;
+        this.attributionMargin = attributionMargin;
         this.informationPosition = informationPosition;
+        this.informationMargin = informationMargin;
         this.photoDirectory = photoDirectory;
         this.photoTime = photoTime;
         this.photoAnimationDuration = photoAnimationDuration;
@@ -298,8 +304,16 @@ public final class Configuration {
         return attributionPosition;
     }
 
+    public int getAttributionMargin() {
+        return attributionMargin;
+    }
+
     public Position getInformationPosition() {
         return informationPosition;
+    }
+
+    public int getInformationMargin() {
+        return informationMargin;
     }
 
     public String getPhotoDirectory() {
@@ -347,7 +361,9 @@ public final class Configuration {
                 + ", logo=" + logo
                 + ", logoPosition=" + logoPosition
                 + ", attributionPosition=" + attributionPosition
+                + ", attributionMargin=" + attributionMargin
                 + ", informationPosition=" + informationPosition
+                + ", informationMargin=" + informationMargin
                 + ", photoDirectory=" + photoDirectory
                 + ", photoTime=" + photoTime
                 + ", photoAnimationDuration=" + photoAnimationDuration
@@ -364,7 +380,7 @@ public final class Configuration {
     public static final class Builder {
         private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
         private final List<TrackConfiguration> trackConfigurationList = new ArrayList<>();
-        private int margin = 20;
+        private int margin = DEFAULT_MARGIN;
         private Integer height;
         private Integer width;
         private Integer zoom;
@@ -396,7 +412,9 @@ public final class Configuration {
         private File logo;
         private Position logoPosition = Position.TOP_LEFT;
         private Position attributionPosition = Position.BOTTOM_LEFT;
+        private int attributionMargin = DEFAULT_MARGIN;
         private Position informationPosition = Position.BOTTOM_RIGHT;
+        private int informationMargin = DEFAULT_MARGIN;
         private String photoDirectory;
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
@@ -415,6 +433,7 @@ public final class Configuration {
                     font, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, logoPosition, attributionPosition, informationPosition,
+                    attributionMargin, informationMargin,
                     photoDirectory, photoTime, photoAnimationDuration,
                     Collections.unmodifiableList(trackConfigurationList)
             );
@@ -581,8 +600,18 @@ public final class Configuration {
             return this;
         }
 
+        public Builder attributionMargin(final int attributionMargin) {
+            this.attributionMargin = attributionMargin;
+            return this;
+        }
+
         public Builder informationPosition(final Position informationPosition) {
             this.informationPosition = informationPosition;
+            return this;
+        }
+
+        public Builder informationMargin(final int informationMargin) {
+            this.informationMargin = informationMargin;
             return this;
         }
 
