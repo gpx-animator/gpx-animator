@@ -31,8 +31,8 @@ $RECYCLE.BIN
 Thumbs.db
 *.lnk
 
-# Default animation output
-video.mp4
+# Video animation output
+*.mp4
 
 # Files copied at build time
 /src/main/resources/CHANGELOG.md
