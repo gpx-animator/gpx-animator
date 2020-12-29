@@ -33,6 +33,7 @@ public final class Help {
 
         w.writeOptionHelp(Option.ATTRIBUTION, "text", false, cfg.getAttribution()); //NON-NLS
         w.writeOptionHelp(Option.ATTRIBUTION_POSITION, "position", false, cfg.getAttributionPosition()); //NON-NLS
+        w.writeOptionHelp(Option.ATTRIBUTION_MARGIN, "attribution-margin", false, cfg.getAttributionMargin()); //NON-NLS
         w.writeOptionHelp(Option.BACKGROUND_MAP_VISIBILITY, "visibility", false, cfg.getBackgroundMapVisibility()); //NON-NLS
         w.writeOptionHelp(Option.COLOR, "color", true, resourceBundle.getString("help.option.color.default")); //NON-NLS
         w.writeOptionHelp(Option.FLASHBACK_COLOR, "ARGBcolor", false, "opaque white - #ffffffff"); // TODO cfg.getFlashbackColor()  NON-NLS
@@ -45,6 +46,7 @@ public final class Help {
         w.writeOptionHelp(Option.HELP, null, false, null);
         w.writeOptionHelp(Option.INPUT, "input", true, tc.getInputGpx()); //NON-NLS
         w.writeOptionHelp(Option.INFORMATION_POSITION, "position", false, cfg.getInformationPosition());
+        w.writeOptionHelp(Option.INFORMATION_MARGIN, "information-margin", false, cfg.getInformationMargin()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON, "trackIcon", true, tc.getTrackIcon()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON_FILE, "trackIconFile", true, tc.getInputIcon()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON_MIRROR, "mirrorTrackIcon", true, tc.isTrackIconMirrored()); //NON-NLS
