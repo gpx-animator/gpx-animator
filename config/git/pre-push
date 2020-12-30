@@ -7,7 +7,7 @@
 git stash -q --keep-index
 
 # run the checks and tests with the gradle wrapper
-./gradlew check test integration
+./gradlew check test it
 
 # store the last exit code in a variable
 RESULT=$?
