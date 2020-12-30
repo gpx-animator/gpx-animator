@@ -886,15 +886,21 @@ public final class Renderer {
                 } else {
                     for (final Entry<Long, Point2D> entry : timePointMap.subMap(toTime - backTime, true, toTime, true).entrySet()) {
                         if (prevPoint != null) {
+                            boolean drawSegment = false;
                             if (preDrawTrackColor == null) {
                                 final float ratio = (backTime - time + entry.getKey()) * 1f / backTime;
                                 if (ratio > 0) {
                                     g2.setPaint(blendTailColor(trackConfiguration.getColor(), overrideColor, ratio));
+                                    drawSegment = true;
                                 }
                             } else {
                                 g2.setColor(preDrawTrackColor);
+                                drawSegment = true;
                             }
-                            g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
+
+                            if (drawSegment) {
+                                g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
+                            }
                         }
                         prevPoint = entry.getValue();
                     }
