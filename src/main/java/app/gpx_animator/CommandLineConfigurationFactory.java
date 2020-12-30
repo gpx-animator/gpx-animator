@@ -151,6 +151,7 @@ public final class CommandLineConfigurationFactory {
                         }
                         case VIEWPORT_WIDTH -> cfg.viewportWidth(Integer.parseInt(args[++i]));
                         case VIEWPORT_HEIGHT -> cfg.viewportHeight(Integer.parseInt(args[++i]));
+                        case VIEWPORT_INERTIA -> cfg.viewportInertia(Integer.parseInt(args[++i]));
                         case WAYPOINT_SIZE -> cfg.waypointSize(Double.parseDouble(args[++i]));
                         case WIDTH -> cfg.width(Integer.parseInt(args[++i]));
                         case ZOOM -> cfg.zoom(Integer.parseInt(args[++i]));

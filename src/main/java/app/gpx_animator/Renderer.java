@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
@@ -82,10 +83,16 @@ public final class Renderer {
     private double minY = Double.POSITIVE_INFINITY;
     private double maxY = Double.NEGATIVE_INFINITY;
 
+    // to implement moving map smoothing
+    private LinkedList<Point2D> recentMarkers;
+    private double recentMarkersXSum = 0.0;
+    private double recentMarkersYSum = 0.0;
+
     private double speedup;
 
     public Renderer(final Configuration cfg) {
         this.cfg = cfg;
+        this.recentMarkers = new LinkedList<Point2D>();
     }
 
     private static double lonToX(final Double maxLon) {
@@ -254,8 +261,21 @@ public final class Renderer {
             return bi;
         }
 
-        double x = marker.getX() - viewportWidth / 2.0;
-        double y = marker.getY() - viewportHeight / 2.0;
+        // track most recent markers while updating the running average x and y coords
+        this.recentMarkers.add(marker);
+        recentMarkersXSum += (double) marker.getX();
+        recentMarkersYSum += (double) marker.getY();
+        while (this.recentMarkers.size() > cfg.getViewPortInertia()) {
+            final Point2D m = this.recentMarkers.removeFirst();
+            recentMarkersXSum -= (double) m.getX();
+            recentMarkersYSum -= (double) m.getY();
+        }
+        final double xAvg = recentMarkersXSum / (double) this.recentMarkers.size();
+        final double yAvg = recentMarkersYSum / (double) this.recentMarkers.size();
+
+        // top-left (x,y) coords of viewport with boundaries protected
+        double x = xAvg - (double) viewportWidth / 2.0;
+        double y = yAvg - (double) viewportHeight / 2.0;
         if (x < 0) {
             x = 0;
         } else if ((x + viewportWidth) > realWidth) {

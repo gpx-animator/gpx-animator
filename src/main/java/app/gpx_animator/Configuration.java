@@ -37,6 +37,7 @@ public final class Configuration {
     private static final Color DEFAULT_PREDRAW_TRACK_COLOR = Color.lightGray;
     private static final String DEFAULT_TMS_URL_TEMPLATE = "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png";
     private static final int DEFAULT_MARGIN = 20;
+    private static final int DEFAULT_VIEWPORT_INERTIA = 50;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
 
     private int margin;
@@ -46,6 +47,7 @@ public final class Configuration {
 
     private Integer viewportWidth;
     private Integer viewportHeight;
+    private Integer viewportInertia = DEFAULT_VIEWPORT_INERTIA;
 
     private boolean preDrawTrack;
     private Color preDrawTrackColor;
@@ -113,7 +115,7 @@ public final class Configuration {
     @SuppressWarnings("checkstyle:ParameterNumber")
     private Configuration(
             final int margin, final Integer width, final Integer height, final Integer zoom,
-            final Integer viewportWidth, final Integer viewportHeight,
+            final Integer viewportWidth, final Integer viewportHeight, final Integer viewportInertia,
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
@@ -132,6 +134,7 @@ public final class Configuration {
         this.zoom = zoom;
         this.viewportWidth = viewportWidth;
         this.viewportHeight = viewportHeight;
+        this.viewportInertia = viewportInertia;
         this.speedup = speedup;
         this.tailDuration = tailDuration;
         this.tailColor = tailColor;
@@ -190,6 +193,10 @@ public final class Configuration {
 
     public Integer getViewPortHeight() {
         return viewportHeight;
+    }
+
+    public Integer getViewPortInertia() {
+        return viewportInertia;
     }
 
     public Integer getZoom() {
@@ -341,6 +348,7 @@ public final class Configuration {
                 + ", zoom=" + zoom
                 + ", viewportWidth=" + viewportWidth
                 + ", viewportHeight=" + viewportHeight
+                + ", viewportInertia=" + viewportInertia
                 + ", speedup=" + speedup
                 + ", tailDuration=" + tailDuration
                 + ", tailColor=" + tailColor
@@ -386,6 +394,7 @@ public final class Configuration {
         private Integer zoom;
         private Integer viewportHeight;
         private Integer viewportWidth;
+        private Integer viewportInertia = DEFAULT_VIEWPORT_INERTIA;
         private Double speedup = 1000.0;
         private long tailDuration = 3600000;
         private Color tailColor = Color.BLACK;
@@ -424,7 +433,7 @@ public final class Configuration {
         public Configuration build() {
             return new Configuration(
                     margin, width, height, zoom,
-                    viewportWidth, viewportHeight,
+                    viewportWidth, viewportHeight, viewportInertia,
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, flashbackColor, flashbackDuration,
@@ -462,6 +471,11 @@ public final class Configuration {
 
         public Builder viewportWidth(final Integer viewportWidth) {
             this.viewportWidth = viewportWidth;
+            return this;
+        }
+
+        public Builder viewportInertia(final Integer viewportInertia) {
+            this.viewportInertia = viewportInertia;
             return this;
         }
 
