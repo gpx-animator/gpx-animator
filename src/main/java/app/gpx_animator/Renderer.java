@@ -261,10 +261,17 @@ public final class Renderer {
             return bi;
         }
 
-        // track most recent markers while updating the running average x and y coords
-        this.recentMarkers.add(marker);
-        recentMarkersXSum += (double) marker.getX();
-        recentMarkersYSum += (double) marker.getY();
+        // Add most recent markers to a queue (while updating a running average
+        // of x and y coordinates). Note that this loop almost always adds just
+        // 1 element to the end of the queue, except on the first invocation, in
+        // which case it fills up the entire queue with just the first marker.
+        // This prevents jitter in the beginning of the movie
+        while (this.recentMarkers.size() < (cfg.getViewPortInertia() + 1)) {
+            this.recentMarkers.add(marker);
+            recentMarkersXSum += (double) marker.getX();
+            recentMarkersYSum += (double) marker.getY();
+        }
+
         while (this.recentMarkers.size() > cfg.getViewPortInertia()) {
             final Point2D m = this.recentMarkers.removeFirst();
             recentMarkersXSum -= (double) m.getX();
