@@ -7,8 +7,6 @@ Release date: work in progress 🚧
 * Adding multiple GPX files at once
 * Adding an animation to smoothly fade photos in and out
 * Providing alternative speed units (km/h, mph, min/km, min/mi, knots...)
-* Adding support for moving map via --viewport-\*
-* Adding support for pre-drawing a track via --predraw-track
 * New error dialog with additional internal information for better error reports
 * New and clear error message on missing track data in GPX file
 * Fixing `NullPointerException` when starting GPX Animator the first time
@@ -20,7 +18,6 @@ Release date: work in progress 🚧
 * Adding support for choosing an external PNG file as a track icon
 * Track icons can now be mirrored to match the general direction
 * Adding font selection for the text in the animation
-* Adding support for margins specific to information and attribution blocks
 
 ## Version 1.5.2
 
