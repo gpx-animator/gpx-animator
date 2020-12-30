@@ -74,6 +74,7 @@ public final class Help {
         w.writeOptionHelp(Option.SPEED_UNIT, "SPEED", false, cfg.getSpeedUnit()); //NON-NLS
         w.writeOptionHelp(Option.VIEWPORT_WIDTH, "viewport-width", false, cfg.getViewPortWidth()); //NON-NLS
         w.writeOptionHelp(Option.VIEWPORT_HEIGHT, "viewport-height", false, cfg.getViewPortHeight()); //NON-NLS
+        w.writeOptionHelp(Option.VIEWPORT_INERTIA, "viewport-inertia", false, cfg.getViewPortInertia()); //NON-NLS
         w.writeOptionHelp(Option.WAYPOINT_SIZE, "size", false, cfg.getWaypointSize()); //NON-NLS
         w.writeOptionHelp(Option.WIDTH, "width", false, "(800)"); // TODO cfg.getWidth() NON-NLS
         w.writeOptionHelp(Option.ZOOM, "zoom", false, cfg.getZoom()); //NON-NLS

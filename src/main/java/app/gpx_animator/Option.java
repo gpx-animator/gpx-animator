@@ -34,6 +34,7 @@ public enum Option {
     ZOOM("zoom"),
     VIEWPORT_WIDTH("viewport-width"),
     VIEWPORT_HEIGHT("viewport-height"),
+    VIEWPORT_INERTIA("viewport-inertia"),
     FONT("font"),
     TMS_URL_TEMPLATE("tms-url-template"),
     ATTRIBUTION("attribution"),
