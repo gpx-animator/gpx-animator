@@ -25,7 +25,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("mapsTest")
+@Tag("nightly")
 public class MapsTest {
 
     @NonNls
