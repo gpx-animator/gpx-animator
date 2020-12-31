@@ -2,9 +2,6 @@ package app.gpx_animator.ui;
 
 import app.gpx_animator.Constants;
 import app.gpx_animator.Preferences;
-
-import java.io.Serial;
-
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -50,6 +47,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serial;
 import java.util.ResourceBundle;
 
 public final class FontChooser extends JComponent {
@@ -283,7 +281,7 @@ public final class FontChooser extends JComponent {
      * @param name the family name of the selected font.
      * @see #getSelectedFontFamily
      **/
-    public FontChooser setSelectedFontFamily(@NotNull final String name) {
+    public void setSelectedFontFamily(@NotNull final String name) {
         final String[] names = getFontFamilies();
         for (int i = 0; i < names.length; i++) {
             if (names[i].equalsIgnoreCase(name)) {
@@ -292,7 +290,6 @@ public final class FontChooser extends JComponent {
             }
         }
         updateSampleFont();
-        return this;
     }
 
     /**
@@ -307,7 +304,7 @@ public final class FontChooser extends JComponent {
      * @see java.awt.Font#ITALIC
      * @see #getSelectedFontStyle
      **/
-    public FontChooser setSelectedFontStyle(final int style) {
+    public void setSelectedFontStyle(final int style) {
         for (int i = 0; i < FONT_STYLE_CODES.length; i++) {
             if (FONT_STYLE_CODES[i] == style) {
                 getFontStyleList().setSelectedIndex(i);
@@ -315,7 +312,6 @@ public final class FontChooser extends JComponent {
             }
         }
         updateSampleFont();
-        return this;
     }
 
     /**
@@ -324,7 +320,7 @@ public final class FontChooser extends JComponent {
      * @param size the size of the selected font
      * @see #getSelectedFontSize
      **/
-    public FontChooser setSelectedFontSize(final int size) {
+    public void setSelectedFontSize(final int size) {
         final String sizeString = String.valueOf(size);
         for (int i = 0; i < this.fontSizeStrings.length; i++) {
             if (this.fontSizeStrings[i].equals(sizeString)) {
@@ -334,7 +330,6 @@ public final class FontChooser extends JComponent {
         }
         getFontSizeTextField().setText(sizeString);
         updateSampleFont();
-        return this;
     }
 
     /**
@@ -344,11 +339,10 @@ public final class FontChooser extends JComponent {
      * @see #getSelectedFont
      * @see java.awt.Font
      **/
-    public FontChooser setSelectedFont(final Font font) {
+    public void setSelectedFont(final Font font) {
         setSelectedFontFamily(font.getFamily());
         setSelectedFontStyle(font.getStyle());
         setSelectedFontSize(font.getSize());
-        return this;
     }
 
     /**

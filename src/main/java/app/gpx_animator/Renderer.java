@@ -17,12 +17,6 @@ package app.gpx_animator;
 import app.gpx_animator.frameWriter.FileFrameWriter;
 import app.gpx_animator.frameWriter.FrameWriter;
 import app.gpx_animator.frameWriter.VideoFrameWriter;
-
-import java.io.Serial;
-import java.time.LocalDateTime;
-
-import java.time.temporal.ChronoUnit;
-
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,19 +32,22 @@ import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
@@ -85,7 +82,7 @@ public final class Renderer {
     private double maxY = Double.NEGATIVE_INFINITY;
 
     // to implement moving map smoothing
-    private LinkedList<Point2D> recentMarkers;
+    private final LinkedList<Point2D> recentMarkers;
     private double recentMarkersXSum = 0.0;
     private double recentMarkersYSum = 0.0;
 
@@ -93,7 +90,7 @@ public final class Renderer {
 
     public Renderer(final Configuration cfg) {
         this.cfg = cfg;
-        this.recentMarkers = new LinkedList<Point2D>();
+        this.recentMarkers = new LinkedList<>();
     }
 
     private static double lonToX(final Double maxLon) {
@@ -269,14 +266,14 @@ public final class Renderer {
         // This prevents jitter in the beginning of the movie
         while (this.recentMarkers.size() < (cfg.getViewPortInertia() + 1)) {
             this.recentMarkers.add(marker);
-            recentMarkersXSum += (double) marker.getX();
-            recentMarkersYSum += (double) marker.getY();
+            recentMarkersXSum += marker.getX();
+            recentMarkersYSum += marker.getY();
         }
 
         while (this.recentMarkers.size() > cfg.getViewPortInertia()) {
             final Point2D m = this.recentMarkers.removeFirst();
-            recentMarkersXSum -= (double) m.getX();
-            recentMarkersYSum -= (double) m.getY();
+            recentMarkersXSum -= m.getX();
+            recentMarkersYSum -= m.getY();
         }
         final double xAvg = recentMarkersXSum / (double) this.recentMarkers.size();
         final double yAvg = recentMarkersYSum / (double) this.recentMarkers.size();
