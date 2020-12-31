@@ -17,6 +17,7 @@ package app.gpx_animator.ui;
 import app.gpx_animator.Help;
 import app.gpx_animator.Preferences;
 
+import java.io.Serial;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -33,6 +34,7 @@ import java.util.ResourceBundle;
 
 public class UsageDialog extends JDialog {
 
+    @Serial
     private static final long serialVersionUID = -8639477664121609849L;
 
     /**

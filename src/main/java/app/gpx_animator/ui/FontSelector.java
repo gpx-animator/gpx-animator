@@ -1,6 +1,9 @@
 package app.gpx_animator.ui;
 
 import app.gpx_animator.Preferences;
+
+import java.io.Serial;
+
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,6 +23,7 @@ public final class FontSelector extends JPanel {
     @NonNls
     public static final String PROPERTY_FONT = "font";
 
+    @Serial
     private static final long serialVersionUID = 4157235691776396086L;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();

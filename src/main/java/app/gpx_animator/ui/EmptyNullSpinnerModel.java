@@ -14,11 +14,13 @@
  */
 package app.gpx_animator.ui;
 
+import java.io.Serial;
 import javax.swing.AbstractSpinnerModel;
 import java.math.BigDecimal;
 
 public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
+    @Serial
     private static final long serialVersionUID = -8064362052986633347L;
 
     private final transient boolean zeroEmpty;

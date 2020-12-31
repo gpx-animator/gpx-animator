@@ -14,6 +14,8 @@
  */
 package app.gpx_animator.ui;
 
+import java.io.Serial;
+
 import org.jetbrains.annotations.NonNls;
 
 import javax.swing.AbstractSpinnerModel;
@@ -21,6 +23,7 @@ import java.util.Objects;
 
 public final class DurationSpinnerModel extends AbstractSpinnerModel {
 
+    @Serial
     private static final long serialVersionUID = 7220186634453532297L;
 
     private transient Long duration;

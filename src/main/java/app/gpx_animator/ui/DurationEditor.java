@@ -16,6 +16,7 @@ package app.gpx_animator.ui;
 
 import app.gpx_animator.ui.DurationSpinnerModel.Field;
 
+import java.io.Serial;
 import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
@@ -28,6 +29,7 @@ import java.util.regex.Pattern;
 
 public class DurationEditor extends DefaultEditor {
 
+    @Serial
     private static final long serialVersionUID = -3860212824757198990L;
 
 

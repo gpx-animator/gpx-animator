@@ -4,6 +4,7 @@ import app.gpx_animator.Preferences;
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 
+import java.io.Serial;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -23,6 +24,7 @@ import java.util.ResourceBundle;
 
 public class ErrorDialog extends JDialog {
 
+    @Serial
     private static final long serialVersionUID = 1628814974389392363L;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();

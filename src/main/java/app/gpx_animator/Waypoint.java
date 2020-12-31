@@ -14,8 +14,11 @@
  */
 package app.gpx_animator;
 
+import java.io.Serial;
+
 public class Waypoint extends LatLon {
 
+    @Serial
     private static final long serialVersionUID = -5247395863022008558L;
 
     private final String name;

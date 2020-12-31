@@ -1,6 +1,9 @@
 package app.gpx_animator.ui;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import java.io.Serial;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import app.gpx_animator.Configuration;
@@ -63,6 +66,7 @@ public final class MainFrame extends JFrame {
     private static final Logger LOGGER = LoggerFactory.getLogger(MainFrame.class);
 
     private static final String PROJECT_FILENAME_SUFFIX = ".ga.xml"; //NON-NLS
+    @Serial
     private static final long serialVersionUID = 190371886979948114L;
     private static final int FIXED_TABS = 1;
 
@@ -333,6 +337,7 @@ public final class MainFrame extends JFrame {
         tabbedPane.addTab(resourceBundle.getString("ui.mainframe.tab.general"), generalScrollPane);
 
         generalSettingsPanel = new GeneralSettingsPanel() {
+            @Serial
             private static final long serialVersionUID = 9088070803139334820L;
 
             @Override
@@ -577,6 +582,7 @@ public final class MainFrame extends JFrame {
         final String trackTabTitle = resourceBundle.getString("ui.mainframe.tab.track");
         final JScrollPane trackScrollPane = new JScrollPane();
         final TrackSettingsPanel trackSettingsPanel = new TrackSettingsPanel() {
+            @Serial
             private static final long serialVersionUID = 308660875202822183L;
 
             @Override

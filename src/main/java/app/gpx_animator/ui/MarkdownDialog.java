@@ -8,6 +8,9 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import java.io.Serial;
+
 import org.jetbrains.annotations.NonNls;
 
 import javax.swing.JButton;
@@ -31,6 +34,7 @@ import java.util.stream.Collectors;
 
 public class MarkdownDialog extends JDialog {
 
+    @Serial
     private static final long serialVersionUID = 1629914977489396863L;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();

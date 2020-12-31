@@ -7,13 +7,13 @@ import app.gpx_animator.TrackConfiguration.Builder;
 import app.gpx_animator.TrackIcon;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
@@ -27,12 +27,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.Serial;
 import java.util.ResourceBundle;
 
 import static javax.swing.JFileChooser.FILES_ONLY;
 
 abstract class TrackSettingsPanel extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = 2492074184123083022L;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
@@ -69,6 +71,7 @@ abstract class TrackSettingsPanel extends JPanel {
         add(lblGpx, gbcLabelGpx);
 
         inputGpxFileSelector = new FileSelector(FILES_ONLY) {
+            @Serial
             private static final long serialVersionUID = -7085193817022374995L;
 
             @Override
@@ -265,6 +268,7 @@ abstract class TrackSettingsPanel extends JPanel {
         add(lblIcon, gbcLabelIcon);
 
         inputIconFileSelector = new FileSelector(FILES_ONLY) {
+            @Serial
             private static final long serialVersionUID = -7085193817022374995L;
 
             @Override

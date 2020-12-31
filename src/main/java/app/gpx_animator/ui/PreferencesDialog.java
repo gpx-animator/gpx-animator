@@ -4,6 +4,7 @@ import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import app.gpx_animator.Preferences;
 
+import java.io.Serial;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -21,6 +22,7 @@ import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 
 public class PreferencesDialog extends JDialog {
 
+    @Serial
     private static final long serialVersionUID = -8767146323054030406L;
 
     public PreferencesDialog(final JFrame owner) {
@@ -32,6 +34,7 @@ public class PreferencesDialog extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         final FileSelector tileCachePathSelector = new FileSelector(DIRECTORIES_ONLY) {
+            @Serial
             private static final long serialVersionUID = 7372002778979993241L;
             @Override
             protected Type configure(final JFileChooser outputFileChooser) {

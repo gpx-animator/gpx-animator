@@ -2,6 +2,9 @@ package app.gpx_animator.ui;
 
 import app.gpx_animator.Constants;
 import app.gpx_animator.Preferences;
+
+import java.io.Serial;
+
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -51,6 +54,7 @@ import java.util.ResourceBundle;
 
 public final class FontChooser extends JComponent {
 
+    @Serial
     private static final long serialVersionUID = 6085184669738380002L;
 
     @NonNls
@@ -517,6 +521,7 @@ public final class FontChooser extends JComponent {
     class DialogOKAction extends AbstractAction {
 
         protected static final String ACTION_NAME = "OK";
+        @Serial
         private static final long serialVersionUID = 2309978224812073950L;
         private final transient JDialog dialog;
 
@@ -537,6 +542,7 @@ public final class FontChooser extends JComponent {
     class DialogCancelAction extends AbstractAction {
 
         protected static final String ACTION_NAME = "Cancel";
+        @Serial
         private static final long serialVersionUID = -5080686015935861376L;
         private final transient JDialog dialog;
 

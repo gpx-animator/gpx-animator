@@ -15,6 +15,7 @@
 
 package app.gpx_animator.ui;
 
+import java.io.Serial;
 import javax.swing.JFormattedTextField;
 import java.text.ParseException;
 import java.util.regex.Matcher;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
 
 class DurationFormatter extends JFormattedTextField.AbstractFormatter {
 
+    @Serial
     private static final long serialVersionUID = -6817456936657252534L;
 
     @Override

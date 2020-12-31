@@ -9,6 +9,7 @@ import app.gpx_animator.Position;
 import app.gpx_animator.Preferences;
 import app.gpx_animator.SpeedUnit;
 
+import java.io.Serial;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -47,6 +48,7 @@ import static javax.swing.JFileChooser.FILES_ONLY;
 
 abstract class GeneralSettingsPanel extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = -2024548578211891192L;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
@@ -109,6 +111,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(lblOutput, gbcLabelOutput);
 
         outputFileSelector = new FileSelector(FILES_ONLY) {
+            @Serial
             private static final long serialVersionUID = 7372002778976603239L;
 
             @Override
@@ -219,6 +222,7 @@ abstract class GeneralSettingsPanel extends JPanel {
             final int height = (int) standardVideoSize[2];
             final String name = String.format("%s (%d x %d)", text, width, height); //NON-NLS
             widthHeightPopup.add(new JMenuItem(new AbstractAction(name) {
+                @Serial
                 private static final long serialVersionUID = -1125796034755504311L;
 
                 public void actionPerformed(final ActionEvent e) {
@@ -702,6 +706,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(lblLogo, gbcLabelLogo);
 
         logoFileSelector = new FileSelector(FILES_ONLY) {
+            @Serial
             private static final long serialVersionUID = 7372002776386603239L;
 
             @Override
@@ -736,6 +741,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(lblPhotosDirectorySelector, gbcLabelPhotosDirectorySelector);
 
         photosDirectorySelector = new FileSelector(DIRECTORIES_ONLY) {
+            @Serial
             private static final long serialVersionUID = 7372002778976603240L;
 
             @Override

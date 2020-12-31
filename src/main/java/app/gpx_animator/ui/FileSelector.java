@@ -14,6 +14,8 @@
  */
 package app.gpx_animator.ui;
 
+import java.io.Serial;
+
 import org.jetbrains.annotations.NonNls;
 import app.gpx_animator.Preferences;
 
@@ -35,6 +37,7 @@ public abstract class FileSelector extends JPanel {
     @NonNls
     public static final String PROPERTY_FILENAME = "filename";
 
+    @Serial
     private static final long serialVersionUID = 3157365691996396016L;
 
     private final transient JTextField fileTextField;

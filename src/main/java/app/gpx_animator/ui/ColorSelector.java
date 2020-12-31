@@ -14,8 +14,8 @@
  */
 package app.gpx_animator.ui;
 
-import org.jetbrains.annotations.NonNls;
 import app.gpx_animator.Preferences;
+import org.jetbrains.annotations.NonNls;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -37,6 +38,7 @@ public final class ColorSelector extends JPanel {
     @SuppressWarnings("DuplicateStringLiteralInspection")
     public static final String PROPERTY_COLOR = "color";
 
+    @Serial
     private static final long serialVersionUID = 6506364764640471311L;
 
     private final transient JTextField colorTextField;

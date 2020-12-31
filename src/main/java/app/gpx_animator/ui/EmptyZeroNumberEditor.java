@@ -14,6 +14,7 @@
  */
 package app.gpx_animator.ui;
 
+import java.io.Serial;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JSpinner;
@@ -25,6 +26,7 @@ import java.text.ParseException;
 
 public class EmptyZeroNumberEditor extends DefaultEditor {
 
+    @Serial
     private static final long serialVersionUID = -3860212824757198990L;
 
     public EmptyZeroNumberEditor(final JSpinner spinner, final Class<? extends Number> clazz) {
@@ -33,6 +35,7 @@ public class EmptyZeroNumberEditor extends DefaultEditor {
         final JFormattedTextField ftf = getTextField();
         ftf.setEditable(true);
         ftf.setFormatterFactory(new DefaultFormatterFactory(new AbstractFormatter() {
+            @Serial
             private static final long serialVersionUID = -6817456936657252534L;
 
             @Override

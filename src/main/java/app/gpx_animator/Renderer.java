@@ -18,6 +18,7 @@ import app.gpx_animator.frameWriter.FileFrameWriter;
 import app.gpx_animator.frameWriter.FrameWriter;
 import app.gpx_animator.frameWriter.VideoFrameWriter;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 import java.time.temporal.ChronoUnit;
@@ -976,6 +977,7 @@ public final class Renderer {
     }
 
     private static class NamedPoint extends Point2D.Double {
+        @Serial
         private static final long serialVersionUID = 4011941819652468006L;
 
         private String name;
