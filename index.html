@@ -442,8 +442,14 @@
         <p>Fine-tune speedup or specify exact total time in seconds.</p>
 
         <h3>The UI is too small on a high DPI screen</h3>
-        <p>Some (older) Java versions have problems with the resolution of a high DPI screen. Until we find a solution
-            to do it programmatically, you can force Java to double the size of the UI using this command:</p>
+        <p>
+            This can happen only, when you use the JAR file directly. It does
+            not happen, when you download the installer and use the GPX
+            Animator icon in your start menu. If you still want to use the JAR
+            file directly and have an older version of Java without high DPI
+            support, use the following command line to set the scaling factor
+            accordingly:
+        </p>
         <pre><code>GDK_SCALE=2 java -jar gpx-animator-1.5.2-all.jar</code></pre>
 
         <h3>Error While Rendering - Invalid frame size (0x0)</h3>
