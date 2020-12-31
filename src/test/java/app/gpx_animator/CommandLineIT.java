@@ -50,12 +50,18 @@ public final class CommandLineIT {
 
     @Test
     public void testBasicCommandLine() throws Exception {
+        final var outputFile = getTemporaryOutputFile();
         final String[] args = new String[] {
                 "--input", checkFileSeparator("./src/test/resources/gpx/bikeride.gpx"),
-                "--output", getTemporaryOutputFile()
+                "--output", outputFile
         };
+
         Main.start(args);
         assertDone();
+
+        final var fileSize = new File(outputFile).length();
+        assertTrue(fileSize > 550_000, "Output file size (%s bytes) too small, check content".formatted(fileSize));
+        assertTrue(fileSize < 600_000, "Output file size (%s bytes) too big, check content".formatted(fileSize));
     }
 
     @AfterEach
