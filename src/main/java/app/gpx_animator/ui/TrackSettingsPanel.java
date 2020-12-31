@@ -283,7 +283,15 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcInputIconFileSelector.gridy = 9;
         add(inputIconFileSelector, gbcInputIconFileSelector);
 
-        mirrorIconCheckBox = new JCheckBox(resourceBundle.getString("ui.panel.tracksettings.icon.mirror.label"));
+        final JLabel lblMirrorIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.mirror.label"));
+        final GridBagConstraints gbcLabelMirrorIcon = new GridBagConstraints();
+        gbcLabelMirrorIcon.anchor = GridBagConstraints.LINE_END;
+        gbcLabelMirrorIcon.insets = new Insets(0, 0, 5, 5);
+        gbcLabelMirrorIcon.gridx = 0;
+        gbcLabelMirrorIcon.gridy = 10;
+        add(lblMirrorIcon, gbcLabelMirrorIcon);
+
+        mirrorIconCheckBox = new JCheckBox("");
         mirrorIconCheckBox.setToolTipText(Option.TRACK_ICON_MIRROR.getHelp());
         final GridBagConstraints gbcMirrorIconCheckBox = new GridBagConstraints();
         gbcMirrorIconCheckBox.fill = GridBagConstraints.HORIZONTAL;
