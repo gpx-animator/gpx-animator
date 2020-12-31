@@ -41,9 +41,9 @@ public final class Help {
         w.writeOptionHelp(Option.FONT, "font", false, new FontXmlAdapter().marshal(cfg.getFont()));
         w.writeOptionHelp(Option.FORCED_POINT_TIME_INTERVAL, "milliseconds", true, tc.getForcedPointInterval()); //NON-NLS
         w.writeOptionHelp(Option.FPS, "fps", false, cfg.getFps()); //NON-NLS
-        w.writeOptionHelp(Option.GUI, null, false, resourceBundle.getString("help.option.gui.default"));
+        w.writeOptionHelp(Option.GUI, "gui", false, resourceBundle.getString("help.option.gui.default"));
         w.writeOptionHelp(Option.HEIGHT, "height", false, cfg.getHeight()); //NON-NLS
-        w.writeOptionHelp(Option.HELP, null, false, null);
+        w.writeOptionHelp(Option.HELP, "help", false, null);
         w.writeOptionHelp(Option.INPUT, "input", true, tc.getInputGpx()); //NON-NLS
         w.writeOptionHelp(Option.INFORMATION_POSITION, "position", false, cfg.getInformationPosition());
         w.writeOptionHelp(Option.INFORMATION_MARGIN, "information-margin", false, cfg.getInformationMargin()); //NON-NLS
@@ -62,9 +62,9 @@ public final class Help {
         w.writeOptionHelp(Option.OUTPUT, "output", false, cfg.getOutput()); //NON-NLS
         w.writeOptionHelp(Option.PHOTO_TIME, "milliseconds", false, cfg.getPhotoTime()); //NON-NLS
         w.writeOptionHelp(Option.PHOTO_DIR, "directory", false, cfg.getPhotoDirectory()); //NON-NLS
-        w.writeOptionHelp(Option.PRE_DRAW_TRACK, null, false, cfg.isPreDrawTrack());
-        w.writeOptionHelp(Option.PRE_DRAW_TRACK_COLOR, null, false, cfg.getPreDrawTrackColor());
-        w.writeOptionHelp(Option.SKIP_IDLE, null, false, cfg.isSkipIdle());
+        w.writeOptionHelp(Option.PRE_DRAW_TRACK, "predraw-track", false, cfg.isPreDrawTrack());
+        w.writeOptionHelp(Option.PRE_DRAW_TRACK_COLOR, "predraw-track-color", false, cfg.getPreDrawTrackColor());
+        w.writeOptionHelp(Option.SKIP_IDLE, "skip-idle", false, cfg.isSkipIdle());
         w.writeOptionHelp(Option.SPEEDUP, "speedup", false, cfg.getSpeedup()); //NON-NLS
         w.writeOptionHelp(Option.TAIL_DURATION, "time", false, cfg.getTailDuration()); //NON-NLS
         w.writeOptionHelp(Option.TAIL_COLOR, "tail-color", false, cfg.getTailColor()); //NON-NLS
