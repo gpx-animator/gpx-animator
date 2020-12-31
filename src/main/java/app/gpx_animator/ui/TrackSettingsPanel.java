@@ -54,10 +54,10 @@ abstract class TrackSettingsPanel extends JPanel {
         setBounds(100, 100, 595, 419);
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final GridBagLayout gblContentPane = new GridBagLayout();
-        gblContentPane.columnWidths = new int[]{0, 0, 0};
-        gblContentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        gblContentPane.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-        gblContentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+        gblContentPane.columnWidths = new int[]     {0,   0,   0};
+        gblContentPane.columnWeights = new double[] {0.0, 1.0, Double.MIN_VALUE};
+        gblContentPane.rowHeights = new int[]       {0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0};
+        gblContentPane.rowWeights = new double[]    {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
         setLayout(gblContentPane);
 
         final JLabel lblGpx = new JLabel(resourceBundle.getString("ui.panel.tracksettings.gpxfile.label"));
