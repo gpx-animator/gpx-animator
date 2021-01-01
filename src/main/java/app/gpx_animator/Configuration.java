@@ -340,47 +340,6 @@ public final class Configuration {
         return trackConfigurationList;
     }
 
-    @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"}) // for debugging
-    @Override
-    public String toString() { // TODO Use a library for this kind of tasks, maybe Lombok.
-        return "Configuration [margin=" + margin
-                + ", width=" + width
-                + ", height=" + height
-                + ", zoom=" + zoom
-                + ", viewportWidth=" + viewportWidth
-                + ", viewportHeight=" + viewportHeight
-                + ", viewportInertia=" + viewportInertia
-                + ", speedup=" + speedup
-                + ", tailDuration=" + tailDuration
-                + ", tailColor=" + tailColor
-                + ", fps=" + fps + ", totalTime=" + totalTime
-                + ", backgroundMapVisibility=" + backgroundMapVisibility
-                + ", tmsUrlTemplate=" + tmsUrlTemplate
-                + ", skipIdle=" + skipIdle
-                + ", preDrawTrack=" + preDrawTrack
-                + ", preDrawTrackColor=" + preDrawTrackColor
-                + ", backgroundColor=" + backgroundColor
-                + ", flashbackColor=" + flashbackColor
-                + ", flashbackDuration=" + flashbackDuration
-                + ", output=" + output
-                + ", font=" + font
-                + ", markerSize=" + markerSize
-                + ", waypointSize=" + waypointSize
-                + ", keepLastFrame=" + keepLastFrame
-                + ", logo=" + logo
-                + ", logoPosition=" + logoPosition
-                + ", attributionPosition=" + attributionPosition
-                + ", attributionMargin=" + attributionMargin
-                + ", informationPosition=" + informationPosition
-                + ", informationMargin=" + informationMargin
-                + ", photoDirectory=" + photoDirectory
-                + ", photoTime=" + photoTime
-                + ", photoAnimationDuration=" + photoAnimationDuration
-                + ", trackConfigurationList=" + trackConfigurationList
-                + ", unitOfSpeed=" + speedUnit
-                + "]";
-    }
-
     private static File validateLogo(final File logo) {
         return logo != null && logo.isFile() ? logo : null;
     }
