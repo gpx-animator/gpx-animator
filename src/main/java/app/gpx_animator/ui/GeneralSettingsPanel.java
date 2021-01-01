@@ -61,6 +61,9 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner viewportInertiaSpinner;
     private final transient JSpinner zoomSpinner;
     private final transient JSpinner marginSpinner;
+    private final transient JSpinner logoMarginSpinner;
+    private final transient JSpinner attributionMarginSpinner;
+    private final transient JSpinner informationMarginSpinner;
     private final transient JSpinner speedupSpinner;
     private final transient JSpinner markerSizeSpinner;
     private final transient JSpinner waypointSizeSpinner;
@@ -101,9 +104,9 @@ abstract class GeneralSettingsPanel extends JPanel {
         gridBagLayout.columnWidths  = new int[]    {91,  100, 0,  0};
         gridBagLayout.columnWeights = new double[] {0.0, 1.0, 0.0, Double.MIN_VALUE};
         gridBagLayout.rowHeights    = new int[]    {14,  20,  20,  20,  20,  20,  14,  20,  20,  20,  20,  20,  20,  20,  20,  50,  45,  20,  21,
-                23,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
+                23,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
         gridBagLayout.rowWeights    = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         setLayout(gridBagLayout);
 
         final var lblOutput = new JLabel(resourceBundle.getString("ui.panel.generalsettings.output.label"));
@@ -913,12 +916,31 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLogoPositioning.gridy = 27;
         add(logoLocationComboBox, gbcLogoPositioning);
 
+        final var lblLogoMargin = new JLabel(resourceBundle.getString("ui.panel.generalsettings.logoMargin.label"));
+        final var gbcLabelLogoMargin = new GridBagConstraints();
+        gbcLabelLogoMargin.anchor = GridBagConstraints.LINE_END;
+        gbcLabelLogoMargin.insets = new Insets(0, 0, 5, 5);
+        gbcLabelLogoMargin.gridx = 0;
+        gbcLabelLogoMargin.gridy = 28;
+        add(lblLogoMargin, gbcLabelLogoMargin);
+
+        logoMarginSpinner = new JSpinner();
+        logoMarginSpinner.setToolTipText(Option.LOGO_MARGIN.getHelp());
+        logoMarginSpinner.setModel(new SpinnerNumberModel(0, 0, null, 1));
+        final var gbcLogoMarginSpinner = new GridBagConstraints();
+        gbcLogoMarginSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcLogoMarginSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcLogoMarginSpinner.gridx = 1;
+        gbcLogoMarginSpinner.gridy = 28;
+        add(logoMarginSpinner, gbcLogoMarginSpinner);
+        logoMarginSpinner.addChangeListener(changeListener);
+
         final var lblAttriPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionPosition.label"));
         final var gbcLabelAttributionPosition = new GridBagConstraints();
         gbcLabelAttributionPosition.anchor = GridBagConstraints.LINE_END;
         gbcLabelAttributionPosition.insets = new Insets(0, 0, 5, 5);
         gbcLabelAttributionPosition.gridx = 0;
-        gbcLabelAttributionPosition.gridy = 28;
+        gbcLabelAttributionPosition.gridy = 29;
         add(lblAttriPosition, gbcLabelAttributionPosition);
 
         attriLocationComboBox = new JComboBox<>();
@@ -927,15 +949,34 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcAttributionPositioning = new GridBagConstraints();
         gbcAttributionPositioning.fill = GridBagConstraints.HORIZONTAL;
         gbcAttributionPositioning.gridx = 1;
-        gbcAttributionPositioning.gridy = 28;
+        gbcAttributionPositioning.gridy = 29;
         add(attriLocationComboBox, gbcAttributionPositioning);
 
-        final var lblinfoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.InformationPosition.label"));
+        final var lblAttributionMargin = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionMargin.label"));
+        final var gbcAttributionLabelMargin = new GridBagConstraints();
+        gbcAttributionLabelMargin.anchor = GridBagConstraints.LINE_END;
+        gbcAttributionLabelMargin.insets = new Insets(0, 0, 5, 5);
+        gbcAttributionLabelMargin.gridx = 0;
+        gbcAttributionLabelMargin.gridy = 30;
+        add(lblAttributionMargin, gbcAttributionLabelMargin);
+
+        attributionMarginSpinner = new JSpinner();
+        attributionMarginSpinner.setToolTipText(Option.ATTRIBUTION_MARGIN.getHelp());
+        attributionMarginSpinner.setModel(new SpinnerNumberModel(0, 0, null, 1));
+        final var gbcAttributionMarginSpinner = new GridBagConstraints();
+        gbcAttributionMarginSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcAttributionMarginSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcAttributionMarginSpinner.gridx = 1;
+        gbcAttributionMarginSpinner.gridy = 30;
+        add(attributionMarginSpinner, gbcAttributionMarginSpinner);
+        attributionMarginSpinner.addChangeListener(changeListener);
+
+        final var lblinfoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.informationPosition.label"));
         final var gbcLabelInfoPosition = new GridBagConstraints();
         gbcLabelInfoPosition.anchor = GridBagConstraints.LINE_END;
         gbcLabelInfoPosition.insets = new Insets(0, 0, 5, 5);
         gbcLabelInfoPosition.gridx = 0;
-        gbcLabelInfoPosition.gridy = 29;
+        gbcLabelInfoPosition.gridy = 31;
         add(lblinfoPosition, gbcLabelInfoPosition);
 
         infoLocationComboBox = new JComboBox<>();
@@ -944,15 +985,34 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcInfoPosition = new GridBagConstraints();
         gbcInfoPosition.fill = GridBagConstraints.HORIZONTAL;
         gbcInfoPosition.gridx = 1;
-        gbcInfoPosition.gridy = 29;
+        gbcInfoPosition.gridy = 31;
         add(infoLocationComboBox, gbcInfoPosition);
+
+        final var lblInformationMargin = new JLabel(resourceBundle.getString("ui.panel.generalsettings.informationMargin.label"));
+        final var gbcLabelInformationMargin = new GridBagConstraints();
+        gbcLabelInformationMargin.anchor = GridBagConstraints.LINE_END;
+        gbcLabelInformationMargin.insets = new Insets(0, 0, 5, 5);
+        gbcLabelInformationMargin.gridx = 0;
+        gbcLabelInformationMargin.gridy = 32;
+        add(lblInformationMargin, gbcLabelInformationMargin);
+
+        informationMarginSpinner = new JSpinner();
+        informationMarginSpinner.setToolTipText(Option.INFORMATION_MARGIN.getHelp());
+        informationMarginSpinner.setModel(new SpinnerNumberModel(0, 0, null, 1));
+        final var gbcInformationMarginSpinner = new GridBagConstraints();
+        gbcInformationMarginSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcInformationMarginSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcInformationMarginSpinner.gridx = 1;
+        gbcInformationMarginSpinner.gridy = 32;
+        add(informationMarginSpinner, gbcInformationMarginSpinner);
+        informationMarginSpinner.addChangeListener(changeListener);
 
         final var lblFont = new JLabel(resourceBundle.getString("ui.panel.generalsettings.font.label"));
         final var gbcLabelFont = new GridBagConstraints();
         gbcLabelFont.anchor = GridBagConstraints.LINE_END;
         gbcLabelFont.insets = new Insets(0, 0, 5, 5);
         gbcLabelFont.gridx = 0;
-        gbcLabelFont.gridy = 30;
+        gbcLabelFont.gridy = 33;
         add(lblFont, gbcLabelFont);
 
         fontSelector = new FontSelector();
@@ -960,7 +1020,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcFontName = new GridBagConstraints();
         gbcFontName.fill = GridBagConstraints.HORIZONTAL;
         gbcFontName.gridx = 1;
-        gbcFontName.gridy = 30;
+        gbcFontName.gridy = 33;
         add(fontSelector, gbcFontName);
 
         final var lblSpeedUnit = new JLabel(resourceBundle.getString("ui.panel.generalsettings.speedunit.label"));
@@ -968,7 +1028,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelSpeedUnit.anchor = GridBagConstraints.LINE_END;
         gbcLabelSpeedUnit.insets = new Insets(0, 0, 5, 5);
         gbcLabelSpeedUnit.gridx = 0;
-        gbcLabelSpeedUnit.gridy = 31;
+        gbcLabelSpeedUnit.gridy = 34;
         add(lblSpeedUnit, gbcLabelSpeedUnit);
 
         speedUnitComboBox = new JComboBox<>();
@@ -977,7 +1037,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcSpeedUnit = new GridBagConstraints();
         gbcSpeedUnit.fill = GridBagConstraints.HORIZONTAL;
         gbcSpeedUnit.gridx = 1;
-        gbcSpeedUnit.gridy = 31;
+        gbcSpeedUnit.gridy = 34;
         add(speedUnitComboBox, gbcSpeedUnit);
     }
 
@@ -1021,6 +1081,9 @@ abstract class GeneralSettingsPanel extends JPanel {
         viewportWidthSpinner.setValue(c.getViewportWidth());
         viewportInertiaSpinner.setValue(c.getViewportInertia());
         marginSpinner.setValue(c.getMargin());
+        logoMarginSpinner.setValue(c.getLogoMargin());
+        informationMarginSpinner.setValue(c.getInformationMargin());
+        attributionMarginSpinner.setValue(c.getAttributionMargin());
         zoomSpinner.setValue(c.getZoom());
         minLatSpinner.setValue(c.getMinLat());
         maxLatSpinner.setValue(c.getMaxLat());
@@ -1084,6 +1147,9 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .viewportWidth((Integer) viewportWidthSpinner.getValue())
                 .viewportInertia((Integer) viewportInertiaSpinner.getValue())
                 .margin((Integer) marginSpinner.getValue())
+                .logoMargin((Integer) logoMarginSpinner.getValue())
+                .informationMargin((Integer) informationMarginSpinner.getValue())
+                .attributionMargin((Integer) attributionMarginSpinner.getValue())
                 .zoom((Integer) zoomSpinner.getValue())
                 .minLat((Double) minLatSpinner.getValue())
                 .maxLat((Double) maxLatSpinner.getValue())
