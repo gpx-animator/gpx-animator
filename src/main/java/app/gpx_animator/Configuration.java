@@ -50,6 +50,7 @@ public final class Configuration {
     private Integer viewportInertia = DEFAULT_VIEWPORT_INERTIA;
 
     private boolean preDrawTrack;
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color preDrawTrackColor;
 
     private Double speedup;
