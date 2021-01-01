@@ -48,7 +48,7 @@ public final class TrackConfiguration {
     }
 
 
-    @SuppressWarnings("checkstyle:ParameterNumber") // TODO This is too much and just a temporary solution not to break the build...
+    @SuppressWarnings("checkstyle:ParameterNumber")
     private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval,
                                final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth, final TrackIcon trackIcon,
                                final File inputIcon, final boolean mirrorTrackIcon) {
