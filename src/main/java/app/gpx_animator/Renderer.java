@@ -352,17 +352,17 @@ public final class Renderer {
             }
             final var g2 = getGraphics(bi);
             switch (cfg.getLogoPosition()) {
-                case TOP_LEFT -> g2.drawImage(image, cfg.getMargin(), cfg.getMargin(), image.getWidth(), image.getHeight(), null);
-                case TOP_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2, cfg.getMargin(), image.getWidth(),
+                case TOP_LEFT -> g2.drawImage(image, cfg.getLogoMargin(), cfg.getLogoMargin(), image.getWidth(), image.getHeight(), null);
+                case TOP_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2, cfg.getLogoMargin(), image.getWidth(),
                         image.getHeight(), null);
-                case TOP_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(), cfg.getMargin(), image.getWidth(),
-                        image.getHeight(), null);
-                case BOTTOM_LEFT -> g2.drawImage(image, cfg.getMargin(), bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(),
-                        image.getHeight(), null);
+                case TOP_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getLogoMargin(), cfg.getLogoMargin(),
+                        image.getWidth(), image.getHeight(), null);
+                case BOTTOM_LEFT -> g2.drawImage(image, cfg.getLogoMargin(), bi.getHeight() - image.getHeight() - cfg.getLogoMargin(),
+                        image.getWidth(), image.getHeight(), null);
                 case BOTTOM_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2,
-                        bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(), image.getHeight(), null);
-                case BOTTOM_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getMargin(),
-                        bi.getHeight() - image.getHeight() - cfg.getMargin(), image.getWidth(), image.getHeight(), null);
+                        bi.getHeight() - image.getHeight() - cfg.getLogoMargin(), image.getWidth(), image.getHeight(), null);
+                case BOTTOM_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getLogoMargin(),
+                        bi.getHeight() - image.getHeight() - cfg.getLogoMargin(), image.getWidth(), image.getHeight(), null);
                 default -> throw new UserException("Invalid logo position!");
             }
         }

@@ -50,6 +50,7 @@ public enum Option {
     PRE_DRAW_TRACK_COLOR("predraw-track-color"),
     LOGO("logo"),
     LOGO_POSITION("logo-location"),
+    LOGO_MARGIN("logo-margin"),
     ATTRIBUTION_POSITION("attribution-location"),
     ATTRIBUTION_MARGIN("attribution-margin"),
     INFORMATION_POSITION("information-location"),

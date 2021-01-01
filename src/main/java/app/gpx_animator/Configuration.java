@@ -77,6 +77,7 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File output;
+
     private String attribution;
     private Position attributionPosition = Position.BOTTOM_LEFT;
     private int attributionMargin;
@@ -97,6 +98,7 @@ public final class Configuration {
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File logo;
     private Position logoPosition = Position.TOP_LEFT;
+    private int logoMargin;
 
     private String photoDirectory;
     private Long photoTime;
@@ -126,7 +128,7 @@ public final class Configuration {
             final Font font, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final Position logoPosition, final Position attributionPosition, final Position informationPosition,
-            final int attributionMargin, final int informationMargin,
+            final int attributionMargin, final int informationMargin, final int logoMargin,
             final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final List<TrackConfiguration> trackConfigurationList) {
 
@@ -164,6 +166,7 @@ public final class Configuration {
         this.maxLat = maxLat;
         this.logo = validateLogo(logo);
         this.logoPosition = logoPosition;
+        this.logoMargin = logoMargin;
         this.attributionPosition = attributionPosition;
         this.attributionMargin = attributionMargin;
         this.informationPosition = informationPosition;
@@ -314,6 +317,10 @@ public final class Configuration {
         return logoPosition;
     }
 
+    public int getLogoMargin() {
+        return logoMargin;
+    }
+
     public Position getAttributionPosition() {
         return attributionPosition;
     }
@@ -387,6 +394,7 @@ public final class Configuration {
         private Double maxLat;
         private File logo;
         private Position logoPosition = Position.TOP_LEFT;
+        private int logoMargin = DEFAULT_MARGIN;
         private Position attributionPosition = Position.BOTTOM_LEFT;
         private int attributionMargin = DEFAULT_MARGIN;
         private Position informationPosition = Position.BOTTOM_RIGHT;
@@ -409,7 +417,7 @@ public final class Configuration {
                     font, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, logoPosition, attributionPosition, informationPosition,
-                    attributionMargin, informationMargin,
+                    attributionMargin, informationMargin, logoMargin,
                     photoDirectory, photoTime, photoAnimationDuration,
                     Collections.unmodifiableList(trackConfigurationList)
             );
@@ -578,6 +586,11 @@ public final class Configuration {
 
         public Builder logoPosition(final Position logoPosition) {
             this.logoPosition = logoPosition;
+            return this;
+        }
+
+        public Builder logoMargin(final int logoMargin) {
+            this.logoMargin = logoMargin;
             return this;
         }
 

@@ -22,6 +22,7 @@ Release date: work in progress 🚧
 * Adding font selection for the text in the animation
 * Adding support for margins specific to information and attribution blocks
 * Adding support for background images (including transparency in PNG files)
+* Margin for track, logo, attribution and information can be set separately
 
 ## Version 1.5.2
 

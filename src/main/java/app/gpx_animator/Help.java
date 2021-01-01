@@ -54,6 +54,7 @@ public final class Help {
         w.writeOptionHelp(Option.LABEL, "label", true, tc.getLabel()); //NON-NLS
         w.writeOptionHelp(Option.LINE_WIDTH, "width", true, tc.getLineWidth()); //NON-NLS
         w.writeOptionHelp(Option.LOGO_POSITION, "position", false, cfg.getLogoPosition()); //NON-NLS
+        w.writeOptionHelp(Option.LOGO_MARGIN, "logo-margin", false, cfg.getLogoMargin()); //NON-NLS
         w.writeOptionHelp(Option.MARGIN, "margin", false, cfg.getMargin()); //NON-NLS
         w.writeOptionHelp(Option.MARKER_SIZE, "size", false, cfg.getMarkerSize()); //NON-NLS
         w.writeOptionHelp(Option.MAX_LAT, "latitude", false, cfg.getMaxLat()); //NON-NLS
