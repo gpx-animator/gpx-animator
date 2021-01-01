@@ -76,6 +76,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JComboBox<Position> infoLocationComboBox;
     private final transient JCheckBox skipIdleCheckBox;
     private final transient ColorSelector backgroundColorSelector;
+    private final transient FileSelector backgroundImageSelector;
     private final transient ColorSelector flashbackColorSelector;
     private final transient JSpinner flashbackDurationSpinner;
     private final transient JSpinner keepLastFrameSpinner;
@@ -100,9 +101,9 @@ abstract class GeneralSettingsPanel extends JPanel {
         gridBagLayout.columnWidths  = new int[]    {91,  100, 0,  0};
         gridBagLayout.columnWeights = new double[] {0.0, 1.0, 0.0, Double.MIN_VALUE};
         gridBagLayout.rowHeights    = new int[]    {14,  20,  20,  20,  20,  20,  14,  20,  20,  20,  20,  20,  20,  20,  20,  50,  45,  20,  21,
-                23,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
+                23,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
         gridBagLayout.rowWeights    = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         setLayout(gridBagLayout);
 
         final var lblOutput = new JLabel(resourceBundle.getString("ui.panel.generalsettings.output.label"));
@@ -736,12 +737,30 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(backgroundColorSelector, gbcBackgroundColorSelector);
         backgroundColorSelector.addPropertyChangeListener(ColorSelector.PROPERTY_COLOR, propertyChangeListener);
 
+        final var lblBackgroundImage = new JLabel(resourceBundle.getString("ui.panel.generalsettings.backgroundimage.label"));
+        final var gbcLabelBackgroundImage = new GridBagConstraints();
+        gbcLabelBackgroundImage.anchor = GridBagConstraints.LINE_END;
+        gbcLabelBackgroundImage.insets = new Insets(0, 0, 5, 5);
+        gbcLabelBackgroundImage.gridx = 0;
+        gbcLabelBackgroundImage.gridy = 19;
+        add(lblBackgroundImage, gbcLabelBackgroundImage);
+
+        backgroundImageSelector = createImageFileSelector();
+        backgroundImageSelector.setToolTipText(Option.BACKGROUND_IMAGE.getHelp());
+        final var gbcBackgroundImageSelector = new GridBagConstraints();
+        gbcBackgroundImageSelector.fill = GridBagConstraints.BOTH;
+        gbcBackgroundImageSelector.insets = new Insets(0, 0, 5, 0);
+        gbcBackgroundImageSelector.gridx = 1;
+        gbcBackgroundImageSelector.gridy = 19;
+        add(backgroundImageSelector, gbcBackgroundImageSelector);
+        backgroundImageSelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
+
         final var lblFlashbackColor = new JLabel(resourceBundle.getString("ui.panel.generalsettings.flashbackcolor.label"));
         final var gbcLabelFlashbackColor = new GridBagConstraints();
         gbcLabelFlashbackColor.anchor = GridBagConstraints.LINE_END;
         gbcLabelFlashbackColor.insets = new Insets(0, 0, 5, 5);
         gbcLabelFlashbackColor.gridx = 0;
-        gbcLabelFlashbackColor.gridy = 19;
+        gbcLabelFlashbackColor.gridy = 20;
         add(lblFlashbackColor, gbcLabelFlashbackColor);
 
         flashbackColorSelector = new ColorSelector();
@@ -750,7 +769,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcFlashbackColorSelector.fill = GridBagConstraints.BOTH;
         gbcFlashbackColorSelector.insets = new Insets(0, 0, 5, 0);
         gbcFlashbackColorSelector.gridx = 1;
-        gbcFlashbackColorSelector.gridy = 19;
+        gbcFlashbackColorSelector.gridy = 20;
         add(flashbackColorSelector, gbcFlashbackColorSelector);
         flashbackColorSelector.addPropertyChangeListener(ColorSelector.PROPERTY_COLOR, propertyChangeListener);
 
@@ -759,7 +778,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelFlashbackDuration.anchor = GridBagConstraints.LINE_END;
         gbcLabelFlashbackDuration.insets = new Insets(0, 0, 0, 5);
         gbcLabelFlashbackDuration.gridx = 0;
-        gbcLabelFlashbackDuration.gridy = 20;
+        gbcLabelFlashbackDuration.gridy = 21;
         add(lblFlashbackDuration, gbcLabelFlashbackDuration);
 
         flashbackDurationSpinner = new JSpinner();
@@ -769,7 +788,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcFlashbackDurationSpinner = new GridBagConstraints();
         gbcFlashbackDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcFlashbackDurationSpinner.gridx = 1;
-        gbcFlashbackDurationSpinner.gridy = 20;
+        gbcFlashbackDurationSpinner.gridy = 21;
         add(flashbackDurationSpinner, gbcFlashbackDurationSpinner);
         flashbackDurationSpinner.addChangeListener(changeListener);
 
@@ -778,7 +797,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelKeepLastFrame.anchor = GridBagConstraints.LINE_END;
         gbcLabelKeepLastFrame.insets = new Insets(0, 0, 0, 5);
         gbcLabelKeepLastFrame.gridx = 0;
-        gbcLabelKeepLastFrame.gridy = 21;
+        gbcLabelKeepLastFrame.gridy = 22;
         add(lblKeepLastFrame, gbcLabelKeepLastFrame);
 
         keepLastFrameSpinner = new JSpinner();
@@ -788,7 +807,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcKeepLastFrameSpinner = new GridBagConstraints();
         gbcKeepLastFrameSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcKeepLastFrameSpinner.gridx = 1;
-        gbcKeepLastFrameSpinner.gridy = 21;
+        gbcKeepLastFrameSpinner.gridy = 22;
         add(keepLastFrameSpinner, gbcKeepLastFrameSpinner);
         keepLastFrameSpinner.addChangeListener(changeListener);
 
@@ -797,32 +816,16 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelLogo.anchor = GridBagConstraints.LINE_END;
         gbcLabelLogo.insets = new Insets(0, 0, 5, 5);
         gbcLabelLogo.gridx = 0;
-        gbcLabelLogo.gridy = 22;
+        gbcLabelLogo.gridy = 23;
         add(lblLogo, gbcLabelLogo);
 
-        logoFileSelector = new FileSelector(FILES_ONLY) {
-            @Serial
-            private static final long serialVersionUID = 7372002776386603239L;
-
-            @Override
-            protected Type configure(final JFileChooser logoFileChooser) {
-                logoFileChooser.setAcceptAllFileFilterUsed(false);
-                logoFileChooser.addChoosableFileFilter(
-                        new FileNameExtensionFilter(resourceBundle.getString("ui.panel.generalsettings.logo.format.all"), "jpg", "png")); //NON-NLS
-                logoFileChooser.addChoosableFileFilter(
-                        new FileNameExtensionFilter(resourceBundle.getString("ui.panel.generalsettings.logo.format.jpeg"), "jpg")); //NON-NLS
-                logoFileChooser.addChoosableFileFilter(
-                        new FileNameExtensionFilter(resourceBundle.getString("ui.panel.generalsettings.logo.format.png"), "png")); //NON-NLS
-                return Type.OPEN;
-            }
-        };
-
+        logoFileSelector = createImageFileSelector();
         logoFileSelector.setToolTipText(Option.LOGO.getHelp());
         final var gbcLogoFileSelector = new GridBagConstraints();
         gbcLogoFileSelector.fill = GridBagConstraints.BOTH;
         gbcLogoFileSelector.insets = new Insets(0, 0, 5, 0);
         gbcLogoFileSelector.gridx = 1;
-        gbcLogoFileSelector.gridy = 22;
+        gbcLogoFileSelector.gridy = 23;
         add(logoFileSelector, gbcLogoFileSelector);
 
         logoFileSelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
@@ -832,7 +835,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelPhotosDirectorySelector.anchor = GridBagConstraints.LINE_END;
         gbcLabelPhotosDirectorySelector.insets = new Insets(0, 0, 0, 5);
         gbcLabelPhotosDirectorySelector.gridx = 0;
-        gbcLabelPhotosDirectorySelector.gridy = 23;
+        gbcLabelPhotosDirectorySelector.gridy = 24;
         add(lblPhotosDirectorySelector, gbcLabelPhotosDirectorySelector);
 
         photosDirectorySelector = new FileSelector(DIRECTORIES_ONLY) {
@@ -850,7 +853,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcPhotosDirectorySelector.fill = GridBagConstraints.BOTH;
         gbcPhotosDirectorySelector.insets = new Insets(0, 0, 5, 0);
         gbcPhotosDirectorySelector.gridx = 1;
-        gbcPhotosDirectorySelector.gridy = 23;
+        gbcPhotosDirectorySelector.gridy = 24;
         add(photosDirectorySelector, gbcPhotosDirectorySelector);
 
         photosDirectorySelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
@@ -860,7 +863,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelPhotoTime.anchor = GridBagConstraints.LINE_END;
         gbcLabelPhotoTime.insets = new Insets(0, 0, 0, 5);
         gbcLabelPhotoTime.gridx = 0;
-        gbcLabelPhotoTime.gridy = 24;
+        gbcLabelPhotoTime.gridy = 25;
         add(lblPhotoTime, gbcLabelPhotoTime);
 
         photoTimeSpinner = new JSpinner();
@@ -870,7 +873,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcPhotoTimeSpinner = new GridBagConstraints();
         gbcPhotoTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcPhotoTimeSpinner.gridx = 1;
-        gbcPhotoTimeSpinner.gridy = 24;
+        gbcPhotoTimeSpinner.gridy = 25;
         add(photoTimeSpinner, gbcPhotoTimeSpinner);
         photoTimeSpinner.addChangeListener(changeListener);
 
@@ -879,7 +882,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelPhotoAnimationDuration.anchor = GridBagConstraints.LINE_END;
         gbcLabelPhotoAnimationDuration.insets = new Insets(0, 0, 0, 5);
         gbcLabelPhotoAnimationDuration.gridx = 0;
-        gbcLabelPhotoAnimationDuration.gridy = 25;
+        gbcLabelPhotoAnimationDuration.gridy = 26;
         add(lblPhotoAnimationDuration, gbcLabelPhotoAnimationDuration);
 
         photoAnimationDurationSpinner = new JSpinner();
@@ -889,7 +892,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcPhotoAnimationDurationSpinner = new GridBagConstraints();
         gbcPhotoAnimationDurationSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcPhotoAnimationDurationSpinner.gridx = 1;
-        gbcPhotoAnimationDurationSpinner.gridy = 25;
+        gbcPhotoAnimationDurationSpinner.gridy = 26;
         add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
         photoAnimationDurationSpinner.addChangeListener(changeListener);
 
@@ -898,7 +901,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelLogoPosition.anchor = GridBagConstraints.LINE_END;
         gbcLabelLogoPosition.insets = new Insets(0, 0, 5, 5);
         gbcLabelLogoPosition.gridx = 0;
-        gbcLabelLogoPosition.gridy = 26;
+        gbcLabelLogoPosition.gridy = 27;
         add(lblLogoPosition, gbcLabelLogoPosition);
 
         logoLocationComboBox = new JComboBox<>();
@@ -907,7 +910,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcLogoPositioning = new GridBagConstraints();
         gbcLogoPositioning.fill = GridBagConstraints.HORIZONTAL;
         gbcLogoPositioning.gridx = 1;
-        gbcLogoPositioning.gridy = 26;
+        gbcLogoPositioning.gridy = 27;
         add(logoLocationComboBox, gbcLogoPositioning);
 
         final var lblAttriPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionPosition.label"));
@@ -915,7 +918,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelAttributionPosition.anchor = GridBagConstraints.LINE_END;
         gbcLabelAttributionPosition.insets = new Insets(0, 0, 5, 5);
         gbcLabelAttributionPosition.gridx = 0;
-        gbcLabelAttributionPosition.gridy = 27;
+        gbcLabelAttributionPosition.gridy = 28;
         add(lblAttriPosition, gbcLabelAttributionPosition);
 
         attriLocationComboBox = new JComboBox<>();
@@ -924,7 +927,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcAttributionPositioning = new GridBagConstraints();
         gbcAttributionPositioning.fill = GridBagConstraints.HORIZONTAL;
         gbcAttributionPositioning.gridx = 1;
-        gbcAttributionPositioning.gridy = 27;
+        gbcAttributionPositioning.gridy = 28;
         add(attriLocationComboBox, gbcAttributionPositioning);
 
         final var lblinfoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.InformationPosition.label"));
@@ -932,7 +935,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelInfoPosition.anchor = GridBagConstraints.LINE_END;
         gbcLabelInfoPosition.insets = new Insets(0, 0, 5, 5);
         gbcLabelInfoPosition.gridx = 0;
-        gbcLabelInfoPosition.gridy = 28;
+        gbcLabelInfoPosition.gridy = 29;
         add(lblinfoPosition, gbcLabelInfoPosition);
 
         infoLocationComboBox = new JComboBox<>();
@@ -941,7 +944,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcInfoPosition = new GridBagConstraints();
         gbcInfoPosition.fill = GridBagConstraints.HORIZONTAL;
         gbcInfoPosition.gridx = 1;
-        gbcInfoPosition.gridy = 28;
+        gbcInfoPosition.gridy = 29;
         add(infoLocationComboBox, gbcInfoPosition);
 
         final var lblFont = new JLabel(resourceBundle.getString("ui.panel.generalsettings.font.label"));
@@ -949,7 +952,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelFont.anchor = GridBagConstraints.LINE_END;
         gbcLabelFont.insets = new Insets(0, 0, 5, 5);
         gbcLabelFont.gridx = 0;
-        gbcLabelFont.gridy = 29;
+        gbcLabelFont.gridy = 30;
         add(lblFont, gbcLabelFont);
 
         fontSelector = new FontSelector();
@@ -957,7 +960,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcFontName = new GridBagConstraints();
         gbcFontName.fill = GridBagConstraints.HORIZONTAL;
         gbcFontName.gridx = 1;
-        gbcFontName.gridy = 29;
+        gbcFontName.gridy = 30;
         add(fontSelector, gbcFontName);
 
         final var lblSpeedUnit = new JLabel(resourceBundle.getString("ui.panel.generalsettings.speedunit.label"));
@@ -965,7 +968,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelSpeedUnit.anchor = GridBagConstraints.LINE_END;
         gbcLabelSpeedUnit.insets = new Insets(0, 0, 5, 5);
         gbcLabelSpeedUnit.gridx = 0;
-        gbcLabelSpeedUnit.gridy = 30;
+        gbcLabelSpeedUnit.gridy = 31;
         add(lblSpeedUnit, gbcLabelSpeedUnit);
 
         speedUnitComboBox = new JComboBox<>();
@@ -974,8 +977,31 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcSpeedUnit = new GridBagConstraints();
         gbcSpeedUnit.fill = GridBagConstraints.HORIZONTAL;
         gbcSpeedUnit.gridx = 1;
-        gbcSpeedUnit.gridy = 30;
+        gbcSpeedUnit.gridy = 31;
         add(speedUnitComboBox, gbcSpeedUnit);
+    }
+
+    private FileSelector createImageFileSelector() {
+         return new FileSelector(FILES_ONLY) {
+            @Serial
+            private static final long serialVersionUID = 7335143013605319472L;
+
+            @Override
+            protected Type configure(final JFileChooser imageFileChooser) {
+                imageFileChooser.setAcceptAllFileFilterUsed(false);
+                imageFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter(resourceBundle.getString("ui.panel.generalsettings.image.format.all"),
+                                "jpg", "png")); //NON-NLS
+                imageFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter(resourceBundle.getString("ui.panel.generalsettings.image.format.jpeg"),
+                                "jpg")); //NON-NLS
+                imageFileChooser.addChoosableFileFilter(
+                        new FileNameExtensionFilter(resourceBundle.getString("ui.panel.generalsettings.image.format.png"),
+                                "png")); //NON-NLS
+                return Type.OPEN;
+            }
+        };
+
     }
 
     private void setVideoSize(final int width, final int height) {
@@ -1035,6 +1061,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         markerSizeSpinner.setValue(c.getMarkerSize());
         waypointSizeSpinner.setValue(c.getWaypointSize());
         backgroundColorSelector.setColor(c.getBackgroundColor());
+        backgroundImageSelector.setFilename(c.getBackgroundImage() != null ? c.getBackgroundImage().toString() : "");
         flashbackColorSelector.setColor(c.getFlashbackColor());
         flashbackDurationSpinner.setValue(c.getFlashbackDuration());
         logoLocationComboBox.setSelectedItem(c.getLogoPosition() != null ? c.getLogoPosition() : Position.TOP_LEFT);
@@ -1074,6 +1101,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .informationPosition((Position) infoLocationComboBox.getSelectedItem())
                 .skipIdle(skipIdleCheckBox.isSelected())
                 .backgroundColor(backgroundColorSelector.getColor())
+                .backgroundImage(new File(backgroundImageSelector.getFilename()))
                 .flashbackColor(flashbackColorSelector.getColor())
                 .flashbackDuration((Long) flashbackDurationSpinner.getValue())
                 .output(new File(outputFileSelector.getFilename()))

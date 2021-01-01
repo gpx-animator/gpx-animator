@@ -43,9 +43,14 @@ public final class MapUtil {
 
 
     @SuppressWarnings("checkstyle:ParameterNumber") // TODO This is too much and just a temporary solution not to break the build...
-    public static void drawMap(final BufferedImage bi, final String tmsUrlTemplate, final float backgroundMapVisibility, final int zoom,
+    public static void drawMap(final BufferedImage bi, final String tmsUrlTemplate, final float backgroundMapVisibility, final Integer zoom,
                                final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc)
             throws UserException {
+
+        if (tmsUrlTemplate == null || backgroundMapVisibility <= 0.0) {
+            // no map defined or map should not be visible
+            return;
+        }
 
         final var resourceBundle = Preferences.getResourceBundle();
 

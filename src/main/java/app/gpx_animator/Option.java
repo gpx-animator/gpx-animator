@@ -41,6 +41,7 @@ public enum Option {
     TOTAL_TIME("total-time"),
     KEEP_IDLE("keep-idle"),
     BACKGROUND_COLOR("background-color"),
+    BACKGROUND_IMAGE("background-image"),
     FLASHBACK_COLOR("flashback-color"),
     FLASHBACK_DURATION("flashback-duration"),
     KEEP_LAST_FRAME("keep-last-frame"),

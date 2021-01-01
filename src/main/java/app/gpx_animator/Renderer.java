@@ -17,6 +17,7 @@ package app.gpx_animator;
 import app.gpx_animator.frameWriter.FileFrameWriter;
 import app.gpx_animator.frameWriter.FrameWriter;
 import app.gpx_animator.frameWriter.VideoFrameWriter;
+import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -304,14 +305,40 @@ public final class Renderer {
     }
 
     private void drawBackground(final RenderingContext rc, final Integer zoom, final BufferedImage bi, final Graphics2D ga) throws UserException {
-        if (cfg.getTmsUrlTemplate() == null) {
-            final var backgroundColor = cfg.getBackgroundColor();
-            ga.setColor(backgroundColor);
-            ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
-        } else {
-            MapUtil.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
-        }
+        drawBackgroundColor(bi, ga);
+        drawBackgroundImage(bi);
+        drawBackgroundMap(rc, zoom, bi);
         drawLogo(bi);
+    }
+
+    private void drawBackgroundColor(final BufferedImage bi, final Graphics2D ga) {
+        final var backgroundColor = cfg.getBackgroundColor();
+        ga.setColor(backgroundColor);
+        ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+    }
+
+    private void drawBackgroundImage(final BufferedImage bi) throws UserException {
+        final var backgroundImage = cfg.getBackgroundImage();
+        if (backgroundImage != null && backgroundImage.exists()) {
+            final BufferedImage image;
+            try {
+                image = ImageIO.read(backgroundImage);
+            } catch (final IOException e) {
+                throw new UserException("Can't read background image: ".concat(e.getMessage()));
+            }
+
+            var scaledImage = image.getWidth() <= bi.getWidth() && image.getHeight() <= bi.getHeight() ? image
+                    : Scalr.resize(Scalr.resize(image,
+                            Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, bi.getWidth()),
+                            Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, bi.getHeight());
+
+            final var g2 = getGraphics(bi);
+            g2.drawImage(scaledImage, 0, 0, scaledImage.getWidth(), scaledImage.getHeight(), null);
+        }
+    }
+
+    private void drawBackgroundMap(final RenderingContext rc, final Integer zoom, final BufferedImage bi) throws UserException {
+        MapUtil.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
     }
 
     private void drawLogo(final BufferedImage bi) throws UserException {

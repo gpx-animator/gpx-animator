@@ -33,7 +33,9 @@ public final class Help {
         w.writeOptionHelp(Option.ATTRIBUTION, "text", false, cfg.getAttribution()); //NON-NLS
         w.writeOptionHelp(Option.ATTRIBUTION_POSITION, "position", false, cfg.getAttributionPosition()); //NON-NLS
         w.writeOptionHelp(Option.ATTRIBUTION_MARGIN, "attribution-margin", false, cfg.getAttributionMargin()); //NON-NLS
-        w.writeOptionHelp(Option.BACKGROUND_MAP_VISIBILITY, "visibility", false, cfg.getBackgroundMapVisibility()); //NON-NLS
+        w.writeOptionHelp(Option.BACKGROUND_COLOR, "background-color", false, cfg.getBackgroundColor()); // NON-NLS
+        w.writeOptionHelp(Option.BACKGROUND_IMAGE, "background-image", false, cfg.getBackgroundImage()); // NON-NLS
+        w.writeOptionHelp(Option.BACKGROUND_MAP_VISIBILITY, "background-map-visibility", false, cfg.getBackgroundMapVisibility()); //NON-NLS
         w.writeOptionHelp(Option.COLOR, "color", true, resourceBundle.getString("help.option.color.default")); //NON-NLS
         w.writeOptionHelp(Option.FLASHBACK_COLOR, "ARGBcolor", false, "opaque white - #ffffffff"); // TODO cfg.getFlashbackColor()  NON-NLS
         w.writeOptionHelp(Option.FLASHBACK_DURATION, "duration", false, cfg.getFlashbackDuration()); //NON-NLS
@@ -68,7 +70,7 @@ public final class Help {
         w.writeOptionHelp(Option.TAIL_DURATION, "time", false, cfg.getTailDuration()); //NON-NLS
         w.writeOptionHelp(Option.TAIL_COLOR, "tail-color", false, cfg.getTailColor()); //NON-NLS
         w.writeOptionHelp(Option.TIME_OFFSET, "milliseconds", true, tc.getTimeOffset()); //NON-NLS
-        w.writeOptionHelp(Option.TMS_URL_TEMPLATE, "template", false, cfg.getTmsUrlTemplate()); //NON-NLS
+        w.writeOptionHelp(Option.TMS_URL_TEMPLATE, "tms-url-template", false, cfg.getTmsUrlTemplate()); //NON-NLS
         w.writeOptionHelp(Option.TOTAL_TIME, "time", false, cfg.getTotalTime()); //NON-NLS
         w.writeOptionHelp(Option.SPEED_UNIT, "speed", false, cfg.getSpeedUnit()); //NON-NLS
         w.writeOptionHelp(Option.VIEWPORT_WIDTH, "viewport-width", false, cfg.getViewportWidth()); //NON-NLS

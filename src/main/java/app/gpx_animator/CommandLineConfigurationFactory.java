@@ -77,6 +77,7 @@ public final class CommandLineConfigurationFactory {
                             final long lv = Long.decode(args[++i]);
                             cfg.backgroundColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
                         }
+                        case BACKGROUND_IMAGE -> cfg.backgroundImage(new File(args[++i]));
                         case FLASHBACK_COLOR -> {
                             final long lv1 = Long.decode(args[++i]);
                             cfg.flashbackColor(new Color(lv1 < Integer.MAX_VALUE ? (int) lv1 : (int) (0xffffffff00000000L | lv1), true));

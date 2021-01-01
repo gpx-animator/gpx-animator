@@ -67,6 +67,7 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
+    private File backgroundImage;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color flashbackColor;
@@ -119,7 +120,7 @@ public final class Configuration {
             final Integer viewportWidth, final Integer viewportHeight, final Integer viewportInertia,
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
-            final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
+            final Color backgroundColor, final File backgroundImage, final Color flashbackColor, final Long flashbackDuration,
             final boolean preDrawTrack, final Color preDrawTrackColor,
             final Long keepLastFrame, final File output, final String attribution, final SpeedUnit speedUnit,
             final Font font, final Double markerSize, final Double waypointSize,
@@ -147,6 +148,7 @@ public final class Configuration {
         this.preDrawTrack = preDrawTrack;
         this.preDrawTrackColor = preDrawTrackColor;
         this.backgroundColor = backgroundColor;
+        this.backgroundImage = backgroundImage;
         this.flashbackColor = flashbackColor;
         this.flashbackDuration = flashbackDuration;
         this.keepLastFrame = keepLastFrame;
@@ -250,6 +252,10 @@ public final class Configuration {
 
     public Color getBackgroundColor() {
         return backgroundColor;
+    }
+
+    public File getBackgroundImage() {
+        return backgroundImage;
     }
 
     public Color getFlashbackColor() {
@@ -366,6 +372,7 @@ public final class Configuration {
         private boolean preDrawTrack = false;
         private Color preDrawTrackColor = DEFAULT_PREDRAW_TRACK_COLOR;
         private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
+        private File backgroundImage;
         private Color flashbackColor = Color.white;
         private Long flashbackDuration = 250L;
         private Long keepLastFrame;
@@ -396,7 +403,7 @@ public final class Configuration {
                     viewportWidth, viewportHeight, viewportInertia,
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
-                    skipIdle, backgroundColor, flashbackColor, flashbackDuration,
+                    skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
                     preDrawTrack, preDrawTrackColor,
                     keepLastFrame, output, attribution, speedUnit,
                     font, markerSize, waypointSize,
@@ -486,6 +493,11 @@ public final class Configuration {
 
         public Builder backgroundColor(final Color backgroundColor) {
             this.backgroundColor = backgroundColor;
+            return this;
+        }
+
+        public Builder backgroundImage(final File backgroundImage) {
+            this.backgroundImage = backgroundImage;
             return this;
         }
 
