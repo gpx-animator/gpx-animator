@@ -154,11 +154,11 @@ public final class Renderer {
         final int realHeight = calculateRealHeight(scale, toImages);
         LOGGER.info("{}x{};{}", realWidth, realHeight, scale);
 
-        int viewportWidth = cfg.getViewPortWidth() == null ? realWidth : cfg.getViewPortWidth();
+        int viewportWidth = cfg.getViewportWidth() == null ? realWidth : cfg.getViewportWidth();
         if (viewportWidth > realWidth) {
             viewportWidth = realWidth;
         }
-        int viewportHeight = cfg.getViewPortHeight() == null ? realHeight : cfg.getViewPortHeight();
+        int viewportHeight = cfg.getViewportHeight() == null ? realHeight : cfg.getViewportHeight();
         if (viewportHeight > realHeight) {
             viewportHeight = realHeight;
         }
@@ -264,13 +264,13 @@ public final class Renderer {
         // 1 element to the end of the queue, except on the first invocation, in
         // which case it fills up the entire queue with just the first marker.
         // This prevents jitter in the beginning of the movie
-        while (this.recentMarkers.size() < (cfg.getViewPortInertia() + 1)) {
+        while (this.recentMarkers.size() < (cfg.getViewportInertia() + 1)) {
             this.recentMarkers.add(marker);
             recentMarkersXSum += marker.getX();
             recentMarkersYSum += marker.getY();
         }
 
-        while (this.recentMarkers.size() > cfg.getViewPortInertia()) {
+        while (this.recentMarkers.size() > cfg.getViewportInertia()) {
             final Point2D m = this.recentMarkers.removeFirst();
             recentMarkersXSum -= m.getX();
             recentMarkersYSum -= m.getY();

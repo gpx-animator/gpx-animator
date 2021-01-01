@@ -187,15 +187,15 @@ public final class Configuration {
         return height;
     }
 
-    public Integer getViewPortWidth() {
+    public Integer getViewportWidth() {
         return viewportWidth;
     }
 
-    public Integer getViewPortHeight() {
+    public Integer getViewportHeight() {
         return viewportHeight;
     }
 
-    public Integer getViewPortInertia() {
+    public Integer getViewportInertia() {
         return viewportInertia;
     }
 

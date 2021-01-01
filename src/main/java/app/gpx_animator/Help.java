@@ -72,9 +72,9 @@ public final class Help {
         w.writeOptionHelp(Option.TMS_URL_TEMPLATE, "template", false, cfg.getTmsUrlTemplate()); //NON-NLS
         w.writeOptionHelp(Option.TOTAL_TIME, "time", false, cfg.getTotalTime()); //NON-NLS
         w.writeOptionHelp(Option.SPEED_UNIT, "speed", false, cfg.getSpeedUnit()); //NON-NLS
-        w.writeOptionHelp(Option.VIEWPORT_WIDTH, "viewport-width", false, cfg.getViewPortWidth()); //NON-NLS
-        w.writeOptionHelp(Option.VIEWPORT_HEIGHT, "viewport-height", false, cfg.getViewPortHeight()); //NON-NLS
-        w.writeOptionHelp(Option.VIEWPORT_INERTIA, "viewport-inertia", false, cfg.getViewPortInertia()); //NON-NLS
+        w.writeOptionHelp(Option.VIEWPORT_WIDTH, "viewport-width", false, cfg.getViewportWidth()); //NON-NLS
+        w.writeOptionHelp(Option.VIEWPORT_HEIGHT, "viewport-height", false, cfg.getViewportHeight()); //NON-NLS
+        w.writeOptionHelp(Option.VIEWPORT_INERTIA, "viewport-inertia", false, cfg.getViewportInertia()); //NON-NLS
         w.writeOptionHelp(Option.WAYPOINT_SIZE, "size", false, cfg.getWaypointSize()); //NON-NLS
         w.writeOptionHelp(Option.WIDTH, "width", false, "(800)"); // TODO cfg.getWidth() NON-NLS
         w.writeOptionHelp(Option.ZOOM, "zoom", false, cfg.getZoom()); //NON-NLS
