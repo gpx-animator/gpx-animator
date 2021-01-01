@@ -50,7 +50,7 @@ public final class ColorSelector extends JPanel {
      * Create the panel.
      */
     public ColorSelector() {
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+        final var resourceBundle = Preferences.getResourceBundle();
 
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
@@ -61,15 +61,15 @@ public final class ColorSelector extends JPanel {
         add(colorTextField);
         colorTextField.setColumns(10);
 
-        final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
+        final var rigidArea = Box.createRigidArea(new Dimension(5, 0));
         add(rigidArea);
 
         selectButton = new JButton(resourceBundle.getString("ui.dialog.color.button.select"));
         selectButton.addActionListener(e -> {
-            final JColorChooser chooserPane = new JColorChooser();
+            final var chooserPane = new JColorChooser();
             chooserPane.setColor(colorTextField.getBackground());
             final ActionListener okListener = e1 -> setColor(chooserPane.getColor());
-            final JDialog colorChooser = JColorChooser.createDialog(
+            final var colorChooser = JColorChooser.createDialog(
                     ColorSelector.this, resourceBundle.getString("ui.dialog.color.title"), true, chooserPane, okListener, null);
             colorChooser.setVisible(true);
         });
@@ -82,9 +82,9 @@ public final class ColorSelector extends JPanel {
     }
 
     public void setColor(final Color color) {
-        final Color oldColor = colorTextField.getBackground();
+        final var oldColor = colorTextField.getBackground();
         colorTextField.setBackground(color);
-        final double l = color.getRed() / 255.0 * 0.299 + color.getGreen() / 255.0 * 0.587 + color.getBlue() / 255.0 * 0.114;
+        final var l = color.getRed() / 255.0 * 0.299 + color.getGreen() / 255.0 * 0.587 + color.getBlue() / 255.0 * 0.114;
         colorTextField.setForeground(l > 0.5 ? Color.BLACK : Color.WHITE);
         colorTextField.setText("#".concat(Integer.toHexString(color.getRGB()).toUpperCase(Locale.getDefault())));
         firePropertyChange(PROPERTY_COLOR, oldColor, color); //NON-NLS

@@ -26,10 +26,10 @@ public final class Help {
 
     @SuppressWarnings("DuplicateStringLiteralInspection")
     public static void printHelp(final OptionHelpWriter w) {
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+        final var resourceBundle = Preferences.getResourceBundle();
 
-        final Configuration cfg = Configuration.createBuilder().build();
-        final TrackConfiguration tc = TrackConfiguration.createBuilder().build();
+        final var cfg = Configuration.createBuilder().build();
+        final var tc = TrackConfiguration.createBuilder().build();
 
         w.writeOptionHelp(Option.ATTRIBUTION, "text", false, cfg.getAttribution()); //NON-NLS
         w.writeOptionHelp(Option.ATTRIBUTION_POSITION, "position", false, cfg.getAttributionPosition()); //NON-NLS
@@ -94,7 +94,7 @@ public final class Help {
 
         @Override
         public void writeOptionHelp(final Option option, final String argument, final boolean track, final Object defaultValue) {
-            final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+            final var resourceBundle = Preferences.getResourceBundle();
 
             pw.print("--");
             pw.print(option.getName());

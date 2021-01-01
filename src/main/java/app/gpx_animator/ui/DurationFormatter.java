@@ -43,22 +43,22 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
         }
 
         @SuppressWarnings("RegExpAnonymousGroup") // This regex is tested and I don't want to rewrite it which may potentionally break it.
-        final Pattern pattern = Pattern.compile("\\s*"
+        final var pattern = Pattern.compile("\\s*"
                 + "(?:(-?\\d+)\\s*d\\s*)?"
                 + "(?:(-?\\d+)\\s*h\\s*)?"
                 + "(?:(-?\\d+)\\s*m\\s*)?"
                 + "(?:(-?\\d+)\\s*s\\s*)?"
                 + "(?:(-?\\d+)\\s*ms\\s*)?");
 
-        final Matcher matcher = pattern.matcher(text);
+        final var matcher = pattern.matcher(text);
 
         if (matcher.matches()) {
             long result = 0;
             long mul = 1;
 
-            final long[] multiplier = new long[]{1, 1000, 60, 60, 24};
+            final var multiplier = new long[]{1, 1000, 60, 60, 24};
 
-            for (int i = 5; i > 0; i--) {
+            for (var i = 5; i > 0; i--) {
                 mul *= multiplier[5 - i];
                 if (matcher.group(i) != null) {
                     result += Long.parseLong(matcher.group(i)) * mul;
@@ -73,7 +73,7 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
     }
 
     private boolean isValid(final Object value) {
-        boolean isValid = true;
+        var isValid = true;
         if (value == null) {
             isValid = false;
         }
@@ -81,9 +81,9 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
     }
 
     private String getDurationAsText(final long duration) {
-        final StringBuilder sb = new StringBuilder();
+        final var sb = new StringBuilder();
 
-        long l = duration;
+        var l = duration;
 
         sb.insert(0, "ms"); //NON-NLS
         sb.insert(0, l % 1000);

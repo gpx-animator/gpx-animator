@@ -51,8 +51,8 @@ public final class Photos {
     private static final String SYSTEM_ZONE_OFFSET;
 
     static {
-        final ZonedDateTime dateTime = ZonedDateTime.now();
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("x"); //NON-NLS
+        final var dateTime = ZonedDateTime.now();
+        final var formatter = DateTimeFormatter.ofPattern("x"); //NON-NLS
         SYSTEM_ZONE_OFFSET = dateTime.format(formatter);
     }
 
@@ -64,10 +64,10 @@ public final class Photos {
         if (dirname == null || dirname.isBlank()) {
             allPhotos = new HashMap<>();
         } else {
-            final File directory = new File(dirname);
+            final var directory = new File(dirname);
             if (directory.isDirectory()) {
-                final File[] files = directory.listFiles((dir, name) -> {
-                    final String lowerCaseName = name.toLowerCase(Locale.getDefault());
+                final var files = directory.listFiles((dir, name) -> {
+                    final var lowerCaseName = name.toLowerCase(Locale.getDefault());
                     return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png"); //NON-NLS
                 });
                 if (files != null) {
@@ -100,12 +100,12 @@ public final class Photos {
 
     private Long timeOfPhotoInMilliSeconds(final File file) {
         try {
-            final Metadata metadata = ImageMetadataReader.readMetadata(file);
-            final ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
-            final String zoneOffset = directory.getString(36881) != null ? directory.getString(36881) : SYSTEM_ZONE_OFFSET;
-            final String dateTimeString = directory.getString(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)
+            final var metadata = ImageMetadataReader.readMetadata(file);
+            final var directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
+            final var zoneOffset = directory.getString(36881) != null ? directory.getString(36881) : SYSTEM_ZONE_OFFSET;
+            final var dateTimeString = directory.getString(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)
                     .concat(" ").concat(zoneOffset.replace(":", ""));
-            final ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString,
+            final var zonedDateTime = ZonedDateTime.parse(dateTimeString,
                     DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x")); //NON-NLS
             return zonedDateTime.toEpochSecond() * 1_000;
         } catch (ImageProcessingException | IOException | NullPointerException e) { // NOPMD -- NPEs can happen quite often in image metadata handling
@@ -119,19 +119,19 @@ public final class Photos {
                                     final RenderingContext rc, final int pct) {
         rc.setProgress1(pct, String.format(resourceBundle.getString("photos.progress.rendering"), photo.getFile().getName()));
 
-        final BufferedImage image = readPhoto(photo, bi.getWidth(), bi.getHeight());
+        final var image = readPhoto(photo, bi.getWidth(), bi.getHeight());
         if (image != null) {
-            final BufferedImage bi2 = Utils.deepCopy(bi);
-            final Graphics2D g2d = bi2.createGraphics();
-            final int posX = (bi.getWidth() - image.getWidth()) / 2;
-            final int posY = (bi.getHeight() - image.getHeight()) / 2;
+            final var bi2 = Utils.deepCopy(bi);
+            final var g2d = bi2.createGraphics();
+            final var posX = (bi.getWidth() - image.getWidth()) / 2;
+            final var posY = (bi.getHeight() - image.getHeight()) / 2;
             g2d.drawImage(image, posX, posY, null);
             g2d.dispose();
 
             final long ms = cfg.getPhotoTime();
-            final long fps = Double.valueOf(cfg.getFps()).longValue();
-            final long frames = ms * fps / 1_000;
-            final long inOutFrames = cfg.getPhotoAnimationDuration() * fps / 1_000;
+            final var fps = Double.valueOf(cfg.getFps()).longValue();
+            final var frames = ms * fps / 1_000;
+            final var inOutFrames = cfg.getPhotoAnimationDuration() * fps / 1_000;
 
             try {
                 renderAnimationIn(bi, frameWriter, image, inOutFrames);
@@ -154,7 +154,7 @@ public final class Photos {
 
     private void renderAnimationOut(final BufferedImage bi, final FrameWriter frameWriter, final BufferedImage image, final long frames)
             throws UserException {
-        for (long frame = frames; frame >= 1; frame--) {
+        for (var frame = frames; frame >= 1; frame--) {
             renderAnimation(bi, frameWriter, image, frames, frame);
         }
     }
@@ -162,15 +162,15 @@ public final class Photos {
     private void renderAnimation(final BufferedImage bi, final FrameWriter frameWriter,
                                  final BufferedImage image, final long frames, final long frame)
             throws UserException {
-        final int width = (int) (image.getWidth() * frame / frames);
-        final int height = (int) (image.getHeight() * frame / frames);
-        final BufferedImage scaledImage = scaleImage(image, width, height);
+        final var width = (int) (image.getWidth() * frame / frames);
+        final var height = (int) (image.getHeight() * frame / frames);
+        final var scaledImage = scaleImage(image, width, height);
 
-        final int posX = (bi.getWidth() - scaledImage.getWidth()) / 2;
-        final int posY = (bi.getHeight() - scaledImage.getHeight()) / 2;
+        final var posX = (bi.getWidth() - scaledImage.getWidth()) / 2;
+        final var posY = (bi.getHeight() - scaledImage.getHeight()) / 2;
 
-        final BufferedImage bi2 = Utils.deepCopy(bi);
-        final Graphics2D g2d = bi2.createGraphics();
+        final var bi2 = Utils.deepCopy(bi);
+        final var g2d = bi2.createGraphics();
 
         g2d.drawImage(scaledImage, posX, posY, null);
         g2d.dispose();
@@ -180,11 +180,11 @@ public final class Photos {
 
     private BufferedImage readPhoto(final Photo photo, final int width, final int height) {
         try {
-            final BufferedImage image = ImageIO.read(photo.getFile());
-            final int scaledWidth = Math.round(width * 0.7f);
-            final int scaledHeight = Math.round(height * 0.7f);
-            final BufferedImage scaledImage = scaleImage(image, scaledWidth, scaledHeight);
-            final BufferedImage borderedImage = addBorder(scaledImage);
+            final var image = ImageIO.read(photo.getFile());
+            final var scaledWidth = Math.round(width * 0.7f);
+            final var scaledHeight = Math.round(height * 0.7f);
+            final var scaledImage = scaleImage(image, scaledWidth, scaledHeight);
+            final var borderedImage = addBorder(scaledImage);
             borderedImage.flush();
             return borderedImage;
         } catch (final IOException e) {
@@ -194,16 +194,16 @@ public final class Photos {
     }
 
     private static BufferedImage addBorder(final BufferedImage image) {
-        int borderWidth = image.getWidth() / 15;
-        int borderHeight = image.getHeight() / 15;
-        int borderSize = Math.min(borderWidth, borderHeight);
-        int outerBorderSize = borderSize / 5;
-        final BufferedImage border = new BufferedImage(
+        var borderWidth = image.getWidth() / 15;
+        var borderHeight = image.getHeight() / 15;
+        var borderSize = Math.min(borderWidth, borderHeight);
+        var outerBorderSize = borderSize / 5;
+        final var border = new BufferedImage(
                 image.getWidth() + 2 * borderSize,
                 image.getHeight() + 2 * borderSize,
                 image.getType());
 
-        final Graphics2D g2d = border.createGraphics();
+        final var g2d = border.createGraphics();
         g2d.setColor(Color.DARK_GRAY);
         g2d.fillRect(0, 0, border.getWidth(), border.getHeight());
         g2d.setColor(Color.WHITE);
@@ -223,7 +223,7 @@ public final class Photos {
 
     public void render(final Long gpsTime, final Configuration cfg, final BufferedImage bi,
                        final FrameWriter frameWriter, final RenderingContext rc, final int pct) {
-        final List<Long> keys = allPhotos.keySet().stream()
+        final var keys = allPhotos.keySet().stream()
                 .filter(photoTime -> gpsTime >= photoTime)
                 .collect(Collectors.toList());
         if (!keys.isEmpty()) {

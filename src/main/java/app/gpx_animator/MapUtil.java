@@ -50,46 +50,46 @@ public final class MapUtil {
                                final double minX, final double maxX, final double minY, final double maxY, final RenderingContext rc)
             throws UserException {
 
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+        final var resourceBundle = Preferences.getResourceBundle();
 
-        final Graphics2D ga = (Graphics2D) bi.getGraphics();
+        final var ga = (Graphics2D) bi.getGraphics();
 
-        final double tileDblX = xToTileX(zoom, minX);
-        final int tileX = (int) Math.floor(tileDblX);
-        final int offsetX = (int) Math.floor(256.0 * (tileX - tileDblX));
+        final var tileDblX = xToTileX(zoom, minX);
+        final var tileX = (int) Math.floor(tileDblX);
+        final var offsetX = (int) Math.floor(256.0 * (tileX - tileDblX));
 
-        final double tileDblY = yToTileY(zoom, minY);
-        final int tileY = (int) Math.floor(tileDblY);
-        final int offsetY = (int) Math.floor(256.0 * (tileDblY - tileY));
+        final var tileDblY = yToTileY(zoom, minY);
+        final var tileY = (int) Math.floor(tileDblY);
+        final var offsetY = (int) Math.floor(256.0 * (tileDblY - tileY));
 
-        final int maxXtile = (int) Math.floor(xToTileX(zoom, maxX));
-        final int maxYtile = (int) Math.floor(yToTileY(zoom, maxY));
+        final var maxXtile = (int) Math.floor(xToTileX(zoom, maxX));
+        final var maxYtile = (int) Math.floor(yToTileY(zoom, maxY));
 
-        final int total = (maxXtile - tileX + 1) * (tileY - maxYtile + 1);
-        int i = 0;
+        final var total = (maxXtile - tileX + 1) * (tileY - maxYtile + 1);
+        var i = 0;
 
-        final Matcher m = SWITCH_PATTERN.matcher(tmsUrlTemplate); // note that only one switch in pattern is supported
-        final String[] options = m.find() ? m.group(1).split(",") : null;
+        final var m = SWITCH_PATTERN.matcher(tmsUrlTemplate); // note that only one switch in pattern is supported
+        final var options = m.find() ? m.group(1).split(",") : null;
 
-        final String tileCacheDir = Preferences.getTileCacheDir();
-        final long tileCacheTimeLimit = Preferences.getTileCacheTimeLimit();
+        final var tileCacheDir = Preferences.getTileCacheDir();
+        final var tileCacheTimeLimit = Preferences.getTileCacheTimeLimit();
 
-        for (int x = tileX; x <= maxXtile; x++) {
-            for (int y = tileY; y >= maxYtile; y--) {
+        for (var x = tileX; x <= maxXtile; x++) {
+            for (var y = tileY; y >= maxYtile; y--) {
                 if (rc.isCancelled1()) {
                     return;
                 }
 
                 i++;
 
-                String url = tmsUrlTemplate
+                var url = tmsUrlTemplate
                         .replace("{zoom}", Integer.toString(zoom)) //NON-NLS
                         .replace("{x}", Integer.toString(x)) //NON-NLS
                         .replace("{y}", Integer.toString(y)); //NON-NLS
 
                 if (options != null) {
-                    final StringBuffer sb = new StringBuffer();
-                    final Matcher matcher = SWITCH_PATTERN.matcher(url);
+                    final var sb = new StringBuffer();
+                    final var matcher = SWITCH_PATTERN.matcher(url);
                     if (matcher.find()) {
                         matcher.appendReplacement(sb, options[i % options.length]);
                     }
@@ -99,10 +99,10 @@ public final class MapUtil {
 
                 rc.setProgress1((int) (100.0 * i / total), String.format(resourceBundle.getString("map.loadingtiles.progress"), i, total));
 
-                final BufferedImage tile = TileCache.getTile(url, tileCacheDir, tileCacheTimeLimit);
+                final var tile = TileCache.getTile(url, tileCacheDir, tileCacheTimeLimit);
 
                 // convert to RGB format
-                final BufferedImage tile1 = new BufferedImage(tile.getWidth(), tile.getHeight(), BufferedImage.TYPE_INT_RGB);
+                final var tile1 = new BufferedImage(tile.getWidth(), tile.getHeight(), BufferedImage.TYPE_INT_RGB);
                 tile1.getGraphics().drawImage(tile, 0, 0, null);
 
                 ga.drawImage(tile1,
@@ -144,7 +144,7 @@ public final class MapUtil {
     }
 
     public static List<MapTemplate> readMaps() {
-        final SAXParserFactory factory = SAXParserFactory.newInstance();
+        final var factory = SAXParserFactory.newInstance();
         final SAXParser saxParser;
         try {
             saxParser = factory.newSAXParser();
@@ -155,7 +155,7 @@ public final class MapUtil {
         final List<MapTemplate> labeledItems = new ArrayList<>();
 
         try {
-            try (InputStream is = MapUtil.class.getResourceAsStream("/maps.xml")) { //NON-NLS
+            try (var is = MapUtil.class.getResourceAsStream("/maps.xml")) { //NON-NLS
                 saxParser.parse(is, new DefaultHandler() {
                     private final StringBuilder sb = new StringBuilder();
                     private String id;

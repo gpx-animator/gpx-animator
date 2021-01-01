@@ -32,7 +32,7 @@ public final class Main {
         throw new InstantiationException("This is the main class and can't be instantiated!");
     }
 
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         try {
             start(args);
         } catch (final Exception e) {
@@ -41,16 +41,16 @@ public final class Main {
         }
     }
 
-    public static void start(final String[] args) throws Exception {
-        final CommandLineConfigurationFactory cf = new CommandLineConfigurationFactory(args);
-        final Configuration configuration = cf.getConfiguration();
+    public static void start(final String... args) throws Exception {
+        final var cf = new CommandLineConfigurationFactory(args);
+        final var configuration = cf.getConfiguration();
 
         new Thread(TileCache::ageCache).start();
 
         if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
             EventQueue.invokeLater(() -> {
                 try {
-                    final MainFrame frame = new MainFrame();
+                    final var frame = new MainFrame();
                     frame.setVisible(true);
                     frame.setConfiguration(configuration);
                 } catch (final Exception e) {

@@ -27,7 +27,7 @@ public final class DurationSpinnerModelTest {
     @ParameterizedTest
     @MethodSource("generateGetterSetterTestData") //NON-NLS
     public void testValue(final Long value) {
-        final DurationSpinnerModel testee = new DurationSpinnerModel();
+        final var testee = new DurationSpinnerModel();
         testee.setValue(value);
         assertEquals(value, testee.getValue());
     }
@@ -35,7 +35,7 @@ public final class DurationSpinnerModelTest {
     @ParameterizedTest
     @EnumSource(DurationSpinnerModel.Field.class)
     public void testField(final DurationSpinnerModel.Field field) {
-        final DurationSpinnerModel testee = new DurationSpinnerModel();
+        final var testee = new DurationSpinnerModel();
         testee.setField(field);
         assertEquals(field, testee.getField());
     }

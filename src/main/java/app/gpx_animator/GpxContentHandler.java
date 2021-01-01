@@ -77,7 +77,7 @@ final class GpxContentHandler extends DefaultHandler {
         } else if (isEqual(ELEM_WPT, qName)) {
             waypointList.add(new Waypoint(lat, lon, time, name));
         } else if (isEqual(ELEM_TIME, qName)) {
-            final ZonedDateTime dateTime = ZonedDateTime.parse(sb.toString());
+            final var dateTime = ZonedDateTime.parse(sb.toString());
             time = dateTime.toInstant().toEpochMilli();
             sb = null;
         } else if (isEqual(ELEM_NAME, qName)) {

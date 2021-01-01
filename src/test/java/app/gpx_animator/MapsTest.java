@@ -33,23 +33,23 @@ public class MapsTest {
 
     @BeforeAll
     public static void setup() {
-        final String userAgent = String.format("%s %s on %s %s (%s)", //NON-NLS
+        final var userAgent = String.format("%s %s on %s %s (%s)", //NON-NLS
                 Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH);
         System.setProperty("http.agent", userAgent);
     }
 
     @Test
     public void validateMaps() {
-        final Map<String, MapValidation> mapValidations = readValidations();
-        final List<MapTemplate> mapTemplates = MapUtil.readMaps();
+        final var mapValidations = readValidations();
+        final var mapTemplates = MapUtil.readMaps();
 
         final List<MapTemplate> testSkipped = new ArrayList<>();
         final List<MapTemplate> testFailed = new ArrayList<>();
         final List<MapTemplate> testPassed = new ArrayList<>();
 
         mapTemplates.forEach(mapTemplate -> {
-            final String id = mapTemplate.getId();
-            final MapValidation mapValidation = mapValidations.get(id);
+            final var id = mapTemplate.getId();
+            final var mapValidation = mapValidations.get(id);
 
             if (mapValidation == null || mapValidation.getValidationUrls().isEmpty()) {
                 testSkipped.add(mapTemplate);
@@ -68,11 +68,11 @@ public class MapsTest {
     }
 
     private boolean validateMap(final MapTemplate mapTemplate, final MapValidation mapValidation) {
-        boolean okay = true;
+        var okay = true;
 
-        for (final String url : mapValidation.getValidationUrls()) {
+        for (final var url : mapValidation.getValidationUrls()) {
             try {
-                final BufferedImage mapTile = ImageIO.read(new URL(url));
+                final var mapTile = ImageIO.read(new URL(url));
                 if (mapTile == null) {
                     okay = false;
                     LOGGER.error("Failed test for map '{} (ID: {})' with URL '{}': {}",
@@ -89,7 +89,7 @@ public class MapsTest {
     }
 
     public static Map<String, MapValidation> readValidations() {
-        final SAXParserFactory factory = SAXParserFactory.newInstance();
+        final var factory = SAXParserFactory.newInstance();
         final SAXParser saxParser;
         try {
             saxParser = factory.newSAXParser();
@@ -100,7 +100,7 @@ public class MapsTest {
         final Map<String, MapValidation> mapValidations = new HashMap<>();
 
         try {
-            try (InputStream is = MapUtil.class.getResourceAsStream("/maps-tests.xml")) { //NON-NLS
+            try (var is = MapUtil.class.getResourceAsStream("/maps-tests.xml")) { //NON-NLS
                 saxParser.parse(is, new DefaultHandler() {
                     private final StringBuilder sb = new StringBuilder();
                     private String id;

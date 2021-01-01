@@ -73,15 +73,15 @@ public final class TileCache {
     // If either check fails, log a warning rather than delete the file.
     //
     public static void ageCache() {
-        final String tileCacheDir = Preferences.getTileCacheDir();
-        final long tileCacheTimeLimit = Preferences.getTileCacheTimeLimit();
+        final var tileCacheDir = Preferences.getTileCacheDir();
+        final var tileCacheTimeLimit = Preferences.getTileCacheTimeLimit();
         if (cachingEnabled(tileCacheDir)) {
             // Remove any cached tiles that are too old
-            final File cacheDir = new File(tileCacheDir);
-            final File[] files = cacheDir.listFiles();
+            final var cacheDir = new File(tileCacheDir);
+            final var files = cacheDir.listFiles();
             if (files != null) {
-                for (File cacheEntry : files) {
-                    final String cacheFilename = cacheEntry.getName();
+                for (var cacheEntry : files) {
+                    final var cacheFilename = cacheEntry.getName();
                     if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(CACHED_FILE_EXTENSION))) {
                         ageCacheFile(cacheEntry, tileCacheTimeLimit);
                     } else {
@@ -111,7 +111,7 @@ public final class TileCache {
     private static BufferedImage unCachedGetTile(final String url) throws UserException {
         BufferedImage mapTile;
 
-        final String userAgent = String.format("%s %s on %s %s (%s)", //NON-NLS
+        final var userAgent = String.format("%s %s on %s %s (%s)", //NON-NLS
                 Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH);
         System.setProperty("http.agent", userAgent);
         try {
@@ -128,9 +128,9 @@ public final class TileCache {
 
     private static BufferedImage cachedGetTile(final String url, final String tileCacheDir, final Long tileCacheTimeLimit) throws UserException {
         BufferedImage mapTile = null;
-        final String filename = hashName(url).concat(CACHED_FILE_EXTENSION);
-        final String path = tileCacheDir.concat(File.separator).concat(filename);
-        final File cacheFile = new File(path);
+        final var filename = hashName(url).concat(CACHED_FILE_EXTENSION);
+        final var path = tileCacheDir.concat(File.separator).concat(filename);
+        final var cacheFile = new File(path);
 
         // Age out old tile file in cache directory.
         ageCacheFile(cacheFile, tileCacheTimeLimit);
@@ -180,11 +180,11 @@ public final class TileCache {
     // If the cache path does not exist, then we will create it.
     //
     private static boolean cachingEnabled(final String tileCachePath) {
-        boolean result = ((tileCachePath != null) && (tileCachePath.trim().length() > 0));
+        var result = ((tileCachePath != null) && (tileCachePath.trim().length() > 0));
 
         if (result) {
             // Create the cache directory if it doesn't exist
-            final File cacheDir = new File(tileCachePath);
+            final var cacheDir = new File(tileCachePath);
             if (cacheDir.exists()) {
                 result = cacheDir.isDirectory();
             } else {
@@ -201,8 +201,8 @@ public final class TileCache {
     // Check age on a file and remove it if it is too old.
     //
     private static void ageCacheFile(final File cacheFile, final Long tileCacheTimeLimit) {
-        final Date fileDate = new Date(cacheFile.lastModified());
-        long msBetweenDates = new Date().getTime() - fileDate.getTime();
+        final var fileDate = new Date(cacheFile.lastModified());
+        var msBetweenDates = new Date().getTime() - fileDate.getTime();
         if ((msBetweenDates) > tileCacheTimeLimit) {
             if (cacheFile.exists() && !cacheFile.delete()) {
                 //noinspection DuplicateStringLiteralInspection
@@ -222,10 +222,10 @@ public final class TileCache {
         }
     }
 
-    private static String bytesToHex(final byte[] hash) {
-        final StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            final String hex = Integer.toHexString(0xff & b);
+    private static String bytesToHex(final byte... hash) {
+        final var hexString = new StringBuilder();
+        for (var b : hash) {
+            final var hex = Integer.toHexString(0xff & b);
             if (hex.length() == 1) { // NOPMD -- Ignore magic number literal
                 //noinspection MagicCharacter
                 hexString.append('0');

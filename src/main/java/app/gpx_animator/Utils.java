@@ -33,18 +33,18 @@ public final class Utils {
 
     // copied from https://stackoverflow.com/questions/3514158/how-do-you-clone-a-bufferedimage
     public static BufferedImage deepCopy(final BufferedImage bi) {
-        final BufferedImage b = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
-        final Graphics2D g = (Graphics2D) b.getGraphics();
+        final var b = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
+        final var g = (Graphics2D) b.getGraphics();
         g.drawImage(bi, 0, 0, null);
         g.dispose();
         return b;
     }
 
     public static BufferedImage deepCopy(final BufferedImage bi, final Integer x, final Integer y, final Integer width, final Integer height) {
-        final ColorModel cm = bi.getColorModel();
-        final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        final WritableRaster raster = (WritableRaster) bi.getData(new Rectangle(x, y, width, height));
-        final WritableRaster movedRaster = raster.createWritableTranslatedChild(0, 0);
+        final var cm = bi.getColorModel();
+        final var isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        final var raster = (WritableRaster) bi.getData(new Rectangle(x, y, width, height));
+        final var movedRaster = raster.createWritableTranslatedChild(0, 0);
         return new BufferedImage(cm, movedRaster, isAlphaPremultiplied, null);
     }
 

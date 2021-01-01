@@ -36,21 +36,21 @@ public class DurationEditor extends DefaultEditor {
     public DurationEditor(final JSpinner spinner) {
         super(spinner);
 
-        final JFormattedTextField ftf = getTextField();
+        final var ftf = getTextField();
 
         ftf.addCaretListener(e -> {
-            final SpinnerModel model = spinner.getModel();
+            final var model = spinner.getModel();
             if (!(model instanceof DurationSpinnerModel)) {
                 return;
             }
 
-            final DurationSpinnerModel dsm = (DurationSpinnerModel) model;
+            final var dsm = (DurationSpinnerModel) model;
 
             // special hack to select number
             if (!ftf.isValid()) {
-                final Field field = dsm.getField();
+                final var field = dsm.getField();
                 @SuppressWarnings("RegExpAnonymousGroup") // This regex is tested and I don't want to rewrite it which may potentionally break it.
-                final Matcher matcher = Pattern.compile("(\\d+)\\s*" + field.getUnit() + "\\b").matcher(ftf.getText());
+                final var matcher = Pattern.compile("(\\d+)\\s*" + field.getUnit() + "\\b").matcher(ftf.getText());
                 if (matcher.find()) {
                     SwingUtilities.invokeLater(() -> {
                         ftf.setSelectionStart(matcher.start(1));
@@ -61,10 +61,10 @@ public class DurationEditor extends DefaultEditor {
                 return;
             }
 
-            final String text = ftf.getText();
-            final int n = text.length();
+            final var text = ftf.getText();
+            final var n = text.length();
 
-            int i = e.getDot();
+            var i = e.getDot();
 
             while (i < n && !Character.isLowerCase(text.charAt(i))) {
                 i++;
@@ -74,12 +74,12 @@ public class DurationEditor extends DefaultEditor {
                 i--;
             }
 
-            final StringBuilder sb = new StringBuilder();
+            final var sb = new StringBuilder();
             for (; i < n && Character.isLowerCase(text.charAt(i)); i++) {
                 sb.append(text.charAt(i));
             }
 
-            final Field field = Field.fromUnit(sb.toString());
+            final var field = Field.fromUnit(sb.toString());
 
             if (field != null) {
                 dsm.setField(field);

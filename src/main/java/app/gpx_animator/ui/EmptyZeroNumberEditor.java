@@ -32,7 +32,7 @@ public class EmptyZeroNumberEditor extends DefaultEditor {
     public EmptyZeroNumberEditor(final JSpinner spinner, final Class<? extends Number> clazz) {
         super(spinner);
 
-        final JFormattedTextField ftf = getTextField();
+        final var ftf = getTextField();
         ftf.setEditable(true);
         ftf.setFormatterFactory(new DefaultFormatterFactory(new AbstractFormatter() {
             @Serial

@@ -90,23 +90,23 @@ public final class MainFrame extends JFrame {
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     public MainFrame() {
-        final ActionListener addTrackActionListener = new ActionListener() {
+        final var addTrackActionListener = new ActionListener() {
             private float hue = random.nextFloat();
 
             @Override
             public void actionPerformed(final ActionEvent e) {
 
-                final JFileChooser gpxFileChooser = new JFileChooser();
+                final var gpxFileChooser = new JFileChooser();
                 TrackSettingsPanel.configureGpxFileChooser(resourceBundle, gpxFileChooser);
                 gpxFileChooser.setMultiSelectionEnabled(true);
                 gpxFileChooser.setCurrentDirectory(new File(Preferences.getLastWorkingDir()));
 
                 if (gpxFileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-                    final File[] gpxFiles = gpxFileChooser.getSelectedFiles();
+                    final var gpxFiles = gpxFileChooser.getSelectedFiles();
                     if (gpxFiles != null && gpxFiles.length > 0) {
                         Preferences.setLastWorkingDir(gpxFiles[0].getParent());
-                        for (final File gpxFile : gpxFiles) {
-                            final Color trackColor = Preferences.getTrackColorRandom()
+                        for (final var gpxFile : gpxFiles) {
+                            final var trackColor = Preferences.getTrackColorRandom()
                                     ? Color.getHSBColor(hue, 0.8f, 0.8f)
                                     : Preferences.getTrackColorDefault();
 
@@ -149,13 +149,13 @@ public final class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setBounds(100, 100, 800, 750);
 
-        final JMenuBar menuBar = new JMenuBar();
+        final var menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
-        final JMenu mnFile = new JMenu(resourceBundle.getString("ui.mainframe.menu.file"));
+        final var mnFile = new JMenu(resourceBundle.getString("ui.mainframe.menu.file"));
         menuBar.add(mnFile);
 
-        final JMenuItem mntmNew = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.new"));
+        final var mntmNew = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.new"));
         mntmNew.addActionListener(e -> {
             if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -164,13 +164,13 @@ public final class MainFrame extends JFrame {
         });
         mnFile.add(mntmNew);
 
-        final JMenuItem mntmOpen = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.open"));
+        final var mntmOpen = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.open"));
         mntmOpen.addActionListener(e -> {
             if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 fileChooser.setCurrentDirectory(new File(Preferences.getLastWorkingDir()));
                 if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-                    final File fileToOpen = fileChooser.getSelectedFile();
+                    final var fileToOpen = fileChooser.getSelectedFile();
                     Preferences.setLastWorkingDir(fileToOpen.getParent());
                     openFile(fileToOpen);
                 }
@@ -184,7 +184,7 @@ public final class MainFrame extends JFrame {
 
         mnFile.addSeparator();
 
-        final JMenuItem mntmSave = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.save"));
+        final var mntmSave = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.save"));
         mntmSave.addActionListener(e -> {
             if (file == null) {
                 saveAs();
@@ -194,44 +194,44 @@ public final class MainFrame extends JFrame {
         });
         mnFile.add(mntmSave);
 
-        final JMenuItem mntmSaveAs = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.saveas"));
+        final var mntmSaveAs = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.saveas"));
         mntmSaveAs.addActionListener(e -> saveAs());
         mnFile.add(mntmSaveAs);
 
         mnFile.addSeparator();
 
-        final JMenuItem mntmSaveAsDefault = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.defaults.save"));
+        final var mntmSaveAsDefault = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.defaults.save"));
         mntmSaveAsDefault.addActionListener(e -> saveAsDefault());
         mnFile.add(mntmSaveAsDefault);
 
-        final JMenuItem mntmResetDefaults = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.defaults.reset"));
+        final var mntmResetDefaults = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.defaults.reset"));
         mntmResetDefaults.addActionListener(e -> resetDefaults());
         mnFile.add(mntmResetDefaults);
 
         mnFile.addSeparator();
 
-        final JMenuItem preferencesMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.preferences"));
+        final var preferencesMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.preferences"));
         preferencesMenu.addActionListener(e -> SwingUtilities.invokeLater(() -> new PreferencesDialog(this).setVisible(true)));
         mnFile.add(preferencesMenu);
 
         mnFile.addSeparator();
 
-        final JMenuItem mntmExit = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.exit"));
+        final var mntmExit = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.exit"));
         mntmExit.addActionListener(this::exitApplication);
         mnFile.add(mntmExit);
 
-        final JMenu mnTrack = new JMenu(resourceBundle.getString("ui.mainframe.menu.track"));
+        final var mnTrack = new JMenu(resourceBundle.getString("ui.mainframe.menu.track"));
         menuBar.add(mnTrack);
 
-        final JMenuItem mntmAddTrack = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.track.add"));
+        final var mntmAddTrack = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.track.add"));
         mntmAddTrack.addActionListener(addTrackActionListener);
         mnTrack.add(mntmAddTrack);
 
-        final JMenuItem mntmRemoveTrack = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.track.remove"));
+        final var mntmRemoveTrack = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.track.remove"));
         mntmRemoveTrack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                final int index = tabbedPane.getSelectedIndex();
+                final var index = tabbedPane.getSelectedIndex();
                 if (index >= FIXED_TABS) {
                     tabbedPane.remove(index);
                     afterRemove();
@@ -240,11 +240,11 @@ public final class MainFrame extends JFrame {
         });
         mnTrack.add(mntmRemoveTrack);
 
-        final JMenu mnHelp = new JMenu(resourceBundle.getString("ui.mainframe.menu.help"));
+        final var mnHelp = new JMenu(resourceBundle.getString("ui.mainframe.menu.help"));
         menuBar.add(mnHelp);
 
-        final String aboutText = String.format(resourceBundle.getString("ui.mainframe.menu.help.about"), Constants.APPNAME);
-        final JMenuItem mntmAbout = new JMenuItem(aboutText);
+        final var aboutText = String.format(resourceBundle.getString("ui.mainframe.menu.help.about"), Constants.APPNAME);
+        final var mntmAbout = new JMenuItem(aboutText);
         mntmAbout.addActionListener(e -> {
             final Map<String, String> variables = new HashMap<>();
             variables.put("APPNAME", Constants.APPNAME); //NON-NLS
@@ -258,20 +258,20 @@ public final class MainFrame extends JFrame {
         });
         mnHelp.add(mntmAbout);
 
-        final JMenuItem mntmUsage = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.usage"));
+        final var mntmUsage = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.usage"));
         mntmUsage.addActionListener(e -> {
-            final UsageDialog usageDialog = new UsageDialog();
+            final var usageDialog = new UsageDialog();
             usageDialog.setLocationRelativeTo(MainFrame.this);
             usageDialog.setVisible(true);
         });
         mnHelp.add(mntmUsage);
 
-        final JMenuItem mntmFAQ = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.faq"));
+        final var mntmFAQ = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.faq"));
         mntmFAQ.addActionListener(e -> {
-            final String url = "https://gpx-animator.app/#faq"; //NON-NLS
+            final var url = "https://gpx-animator.app/#faq"; //NON-NLS
             try {
-                final String os = System.getProperty("os.name").toLowerCase(Locale.getDefault());
-                final Runtime rt = Runtime.getRuntime();
+                final var os = System.getProperty("os.name").toLowerCase(Locale.getDefault());
+                final var rt = Runtime.getRuntime();
 
                 if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                     Desktop.getDesktop().browse(new URI(url));
@@ -292,8 +292,8 @@ public final class MainFrame extends JFrame {
                             "epiphany", "netscape", "opera", "links", "lynx"}; //NON-NLS
 
                     // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
-                    final StringBuilder cmd = new StringBuilder();
-                    for (int i = 0; i < browsers.length; i++) {
+                    final var cmd = new StringBuilder();
+                    for (var i = 0; i < browsers.length; i++) {
                         cmd.append(i == 0 ? "" : " || ").append(browsers[i]).append(" \"").append(url).append("\" ");
                     }
                     rt.exec(new String[]{"sh", "-c", cmd.toString()});
@@ -309,14 +309,14 @@ public final class MainFrame extends JFrame {
         });
         mnHelp.add(mntmFAQ);
 
-        final JMenuItem changelogMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.changelog"));
+        final var changelogMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.changelog"));
         changelogMenu.addActionListener(e -> SwingUtilities.invokeLater(this::showChangelog));
         mnHelp.add(changelogMenu);
 
-        final JPanel contentPane = new JPanel();
+        final var contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-        final GridBagLayout gblContentPane = new GridBagLayout();
+        final var gblContentPane = new GridBagLayout();
         gblContentPane.columnWidths = new int[]{438, 0};
         gblContentPane.rowHeights = new int[]{264, 0, 0};
         gblContentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
@@ -324,7 +324,7 @@ public final class MainFrame extends JFrame {
         contentPane.setLayout(gblContentPane);
 
         tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        final GridBagConstraints gbcTabbedPane = new GridBagConstraints();
+        final var gbcTabbedPane = new GridBagConstraints();
         gbcTabbedPane.insets = new Insets(0, 0, 5, 0);
         gbcTabbedPane.fill = GridBagConstraints.BOTH;
         gbcTabbedPane.gridx = 0;
@@ -333,7 +333,7 @@ public final class MainFrame extends JFrame {
 
         tabbedPane.addChangeListener(e -> mntmRemoveTrack.setEnabled(tabbedPane.getSelectedIndex() > 0));
 
-        final JScrollPane generalScrollPane = new JScrollPane();
+        final var generalScrollPane = new JScrollPane();
         tabbedPane.addTab(resourceBundle.getString("ui.mainframe.tab.general"), generalScrollPane);
 
         generalSettingsPanel = new GeneralSettingsPanel() {
@@ -348,31 +348,31 @@ public final class MainFrame extends JFrame {
 
         generalScrollPane.setViewportView(generalSettingsPanel);
 
-        final JPanel panel = new JPanel();
-        final GridBagConstraints gbcPanel = new GridBagConstraints();
+        final var panel = new JPanel();
+        final var gbcPanel = new GridBagConstraints();
         gbcPanel.fill = GridBagConstraints.BOTH;
         gbcPanel.gridx = 0;
         gbcPanel.gridy = 1;
         contentPane.add(panel, gbcPanel);
-        final GridBagLayout gblPanel = new GridBagLayout();
+        final var gblPanel = new GridBagLayout();
         gblPanel.columnWidths = new int[]{174, 49, 0, 32, 0};
         gblPanel.rowHeights = new int[]{27, 0};
         gblPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         gblPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
         panel.setLayout(gblPanel);
 
-        final JProgressBar progressBar = new JProgressBar();
+        final var progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
         progressBar.setVisible(false);
-        final GridBagConstraints gbcProgressBar = new GridBagConstraints();
+        final var gbcProgressBar = new GridBagConstraints();
         gbcProgressBar.fill = GridBagConstraints.HORIZONTAL;
         gbcProgressBar.insets = new Insets(0, 0, 0, 5);
         gbcProgressBar.gridx = 0;
         gbcProgressBar.gridy = 0;
         panel.add(progressBar, gbcProgressBar);
 
-        final JButton addTrackButton = new JButton(resourceBundle.getString("ui.mainframe.button.addtrack"));
-        final GridBagConstraints gbcAddTrackButton = new GridBagConstraints();
+        final var addTrackButton = new JButton(resourceBundle.getString("ui.mainframe.button.addtrack"));
+        final var gbcAddTrackButton = new GridBagConstraints();
         gbcAddTrackButton.anchor = GridBagConstraints.FIRST_LINE_START;
         gbcAddTrackButton.insets = new Insets(0, 0, 0, 5);
         gbcAddTrackButton.gridx = 1;
@@ -383,7 +383,7 @@ public final class MainFrame extends JFrame {
         //noinspection DuplicateStringLiteralInspection
         renderButton = new JButton(resourceBundle.getString("ui.mainframe.button.render"));
         renderButton.setEnabled(false);
-        final GridBagConstraints gbcRenderButton = new GridBagConstraints();
+        final var gbcRenderButton = new GridBagConstraints();
         gbcRenderButton.anchor = GridBagConstraints.FIRST_LINE_START;
         gbcRenderButton.gridx = 3;
         gbcRenderButton.gridy = 0;
@@ -394,11 +394,11 @@ public final class MainFrame extends JFrame {
                 return;
             }
 
-            final Configuration cfg = createConfiguration(true, true);
+            final var cfg = createConfiguration(true, true);
             if (cfg.getOutput().exists()) {
-                final String message = String.format(
+                final var message = String.format(
                         resourceBundle.getString("ui.mainframe.dialog.message.overwrite"), cfg.getOutput());
-                final int result = JOptionPane.showConfirmDialog(MainFrame.this,
+                final var result = JOptionPane.showConfirmDialog(MainFrame.this,
                         message, warningTitle, JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.NO_OPTION) {
                     return;
@@ -462,7 +462,7 @@ public final class MainFrame extends JFrame {
             };
 
             swingWorker.addPropertyChangeListener(evt -> {
-                final String propertyName = evt.getPropertyName();
+                final var propertyName = evt.getPropertyName();
                 if (isEqual("progress", propertyName)) { //NON-NLS
                     progressBar.setValue((Integer) evt.getNewValue());
                 }
@@ -504,13 +504,13 @@ public final class MainFrame extends JFrame {
     }
 
     public Configuration createConfiguration(final boolean includeTracks, final boolean replacePlaceholders) {
-        final Configuration.Builder builder = Configuration.createBuilder();
+        final var builder = Configuration.createBuilder();
 
         generalSettingsPanel.buildConfiguration(builder, replacePlaceholders);
 
         if (includeTracks) {
             for (int i = FIXED_TABS, n = tabbedPane.getTabCount(); i < n; i++) {
-                final TrackSettingsPanel tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
+                final var tsp = (TrackSettingsPanel) ((JScrollPane) tabbedPane.getComponentAt(i)).getViewport().getView();
                 builder.addTrackConfiguration(tsp.createConfiguration());
             }
         }
@@ -522,12 +522,12 @@ public final class MainFrame extends JFrame {
         generalSettingsPanel.setConfiguration(c);
 
         // remove all track tabs
-        for (int i = tabbedPane.getTabCount() - 1; i >= FIXED_TABS; i--) {
+        for (var i = tabbedPane.getTabCount() - 1; i >= FIXED_TABS; i--) {
             tabbedPane.remove(i);
         }
         afterRemove();
 
-        for (final TrackConfiguration tc : c.getTrackConfigurationList()) {
+        for (final var tc : c.getTrackConfigurationList()) {
             addTrackSettingsTab(tc);
         }
 
@@ -537,7 +537,7 @@ public final class MainFrame extends JFrame {
     private void pupulateOpenRecentMenu() {
         openRecent.removeAll();
         Preferences.getRecentFiles().forEach(recentFile -> {
-                    JMenuItem item = new JMenuItem(recentFile.getName());
+            var item = new JMenuItem(recentFile.getName());
                     openRecent.add(item);
                     item.addActionListener(e -> openFile(recentFile));
                 }
@@ -546,8 +546,8 @@ public final class MainFrame extends JFrame {
 
     private void openFile(final File fileToOpen) {
         try {
-            final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
-            final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            final var jaxbContext = JAXBContext.newInstance(Configuration.class);
+            final var unmarshaller = jaxbContext.createUnmarshaller();
             unmarshaller.setAdapter(new FileXmlAdapter(fileToOpen.getParentFile()));
             setConfiguration((Configuration) unmarshaller.unmarshal(fileToOpen));
             MainFrame.this.file = fileToOpen;
@@ -574,14 +574,14 @@ public final class MainFrame extends JFrame {
     }
 
     private void updateTitle() {
-        final String filename = file != null ? file.getName() : resourceBundle.getString("ui.mainframe.filename.unnamed");
+        final var filename = file != null ? file.getName() : resourceBundle.getString("ui.mainframe.filename.unnamed");
         setTitle(Constants.APPNAME_VERSION.concat(" - ").concat(filename).concat(changed ? " (*)" : ""));
     }
 
     private void addTrackSettingsTab(final TrackConfiguration tc) {
-        final String trackTabTitle = resourceBundle.getString("ui.mainframe.tab.track");
-        final JScrollPane trackScrollPane = new JScrollPane();
-        final TrackSettingsPanel trackSettingsPanel = new TrackSettingsPanel() {
+        final var trackTabTitle = resourceBundle.getString("ui.mainframe.tab.track");
+        final var trackScrollPane = new JScrollPane();
+        final var trackSettingsPanel = new TrackSettingsPanel() {
             @Serial
             private static final long serialVersionUID = 308660875202822183L;
 
@@ -620,11 +620,11 @@ public final class MainFrame extends JFrame {
     }
 
     private void saveAs() {
-        final String lastCwd = Preferences.getLastWorkingDir();
+        final var lastCwd = Preferences.getLastWorkingDir();
         fileChooser.setCurrentDirectory(new File(lastCwd));
         fileChooser.setSelectedFile(new File("")); // to forget previous file name
         if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
+            var fileToSave = fileChooser.getSelectedFile();
             Preferences.setLastWorkingDir(fileToSave.getParent());
 
             if (!fileToSave.getName().endsWith(PROJECT_FILENAME_SUFFIX)) {
@@ -637,8 +637,8 @@ public final class MainFrame extends JFrame {
     private void save(final File fileToSave) {
         try {
             try {
-                final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
-                final Marshaller marshaller = jaxbContext.createMarshaller();
+                final var jaxbContext = JAXBContext.newInstance(Configuration.class);
+                final var marshaller = jaxbContext.createMarshaller();
                 marshaller.setAdapter(new FileXmlAdapter(fileToSave.getParentFile()));
                 marshaller.marshal(createConfiguration(true, false), fileToSave);
                 MainFrame.this.file = fileToSave;
@@ -658,8 +658,8 @@ public final class MainFrame extends JFrame {
     private void saveAsDefault() {
         try {
             try {
-                final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
-                final Marshaller marshaller = jaxbContext.createMarshaller();
+                final var jaxbContext = JAXBContext.newInstance(Configuration.class);
+                final var marshaller = jaxbContext.createMarshaller();
                 marshaller.setAdapter(new FileXmlAdapter(null));
                 marshaller.marshal(createConfiguration(false, false), defaultConfigFile);
             } catch (final JAXBException e) {
@@ -683,8 +683,8 @@ public final class MainFrame extends JFrame {
         }
 
         try {
-            final JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
-            final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            final var jaxbContext = JAXBContext.newInstance(Configuration.class);
+            final var unmarshaller = jaxbContext.createUnmarshaller();
             unmarshaller.setAdapter(new FileXmlAdapter(null));
             setConfiguration((Configuration) unmarshaller.unmarshal(defaultConfigFile));
         } catch (final JAXBException e1) {

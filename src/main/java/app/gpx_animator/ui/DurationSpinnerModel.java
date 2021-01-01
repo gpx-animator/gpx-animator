@@ -95,7 +95,7 @@ public final class DurationSpinnerModel extends AbstractSpinnerModel {
         }
 
         public static Field fromUnit(@NonNls final String unit) {
-            for (final Field field : Field.values()) {
+            for (final var field : Field.values()) {
                 if (field.getUnit().equals(unit)) {
                     return field;
                 }

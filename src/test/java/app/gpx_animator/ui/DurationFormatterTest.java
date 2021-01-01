@@ -30,7 +30,7 @@ class DurationFormatterTest {
     @ParameterizedTest
     @MethodSource(TEST_DATA_GENERATOR) //NON-NLS
     void stringToValue(final Long timestamp, final String timeText) {
-        final DurationFormatter testee = new DurationFormatter();
+        final var testee = new DurationFormatter();
         try {
             assertEquals(timestamp, testee.stringToValue(timeText));
         } catch (ParseException e) {
@@ -41,7 +41,7 @@ class DurationFormatterTest {
     @ParameterizedTest
     @MethodSource(TEST_DATA_GENERATOR) //NON-NLS
     void valueToString(final Long timestamp, final String timeText) {
-        final DurationFormatter testee = new DurationFormatter();
+        final var testee = new DurationFormatter();
         assertEquals(timeText, testee.valueToString(timestamp));
     }
 }

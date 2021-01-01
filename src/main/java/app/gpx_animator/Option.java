@@ -66,7 +66,7 @@ public enum Option {
     private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();
 
     static {
-        for (final Option option : Option.values()) {
+        for (final var option : Option.values()) {
             OPTION_MAP.put(option.name, option);
         }
     }
@@ -75,7 +75,7 @@ public enum Option {
     private final String help;
 
     Option(@NonNls final String key) {
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+        final var resourceBundle = Preferences.getResourceBundle();
 
         this.name = key;
         this.help = resourceBundle.getString("option.help.".concat(key)); //NON-NLS

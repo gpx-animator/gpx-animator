@@ -118,16 +118,16 @@ public final class FontChooser extends JComponent {
      *
      * @param fontSizeStrings the array of font size string.
      **/
-    public FontChooser(final String[] fontSizeStrings) {
+    public FontChooser(final String... fontSizeStrings) {
         this.fontSizeStrings = fontSizeStrings != null ? fontSizeStrings : DEFAULT_FONT_SIZE_STRINGS;
 
-        final JPanel selectPanel = new JPanel();
+        final var selectPanel = new JPanel();
         selectPanel.setLayout(new BoxLayout(selectPanel, BoxLayout.X_AXIS));
         selectPanel.add(getFontFamilyPanel());
         selectPanel.add(getFontStylePanel());
         selectPanel.add(getFontSizePanel());
 
-        final JPanel contentsPanel = new JPanel();
+        final var contentsPanel = new JPanel();
         contentsPanel.setLayout(new GridLayout(2, 1));
         contentsPanel.add(selectPanel, BorderLayout.NORTH);
         contentsPanel.add(getSamplePanel(), BorderLayout.CENTER);
@@ -236,7 +236,7 @@ public final class FontChooser extends JComponent {
      * @see #setSelectedFontStyle
      **/
     public int getSelectedFontStyle() {
-        final int index = getFontStyleList().getSelectedIndex();
+        final var index = getFontStyleList().getSelectedIndex();
         return FONT_STYLE_CODES[index];
     }
 
@@ -248,7 +248,7 @@ public final class FontChooser extends JComponent {
      **/
     public int getSelectedFontSize() {
         int fontSize;
-        String fontSizeString = getFontSizeTextField().getText();
+        var fontSizeString = getFontSizeTextField().getText();
         while (true) {
             try {
                 fontSize = Integer.parseInt(fontSizeString);
@@ -282,8 +282,8 @@ public final class FontChooser extends JComponent {
      * @see #getSelectedFontFamily
      **/
     public void setSelectedFontFamily(@NotNull final String name) {
-        final String[] names = getFontFamilies();
-        for (int i = 0; i < names.length; i++) {
+        final var names = getFontFamilies();
+        for (var i = 0; i < names.length; i++) {
             if (names[i].equalsIgnoreCase(name)) {
                 getFontFamilyList().setSelectedIndex(i);
                 break;
@@ -305,7 +305,7 @@ public final class FontChooser extends JComponent {
      * @see #getSelectedFontStyle
      **/
     public void setSelectedFontStyle(final int style) {
-        for (int i = 0; i < FONT_STYLE_CODES.length; i++) {
+        for (var i = 0; i < FONT_STYLE_CODES.length; i++) {
             if (FONT_STYLE_CODES[i] == style) {
                 getFontStyleList().setSelectedIndex(i);
                 break;
@@ -321,8 +321,8 @@ public final class FontChooser extends JComponent {
      * @see #getSelectedFontSize
      **/
     public void setSelectedFontSize(final int size) {
-        final String sizeString = String.valueOf(size);
-        for (int i = 0; i < this.fontSizeStrings.length; i++) {
+        final var sizeString = String.valueOf(size);
+        for (var i = 0; i < this.fontSizeStrings.length; i++) {
             if (this.fontSizeStrings[i].equals(sizeString)) {
                 getFontSizeList().setSelectedIndex(i);
                 break;
@@ -356,7 +356,7 @@ public final class FontChooser extends JComponent {
      **/
     public int showDialog(final Component parent) {
         dialogResultValue = ERROR_OPTION;
-        final JDialog dialog = createDialog(parent);
+        final var dialog = createDialog(parent);
         dialog.addWindowListener(new WindowAdapter() {
 
             @Override
@@ -383,9 +383,9 @@ public final class FontChooser extends JComponent {
         public void valueChanged(final ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 @SuppressWarnings("unchecked")
-                final JList<String> list = (JList<String>) e.getSource();
-                final String selectedValue = list.getSelectedValue();
-                final String oldValue = textComponent.getText();
+                final var list = (JList<String>) e.getSource();
+                final var selectedValue = list.getSelectedValue();
+                final var oldValue = textComponent.getText();
                 textComponent.setText(selectedValue);
                 if (!oldValue.equalsIgnoreCase(selectedValue)) {
                     textComponent.selectAll();
@@ -429,15 +429,15 @@ public final class FontChooser extends JComponent {
         public void keyPressed(final KeyEvent e) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_UP:
-                    int up = targetList.getSelectedIndex() - 1;
+                    var up = targetList.getSelectedIndex() - 1;
                     if (up < 0) {
                         up = 0;
                     }
                     targetList.setSelectedIndex(up);
                     break;
                 case KeyEvent.VK_DOWN:
-                    int listSize = targetList.getModel().getSize();
-                    int down = targetList.getSelectedIndex() + 1;
+                    var listSize = targetList.getModel().getSize();
+                    var down = targetList.getSelectedIndex() + 1;
                     if (down >= listSize) {
                         down = listSize - 1;
                     }
@@ -473,22 +473,22 @@ public final class FontChooser extends JComponent {
         }
 
         private void update(final DocumentEvent event) {
-            String newValue = "";
+            var newValue = "";
             try {
-                final Document doc = event.getDocument();
+                final var doc = event.getDocument();
                 newValue = doc.getText(0, doc.getLength());
             } catch (final BadLocationException ex) {
                 LOGGER.error("update(DocumentEvent) exception", ex);
             }
 
             if (!newValue.isEmpty()) {
-                int index = targetList.getNextMatch(newValue, 0, Position.Bias.Forward);
+                var index = targetList.getNextMatch(newValue, 0, Position.Bias.Forward);
                 if (index < 0) {
                     index = 0;
                 }
                 targetList.ensureIndexIsVisible(index);
 
-                final String matchedName = targetList.getModel().getElementAt(index);
+                final var matchedName = targetList.getModel().getElementAt(index);
                 if (newValue.equalsIgnoreCase(matchedName)) {
                     if (index != targetList.getSelectedIndex()) {
                         SwingUtilities.invokeLater(new ListSelector(index));
@@ -555,30 +555,30 @@ public final class FontChooser extends JComponent {
     }
 
     private JDialog createDialog(final Component parent) {
-        final Frame frame = parent instanceof Frame ? (Frame) parent
+        final var frame = parent instanceof Frame ? (Frame) parent
                 : (Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent);
-        final JDialog dialog = new JDialog(frame, resourceBundle.getString("ui.dialog.fontchooser.title"), true);
+        final var dialog = new JDialog(frame, resourceBundle.getString("ui.dialog.fontchooser.title"), true);
 
         final Action okAction = new DialogOKAction(dialog);
         final Action cancelAction = new DialogCancelAction(dialog);
 
-        final JButton okButton = new JButton(okAction);
-        final JButton cancelButton = new JButton(cancelAction);
+        final var okButton = new JButton(okAction);
+        final var cancelButton = new JButton(cancelAction);
 
-        final JPanel buttonsPanel = new JPanel();
+        final var buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(2, 1));
         buttonsPanel.add(okButton);
         buttonsPanel.add(cancelButton);
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(25, 0, 10, 10));
 
-        final ActionMap actionMap = buttonsPanel.getActionMap();
+        final var actionMap = buttonsPanel.getActionMap();
         actionMap.put(cancelAction.getValue(Action.DEFAULT), cancelAction);
         actionMap.put(okAction.getValue(Action.DEFAULT), okAction);
-        final InputMap inputMap = buttonsPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        final var inputMap = buttonsPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), cancelAction.getValue(Action.DEFAULT));
         inputMap.put(KeyStroke.getKeyStroke("ENTER"), okAction.getValue(Action.DEFAULT));
 
-        final JPanel dialogEastPanel = new JPanel();
+        final var dialogEastPanel = new JPanel();
         dialogEastPanel.setLayout(new BorderLayout());
         dialogEastPanel.add(buttonsPanel, BorderLayout.NORTH);
 
@@ -590,7 +590,7 @@ public final class FontChooser extends JComponent {
     }
 
     private void updateSampleFont() {
-        final Font font = getSelectedFont();
+        final var font = getSelectedFont();
         getSampleTextField().setFont(font);
     }
 
@@ -601,16 +601,16 @@ public final class FontChooser extends JComponent {
             fontNamePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             fontNamePanel.setPreferredSize(new Dimension(180, 130));
 
-            final JScrollPane scrollPane = new JScrollPane(getFontFamilyList());
+            final var scrollPane = new JScrollPane(getFontFamilyList());
             scrollPane.getVerticalScrollBar().setFocusable(false);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-            final JPanel p = new JPanel();
+            final var p = new JPanel();
             p.setLayout(new BorderLayout());
             p.add(getFontFamilyTextField(), BorderLayout.NORTH);
             p.add(scrollPane, BorderLayout.CENTER);
 
-            final JLabel label = new JLabel(resourceBundle.getString("ui.dialog.fontchooser.label.fontname"));
+            final var label = new JLabel(resourceBundle.getString("ui.dialog.fontchooser.label.fontname"));
             label.setHorizontalAlignment(JLabel.LEFT);
             label.setHorizontalTextPosition(JLabel.LEFT);
             label.setLabelFor(getFontFamilyTextField());
@@ -630,16 +630,16 @@ public final class FontChooser extends JComponent {
             fontStylePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             fontStylePanel.setPreferredSize(new Dimension(140, 130));
 
-            final JScrollPane scrollPane = new JScrollPane(getFontStyleList());
+            final var scrollPane = new JScrollPane(getFontStyleList());
             scrollPane.getVerticalScrollBar().setFocusable(false);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-            final JPanel p = new JPanel();
+            final var p = new JPanel();
             p.setLayout(new BorderLayout());
             p.add(getFontStyleTextField(), BorderLayout.NORTH);
             p.add(scrollPane, BorderLayout.CENTER);
 
-            final JLabel label = new JLabel(resourceBundle.getString("ui.dialog.fontchooser.label.fontstyle"));
+            final var label = new JLabel(resourceBundle.getString("ui.dialog.fontchooser.label.fontstyle"));
             label.setHorizontalAlignment(JLabel.LEFT);
             label.setHorizontalTextPosition(JLabel.LEFT);
             label.setLabelFor(getFontStyleTextField());
@@ -658,16 +658,16 @@ public final class FontChooser extends JComponent {
             fontSizePanel.setPreferredSize(new Dimension(70, 130));
             fontSizePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-            final JScrollPane scrollPane = new JScrollPane(getFontSizeList());
+            final var scrollPane = new JScrollPane(getFontSizeList());
             scrollPane.getVerticalScrollBar().setFocusable(false);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-            final JPanel p = new JPanel();
+            final var p = new JPanel();
             p.setLayout(new BorderLayout());
             p.add(getFontSizeTextField(), BorderLayout.NORTH);
             p.add(scrollPane, BorderLayout.CENTER);
 
-            final JLabel label = new JLabel(resourceBundle.getString("ui.dialog.fontchooser.label.fontsize"));
+            final var label = new JLabel(resourceBundle.getString("ui.dialog.fontchooser.label.fontsize"));
             label.setHorizontalAlignment(JLabel.LEFT);
             label.setHorizontalTextPosition(JLabel.LEFT);
             label.setLabelFor(getFontSizeTextField());
@@ -683,7 +683,7 @@ public final class FontChooser extends JComponent {
         if (samplePanel == null) {
             final Border titledBorder = BorderFactory.createTitledBorder(
                     BorderFactory.createEtchedBorder(), resourceBundle.getString("ui.dialog.fontchooser.label.sample"));
-            final Border empty = BorderFactory.createEmptyBorder(5, 10, 10, 10);
+            final var empty = BorderFactory.createEmptyBorder(5, 10, 10, 10);
             final Border border = BorderFactory.createCompoundBorder(titledBorder, empty);
 
             samplePanel = new JPanel();
@@ -697,7 +697,7 @@ public final class FontChooser extends JComponent {
 
     private JTextField getSampleTextField() {
         if (sampleText == null) {
-            final Border lowered = BorderFactory.createLoweredBevelBorder();
+            final var lowered = BorderFactory.createLoweredBevelBorder();
 
             sampleText = new JTextField(Constants.APPNAME_VERSION);
             sampleText.setBorder(lowered);
@@ -708,7 +708,7 @@ public final class FontChooser extends JComponent {
 
     private String[] getFontFamilies() {
         if (fontFamilyNames == null) {
-            final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            final var env = GraphicsEnvironment.getLocalGraphicsEnvironment();
             fontFamilyNames = env.getAvailableFontFamilyNames();
         }
         return fontFamilyNames;
@@ -716,7 +716,7 @@ public final class FontChooser extends JComponent {
 
     private String[] getFontStyleNames() {
         if (fontStyleNames == null) {
-            int i = 0;
+            var i = 0;
             fontStyleNames = new String[4];
             fontStyleNames[i++] = resourceBundle.getString("ui.dialog.fontchooser.fontstyle.plain");
             fontStyleNames[i++] = resourceBundle.getString("ui.dialog.fontchooser.fontstyle.bold");

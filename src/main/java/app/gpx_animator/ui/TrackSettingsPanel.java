@@ -55,15 +55,15 @@ abstract class TrackSettingsPanel extends JPanel {
     TrackSettingsPanel() {
         setBounds(100, 100, 595, 419);
         setBorder(new EmptyBorder(5, 5, 5, 5));
-        final GridBagLayout gblContentPane = new GridBagLayout();
+        final var gblContentPane = new GridBagLayout();
         gblContentPane.columnWidths = new int[]     {0,   0,   0};
         gblContentPane.columnWeights = new double[] {0.0, 1.0, Double.MIN_VALUE};
         gblContentPane.rowHeights = new int[]       {0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0};
         gblContentPane.rowWeights = new double[]    {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
         setLayout(gblContentPane);
 
-        final JLabel lblGpx = new JLabel(resourceBundle.getString("ui.panel.tracksettings.gpxfile.label"));
-        final GridBagConstraints gbcLabelGpx = new GridBagConstraints();
+        final var lblGpx = new JLabel(resourceBundle.getString("ui.panel.tracksettings.gpxfile.label"));
+        final var gbcLabelGpx = new GridBagConstraints();
         gbcLabelGpx.insets = new Insets(0, 0, 5, 5);
         gbcLabelGpx.anchor = GridBagConstraints.LINE_END;
         gbcLabelGpx.gridx = 0;
@@ -83,15 +83,15 @@ abstract class TrackSettingsPanel extends JPanel {
 
         inputGpxFileSelector.setToolTipText(Option.INPUT.getHelp());
         lblGpx.setLabelFor(inputGpxFileSelector);
-        final GridBagConstraints gbcInputGpxFileSelector = new GridBagConstraints();
+        final var gbcInputGpxFileSelector = new GridBagConstraints();
         gbcInputGpxFileSelector.insets = new Insets(0, 0, 5, 0);
         gbcInputGpxFileSelector.fill = GridBagConstraints.BOTH;
         gbcInputGpxFileSelector.gridx = 1;
         gbcInputGpxFileSelector.gridy = 0;
         add(inputGpxFileSelector, gbcInputGpxFileSelector);
 
-        final JLabel lblLabel = new JLabel(resourceBundle.getString("ui.panel.tracksettings.label.label"));
-        final GridBagConstraints gbcLabelLabel = new GridBagConstraints();
+        final var lblLabel = new JLabel(resourceBundle.getString("ui.panel.tracksettings.label.label"));
+        final var gbcLabelLabel = new GridBagConstraints();
         gbcLabelLabel.anchor = GridBagConstraints.LINE_END;
         gbcLabelLabel.insets = new Insets(0, 0, 5, 5);
         gbcLabelLabel.gridx = 0;
@@ -101,7 +101,7 @@ abstract class TrackSettingsPanel extends JPanel {
         labelTextField = new JTextArea();
         labelTextField.setToolTipText(Option.LABEL.getHelp());
         lblLabel.setLabelFor(labelTextField);
-        final GridBagConstraints gbcLabelTextField = new GridBagConstraints();
+        final var gbcLabelTextField = new GridBagConstraints();
         gbcLabelTextField.insets = new Insets(0, 0, 5, 0);
         gbcLabelTextField.fill = GridBagConstraints.HORIZONTAL;
         gbcLabelTextField.gridx = 1;
@@ -129,8 +129,8 @@ abstract class TrackSettingsPanel extends JPanel {
             }
         });
 
-        final JLabel lblColor1 = new JLabel(resourceBundle.getString("ui.panel.tracksettings.color.label"));
-        final GridBagConstraints gbcLabelColor1 = new GridBagConstraints();
+        final var lblColor1 = new JLabel(resourceBundle.getString("ui.panel.tracksettings.color.label"));
+        final var gbcLabelColor1 = new GridBagConstraints();
         gbcLabelColor1.anchor = GridBagConstraints.LINE_END;
         gbcLabelColor1.insets = new Insets(0, 0, 5, 5);
         gbcLabelColor1.gridx = 0;
@@ -139,15 +139,15 @@ abstract class TrackSettingsPanel extends JPanel {
 
         colorSelector = new ColorSelector();
         colorSelector.setToolTipText(Option.COLOR.getHelp());
-        final GridBagConstraints gbcColorSelector = new GridBagConstraints();
+        final var gbcColorSelector = new GridBagConstraints();
         gbcColorSelector.insets = new Insets(0, 0, 5, 0);
         gbcColorSelector.fill = GridBagConstraints.BOTH;
         gbcColorSelector.gridx = 1;
         gbcColorSelector.gridy = 2;
         add(colorSelector, gbcColorSelector);
 
-        final JLabel lblLineWidth = new JLabel(resourceBundle.getString("ui.panel.tracksettings.linewidth.label"));
-        final GridBagConstraints gbcLabelLineWidth = new GridBagConstraints();
+        final var lblLineWidth = new JLabel(resourceBundle.getString("ui.panel.tracksettings.linewidth.label"));
+        final var gbcLabelLineWidth = new GridBagConstraints();
         gbcLabelLineWidth.insets = new Insets(0, 0, 5, 5);
         gbcLabelLineWidth.anchor = GridBagConstraints.LINE_END;
         gbcLabelLineWidth.gridx = 0;
@@ -157,15 +157,15 @@ abstract class TrackSettingsPanel extends JPanel {
         lineWidthSpinner = new JSpinner();
         lineWidthSpinner.setToolTipText(Option.LINE_WIDTH.getHelp());
         lineWidthSpinner.setModel(new SpinnerNumberModel(0f, 0f, null, 0.5f));
-        final GridBagConstraints gbcLineWidthSpinner = new GridBagConstraints();
+        final var gbcLineWidthSpinner = new GridBagConstraints();
         gbcLineWidthSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcLineWidthSpinner.insets = new Insets(0, 0, 5, 0);
         gbcLineWidthSpinner.gridx = 1;
         gbcLineWidthSpinner.gridy = 3;
         add(lineWidthSpinner, gbcLineWidthSpinner);
 
-        final JLabel lblTimeOffset = new JLabel(resourceBundle.getString("ui.panel.tracksettings.timeoffset.label"));
-        final GridBagConstraints gbcLabelTimeOffset = new GridBagConstraints();
+        final var lblTimeOffset = new JLabel(resourceBundle.getString("ui.panel.tracksettings.timeoffset.label"));
+        final var gbcLabelTimeOffset = new GridBagConstraints();
         gbcLabelTimeOffset.anchor = GridBagConstraints.LINE_END;
         gbcLabelTimeOffset.insets = new Insets(0, 0, 5, 5);
         gbcLabelTimeOffset.gridx = 0;
@@ -176,15 +176,15 @@ abstract class TrackSettingsPanel extends JPanel {
         timeOffsetSpinner.setToolTipText(Option.TIME_OFFSET.getHelp());
         timeOffsetSpinner.setModel(new DurationSpinnerModel());
         timeOffsetSpinner.setEditor(new DurationEditor(timeOffsetSpinner));
-        final GridBagConstraints gbcTimeOffsetSpinner = new GridBagConstraints();
+        final var gbcTimeOffsetSpinner = new GridBagConstraints();
         gbcTimeOffsetSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcTimeOffsetSpinner.insets = new Insets(0, 0, 5, 0);
         gbcTimeOffsetSpinner.gridx = 1;
         gbcTimeOffsetSpinner.gridy = 4;
         add(timeOffsetSpinner, gbcTimeOffsetSpinner);
 
-        final JLabel lblForcedPointTime = new JLabel(resourceBundle.getString("ui.panel.tracksettings.timepointinterval.label"));
-        final GridBagConstraints gbcLabelForcedPointTime = new GridBagConstraints();
+        final var lblForcedPointTime = new JLabel(resourceBundle.getString("ui.panel.tracksettings.timepointinterval.label"));
+        final var gbcLabelForcedPointTime = new GridBagConstraints();
         gbcLabelForcedPointTime.anchor = GridBagConstraints.LINE_END;
         gbcLabelForcedPointTime.insets = new Insets(0, 0, 5, 5);
         gbcLabelForcedPointTime.gridx = 0;
@@ -195,15 +195,15 @@ abstract class TrackSettingsPanel extends JPanel {
         forcedPointTimeIntervalSpinner.setToolTipText(Option.FORCED_POINT_TIME_INTERVAL.getHelp());
         forcedPointTimeIntervalSpinner.setModel(new DurationSpinnerModel());
         forcedPointTimeIntervalSpinner.setEditor(new DurationEditor(forcedPointTimeIntervalSpinner));
-        final GridBagConstraints gbcForcedPointTimeIntervalSpinner = new GridBagConstraints();
+        final var gbcForcedPointTimeIntervalSpinner = new GridBagConstraints();
         gbcForcedPointTimeIntervalSpinner.insets = new Insets(0, 0, 5, 0);
         gbcForcedPointTimeIntervalSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcForcedPointTimeIntervalSpinner.gridx = 1;
         gbcForcedPointTimeIntervalSpinner.gridy = 5;
         add(forcedPointTimeIntervalSpinner, gbcForcedPointTimeIntervalSpinner);
 
-        final JLabel lblTrimGpxStart = new JLabel(resourceBundle.getString("ui.panel.tracksettings.trimstart.label"));
-        final GridBagConstraints gbcLabelTrimGpxStart = new GridBagConstraints();
+        final var lblTrimGpxStart = new JLabel(resourceBundle.getString("ui.panel.tracksettings.trimstart.label"));
+        final var gbcLabelTrimGpxStart = new GridBagConstraints();
         gbcLabelTrimGpxStart.anchor = GridBagConstraints.LINE_END;
         gbcLabelTrimGpxStart.insets = new Insets(0, 0, 5, 5);
         gbcLabelTrimGpxStart.gridx = 0;
@@ -214,15 +214,15 @@ abstract class TrackSettingsPanel extends JPanel {
         trimGpxStartSpinner.setToolTipText(Option.TRIM_GPX_START.getHelp());
         trimGpxStartSpinner.setModel(new DurationSpinnerModel());
         trimGpxStartSpinner.setEditor(new DurationEditor(trimGpxStartSpinner));
-        final GridBagConstraints gbcTrimGpxStartSpinner = new GridBagConstraints();
+        final var gbcTrimGpxStartSpinner = new GridBagConstraints();
         gbcTrimGpxStartSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcTrimGpxStartSpinner.insets = new Insets(0, 0, 5, 0);
         gbcTrimGpxStartSpinner.gridx = 1;
         gbcTrimGpxStartSpinner.gridy = 6;
         add(trimGpxStartSpinner, gbcTrimGpxStartSpinner);
 
-        final JLabel lblTrimGpxEnd = new JLabel(resourceBundle.getString("ui.panel.tracksettings.trimend.label"));
-        final GridBagConstraints gbcLabelTrimGpxEnd = new GridBagConstraints();
+        final var lblTrimGpxEnd = new JLabel(resourceBundle.getString("ui.panel.tracksettings.trimend.label"));
+        final var gbcLabelTrimGpxEnd = new GridBagConstraints();
         gbcLabelTrimGpxEnd.anchor = GridBagConstraints.LINE_END;
         gbcLabelTrimGpxEnd.insets = new Insets(0, 0, 5, 5);
         gbcLabelTrimGpxEnd.gridx = 0;
@@ -233,7 +233,7 @@ abstract class TrackSettingsPanel extends JPanel {
         trimGpxEndSpinner.setToolTipText(Option.TRIM_GPX_END.getHelp());
         trimGpxEndSpinner.setModel(new DurationSpinnerModel());
         trimGpxEndSpinner.setEditor(new DurationEditor(trimGpxEndSpinner));
-        final GridBagConstraints gbcTrimGpxEndSpinner = new GridBagConstraints();
+        final var gbcTrimGpxEndSpinner = new GridBagConstraints();
         gbcTrimGpxEndSpinner.fill = GridBagConstraints.HORIZONTAL;
         gbcTrimGpxEndSpinner.insets = new Insets(0, 0, 5, 0);
         gbcTrimGpxEndSpinner.gridx = 1;
@@ -243,7 +243,7 @@ abstract class TrackSettingsPanel extends JPanel {
         trackIconComboBox = new JComboBox<>(TrackIcon.getAllTrackIcons());
         trackIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
         trackIconComboBox.setEditable(false);
-        final GridBagConstraints gbcTrackIconComboBox = new GridBagConstraints();
+        final var gbcTrackIconComboBox = new GridBagConstraints();
         gbcTrackIconComboBox.fill = GridBagConstraints.HORIZONTAL;
         gbcTrackIconComboBox.insets = new Insets(0, 0, 5, 0);
         gbcTrackIconComboBox.gridx = 1;
@@ -251,16 +251,16 @@ abstract class TrackSettingsPanel extends JPanel {
         add(trackIconComboBox, gbcTrackIconComboBox);
         trackIconComboBox.setPreferredSize(new Dimension(10, trackIconComboBox.getPreferredSize().height));
 
-        final JLabel lblEnableIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.label"));
-        final GridBagConstraints gbcLabelEnableIcon = new GridBagConstraints();
+        final var lblEnableIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.label"));
+        final var gbcLabelEnableIcon = new GridBagConstraints();
         gbcLabelEnableIcon.anchor = GridBagConstraints.LINE_END;
         gbcLabelEnableIcon.insets = new Insets(0, 0, 5, 5);
         gbcLabelEnableIcon.gridx = 0;
         gbcLabelEnableIcon.gridy = 8;
         add(lblEnableIcon, gbcLabelEnableIcon);
 
-        final JLabel lblIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.iconfile.label"));
-        final GridBagConstraints gbcLabelIcon = new GridBagConstraints();
+        final var lblIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.iconfile.label"));
+        final var gbcLabelIcon = new GridBagConstraints();
         gbcLabelIcon.insets = new Insets(0, 0, 5, 5);
         gbcLabelIcon.anchor = GridBagConstraints.LINE_END;
         gbcLabelIcon.gridx = 0;
@@ -280,15 +280,15 @@ abstract class TrackSettingsPanel extends JPanel {
 
         inputIconFileSelector.setToolTipText(Option.INPUT.getHelp());
         lblIcon.setLabelFor(inputIconFileSelector);
-        final GridBagConstraints gbcInputIconFileSelector = new GridBagConstraints();
+        final var gbcInputIconFileSelector = new GridBagConstraints();
         gbcInputIconFileSelector.insets = new Insets(0, 0, 5, 0);
         gbcInputIconFileSelector.fill = GridBagConstraints.BOTH;
         gbcInputIconFileSelector.gridx = 1;
         gbcInputIconFileSelector.gridy = 9;
         add(inputIconFileSelector, gbcInputIconFileSelector);
 
-        final JLabel lblMirrorIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.mirror.label"));
-        final GridBagConstraints gbcLabelMirrorIcon = new GridBagConstraints();
+        final var lblMirrorIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.mirror.label"));
+        final var gbcLabelMirrorIcon = new GridBagConstraints();
         gbcLabelMirrorIcon.anchor = GridBagConstraints.LINE_END;
         gbcLabelMirrorIcon.insets = new Insets(0, 0, 5, 5);
         gbcLabelMirrorIcon.gridx = 0;
@@ -297,16 +297,16 @@ abstract class TrackSettingsPanel extends JPanel {
 
         mirrorIconCheckBox = new JCheckBox("");
         mirrorIconCheckBox.setToolTipText(Option.TRACK_ICON_MIRROR.getHelp());
-        final GridBagConstraints gbcMirrorIconCheckBox = new GridBagConstraints();
+        final var gbcMirrorIconCheckBox = new GridBagConstraints();
         gbcMirrorIconCheckBox.fill = GridBagConstraints.HORIZONTAL;
         gbcMirrorIconCheckBox.insets = new Insets(0, 0, 5, 5);
         gbcMirrorIconCheckBox.gridx = 1;
         gbcMirrorIconCheckBox.gridy = 10;
         add(mirrorIconCheckBox, gbcMirrorIconCheckBox);
 
-        final JButton btnNewButton = new JButton(resourceBundle.getString("ui.panel.tracksettings.button.remove"));
+        final var btnNewButton = new JButton(resourceBundle.getString("ui.panel.tracksettings.button.remove"));
         btnNewButton.addActionListener(e -> remove());
-        final GridBagConstraints gbcButtonNewButton = new GridBagConstraints();
+        final var gbcButtonNewButton = new GridBagConstraints();
         gbcButtonNewButton.anchor = GridBagConstraints.LINE_END;
         gbcButtonNewButton.gridwidth = 3;
         gbcButtonNewButton.insets = new Insets(0, 0, 0, 5);
@@ -398,7 +398,7 @@ abstract class TrackSettingsPanel extends JPanel {
 
 
     public TrackConfiguration createConfiguration() {
-        final Builder b = TrackConfiguration.createBuilder();
+        final var b = TrackConfiguration.createBuilder();
 
         b.inputGpx(new File(inputGpxFileSelector.getFilename()));
         b.label(labelTextField.getText());

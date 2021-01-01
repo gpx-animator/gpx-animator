@@ -42,7 +42,7 @@ public final class GpxParser {
 
         try {
             try (InputStream is = new FileInputStream(inputGpx)) {
-                try (InputStream dis = decompressStream(is)) {
+                try (var dis = decompressStream(is)) {
                     saxParser.parse(dis, dh);
                 } catch (final SAXException e) {
                     throw new UserException("error parsing input GPX file", e);
@@ -57,9 +57,9 @@ public final class GpxParser {
 
     @SuppressWarnings("PMD.CloseResource") // The returned stream will be used and closed in a try-with-resources block
     public static InputStream decompressStream(final InputStream input) throws IOException {
-        final PushbackInputStream pb = new PushbackInputStream(input, 2);
-        final byte[] signature = new byte[2];
-        final int numBytesRead = pb.read(signature);
+        final var pb = new PushbackInputStream(input, 2);
+        final var signature = new byte[2];
+        final var numBytesRead = pb.read(signature);
         pb.unread(signature, 0, numBytesRead);
         return signature[0] == (byte) 0x1f && signature[1] == (byte) 0x8b ? new GZIPInputStream(pb) : pb;
     }
