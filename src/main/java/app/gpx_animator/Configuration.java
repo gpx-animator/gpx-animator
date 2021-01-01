@@ -35,7 +35,7 @@ public final class Configuration {
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
     private static final Color DEFAULT_PREDRAW_TRACK_COLOR = Color.lightGray;
-    private static final String DEFAULT_TMS_URL_TEMPLATE = "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png";
+    private static final String DEFAULT_TMS_URL_TEMPLATE = "https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png";
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
