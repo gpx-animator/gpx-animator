@@ -3,7 +3,6 @@ package app.gpx_animator;
 import org.jetbrains.annotations.NonNls;
 
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 @SuppressWarnings("DuplicateStringLiteralInspection")
 public enum Option {

@@ -21,16 +21,13 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.io.Serial;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 public final class ColorSelector extends JPanel {
 

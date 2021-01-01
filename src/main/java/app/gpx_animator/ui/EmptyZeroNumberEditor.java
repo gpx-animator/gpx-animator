@@ -14,13 +14,12 @@
  */
 package app.gpx_animator.ui;
 
-import java.io.Serial;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultFormatterFactory;
+import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 

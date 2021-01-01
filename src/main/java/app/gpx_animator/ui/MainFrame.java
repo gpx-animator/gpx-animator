@@ -1,11 +1,5 @@
 package app.gpx_animator.ui;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import java.io.Serial;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import app.gpx_animator.Configuration;
 import app.gpx_animator.Constants;
 import app.gpx_animator.FileXmlAdapter;
@@ -14,6 +8,9 @@ import app.gpx_animator.Renderer;
 import app.gpx_animator.RenderingContext;
 import app.gpx_animator.TrackConfiguration;
 import app.gpx_animator.UserException;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,8 +30,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.GridBagConstraints;
@@ -46,6 +41,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.Collator;

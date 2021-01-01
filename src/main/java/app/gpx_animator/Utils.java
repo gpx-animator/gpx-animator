@@ -19,7 +19,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.text.Collator;
 

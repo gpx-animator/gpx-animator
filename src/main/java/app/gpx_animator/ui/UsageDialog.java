@@ -17,7 +17,6 @@ package app.gpx_animator.ui;
 import app.gpx_animator.Help;
 import app.gpx_animator.Preferences;
 
-import java.io.Serial;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -29,8 +28,8 @@ import javax.swing.border.EtchedBorder;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.io.StringWriter;
-import java.util.ResourceBundle;
 
 public class UsageDialog extends JDialog {
 

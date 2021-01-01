@@ -17,7 +17,6 @@ package app.gpx_animator;
 import app.gpx_animator.frameWriter.FrameWriter;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NonNls;
@@ -26,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

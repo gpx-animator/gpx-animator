@@ -24,7 +24,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {

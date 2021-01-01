@@ -26,12 +26,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class MapUtil {

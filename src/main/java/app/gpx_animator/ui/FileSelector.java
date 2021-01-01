@@ -14,10 +14,8 @@
  */
 package app.gpx_animator.ui;
 
-import java.io.Serial;
-
-import org.jetbrains.annotations.NonNls;
 import app.gpx_animator.Preferences;
+import org.jetbrains.annotations.NonNls;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -27,10 +25,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
-import java.util.ResourceBundle;
+import java.io.Serial;
 
 public abstract class FileSelector extends JPanel {
 

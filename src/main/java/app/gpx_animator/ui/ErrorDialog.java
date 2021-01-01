@@ -4,7 +4,6 @@ import app.gpx_animator.Preferences;
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 
-import java.io.Serial;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -16,9 +15,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.io.StringWriter;
 import java.util.ResourceBundle;
 

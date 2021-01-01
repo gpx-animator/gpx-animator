@@ -1,9 +1,6 @@
 package app.gpx_animator.ui;
 
 import app.gpx_animator.Preferences;
-
-import java.io.Serial;
-
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,9 +10,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.Serial;
 import java.util.ResourceBundle;
 
 public final class FontSelector extends JPanel {

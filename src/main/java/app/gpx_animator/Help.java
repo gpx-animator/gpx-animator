@@ -15,7 +15,6 @@
 package app.gpx_animator;
 
 import java.io.PrintWriter;
-import java.util.ResourceBundle;
 
 
 public final class Help {

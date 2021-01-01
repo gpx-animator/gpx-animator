@@ -8,9 +8,6 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import java.io.Serial;
-
 import org.jetbrains.annotations.NonNls;
 
 import javax.swing.JButton;
@@ -24,8 +21,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serial;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;

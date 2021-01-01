@@ -14,10 +14,10 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.ui.MainFrame;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import app.gpx_animator.ui.MainFrame;
 
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;

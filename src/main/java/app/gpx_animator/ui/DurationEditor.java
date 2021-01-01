@@ -16,15 +16,12 @@ package app.gpx_animator.ui;
 
 import app.gpx_animator.ui.DurationSpinnerModel.Field;
 
-import java.io.Serial;
-import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultFormatterFactory;
-import java.util.regex.Matcher;
+import java.io.Serial;
 import java.util.regex.Pattern;
 
 public class DurationEditor extends DefaultEditor {

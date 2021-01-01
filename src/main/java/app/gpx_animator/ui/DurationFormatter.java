@@ -15,10 +15,9 @@
 
 package app.gpx_animator.ui;
 
-import java.io.Serial;
 import javax.swing.JFormattedTextField;
+import java.io.Serial;
 import java.text.ParseException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class DurationFormatter extends JFormattedTextField.AbstractFormatter {

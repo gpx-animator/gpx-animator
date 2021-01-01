@@ -14,11 +14,10 @@
  */
 package app.gpx_animator.ui;
 
-import java.io.Serial;
-
 import org.jetbrains.annotations.NonNls;
 
 import javax.swing.AbstractSpinnerModel;
+import java.io.Serial;
 import java.util.Objects;
 
 public final class DurationSpinnerModel extends AbstractSpinnerModel {

@@ -1,10 +1,9 @@
 package app.gpx_animator.ui;
 
+import app.gpx_animator.Preferences;
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
-import app.gpx_animator.Preferences;
 
-import java.io.Serial;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -14,9 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.BorderLayout;
-import java.util.ResourceBundle;
+import java.io.Serial;
 
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 
