@@ -306,8 +306,8 @@ public final class Renderer {
 
     private void drawBackground(final RenderingContext rc, final Integer zoom, final BufferedImage bi, final Graphics2D ga) throws UserException {
         drawBackgroundColor(bi, ga);
-        drawBackgroundImage(bi);
         drawBackgroundMap(rc, zoom, bi);
+        drawBackgroundImage(bi);
         drawLogo(bi);
     }
 
