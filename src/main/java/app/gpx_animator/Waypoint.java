@@ -24,7 +24,7 @@ public class Waypoint extends LatLon {
     private final String name;
 
     public Waypoint(final double lat, final double lon, final long time, final String name) {
-        super(lat, lon, time);
+        super(lat, lon, time, null);
         this.name = name;
     }
 
