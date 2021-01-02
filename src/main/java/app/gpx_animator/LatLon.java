@@ -30,11 +30,12 @@ public class LatLon implements Serializable {
 
     private final String cmt;
 
+    @SuppressWarnings("PMD.NullAssignment")
     public LatLon(final double lat, final double lon, final long time) {
         this.lat = lat;
         this.lon = lon;
         this.time = time;
-        this.cmt = "";
+        this.cmt = null;
     }
 
     public LatLon(final double lat, final double lon, final long time, final String cmt) {

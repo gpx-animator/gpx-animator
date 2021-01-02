@@ -765,7 +765,8 @@ public final class Renderer {
         if (point instanceof GpxPoint) {
             final var gpxPoint = (GpxPoint) point;
             final var latLon = gpxPoint.getLatLon();
-            return latLon.getCmt();
+            final String cmt = latLon.getCmt();
+            return cmt == null ? "" : cmt;
         } else {
             return "";
         }

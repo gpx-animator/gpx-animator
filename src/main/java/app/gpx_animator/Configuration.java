@@ -413,7 +413,7 @@ public final class Configuration {
         private int attributionMargin = DEFAULT_MARGIN;
         private Position informationPosition = Position.BOTTOM_RIGHT;
         private int informationMargin = DEFAULT_MARGIN;
-        private Position commentPosition;
+        private Position commentPosition = Position.BOTTOM_CENTER;
         private int commentMargin = DEFAULT_MARGIN;
         private String photoDirectory;
         private Long photoTime = 3_000L;
