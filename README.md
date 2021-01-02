@@ -45,15 +45,15 @@ java -jar ./build/libs/gpx-animator-1.6.0-SNAPSHOT-all.jar
 Contributing
 -----------
 
+### Good First Issues
+
+For your first contribution to this repository, you can take a look at the issues listed here: [Good first issue](https://github.com/zdila/gpx-animator/contribute).
+
 ### Gitpod Online IDE
 
 You can open this project in a preconfigured Gitpod online IDE based on Theia (Visual Studio Code) and edit, run, test, debug and commit directly from your browser.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/zdila/gpx-animator)
-
-### Good First Issues
-
-For your first contribution to this repository, you can take a look at the issues listed here: [Good first issue](https://github.com/zdila/gpx-animator/contribute).
 
 ### Slack Channel
 
