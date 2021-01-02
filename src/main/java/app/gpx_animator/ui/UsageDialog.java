@@ -28,34 +28,35 @@ import javax.swing.border.EtchedBorder;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.io.StringWriter;
-import java.util.ResourceBundle;
 
 public class UsageDialog extends JDialog {
 
+    @Serial
     private static final long serialVersionUID = -8639477664121609849L;
 
     /**
      * Create the dialog.
      */
     public UsageDialog() {
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+        final var resourceBundle = Preferences.getResourceBundle();
 
         setTitle(resourceBundle.getString("ui.dialog.usage.title"));
         setBounds(100, 100, 657, 535);
         getContentPane().setLayout(new BorderLayout());
-        final JPanel contentPanel = new JPanel();
+        final var contentPanel = new JPanel();
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.LINE_AXIS));
 
-        final JEditorPane dtrpngpxNavigator = new JEditorPane();
+        final var dtrpngpxNavigator = new JEditorPane();
         dtrpngpxNavigator.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         dtrpngpxNavigator.setEditable(false);
         dtrpngpxNavigator.setContentType("text/html");
 
-        final StringWriter sw = new StringWriter();
-        final PrintWriter pw = new PrintWriter(sw);
+        final var sw = new StringWriter();
+        final var pw = new PrintWriter(sw);
         pw.println("<dl>"); //NON-NLS
         Help.printHelp((option, argument, track, defaultValue) -> {
             // TODO html escape
@@ -85,14 +86,14 @@ public class UsageDialog extends JDialog {
 
         dtrpngpxNavigator.setCaretPosition(0);
 
-        final JScrollPane scrollPane = new JScrollPane(dtrpngpxNavigator);
+        final var scrollPane = new JScrollPane(dtrpngpxNavigator);
         contentPanel.add(scrollPane);
 
-        final JPanel buttonPane = new JPanel();
+        final var buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
         getContentPane().add(buttonPane, BorderLayout.PAGE_END);
 
-        final JButton okButton = new JButton(resourceBundle.getString("ui.dialog.usage.button.ok"));
+        final var okButton = new JButton(resourceBundle.getString("ui.dialog.usage.button.ok"));
         okButton.addActionListener(e -> UsageDialog.this.dispose());
         buttonPane.add(okButton);
         getRootPane().setDefaultButton(okButton);

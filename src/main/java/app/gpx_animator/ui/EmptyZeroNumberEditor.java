@@ -14,25 +14,27 @@
  */
 package app.gpx_animator.ui;
 
-import javax.swing.JFormattedTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultFormatterFactory;
+import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 
 public class EmptyZeroNumberEditor extends DefaultEditor {
 
+    @Serial
     private static final long serialVersionUID = -3860212824757198990L;
 
     public EmptyZeroNumberEditor(final JSpinner spinner, final Class<? extends Number> clazz) {
         super(spinner);
 
-        final JFormattedTextField ftf = getTextField();
+        final var ftf = getTextField();
         ftf.setEditable(true);
         ftf.setFormatterFactory(new DefaultFormatterFactory(new AbstractFormatter() {
+            @Serial
             private static final long serialVersionUID = -6817456936657252534L;
 
             @Override

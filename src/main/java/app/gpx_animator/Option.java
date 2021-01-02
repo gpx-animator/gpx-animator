@@ -3,7 +3,6 @@ package app.gpx_animator;
 import org.jetbrains.annotations.NonNls;
 
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 @SuppressWarnings("DuplicateStringLiteralInspection")
 public enum Option {
@@ -42,6 +41,7 @@ public enum Option {
     TOTAL_TIME("total-time"),
     KEEP_IDLE("keep-idle"),
     BACKGROUND_COLOR("background-color"),
+    BACKGROUND_IMAGE("background-image"),
     FLASHBACK_COLOR("flashback-color"),
     FLASHBACK_DURATION("flashback-duration"),
     KEEP_LAST_FRAME("keep-last-frame"),
@@ -50,6 +50,7 @@ public enum Option {
     PRE_DRAW_TRACK_COLOR("predraw-track-color"),
     LOGO("logo"),
     LOGO_POSITION("logo-location"),
+    LOGO_MARGIN("logo-margin"),
     ATTRIBUTION_POSITION("attribution-location"),
     ATTRIBUTION_MARGIN("attribution-margin"),
     INFORMATION_POSITION("information-location"),
@@ -66,7 +67,7 @@ public enum Option {
     private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();
 
     static {
-        for (final Option option : Option.values()) {
+        for (final var option : Option.values()) {
             OPTION_MAP.put(option.name, option);
         }
     }
@@ -75,7 +76,7 @@ public enum Option {
     private final String help;
 
     Option(@NonNls final String key) {
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+        final var resourceBundle = Preferences.getResourceBundle();
 
         this.name = key;
         this.help = resourceBundle.getString("option.help.".concat(key)); //NON-NLS

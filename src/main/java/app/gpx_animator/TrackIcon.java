@@ -42,10 +42,10 @@ public final class TrackIcon {
             synchronized (TrackIcon.class) {
                 if (trackIcons == null) {
                     trackIcons = new Vector<>();
-                    for (final String key : KEYS) {
+                    for (final var key : KEYS) {
                         trackIcons.add(new TrackIcon(key, RESOURCE_BUNDLE.getString(RESOURCE_BUNDLE_TRACKICON_PREFIX.concat(key))));
                     }
-                    final Collator collator = Collator.getInstance();
+                    final var collator = Collator.getInstance();
                     trackIcons.sort((a, b) -> collator.compare(a.name, b.name));
                     trackIcons.add(0, new TrackIcon("", ""));
                 }
@@ -82,7 +82,7 @@ public final class TrackIcon {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TrackIcon trackIcon = (TrackIcon) o;
+        var trackIcon = (TrackIcon) o;
         return Objects.equals(key, trackIcon.key);
     }
 

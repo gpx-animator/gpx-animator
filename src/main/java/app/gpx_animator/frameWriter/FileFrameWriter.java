@@ -14,17 +14,16 @@
  */
 package app.gpx_animator.frameWriter;
 
+import app.gpx_animator.Preferences;
+import app.gpx_animator.UserException;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import app.gpx_animator.Preferences;
-import app.gpx_animator.UserException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 import static app.gpx_animator.Utils.isEqual;
 
@@ -41,7 +40,7 @@ public final class FileFrameWriter implements FrameWriter {
 
     public FileFrameWriter(final String frameFilePattern, final String imageType, final double fps) throws UserException {
         if (isEqual(String.format(frameFilePattern, 100), String.format(frameFilePattern, 200))) {
-            final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+            final var resourceBundle = Preferences.getResourceBundle();
             throw new UserException(resourceBundle.getString("framewriter.error.outputpattern"));
         }
 
@@ -52,7 +51,7 @@ public final class FileFrameWriter implements FrameWriter {
 
     @Override
     public void addFrame(final BufferedImage bi) throws UserException {
-        final File outputfile = new File(String.format(frameFilePattern, ++frame));
+        final var outputfile = new File(String.format(frameFilePattern, ++frame));
         try {
             ImageIO.write(bi, imageType, outputfile);
         } catch (final IOException e) {

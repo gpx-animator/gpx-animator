@@ -28,19 +28,19 @@ public final class CommandLineIT {
     }
 
     private String getTemporaryOutputFile() throws IOException {
-        final File output = File.createTempFile("gpx-animator-test_", ".mp4");
+        final var output = File.createTempFile("gpx-animator-test_", ".mp4");
         output.deleteOnExit();
         return output.getAbsolutePath();
     }
 
     private void assertDone() {
-        final boolean done = memoryAppender.search("Done", Level.INFO).get(0).getMessage().contains("Movie written to");
+        final var done = memoryAppender.search("Done", Level.INFO).get(0).getMessage().contains("Movie written to");
         assertTrue(done, "Rendering not finished successfully! Check console and log output.");
     }
 
     @BeforeEach
     public void beforeEachTest() {
-        final Logger logger = (Logger) LoggerFactory.getLogger(Renderer.class);
+        final var logger = (Logger) LoggerFactory.getLogger(Renderer.class);
         memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
         logger.setLevel(Level.DEBUG);
@@ -50,12 +50,18 @@ public final class CommandLineIT {
 
     @Test
     public void testBasicCommandLine() throws Exception {
-        final String[] args = new String[] {
+        final var outputFile = getTemporaryOutputFile();
+        final var args = new String[] {
                 "--input", checkFileSeparator("./src/test/resources/gpx/bikeride.gpx"),
-                "--output", getTemporaryOutputFile()
+                "--output", outputFile
         };
+
         Main.start(args);
         assertDone();
+
+        final var fileSize = new File(outputFile).length();
+        assertTrue(fileSize > 550_000, "Output file size (%s bytes) too small, check content".formatted(fileSize));
+        assertTrue(fileSize < 600_000, "Output file size (%s bytes) too big, check content".formatted(fileSize));
     }
 
     @AfterEach

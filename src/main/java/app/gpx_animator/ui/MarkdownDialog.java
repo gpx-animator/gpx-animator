@@ -21,8 +21,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serial;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 public class MarkdownDialog extends JDialog {
 
+    @Serial
     private static final long serialVersionUID = 1629914977489396863L;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
@@ -60,16 +61,16 @@ public class MarkdownDialog extends JDialog {
     }
 
     private JComponent buildContent() {
-        final JTextPane textPane = new JTextPane();
+        final var textPane = new JTextPane();
         textPane.setEditable(false);
         textPane.setContentType("text/html");
         textPane.setText(parseVariables());
         textPane.setCaretPosition(0);
 
-        final JScrollPane scrollPane = new JScrollPane(textPane,
+        final var scrollPane = new JScrollPane(textPane,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        final JButton closeButton = new JButton(resourceBundle.getString("ui.dialog.markdown.button.close"));
+        final var closeButton = new JButton(resourceBundle.getString("ui.dialog.markdown.button.close"));
         closeButton.addActionListener(e -> SwingUtilities.invokeLater(this::closeDialog));
 
         return FormBuilder.create()
@@ -89,22 +90,22 @@ public class MarkdownDialog extends JDialog {
     @SuppressFBWarnings(value = { "NP_LOAD_OF_KNOWN_NULL_VALUE", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", //NON-NLS
             "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" }, justification = "Check for null exactly as needed") //NON-NLS
     private String readFileAsMarkdown() throws IOException {
-        final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        try (InputStream is = classLoader.getResourceAsStream(filename)) {
+        final var classLoader = ClassLoader.getSystemClassLoader();
+        try (var is = classLoader.getResourceAsStream(filename)) {
             if (is == null) {
                 return null;
             }
-            try (InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
-                 BufferedReader reader = new BufferedReader(isr)) {
+            try (var isr = new InputStreamReader(is, StandardCharsets.UTF_8);
+                 var reader = new BufferedReader(isr)) {
                 return reader.lines().collect(Collectors.joining(System.lineSeparator()));
             }
         }
     }
 
     private String parseVariables() {
-        String html = readFileAsHTML();
-        for (Map.Entry<String, String> variable : variables.entrySet()) {
-            final String placeholder = "\\{\\{".concat(variable.getKey()).concat("\\s*\\}\\}"); //NON-NLS
+        var html = readFileAsHTML();
+        for (var variable : variables.entrySet()) {
+            final var placeholder = "\\{\\{".concat(variable.getKey()).concat("\\s*\\}\\}"); //NON-NLS
             html = html.replaceAll(placeholder, variable.getValue());
         }
         return html;
@@ -112,7 +113,7 @@ public class MarkdownDialog extends JDialog {
 
     private String readFileAsHTML() {
         try {
-            final String md = readFileAsMarkdown();
+            final var md = readFileAsMarkdown();
             return convertMarkdownToHTML(md);
         } catch (final IOException | NullPointerException e) { // NOPMD -- NPE happens on missing file
             e.printStackTrace();
@@ -125,9 +126,9 @@ public class MarkdownDialog extends JDialog {
     }
 
     private String convertMarkdownToHTML(final String md) {
-        final MutableDataSet options = new MutableDataSet();
-        final Parser parser = Parser.builder(options).build();
-        final HtmlRenderer renderer = HtmlRenderer.builder(options).build();
+        final var options = new MutableDataSet();
+        final var parser = Parser.builder(options).build();
+        final var renderer = HtmlRenderer.builder(options).build();
         final Node document = parser.parse(md);
         return renderer.render(document);
     }

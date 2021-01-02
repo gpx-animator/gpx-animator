@@ -14,8 +14,11 @@
  */
 package app.gpx_animator;
 
+import java.io.Serial;
+
 public class UserException extends Exception {
 
+    @Serial
     private static final long serialVersionUID = 4742238182942265693L;
 
     public UserException(final String message, final Throwable cause) {

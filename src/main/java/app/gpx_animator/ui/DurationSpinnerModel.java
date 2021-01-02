@@ -17,10 +17,12 @@ package app.gpx_animator.ui;
 import org.jetbrains.annotations.NonNls;
 
 import javax.swing.AbstractSpinnerModel;
+import java.io.Serial;
 import java.util.Objects;
 
 public final class DurationSpinnerModel extends AbstractSpinnerModel {
 
+    @Serial
     private static final long serialVersionUID = 7220186634453532297L;
 
     private transient Long duration;
@@ -92,7 +94,7 @@ public final class DurationSpinnerModel extends AbstractSpinnerModel {
         }
 
         public static Field fromUnit(@NonNls final String unit) {
-            for (final Field field : Field.values()) {
+            for (final var field : Field.values()) {
                 if (field.getUnit().equals(unit)) {
                     return field;
                 }

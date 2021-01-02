@@ -15,14 +15,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.io.StringWriter;
 import java.util.ResourceBundle;
 
 public class ErrorDialog extends JDialog {
 
+    @Serial
     private static final long serialVersionUID = 1628814974389392363L;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
@@ -44,7 +45,7 @@ public class ErrorDialog extends JDialog {
     }
 
     private JComponent buildContent() {
-        JTextArea messageText = new JTextArea(2, 20);
+        var messageText = new JTextArea(2, 20);
         messageText.setText(message);
         messageText.setWrapStyleWord(true);
         messageText.setLineWrap(true);
@@ -55,17 +56,17 @@ public class ErrorDialog extends JDialog {
         messageText.setFont(UIManager.getFont("Label.font"));
         messageText.setBorder(UIManager.getBorder("Label.border"));
 
-        final JTextPane textPane = new JTextPane();
+        final var textPane = new JTextPane();
         textPane.setEditable(false);
         textPane.setText(getStrackTrace());
         textPane.setCaretPosition(0);
 
-        final JScrollPane scrollPane = new JScrollPane(textPane,
+        final var scrollPane = new JScrollPane(textPane,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        final JButton copyButton = new JButton(resourceBundle.getString("ui.dialog.error.button.copy"));
+        final var copyButton = new JButton(resourceBundle.getString("ui.dialog.error.button.copy"));
         copyButton.addActionListener(e -> SwingUtilities.invokeLater(this::copyMessage));
-        final JButton closeButton = new JButton(resourceBundle.getString("ui.dialog.error.button.close"));
+        final var closeButton = new JButton(resourceBundle.getString("ui.dialog.error.button.close"));
         closeButton.addActionListener(e -> SwingUtilities.invokeLater(this::closeDialog));
 
         return FormBuilder.create()
@@ -79,8 +80,8 @@ public class ErrorDialog extends JDialog {
     }
 
     private String getStrackTrace() {
-        final StringWriter sw = new StringWriter();
-        final PrintWriter pw = new PrintWriter(sw);
+        final var sw = new StringWriter();
+        final var pw = new PrintWriter(sw);
         if (exception != null) {
             pw.write(exception.getMessage() != null ? exception.getMessage() : exception.toString());
             pw.write("\n");
@@ -90,8 +91,8 @@ public class ErrorDialog extends JDialog {
     }
 
     private void copyMessage() {
-        final StringSelection stringSelection = new StringSelection(getStrackTrace());
-        final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        final var stringSelection = new StringSelection(getStrackTrace());
+        final var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
     }
 

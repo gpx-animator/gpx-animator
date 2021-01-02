@@ -41,10 +41,10 @@ public final class Preferences {
     }
 
     public static String getLastWorkingDir() {
-       String lastWorkingDir = PREFS.get(LAST_WORKING_DIR, null);
+        var lastWorkingDir = PREFS.get(LAST_WORKING_DIR, null);
         if (lastWorkingDir == null) {
             lastWorkingDir = System.getProperty("user.home");
-            final String videosDir = lastWorkingDir.concat(FILE_SEPARATOR).concat(RESOURCE_BUNDLE.getString("preferences.videodirectory"));
+            final var videosDir = lastWorkingDir.concat(FILE_SEPARATOR).concat(RESOURCE_BUNDLE.getString("preferences.videodirectory"));
             if (new File(videosDir).exists()) {
                 lastWorkingDir = videosDir;
             }
@@ -64,7 +64,7 @@ public final class Preferences {
     }
 
     public static void addRecentFile(final File file) {
-        final String result = Stream.concat(Stream.of(file), getRecentFiles().stream())
+        final var result = Stream.concat(Stream.of(file), getRecentFiles().stream())
                 .distinct()
                 .limit(5)
                 .map(File::getAbsolutePath)
@@ -101,14 +101,14 @@ public final class Preferences {
     }
 
     public static Color getTrackColorDefault() {
-        final String colorCode = PREFS.get(TRACK_COLOR_DEFAULT, "#FF0000"); //NON-NLS
-        final ColorXmlAdapter xmlAdapter = new ColorXmlAdapter();
+        final var colorCode = PREFS.get(TRACK_COLOR_DEFAULT, "#FF0000"); //NON-NLS
+        final var xmlAdapter = new ColorXmlAdapter();
         return xmlAdapter.unmarshal(colorCode);
     }
 
     public static void setTrackColorDefault(final Color trackColorDefault) {
-        final ColorXmlAdapter xmlAdapter = new ColorXmlAdapter();
-        final String colorCode = xmlAdapter.marshal(trackColorDefault);
+        final var xmlAdapter = new ColorXmlAdapter();
+        final var colorCode = xmlAdapter.marshal(trackColorDefault);
         PREFS.put(TRACK_COLOR_DEFAULT, colorCode);
     }
 

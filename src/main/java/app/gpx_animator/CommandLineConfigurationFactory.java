@@ -24,7 +24,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {
@@ -45,23 +44,23 @@ public final class CommandLineConfigurationFactory {
     private final Configuration configuration;
 
 
-    @SuppressWarnings("checkstyle:MethodLength") // Is it worth investing time refactoring this class?
-    public CommandLineConfigurationFactory(final String[] args) throws UserException {
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    @SuppressWarnings({"checkstyle:MethodLength", "ConstantConditions"}) // Is it worth investing time refactoring this class?
+    public CommandLineConfigurationFactory(final String... args) throws UserException {
+        final var resourceBundle = Preferences.getResourceBundle();
 
-        final Configuration.Builder cfg = Configuration.createBuilder();
+        final var cfg = Configuration.createBuilder();
 
-        boolean forceGui = false;
+        var forceGui = false;
 
         final List<String> labelList = new ArrayList<>();
         final List<Long> timeOffsetList = new ArrayList<>();
         final List<Long> forcedPointIntervalList = new ArrayList<>();
 
-        for (int i = 0; i < args.length; i++) {
-            final String arg = args[i];
+        for (var i = 0; i < args.length; i++) {
+            final var arg = args[i];
 
             try {
-                final Option option = arg.startsWith("--") ? Option.fromName(arg.substring(2)) : null;
+                final var option = arg.startsWith("--") ? Option.fromName(arg.substring(2)) : null;
 
                 if (option == null) {
                     throw new UserException(String.format(resourceBundle.getString("cli.error.option"), arg));
@@ -78,17 +77,18 @@ public final class CommandLineConfigurationFactory {
                             final long lv = Long.decode(args[++i]);
                             cfg.backgroundColor(new Color(lv < Integer.MAX_VALUE ? (int) lv : (int) (0xffffffff00000000L | lv), true));
                         }
+                        case BACKGROUND_IMAGE -> cfg.backgroundImage(new File(args[++i]));
                         case FLASHBACK_COLOR -> {
                             final long lv1 = Long.decode(args[++i]);
                             cfg.flashbackColor(new Color(lv1 < Integer.MAX_VALUE ? (int) lv1 : (int) (0xffffffff00000000L | lv1), true));
                         }
                         case FLASHBACK_DURATION -> {
-                            final String s = args[++i];
+                            final var s = args[++i];
                             cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s)); // NOPMD -- null = not set
                         }
                         case FONT -> cfg.font(new FontXmlAdapter().unmarshal(args[++i]));
                         case FORCED_POINT_TIME_INTERVAL -> {
-                            final String s1 = args[++i].trim();
+                            final var s1 = args[++i].trim();
                             forcedPointIntervalList.add(s1.isEmpty() ? null : Long.valueOf(s1)); // NOPMD -- null = not set
                         }
                         case FPS -> cfg.fps(Double.parseDouble(args[++i]));
@@ -100,7 +100,7 @@ public final class CommandLineConfigurationFactory {
                         }
                         case HEIGHT -> cfg.height(Integer.parseInt(args[++i]));
                         case HELP -> {
-                            try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
+                            try (var pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
                                 pw.println(Constants.APPNAME_VERSION);
                                 pw.println(Constants.COPYRIGHT);
                                 pw.println();
@@ -125,13 +125,12 @@ public final class CommandLineConfigurationFactory {
                         case MIN_LON -> cfg.minLon(Double.parseDouble(args[++i]));
                         case OUTPUT -> cfg.output(new File(args[++i]));
                         case LOGO -> cfg.logo(new File(args[++i]));
+                        case LOGO_MARGIN -> cfg.logoMargin(Integer.parseInt(args[++i]));
                         case PHOTO_DIR -> cfg.photoDirectory(args[++i]);
                         case PHOTO_TIME -> cfg.photoTime(Long.parseLong(args[++i]));
                         case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
                         case PRE_DRAW_TRACK -> cfg.preDrawTrack(true);
-                        case PRE_DRAW_TRACK_COLOR -> {
-                            cfg.preDrawTrackColor(Color.decode(args[++i]));
-                        }
+                        case PRE_DRAW_TRACK_COLOR -> cfg.preDrawTrackColor(Color.decode(args[++i]));
                         case SPEEDUP -> cfg.speedup(Double.parseDouble(args[++i]));
                         case SPEED_UNIT -> cfg.speedUnit(SpeedUnit.parse(args[++i], SpeedUnit.KMH));
                         case TAIL_DURATION -> cfg.tailDuration(Long.parseLong(args[++i]));
@@ -141,12 +140,12 @@ public final class CommandLineConfigurationFactory {
                                     ? (int) lvTailColor : (int) (0xffffffff00000000L | lvTailColor), true));
                         }
                         case TIME_OFFSET -> {
-                            final String s2 = args[++i].trim();
+                            final var s2 = args[++i].trim();
                             timeOffsetList.add(s2.isEmpty() ? null : Long.valueOf(s2)); // NOPMD -- null = not set
                         }
                         case TMS_URL_TEMPLATE -> cfg.tmsUrlTemplate(args[++i]);
                         case TOTAL_TIME -> {
-                            final String s3 = args[++i].trim();
+                            final var s3 = args[++i].trim();
                             cfg.totalTime(s3.isEmpty() ? null : Long.valueOf(s3)); // NOPMD -- null = not set
                         }
                         case VIEWPORT_WIDTH -> cfg.viewportWidth(Integer.parseInt(args[++i]));
@@ -174,7 +173,7 @@ public final class CommandLineConfigurationFactory {
         normalizeMirrorTrackIcons();
 
         for (int i = 0, n = inputGpxList.size(); i < n; i++) {
-            final TrackConfiguration.Builder tcb = TrackConfiguration.createBuilder();
+            final var tcb = TrackConfiguration.createBuilder();
             tcb.inputGpx(new File(inputGpxList.get(i)));
             tcb.color(colorList.get(i));
             tcb.lineWidth(lineWidthList.get(i));
@@ -202,14 +201,14 @@ public final class CommandLineConfigurationFactory {
     }
 
     private void normalizeColors() {
-        final int size = inputGpxList.size();
-        final int size2 = colorList.size();
+        final var size = inputGpxList.size();
+        final var size2 = colorList.size();
         if (size2 == 0) {
-            for (int i = 0; i < size; i++) {
+            for (var i = 0; i < size; i++) {
                 colorList.add(Color.getHSBColor((float) i / size, 0.8f, 1f));
             }
         } else if (size2 < size) {
-            for (int i = size2; i < size; i++) {
+            for (var i = size2; i < size; i++) {
                 colorList.add(colorList.get(i - size2));
             }
         }
@@ -217,56 +216,56 @@ public final class CommandLineConfigurationFactory {
 
 
     private void normalizeLineWidths() {
-        final int size = inputGpxList.size();
-        final int size2 = lineWidthList.size();
+        final var size = inputGpxList.size();
+        final var size2 = lineWidthList.size();
         if (size2 == 0) {
-            for (int i = 0; i < size; i++) {
+            for (var i = 0; i < size; i++) {
                 lineWidthList.add(2f);
             }
         } else if (size2 < size) {
-            for (int i = size2; i < size; i++) {
+            for (var i = size2; i < size; i++) {
                 lineWidthList.add(lineWidthList.get(i - size2));
             }
         }
     }
 
     private void normalizeTrackIcons() {
-        final int size = inputGpxList.size();
-        final int size2 = trackIconList.size();
+        final var size = inputGpxList.size();
+        final var size2 = trackIconList.size();
         if (size2 == 0) {
-            for (int i = 0; i < size; i++) {
+            for (var i = 0; i < size; i++) {
                 trackIconList.add(new TrackIcon("", ""));
             }
         } else if (size2 < size) {
-            for (int i = size2; i < size; i++) {
+            for (var i = size2; i < size; i++) {
                 trackIconList.add(trackIconList.get(i - size2));
             }
         }
     }
 
     private void normalizeInputIcons() {
-        final int size = inputGpxList.size();
-        final int size2 = inputIconList.size();
+        final var size = inputGpxList.size();
+        final var size2 = inputIconList.size();
         if (size2 == 0) {
-            for (int i = 0; i < size; i++) {
+            for (var i = 0; i < size; i++) {
                 inputIconList.add("dummy-input-icon");
             }
         } else if (size2 < size) {
-            for (int i = size2; i < size; i++) {
+            for (var i = size2; i < size; i++) {
                 inputIconList.add(inputIconList.get(i - size2));
             }
         }
     }
 
     private void normalizeMirrorTrackIcons() {
-        final int size = inputGpxList.size();
-        final int size2 = mirrorTrackIconList.size();
+        final var size = inputGpxList.size();
+        final var size2 = mirrorTrackIconList.size();
         if (size2 == 0) {
-            for (int i = 0; i < size; i++) {
+            for (var i = 0; i < size; i++) {
                 mirrorTrackIconList.add(false);
             }
         } else if (size2 < size) {
-            for (int i = size2; i < size; i++) {
+            for (var i = size2; i < size; i++) {
                 mirrorTrackIconList.add(mirrorTrackIconList.get(i - size2));
             }
         }

@@ -35,7 +35,7 @@ public final class Configuration {
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
     private static final Color DEFAULT_PREDRAW_TRACK_COLOR = Color.lightGray;
-    private static final String DEFAULT_TMS_URL_TEMPLATE = "http://tile.openstreetmap.org/{zoom}/{x}/{y}.png";
+    private static final String DEFAULT_TMS_URL_TEMPLATE = "https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png";
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
@@ -50,6 +50,7 @@ public final class Configuration {
     private Integer viewportInertia = DEFAULT_VIEWPORT_INERTIA;
 
     private boolean preDrawTrack;
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color preDrawTrackColor;
 
     private Double speedup;
@@ -66,6 +67,7 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
+    private File backgroundImage;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color flashbackColor;
@@ -75,6 +77,7 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File output;
+
     private String attribution;
     private Position attributionPosition = Position.BOTTOM_LEFT;
     private int attributionMargin;
@@ -95,6 +98,7 @@ public final class Configuration {
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File logo;
     private Position logoPosition = Position.TOP_LEFT;
+    private int logoMargin;
 
     private String photoDirectory;
     private Long photoTime;
@@ -118,13 +122,13 @@ public final class Configuration {
             final Integer viewportWidth, final Integer viewportHeight, final Integer viewportInertia,
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
-            final Color backgroundColor, final Color flashbackColor, final Long flashbackDuration,
+            final Color backgroundColor, final File backgroundImage, final Color flashbackColor, final Long flashbackDuration,
             final boolean preDrawTrack, final Color preDrawTrackColor,
             final Long keepLastFrame, final File output, final String attribution, final SpeedUnit speedUnit,
             final Font font, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final Position logoPosition, final Position attributionPosition, final Position informationPosition,
-            final int attributionMargin, final int informationMargin,
+            final int attributionMargin, final int informationMargin, final int logoMargin,
             final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final List<TrackConfiguration> trackConfigurationList) {
 
@@ -146,6 +150,7 @@ public final class Configuration {
         this.preDrawTrack = preDrawTrack;
         this.preDrawTrackColor = preDrawTrackColor;
         this.backgroundColor = backgroundColor;
+        this.backgroundImage = backgroundImage;
         this.flashbackColor = flashbackColor;
         this.flashbackDuration = flashbackDuration;
         this.keepLastFrame = keepLastFrame;
@@ -161,6 +166,7 @@ public final class Configuration {
         this.maxLat = maxLat;
         this.logo = validateLogo(logo);
         this.logoPosition = logoPosition;
+        this.logoMargin = logoMargin;
         this.attributionPosition = attributionPosition;
         this.attributionMargin = attributionMargin;
         this.informationPosition = informationPosition;
@@ -187,15 +193,15 @@ public final class Configuration {
         return height;
     }
 
-    public Integer getViewPortWidth() {
+    public Integer getViewportWidth() {
         return viewportWidth;
     }
 
-    public Integer getViewPortHeight() {
+    public Integer getViewportHeight() {
         return viewportHeight;
     }
 
-    public Integer getViewPortInertia() {
+    public Integer getViewportInertia() {
         return viewportInertia;
     }
 
@@ -249,6 +255,10 @@ public final class Configuration {
 
     public Color getBackgroundColor() {
         return backgroundColor;
+    }
+
+    public File getBackgroundImage() {
+        return backgroundImage;
     }
 
     public Color getFlashbackColor() {
@@ -307,6 +317,10 @@ public final class Configuration {
         return logoPosition;
     }
 
+    public int getLogoMargin() {
+        return logoMargin;
+    }
+
     public Position getAttributionPosition() {
         return attributionPosition;
     }
@@ -339,47 +353,6 @@ public final class Configuration {
         return trackConfigurationList;
     }
 
-    @SuppressWarnings({"HardCodedStringLiteral", "StringConcatenation"}) // for debugging
-    @Override
-    public String toString() { // TODO Use a library for this kind of tasks, maybe Lombok.
-        return "Configuration [margin=" + margin
-                + ", width=" + width
-                + ", height=" + height
-                + ", zoom=" + zoom
-                + ", viewportWidth=" + viewportWidth
-                + ", viewportHeight=" + viewportHeight
-                + ", viewportInertia=" + viewportInertia
-                + ", speedup=" + speedup
-                + ", tailDuration=" + tailDuration
-                + ", tailColor=" + tailColor
-                + ", fps=" + fps + ", totalTime=" + totalTime
-                + ", backgroundMapVisibility=" + backgroundMapVisibility
-                + ", tmsUrlTemplate=" + tmsUrlTemplate
-                + ", skipIdle=" + skipIdle
-                + ", preDrawTrack=" + preDrawTrack
-                + ", preDrawTrackColor=" + preDrawTrackColor
-                + ", backgroundColor=" + backgroundColor
-                + ", flashbackColor=" + flashbackColor
-                + ", flashbackDuration=" + flashbackDuration
-                + ", output=" + output
-                + ", font=" + font
-                + ", markerSize=" + markerSize
-                + ", waypointSize=" + waypointSize
-                + ", keepLastFrame=" + keepLastFrame
-                + ", logo=" + logo
-                + ", logoPosition=" + logoPosition
-                + ", attributionPosition=" + attributionPosition
-                + ", attributionMargin=" + attributionMargin
-                + ", informationPosition=" + informationPosition
-                + ", informationMargin=" + informationMargin
-                + ", photoDirectory=" + photoDirectory
-                + ", photoTime=" + photoTime
-                + ", photoAnimationDuration=" + photoAnimationDuration
-                + ", trackConfigurationList=" + trackConfigurationList
-                + ", unitOfSpeed=" + speedUnit
-                + "]";
-    }
-
     private static File validateLogo(final File logo) {
         return logo != null && logo.isFile() ? logo : null;
     }
@@ -406,6 +379,7 @@ public final class Configuration {
         private boolean preDrawTrack = false;
         private Color preDrawTrackColor = DEFAULT_PREDRAW_TRACK_COLOR;
         private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
+        private File backgroundImage;
         private Color flashbackColor = Color.white;
         private Long flashbackDuration = 250L;
         private Long keepLastFrame;
@@ -420,6 +394,7 @@ public final class Configuration {
         private Double maxLat;
         private File logo;
         private Position logoPosition = Position.TOP_LEFT;
+        private int logoMargin = DEFAULT_MARGIN;
         private Position attributionPosition = Position.BOTTOM_LEFT;
         private int attributionMargin = DEFAULT_MARGIN;
         private Position informationPosition = Position.BOTTOM_RIGHT;
@@ -436,13 +411,13 @@ public final class Configuration {
                     viewportWidth, viewportHeight, viewportInertia,
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
-                    skipIdle, backgroundColor, flashbackColor, flashbackDuration,
+                    skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
                     preDrawTrack, preDrawTrackColor,
                     keepLastFrame, output, attribution, speedUnit,
                     font, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, logoPosition, attributionPosition, informationPosition,
-                    attributionMargin, informationMargin,
+                    attributionMargin, informationMargin, logoMargin,
                     photoDirectory, photoTime, photoAnimationDuration,
                     Collections.unmodifiableList(trackConfigurationList)
             );
@@ -529,6 +504,11 @@ public final class Configuration {
             return this;
         }
 
+        public Builder backgroundImage(final File backgroundImage) {
+            this.backgroundImage = backgroundImage;
+            return this;
+        }
+
         public Builder preDrawTrack(final boolean preDrawTrack) {
             this.preDrawTrack = preDrawTrack;
             return this;
@@ -606,6 +586,11 @@ public final class Configuration {
 
         public Builder logoPosition(final Position logoPosition) {
             this.logoPosition = logoPosition;
+            return this;
+        }
+
+        public Builder logoMargin(final int logoMargin) {
+            this.logoMargin = logoMargin;
             return this;
         }
 

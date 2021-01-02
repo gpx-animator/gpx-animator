@@ -14,8 +14,8 @@
  */
 package app.gpx_animator.ui;
 
-import org.jetbrains.annotations.NonNls;
 import app.gpx_animator.Preferences;
+import org.jetbrains.annotations.NonNls;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,16 +25,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
-import java.util.ResourceBundle;
+import java.io.Serial;
 
 public abstract class FileSelector extends JPanel {
 
     @NonNls
     public static final String PROPERTY_FILENAME = "filename";
 
+    @Serial
     private static final long serialVersionUID = 3157365691996396016L;
 
     private final transient JTextField fileTextField;
@@ -47,7 +47,7 @@ public abstract class FileSelector extends JPanel {
      * Create the panel.
      */
     public FileSelector(final int fileSelectionMode) {
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+        final var resourceBundle = Preferences.getResourceBundle();
 
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
@@ -81,7 +81,7 @@ public abstract class FileSelector extends JPanel {
             }
         });
 
-        final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
+        final var rigidArea = Box.createRigidArea(new Dimension(5, 0));
         add(rigidArea);
 
         btnNewButton = new JButton(resourceBundle.getString("ui.dialog.fileselector.button.browse"));
@@ -92,17 +92,17 @@ public abstract class FileSelector extends JPanel {
 
             fileChooser.setFileSelectionMode(fileSelectionMode);
 
-            final String text = fileTextField.getText();
+            final var text = fileTextField.getText();
             if (text.isEmpty()) {
                 fileChooser.setCurrentDirectory(new File(Preferences.getLastWorkingDir()));
                 fileChooser.setSelectedFile(new File(""));
             } else {
-                final File file = new File(text);
+                final var file = new File(text);
                 fileChooser.setCurrentDirectory(file.getParentFile() == null ? new File(System.getProperty("user.dir")) : file.getParentFile());
                 fileChooser.setSelectedFile(file);
             }
 
-            final Type type = configure(fileChooser);
+            final var type = configure(fileChooser);
             if ((type == Type.OPEN ? fileChooser.showOpenDialog(FileSelector.this)
                     : fileChooser.showSaveDialog(FileSelector.this)) == JFileChooser.APPROVE_OPTION) {
                 Preferences.setLastWorkingDir(fileChooser.getSelectedFile().getParent());

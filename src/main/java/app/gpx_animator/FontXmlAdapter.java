@@ -20,9 +20,9 @@ public final class FontXmlAdapter extends XmlAdapter<String, Font> {
     }
 
     private String encode(@NotNull final Font font) {
-        final String name = font.getName();
-        final String style = getStyle(font);
-        final int size = font.getSize();
+        final var name = font.getName();
+        final var style = getStyle(font);
+        final var size = font.getSize();
         return "%s-%s-%d".formatted(name, style, size);
     }
 

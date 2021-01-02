@@ -10,9 +10,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.Serial;
 import java.util.ResourceBundle;
 
 public final class FontSelector extends JPanel {
@@ -20,6 +20,7 @@ public final class FontSelector extends JPanel {
     @NonNls
     public static final String PROPERTY_FONT = "font";
 
+    @Serial
     private static final long serialVersionUID = 4157235691776396086L;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
@@ -39,17 +40,17 @@ public final class FontSelector extends JPanel {
         fontTextField.setColumns(10);
         fontTextField.setEditable(false);
 
-        final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
+        final var rigidArea = Box.createRigidArea(new Dimension(5, 0));
         add(rigidArea);
 
-        final JButton btnSelectFontButton = new JButton(resourceBundle.getString("ui.dialog.fontselector.button.selectfont"));
+        final var btnSelectFontButton = new JButton(resourceBundle.getString("ui.dialog.fontselector.button.selectfont"));
         btnSelectFontButton.addActionListener(e -> {
-            final FontChooser fontChooser = new FontChooser();
+            final var fontChooser = new FontChooser();
             if (font != null) {
                 fontChooser.setSelectedFont(getSelectedFont());
             }
             if (fontChooser.showDialog(FontSelector.this) == FontChooser.OK_OPTION) {
-                final Font oldFont = getSelectedFont();
+                final var oldFont = getSelectedFont();
                 setSelectedFont(fontChooser.getSelectedFont());
                 firePropertyChange(PROPERTY_FONT, oldFont, getSelectedFont());
             }
@@ -66,10 +67,10 @@ public final class FontSelector extends JPanel {
         if (selectedFont == null) {
             fontTextField.setText("");
         } else {
-            final String name = selectedFont.getName();
-            final String style = getStyleText(selectedFont, resourceBundle);
-            final int size = selectedFont.getSize();
-            final String text = "%s, %s, %d".formatted(name, style, size);
+            final var name = selectedFont.getName();
+            final var style = getStyleText(selectedFont, resourceBundle);
+            final var size = selectedFont.getSize();
+            final var text = "%s, %s, %d".formatted(name, style, size);
             fontTextField.setText(text);
         }
     }

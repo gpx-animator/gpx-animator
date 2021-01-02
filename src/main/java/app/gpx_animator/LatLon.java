@@ -14,10 +14,12 @@
  */
 package app.gpx_animator;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class LatLon implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 7961146252499979058L;
 
     private final double lat;

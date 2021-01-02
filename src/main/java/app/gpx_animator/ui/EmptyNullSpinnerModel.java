@@ -15,10 +15,12 @@
 package app.gpx_animator.ui;
 
 import javax.swing.AbstractSpinnerModel;
+import java.io.Serial;
 import java.math.BigDecimal;
 
 public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
+    @Serial
     private static final long serialVersionUID = -8064362052986633347L;
 
     private final transient boolean zeroEmpty;
@@ -53,8 +55,8 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
         if (fractions < 0) {
             fractionValue = 0.0;
         } else {
-            double fv = 1.0;
-            for (int i = fractions; i > 0; i--) {
+            var fv = 1.0;
+            for (var i = fractions; i > 0; i--) {
                 fv *= 10.0;
             }
             fractionValue = fv;
@@ -74,14 +76,14 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
     private Number incrValue(final int dir) {
         final Number newValue;
         if ((value instanceof Float) || (value instanceof Double)) {
-            final double v = round(value.doubleValue() + (stepSize.doubleValue() * dir));
+            final var v = round(value.doubleValue() + (stepSize.doubleValue() * dir));
             if (value instanceof Double) {
                 newValue = v;
             } else {
                 newValue = (float) v;
             }
         } else {
-            final long v = value.longValue() + (stepSize.longValue() * dir);
+            final var v = value.longValue() + (stepSize.longValue() * dir);
 
             if (value instanceof Long) {
                 newValue = v;
@@ -126,7 +128,7 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
         }
 
         object = o;
-        Number newValue = (Number) o;
+        var newValue = (Number) o;
         if (newValue != null && zeroEmpty && newValue.doubleValue() == 0.0) {
             newValue = null;
         }
@@ -144,8 +146,8 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
     }
 
     public int compareTo(final Number n1, final Number n2) {
-        BigDecimal b1 = BigDecimal.valueOf(n1.doubleValue());
-        BigDecimal b2 = BigDecimal.valueOf(n2.doubleValue());
+        var b1 = BigDecimal.valueOf(n1.doubleValue());
+        var b2 = BigDecimal.valueOf(n2.doubleValue());
         return b1.compareTo(b2);
     }
 }

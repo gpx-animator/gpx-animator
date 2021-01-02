@@ -1,8 +1,8 @@
 package app.gpx_animator.ui;
 
+import app.gpx_animator.Preferences;
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
-import app.gpx_animator.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -13,25 +13,26 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.BorderLayout;
-import java.util.ResourceBundle;
+import java.io.Serial;
 
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 
 public class PreferencesDialog extends JDialog {
 
+    @Serial
     private static final long serialVersionUID = -8767146323054030406L;
 
     public PreferencesDialog(final JFrame owner) {
         super(owner, true);
 
-        final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+        final var resourceBundle = Preferences.getResourceBundle();
 
         setTitle(resourceBundle.getString("ui.dialog.preferences.title"));
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        final FileSelector tileCachePathSelector = new FileSelector(DIRECTORIES_ONLY) {
+        final var tileCachePathSelector = new FileSelector(DIRECTORIES_ONLY) {
+            @Serial
             private static final long serialVersionUID = 7372002778979993241L;
             @Override
             protected Type configure(final JFileChooser outputFileChooser) {
@@ -40,14 +41,14 @@ public class PreferencesDialog extends JDialog {
         };
         tileCachePathSelector.setToolTipText(resourceBundle.getString("ui.dialog.preferences.cachepath.tooltip"));
 
-        final JSpinner tileCacheTimeLimitSpinner = new JSpinner();
+        final var tileCacheTimeLimitSpinner = new JSpinner();
         tileCacheTimeLimitSpinner.setToolTipText(resourceBundle.getString("ui.dialog.preferences.cachetimelimit.tooltip"));
         tileCacheTimeLimitSpinner.setModel(new DurationSpinnerModel());
         tileCacheTimeLimitSpinner.setEditor(new DurationEditor(tileCacheTimeLimitSpinner));
 
-        final JPanel trackColorPanel = new JPanel(new BorderLayout());
-        final JCheckBox trackColorRandom = new JCheckBox(resourceBundle.getString("ui.dialog.preferences.track.color.random"));
-        final ColorSelector trackColorSelector = new ColorSelector();
+        final var trackColorPanel = new JPanel(new BorderLayout());
+        final var trackColorRandom = new JCheckBox(resourceBundle.getString("ui.dialog.preferences.track.color.random"));
+        final var trackColorSelector = new ColorSelector();
         trackColorRandom.setSelected(Preferences.getTrackColorRandom());
         trackColorSelector.setColor(Preferences.getTrackColorDefault());
         trackColorSelector.setEnabled(!Preferences.getTrackColorRandom());
@@ -56,13 +57,13 @@ public class PreferencesDialog extends JDialog {
         trackColorPanel.add(trackColorSelector, BorderLayout.CENTER);
 
 
-        final JButton cancelButton = new JButton(resourceBundle.getString("ui.dialog.preferences.button.cancel"));
+        final var cancelButton = new JButton(resourceBundle.getString("ui.dialog.preferences.button.cancel"));
         cancelButton.addActionListener(e -> SwingUtilities.invokeLater(() -> {
             setVisible(false);
             dispose();
         }));
 
-        final JButton saveButton = new JButton(resourceBundle.getString("ui.dialog.preferences.button.save"));
+        final var saveButton = new JButton(resourceBundle.getString("ui.dialog.preferences.button.save"));
         saveButton.addActionListener(e -> SwingUtilities.invokeLater(() -> {
             Preferences.setTileCacheDir(tileCachePathSelector.getFilename());
             Preferences.setTileCacheTimeLimit((Long) tileCacheTimeLimitSpinner.getValue());
