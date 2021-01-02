@@ -342,6 +342,10 @@ public final class Renderer {
     }
 
     private void drawLogo(final BufferedImage bi) throws UserException {
+        if (Position.HIDDEN.equals(cfg.getLogoPosition())) {
+            return;
+        }
+
         final var logo = cfg.getLogo();
         if (logo != null && logo.exists()) {
             final BufferedImage image;
@@ -661,6 +665,10 @@ public final class Renderer {
     }
 
     private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) throws UserException {
+        if (Position.HIDDEN.equals(cfg.getInformationPosition())) {
+            return;
+        }
+
         final var dateString = dateFormat.format(getTime(frame));
         final var latLongString = getLatLonString(marker);
         final var speedString = SpeedUtil.getSpeedString(marker, getTime(frame), frame, cfg.getFps(), cfg.getSpeedUnit());
@@ -728,6 +736,10 @@ public final class Renderer {
 
 
     private void drawAttribution(final BufferedImage bi, final String attribution) throws UserException {
+        if (Position.HIDDEN.equals(cfg.getAttributionPosition())) {
+            return;
+        }
+
         var hasSplit = false;
 
         if (attribution.trim().contains("\n")) {

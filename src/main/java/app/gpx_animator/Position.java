@@ -7,8 +7,7 @@ import java.util.ResourceBundle;
 
 public enum Position {
 
-    // TODO Position.HIDE -> don't show on the map
-
+    HIDDEN,
     TOP_LEFT,
     TOP_CENTER,
     TOP_RIGHT,

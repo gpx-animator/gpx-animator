@@ -20,7 +20,9 @@ Release date: work in progress 🚧
 * Adding support for choosing an external PNG file as a track icon
 * Track icons can now be mirrored to match the general direction
 * Adding font selection for the text in the animation
-* Margin for track, logo, attribution and information can be set separately
+* Margin for track, logo, attribution and informations can be set separately
+* Positions of logo, attribution, and informations are now configurable
+* Logo, attribution, and informations can now hidden
 * Adding support for background images (including transparency in PNG files)
 
 ## Version 1.5.2
