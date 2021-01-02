@@ -83,7 +83,7 @@ public final class Configuration {
     private int attributionMargin;
     private Position informationPosition = Position.BOTTOM_RIGHT;
     private int informationMargin;
-    private Position commentPosition;
+    private Position commentPosition = Position.BOTTOM_CENTER;
     private int commentMargin;
 
     @XmlJavaTypeAdapter(FontXmlAdapter.class)
