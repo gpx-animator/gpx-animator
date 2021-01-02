@@ -217,6 +217,7 @@ public final class Renderer {
 
             if (font != null) {
                 drawInfo(viewportImage, frame, marker);
+                drawComment(viewportImage, frame, marker);
 
                 var att = resourceBundle.getString("configuration.attribution");
                 var getAt = cfg.getAttribution();
@@ -532,6 +533,7 @@ public final class Renderer {
             final var marker = drawMarker(bi, frames);
             if (font != null) {
                 drawInfo(bi, frames, marker);
+                drawComment(bi, frames, marker);
 
                 var att = resourceBundle.getString("configuration.attribution");
                 if (cfg.getAttribution().equals(att)) {
@@ -715,12 +717,55 @@ public final class Renderer {
         }
     }
 
+    private void drawComment(final BufferedImage bi, final int frame, final Point2D marker) throws UserException {
+        final var cmt = getCommentString(marker);
+        final var graphics = getGraphics(bi);
+
+        switch (cfg.getCommentPosition()) {
+            case TOP_LEFT -> {
+                printText(graphics, cmt, cfg.getCommentMargin(), cfg.getCommentMargin());
+            }
+            case TOP_CENTER -> {
+                printText(graphics, cmt, (float) (bi.getWidth() - fontMetrics.stringWidth(cmt)) / 2, cfg.getCommentMargin());
+            }
+            case TOP_RIGHT -> {
+                printText(graphics, cmt, bi.getWidth() - fontMetrics.stringWidth(cmt) - cfg.getCommentMargin(),
+                        cfg.getCommentMargin());
+            }
+            case BOTTOM_LEFT -> {
+                printText(graphics, cmt, cfg.getCommentMargin(),
+                        bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
+            }
+            case BOTTOM_CENTER -> {
+                printText(graphics, cmt, (float) (bi.getWidth() - fontMetrics.stringWidth(cmt)) / 2,
+                        bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
+            }
+            case BOTTOM_RIGHT -> {
+                printText(graphics, cmt, bi.getWidth() - fontMetrics.stringWidth(cmt) - cfg.getCommentMargin(),
+                        bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
+            }
+            default -> throw new UserException("Invalid comment position!");
+        }
+    }
+
+
 
     private String getLatLonString(final Point2D point) {
         if (point instanceof GpxPoint) {
             final var gpxPoint = (GpxPoint) point;
             final var latLon = gpxPoint.getLatLon();
             return String.format("%.4f, %.4f", latLon.getLat(), latLon.getLon()); //NON-NLS
+        } else {
+            return "";
+        }
+    }
+
+
+    private String getCommentString(final Point2D point) {
+        if (point instanceof GpxPoint) {
+            final var gpxPoint = (GpxPoint) point;
+            final var latLon = gpxPoint.getLatLon();
+            return latLon.getCmt();
         } else {
             return "";
         }
