@@ -71,6 +71,8 @@ public final class CommandLineConfigurationFactory {
                         case ATTRIBUTION_MARGIN -> cfg.attributionMargin(Integer.parseInt(args[++i]));
                         case INFORMATION_POSITION -> cfg.informationPosition(Position.parse(args[++i]));
                         case INFORMATION_MARGIN -> cfg.informationMargin(Integer.parseInt(args[++i]));
+                        case COMMENT_POSITION -> cfg.commentPosition(Position.parse(args[++i]));
+                        case COMMENT_MARGIN -> cfg.commentMargin(Integer.parseInt(args[++i]));
                         case BACKGROUND_MAP_VISIBILITY -> cfg.backgroundMapVisibility(Float.parseFloat(args[++i]));
                         case COLOR -> colorList.add(Color.decode(args[++i]));
                         case BACKGROUND_COLOR -> {
