@@ -46,14 +46,16 @@ public final class Help {
         w.writeOptionHelp(Option.HEIGHT, "height", false, cfg.getHeight()); //NON-NLS
         w.writeOptionHelp(Option.HELP, "help", false, null);
         w.writeOptionHelp(Option.INPUT, "input", true, tc.getInputGpx()); //NON-NLS
-        w.writeOptionHelp(Option.INFORMATION_POSITION, "position", false, cfg.getInformationPosition());
+        w.writeOptionHelp(Option.INFORMATION_POSITION, "information-position", false, cfg.getInformationPosition());
         w.writeOptionHelp(Option.INFORMATION_MARGIN, "information-margin", false, cfg.getInformationMargin()); //NON-NLS
+        w.writeOptionHelp(Option.COMMENT_POSITION, "comment-position", false, cfg.getCommentPosition());
+        w.writeOptionHelp(Option.COMMENT_MARGIN, "comment-margin", false, cfg.getCommentMargin()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON, "trackIcon", true, tc.getTrackIcon()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON_FILE, "trackIconFile", true, tc.getInputIcon()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON_MIRROR, "mirrorTrackIcon", true, tc.isTrackIconMirrored()); //NON-NLS
         w.writeOptionHelp(Option.LABEL, "label", true, tc.getLabel()); //NON-NLS
         w.writeOptionHelp(Option.LINE_WIDTH, "width", true, tc.getLineWidth()); //NON-NLS
-        w.writeOptionHelp(Option.LOGO_POSITION, "position", false, cfg.getLogoPosition()); //NON-NLS
+        w.writeOptionHelp(Option.LOGO_POSITION, "logo-position", false, cfg.getLogoPosition()); //NON-NLS
         w.writeOptionHelp(Option.LOGO_MARGIN, "logo-margin", false, cfg.getLogoMargin()); //NON-NLS
         w.writeOptionHelp(Option.MARGIN, "margin", false, cfg.getMargin()); //NON-NLS
         w.writeOptionHelp(Option.MARKER_SIZE, "size", false, cfg.getMarkerSize()); //NON-NLS

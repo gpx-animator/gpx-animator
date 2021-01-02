@@ -28,10 +28,20 @@ public class LatLon implements Serializable {
 
     private final long time;
 
+    private final String cmt;
+
     public LatLon(final double lat, final double lon, final long time) {
         this.lat = lat;
         this.lon = lon;
         this.time = time;
+        this.cmt = "";
+    }
+
+    public LatLon(final double lat, final double lon, final long time, final String cmt) {
+        this.lat = lat;
+        this.lon = lon;
+        this.time = time;
+        this.cmt = cmt;
     }
 
     public final double getLat() {
@@ -44,6 +54,10 @@ public class LatLon implements Serializable {
 
     public final long getTime() {
         return time;
+    }
+
+    public final String getCmt() {
+        return cmt;
     }
 
 }

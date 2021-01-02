@@ -33,6 +33,7 @@ final class GpxContentHandler extends DefaultHandler {
     private static final String ELEM_WPT = "wpt"; //NON-NLS
     private static final String ELEM_TIME = "time"; //NON-NLS
     private static final String ELEM_NAME = "name"; //NON-NLS
+    private static final String ELEM_CMT = "cmt"; //NON-NLS
 
     private final List<List<LatLon>> timePointListList = new ArrayList<>();
     private final List<LatLon> waypointList = new ArrayList<>();
@@ -42,6 +43,7 @@ final class GpxContentHandler extends DefaultHandler {
     private double lat;
     private double lon;
     private String name;
+    private String cmt;
 
 
     @Override
@@ -51,7 +53,7 @@ final class GpxContentHandler extends DefaultHandler {
         } else if (isEqual(ELEM_TRKPT, qName) || isEqual(ELEM_WPT, qName)) {
             lat = Double.parseDouble(attributes.getValue(ATTR_LAT));
             lon = Double.parseDouble(attributes.getValue(ATTR_LON));
-        } else if (isEqual(ELEM_TIME, qName) || isEqual(ELEM_NAME, qName)) {
+        } else if (isEqual(ELEM_TIME, qName) || isEqual(ELEM_NAME, qName) || isEqual(ELEM_CMT, qName)) {
             sb = new StringBuilder();
         }
     }
@@ -72,8 +74,9 @@ final class GpxContentHandler extends DefaultHandler {
             timePointListList.add(timePointList);
             timePointList = null;
         } else if (isEqual(ELEM_TRKPT, qName)) {
-            timePointList.add(new LatLon(lat, lon, time));
+            timePointList.add(new LatLon(lat, lon, time, cmt));
             time = Long.MIN_VALUE;
+            cmt = null;
         } else if (isEqual(ELEM_WPT, qName)) {
             waypointList.add(new Waypoint(lat, lon, time, name));
         } else if (isEqual(ELEM_TIME, qName)) {
@@ -82,6 +85,9 @@ final class GpxContentHandler extends DefaultHandler {
             sb = null;
         } else if (isEqual(ELEM_NAME, qName)) {
             name = sb.toString();
+            sb = null;
+        } else if (isEqual(ELEM_CMT, qName)) {
+            cmt = sb.toString();
             sb = null;
         }
     }

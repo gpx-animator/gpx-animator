@@ -83,6 +83,8 @@ public final class Configuration {
     private int attributionMargin;
     private Position informationPosition = Position.BOTTOM_RIGHT;
     private int informationMargin;
+    private Position commentPosition;
+    private int commentMargin;
 
     @XmlJavaTypeAdapter(FontXmlAdapter.class)
     private Font font;
@@ -127,8 +129,10 @@ public final class Configuration {
             final Long keepLastFrame, final File output, final String attribution, final SpeedUnit speedUnit,
             final Font font, final Double markerSize, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
-            final File logo, final Position logoPosition, final Position attributionPosition, final Position informationPosition,
-            final int attributionMargin, final int informationMargin, final int logoMargin,
+            final File logo, final Position logoPosition, final int logoMargin,
+            final Position attributionPosition, final int attributionMargin,
+            final Position informationPosition, final int informationMargin,
+            final Position commentPosition, final int commentMargin,
             final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final List<TrackConfiguration> trackConfigurationList) {
 
@@ -171,6 +175,8 @@ public final class Configuration {
         this.attributionMargin = attributionMargin;
         this.informationPosition = informationPosition;
         this.informationMargin = informationMargin;
+        this.commentPosition = commentPosition;
+        this.commentMargin = commentMargin;
         this.photoDirectory = photoDirectory;
         this.photoTime = photoTime;
         this.photoAnimationDuration = photoAnimationDuration;
@@ -337,6 +343,14 @@ public final class Configuration {
         return informationMargin;
     }
 
+    public Position getCommentPosition() {
+        return commentPosition;
+    }
+
+    public int getCommentMargin() {
+        return commentMargin;
+    }
+
     public String getPhotoDirectory() {
         return photoDirectory;
     }
@@ -399,6 +413,8 @@ public final class Configuration {
         private int attributionMargin = DEFAULT_MARGIN;
         private Position informationPosition = Position.BOTTOM_RIGHT;
         private int informationMargin = DEFAULT_MARGIN;
+        private Position commentPosition;
+        private int commentMargin = DEFAULT_MARGIN;
         private String photoDirectory;
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
@@ -416,8 +432,10 @@ public final class Configuration {
                     keepLastFrame, output, attribution, speedUnit,
                     font, markerSize, waypointSize,
                     minLon, maxLon, minLat, maxLat,
-                    logo, logoPosition, attributionPosition, informationPosition,
-                    attributionMargin, informationMargin, logoMargin,
+                    logo, logoPosition, logoMargin,
+                    attributionPosition, attributionMargin,
+                    informationPosition, informationMargin,
+                    commentPosition, commentMargin,
                     photoDirectory, photoTime, photoAnimationDuration,
                     Collections.unmodifiableList(trackConfigurationList)
             );
@@ -611,6 +629,16 @@ public final class Configuration {
 
         public Builder informationMargin(final int informationMargin) {
             this.informationMargin = informationMargin;
+            return this;
+        }
+
+        public Builder commentPosition(final Position commentPosition) {
+            this.commentPosition = commentPosition;
+            return this;
+        }
+
+        public Builder commentMargin(final int commentMargin) {
+            this.commentMargin = commentMargin;
             return this;
         }
 
