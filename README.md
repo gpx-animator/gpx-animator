@@ -59,7 +59,7 @@ You can open this project in a preconfigured Gitpod online IDE based on Theia (V
 
 There is a public Slack channel for GPX Animator available, which is hosted by the [Java User Group Switzerland](https://www.jug.ch/). If you are not already a member of this workspace, you can request a free invitation link with your email address (and nothing more) here: [Join Slack Workspace](http://slack.jug.ch/)
 
-After you have entered the Slack Workspace successfully, join the "gpx-animator" channel.
+After you have entered the Slack Workspace, join the "gpx-animator" channel.
 
 
 Build
