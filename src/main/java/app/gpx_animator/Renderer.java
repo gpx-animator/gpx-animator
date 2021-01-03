@@ -231,9 +231,10 @@ public final class Renderer {
                 var att = resourceBundle.getString("configuration.attribution");
                 var getAt = cfg.getAttribution();
                 if (att.equals(getAt)) {
-                    drawAttribution(viewportImage, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
+                    drawAttribution(textRenderer, imageRenderer, viewportImage,
+                            att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
                 } else {
-                    drawAttribution(viewportImage, getAt);
+                    drawAttribution(textRenderer, imageRenderer, viewportImage, getAt);
                 }
             }
 
@@ -544,9 +545,10 @@ public final class Renderer {
 
                 var att = resourceBundle.getString("configuration.attribution");
                 if (cfg.getAttribution().equals(att)) {
-                    drawAttribution(bi, att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
+                    drawAttribution(textRenderer, imageRenderer, bi,
+                            att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
                 } else {
-                    drawAttribution(bi, cfg.getAttribution());
+                    drawAttribution(textRenderer, imageRenderer, bi, cfg.getAttribution());
                 }
             }
             final long ms = cfg.getKeepLastFrame();
@@ -748,73 +750,12 @@ public final class Renderer {
     }
 
 
-    private void drawAttribution(final BufferedImage bi, final String attribution) throws UserException {
-        if (Position.HIDDEN.equals(cfg.getAttributionPosition())) {
-            return;
-        }
-
-        var hasSplit = false;
-
-        if (attribution.trim().contains("\n")) {
-            hasSplit = true;
-        }
-
-        if (hasSplit) {
-            final var lines = attribution.trim().split("\n");
-            switch (cfg.getAttributionPosition()) {
-                case TOP_LEFT -> {
-                    printText(getGraphics(bi), lines[0], cfg.getAttributionMargin(), cfg.getAttributionMargin() + fontMetrics.getHeight());
-                    printText(getGraphics(bi), lines[1], cfg.getAttributionMargin(), cfg.getAttributionMargin() + fontMetrics.getHeight() * 2);
-                }
-                case TOP_CENTER -> {
-                    printText(getGraphics(bi), lines[0], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[0])) / 2,
-                            cfg.getAttributionMargin() + fontMetrics.getHeight());
-                    printText(getGraphics(bi), lines[1], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[1])) / 2,
-                            cfg.getAttributionMargin() + fontMetrics.getHeight() * 2);
-                }
-                case TOP_RIGHT -> {
-                    printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getAttributionMargin(),
-                            cfg.getAttributionMargin() + fontMetrics.getHeight());
-                    printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getAttributionMargin(),
-                            cfg.getAttributionMargin() + fontMetrics.getHeight() * 2);
-                }
-                case BOTTOM_LEFT -> {
-                    printText(getGraphics(bi), lines[0], cfg.getAttributionMargin(), bi.getHeight() - cfg.getAttributionMargin());
-                    printText(getGraphics(bi), lines[1], cfg.getAttributionMargin(), bi.getHeight() - cfg.getAttributionMargin() * 2);
-                }
-                case BOTTOM_CENTER -> {
-                    printText(getGraphics(bi), lines[0], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[0])) / 2,
-                            bi.getHeight() - cfg.getAttributionMargin());
-                    printText(getGraphics(bi), lines[1], (float) (bi.getWidth() - fontMetrics.stringWidth(lines[1])) / 2,
-                            bi.getHeight() - cfg.getAttributionMargin() * 2);
-                }
-                case BOTTOM_RIGHT -> {
-                    printText(getGraphics(bi), lines[0], bi.getWidth() - fontMetrics.stringWidth(lines[0]) - cfg.getAttributionMargin(),
-                            bi.getHeight() - cfg.getAttributionMargin());
-                    printText(getGraphics(bi), lines[1], bi.getWidth() - fontMetrics.stringWidth(lines[1]) - cfg.getAttributionMargin(),
-                            bi.getHeight() - cfg.getAttributionMargin() * 2);
-                }
-                default -> throw new UserException("Invalid attribution position!");
-            }
-        } else {
-            switch (cfg.getAttributionPosition()) {
-                case TOP_LEFT -> printText(getGraphics(bi), attribution, cfg.getAttributionMargin(),
-                        cfg.getAttributionMargin() + fontMetrics.getHeight());
-                case TOP_CENTER -> printText(getGraphics(bi), attribution, (float) (bi.getWidth() - fontMetrics.stringWidth(attribution)) / 2,
-                        cfg.getAttributionMargin() + fontMetrics.getHeight());
-                case TOP_RIGHT -> printText(getGraphics(bi), attribution,
-                        bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getAttributionMargin(),
-                        cfg.getAttributionMargin() + fontMetrics.getHeight());
-                case BOTTOM_LEFT -> printText(getGraphics(bi), attribution,
-                        cfg.getAttributionMargin(), bi.getHeight() - cfg.getAttributionMargin());
-                case BOTTOM_CENTER -> printText(getGraphics(bi), attribution, (float) (bi.getWidth() - fontMetrics.stringWidth(attribution)) / 2,
-                        bi.getHeight() - cfg.getAttributionMargin());
-                case BOTTOM_RIGHT -> printText(getGraphics(bi), attribution,
-                        bi.getWidth() - fontMetrics.stringWidth(attribution) - cfg.getAttributionMargin(),
-                        bi.getHeight() - cfg.getAttributionMargin());
-                default -> throw new UserException("Invalid attribution position!");
-            }
-        }
+    private void drawAttribution(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer,
+                                 @NonNull final BufferedImage bi, @NonNull final String attribution) {
+        var position = cfg.getAttributionPosition();
+        var margin = cfg.getAttributionMargin();
+        var image = textRenderer.renderText(attribution, forPosition(position));
+        imageRenderer.renderImage(image, position, margin, bi);
     }
 
     private Point2D drawMarker(final BufferedImage bi, final int frame) throws UserException {
