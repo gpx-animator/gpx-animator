@@ -2,10 +2,9 @@ package app.gpx_animator;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public final class ImageRenderer {
+public final class ImageRenderer extends GraphicsRenderer {
 
     public void renderImage(@NonNull final BufferedImage image, @NonNull final Position position, final int margin,
                             @NonNull final BufferedImage targetImage) {
@@ -17,7 +16,7 @@ public final class ImageRenderer {
         final var imageHeight = image.getHeight();
         final var targetImageWidth = targetImage.getWidth();
         final var targetImageHeight = targetImage.getHeight();
-        final var graphics = (Graphics2D) targetImage.getGraphics();
+        final var graphics = getGraphics(targetImage);
 
         int xPosition;
         int yPosition;

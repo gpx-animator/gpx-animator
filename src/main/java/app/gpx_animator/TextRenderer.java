@@ -13,7 +13,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-public final class TextRenderer {
+public final class TextRenderer extends GraphicsRenderer {
 
     private static final int IMAGE_TYPE = BufferedImage.TYPE_4BYTE_ABGR;
     private static final float STRIKE_WIDTH = 3f;
@@ -52,7 +52,7 @@ public final class TextRenderer {
         final var height = calculateTextHeight(trimmedText);
 
         final var image = new BufferedImage(width, height, IMAGE_TYPE);
-        final var graphics = (Graphics2D) image.getGraphics();
+        final var graphics = getGraphics(image);
         graphics.setStroke(STROKE);
         graphics.setFont(font);
 
