@@ -27,7 +27,6 @@ import javax.imageio.ImageIO;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.font.TextLayout;
@@ -71,7 +70,6 @@ public final class Renderer {
     private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
     private Font font;
-    private FontMetrics fontMetrics;
 
     private long minTime = Long.MAX_VALUE;
     private long maxTime = Long.MIN_VALUE;
@@ -172,7 +170,6 @@ public final class Renderer {
         final var ga = (Graphics2D) bi.getGraphics();
 
         font = cfg.getFont();
-        fontMetrics = ga.getFontMetrics(font);
 
         final var textRenderer = new TextRenderer(font);
         final var imageRenderer = new ImageRenderer();
