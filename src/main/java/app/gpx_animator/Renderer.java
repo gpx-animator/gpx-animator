@@ -217,7 +217,7 @@ public final class Renderer {
 
             if (font != null) {
                 drawInfo(viewportImage, frame, marker);
-                drawComment(viewportImage, frame, marker);
+                drawComment(viewportImage, marker);
 
                 var att = resourceBundle.getString("configuration.attribution");
                 var getAt = cfg.getAttribution();
@@ -537,7 +537,7 @@ public final class Renderer {
             final var marker = drawMarker(bi, frames);
             if (font != null) {
                 drawInfo(bi, frames, marker);
-                drawComment(bi, frames, marker);
+                drawComment(bi, marker);
 
                 var att = resourceBundle.getString("configuration.attribution");
                 if (cfg.getAttribution().equals(att)) {
@@ -725,7 +725,7 @@ public final class Renderer {
         }
     }
 
-    private void drawComment(final BufferedImage bi, final int frame, final Point2D marker) throws UserException {
+    private void drawComment(final BufferedImage bi, final Point2D marker) throws UserException {
         final var cmt = getCommentString(marker);
         final var graphics = getGraphics(bi);
 
