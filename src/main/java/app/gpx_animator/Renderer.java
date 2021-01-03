@@ -736,28 +736,16 @@ public final class Renderer {
         final var graphics = getGraphics(bi);
 
         switch (cfg.getCommentPosition()) {
-            case TOP_LEFT -> {
-                printText(graphics, cmt, cfg.getCommentMargin(), cfg.getCommentMargin());
-            }
-            case TOP_CENTER -> {
-                printText(graphics, cmt, (float) (bi.getWidth() - fontMetrics.stringWidth(cmt)) / 2, cfg.getCommentMargin());
-            }
-            case TOP_RIGHT -> {
-                printText(graphics, cmt, bi.getWidth() - fontMetrics.stringWidth(cmt) - cfg.getCommentMargin(),
-                        cfg.getCommentMargin());
-            }
-            case BOTTOM_LEFT -> {
-                printText(graphics, cmt, cfg.getCommentMargin(),
-                        bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
-            }
-            case BOTTOM_CENTER -> {
-                printText(graphics, cmt, (float) (bi.getWidth() - fontMetrics.stringWidth(cmt)) / 2,
-                        bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
-            }
-            case BOTTOM_RIGHT -> {
-                printText(graphics, cmt, bi.getWidth() - fontMetrics.stringWidth(cmt) - cfg.getCommentMargin(),
-                        bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
-            }
+            case TOP_LEFT -> printText(graphics, cmt, cfg.getCommentMargin(), cfg.getCommentMargin());
+            case TOP_CENTER -> printText(graphics, cmt, (float) (bi.getWidth() - fontMetrics.stringWidth(cmt)) / 2, cfg.getCommentMargin());
+            case TOP_RIGHT -> printText(graphics, cmt, bi.getWidth() - fontMetrics.stringWidth(cmt) - cfg.getCommentMargin(),
+                    cfg.getCommentMargin());
+            case BOTTOM_LEFT -> printText(graphics, cmt, cfg.getCommentMargin(),
+                    bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
+            case BOTTOM_CENTER -> printText(graphics, cmt, (float) (bi.getWidth() - fontMetrics.stringWidth(cmt)) / 2,
+                    bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
+            case BOTTOM_RIGHT -> printText(graphics, cmt, bi.getWidth() - fontMetrics.stringWidth(cmt) - cfg.getCommentMargin(),
+                    bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
             default -> throw new UserException("Invalid comment position!");
         }
     }
@@ -771,34 +759,6 @@ public final class Renderer {
             return String.format("%.4f, %.4f", latLon.getLat(), latLon.getLon()); //NON-NLS
         } else {
             return "";
-        }
-    }
-
-
-    /**
-     * This method has a special behaviour:
-     * - If the track point has a comment, it returns the comment.
-     * - If the track point has no comment, it returns the last comment.
-     * - If the track point has an empty comment, it resets the comment.
-     */
-    private String getCommentString(final Point2D point) {
-        if (point instanceof GpxPoint) {
-            final var gpxPoint = (GpxPoint) point;
-            final var latLon = gpxPoint.getLatLon();
-            final var cmt = latLon.getCmt();
-
-            // null = use the last comment
-            if (cmt != null) {
-
-                // blank = reset last comment
-                if (cmt.isBlank()) {
-                    lastComment = "";
-
-                // new comment
-                } else if (!cmt.isBlank()) {
-                    lastComment = cmt;
-                }
-            }
         }
         return lastComment;
     }
