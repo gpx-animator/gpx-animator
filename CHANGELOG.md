@@ -24,6 +24,7 @@ Release date: work in progress 🚧
 * Positions of logo, attribution, and informations are now configurable
 * Logo, attribution, and informations can now hidden
 * Adding support for background images (including transparency in PNG files)
+* Adding support for track point comments in GPX files
 
 ## Version 1.5.2
 
