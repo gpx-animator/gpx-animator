@@ -16,6 +16,7 @@ import java.util.Arrays;
 public final class TextRenderer extends GraphicsRenderer {
 
     private static final int IMAGE_TYPE = BufferedImage.TYPE_4BYTE_ABGR;
+    private static final int ANTI_ALIAS_COMPENSATION = 10;
     private static final float STRIKE_WIDTH = 3f;
     private static final Stroke STROKE = new BasicStroke(STRIKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
@@ -48,7 +49,7 @@ public final class TextRenderer extends GraphicsRenderer {
 
     public BufferedImage renderText(@NonNull final String text, @NonNull final TextAlignment alignment) {
         final var trimmedText = text.trim();
-        final var width = calculateTextWidth(trimmedText);
+        final var width = calculateTextWidth(trimmedText) + ANTI_ALIAS_COMPENSATION;
         final var height = calculateTextHeight(trimmedText);
 
         final var image = new BufferedImage(width, height, IMAGE_TYPE);
@@ -83,8 +84,8 @@ public final class TextRenderer extends GraphicsRenderer {
     private int calculateHorizontalPosition(@NonNull final TextAlignment alignment, @NonNull final String line, final int width) {
         return switch (alignment) {
             case LEFT -> 0;
-            case CENTER -> (width - fontMetrics.stringWidth(line)) / 2;
-            case RIGHT -> width - fontMetrics.stringWidth(line);
+            case CENTER -> (width - ANTI_ALIAS_COMPENSATION - fontMetrics.stringWidth(line)) / 2;
+            case RIGHT -> width - ANTI_ALIAS_COMPENSATION - fontMetrics.stringWidth(line);
         };
     }
 
