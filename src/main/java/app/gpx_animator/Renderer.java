@@ -737,6 +737,9 @@ public final class Renderer {
 
     private void drawAttribution(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer,
                                  @NonNull final BufferedImage bi, @NonNull final String attribution) {
+        if (attribution.isBlank()) {
+            return;
+        }
         var position = cfg.getAttributionPosition();
         var margin = cfg.getAttributionMargin();
         var image = textRenderer.renderText(attribution, forPosition(position));
