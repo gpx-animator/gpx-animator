@@ -35,9 +35,12 @@ public final class Main {
     public static void main(final String... args) {
         try {
             start(args);
+        } catch (final UserException e) {
+            LOGGER.error(e.getMessage());
+            System.exit(1); // NOPMD -- We can't recover here
         } catch (final Exception e) {
             LOGGER.error("Very bad, exception caught in main method!", e);
-            System.exit(1); // NOPMD -- We can't recover here
+            System.exit(2); // NOPMD -- We can't recover here
         }
     }
 

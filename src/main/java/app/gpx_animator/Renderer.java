@@ -166,7 +166,7 @@ public final class Renderer {
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
                 : new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), viewportWidth, viewportHeight);
 
-        final var bi = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_3BYTE_BGR);
+        final var bi = createBufferedImage(realWidth, realHeight, zoom);
         final var ga = (Graphics2D) bi.getGraphics();
         drawBackground(rc, zoom, bi, ga);
 
@@ -249,6 +249,15 @@ public final class Renderer {
             }
         } else {
             LOGGER.info("Canceled after {} seconds.", runtimeSeconds);
+        }
+    }
+
+    private BufferedImage createBufferedImage(final int width, final int height, final int zoom) throws UserException {
+        try {
+            return new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        } catch (final IllegalArgumentException | NegativeArraySizeException e) {
+            // these exceptions only occour when the dimension for the BufferedImage are too height
+            throw new UserException(resourceBundle.getString("renderer.error.mapsize").formatted(width, height, zoom));
         }
     }
 
