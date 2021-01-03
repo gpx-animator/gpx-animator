@@ -85,6 +85,8 @@ public final class Renderer {
 
     private double speedup;
 
+    private String lastComment = "";
+
     public Renderer(final Configuration cfg) {
         this.cfg = cfg;
         this.recentMarkers = new LinkedList<>();
@@ -727,6 +729,10 @@ public final class Renderer {
 
     private void drawComment(final BufferedImage bi, final Point2D marker) throws UserException {
         final var cmt = getCommentString(marker);
+        if (cmt.isBlank()) {
+            return;
+        }
+
         final var graphics = getGraphics(bi);
 
         switch (cfg.getCommentPosition()) {
@@ -769,15 +775,32 @@ public final class Renderer {
     }
 
 
+    /**
+     * This method has a special behaviour:
+     * - If the track point has a comment, it returns the comment.
+     * - If the track point has no comment, it returns the last comment.
+     * - If the track point has an empty comment, it resets the comment.
+     */
     private String getCommentString(final Point2D point) {
         if (point instanceof GpxPoint) {
             final var gpxPoint = (GpxPoint) point;
             final var latLon = gpxPoint.getLatLon();
-            final String cmt = latLon.getCmt();
-            return cmt == null ? "" : cmt;
-        } else {
-            return "";
+            final var cmt = latLon.getCmt();
+
+            // null = use the last comment
+            if (cmt != null) {
+
+                // blank = reset last comment
+                if (cmt.isBlank()) {
+                    lastComment = "";
+
+                // new comment
+                } else if (!cmt.isBlank()) {
+                    lastComment = cmt;
+                }
+            }
         }
+        return lastComment;
     }
 
 
