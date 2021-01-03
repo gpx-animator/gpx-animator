@@ -36,15 +36,15 @@ public final class ImageRenderer {
             }
             case BOTTOM_LEFT -> {
                 xPosition = margin;
-                yPosition = targetImageHeight - imageWidth - margin;
+                yPosition = targetImageHeight - imageHeight - margin;
             }
             case BOTTOM_CENTER -> {
                 xPosition = (targetImageWidth - imageWidth) / 2;
-                yPosition = targetImageHeight - imageWidth - margin;
+                yPosition = targetImageHeight - imageHeight - margin;
             }
             case BOTTOM_RIGHT -> {
                 xPosition = targetImageWidth - imageWidth - margin;
-                yPosition = targetImageHeight - imageWidth - margin;
+                yPosition = targetImageHeight - imageHeight - margin;
             }
             default -> throw new IllegalStateException("Unexpected position: " + position);
         }
