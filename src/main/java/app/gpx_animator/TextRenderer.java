@@ -62,10 +62,11 @@ public final class TextRenderer {
         var lineNum = 0;
         for (final var line : trimmedText.split("\n")) {
             lineNum++;
-            var xPosition = calculateHorizontalPosition(alignment, line, image.getWidth());
+            var trimmedLine = line.trim();
+            var xPosition = calculateHorizontalPosition(alignment, trimmedLine, image.getWidth());
             var yPosition = calculateVerticalPosition(lineNum, lineHeight);
 
-            final var textLayout = new TextLayout(line, font, fontRenderContext);
+            final var textLayout = new TextLayout(trimmedLine, font, fontRenderContext);
             final var shape = textLayout.getOutline(AffineTransform.getTranslateInstance(xPosition, yPosition));
 
             graphics.setColor(Color.white);
@@ -73,7 +74,7 @@ public final class TextRenderer {
             graphics.draw(shape);
 
             graphics.setColor(Color.black);
-            graphics.drawString(line, xPosition, yPosition);
+            graphics.drawString(trimmedLine, xPosition, yPosition);
         }
 
         return image;
