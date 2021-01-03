@@ -15,21 +15,20 @@ import java.util.Arrays;
 
 public final class TextRenderer {
 
+    private static final int IMAGE_TYPE = BufferedImage.TYPE_4BYTE_ABGR;
     private static final float STRIKE_WIDTH = 3f;
     private static final Stroke STROKE = new BasicStroke(STRIKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
     private final transient Font font;
     private final transient FontMetrics fontMetrics;
-    private final transient int imageType;
 
-    public TextRenderer(@NonNull final Font font, final int imageType) {
+    public TextRenderer(@NonNull final Font font) {
         this.font = font;
-        this.imageType = imageType;
         this.fontMetrics = getFontMetrics();
     }
 
     private FontMetrics getFontMetrics() {
-        final var image = new BufferedImage(100, 100, imageType);
+        final var image = new BufferedImage(100, 100, IMAGE_TYPE);
         final var graphics = (Graphics2D) image.getGraphics();
         graphics.setStroke(STROKE);
         return graphics.getFontMetrics(font);
@@ -52,7 +51,7 @@ public final class TextRenderer {
         final var width = calculateTextWidth(trimmedText);
         final var height = calculateTextHeight(trimmedText);
 
-        final var image = new BufferedImage(width, height, imageType);
+        final var image = new BufferedImage(width, height, IMAGE_TYPE);
         final var graphics = (Graphics2D) image.getGraphics();
         graphics.setStroke(STROKE);
         graphics.setFont(font);
