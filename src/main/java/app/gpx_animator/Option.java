@@ -55,7 +55,7 @@ public enum Option {
     ATTRIBUTION_MARGIN("attribution-margin"),
     INFORMATION_POSITION("information-position"),
     INFORMATION_MARGIN("information-margin"),
-    COMMENT_POSITION("comment-location"),
+    COMMENT_POSITION("comment-position"),
     COMMENT_MARGIN("comment-margin"),
     PHOTO_DIR("photo-dir"),
     PHOTO_TIME("photo-time"),
