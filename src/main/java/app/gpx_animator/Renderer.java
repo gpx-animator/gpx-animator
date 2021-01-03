@@ -760,6 +760,34 @@ public final class Renderer {
         } else {
             return "";
         }
+    }
+
+
+    /**
+     * This method has a special behaviour:
+     * - If the track point has a comment, it returns the comment.
+     * - If the track point has no comment, it returns the last comment.
+     * - If the track point has an empty comment, it resets the comment.
+     */
+    private String getCommentString(final Point2D point) {
+        if (point instanceof GpxPoint) {
+            final var gpxPoint = (GpxPoint) point;
+            final var latLon = gpxPoint.getLatLon();
+            final var cmt = latLon.getCmt();
+
+            // null = use the last comment
+            if (cmt != null) {
+
+                // blank = reset last comment
+                if (cmt.isBlank()) {
+                    lastComment = "";
+
+                // new comment
+                } else if (!cmt.isBlank()) {
+                    lastComment = cmt;
+                }
+            }
+        }
         return lastComment;
     }
 
