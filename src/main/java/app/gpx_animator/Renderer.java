@@ -225,7 +225,7 @@ public final class Renderer {
             if (font != null) {
                 if (marker != null) {
                     drawInfo(textRenderer, imageRenderer, viewportImage, frame, marker);
-                    drawComment(viewportImage, marker);
+                    drawComment(textRenderer, imageRenderer, viewportImage, marker);
                 }
 
                 var att = resourceBundle.getString("configuration.attribution");
@@ -540,7 +540,7 @@ public final class Renderer {
             if (font != null) {
                 if (marker != null) {
                     drawInfo(textRenderer, imageRenderer, bi, frames, marker);
-                    drawComment(bi, marker);
+                    drawComment(textRenderer, imageRenderer, bi, marker);
                 }
 
                 var att = resourceBundle.getString("configuration.attribution");
@@ -685,26 +685,14 @@ public final class Renderer {
         imageRenderer.renderImage(image, position, margin, bi);
     }
 
-    private void drawComment(final BufferedImage bi, final Point2D marker) throws UserException {
-        final var cmt = getCommentString(marker);
-        if (cmt.isBlank()) {
-            return;
-        }
-
-        final var graphics = getGraphics(bi);
-
-        switch (cfg.getCommentPosition()) {
-            case TOP_LEFT -> printText(graphics, cmt, cfg.getCommentMargin(), cfg.getCommentMargin());
-            case TOP_CENTER -> printText(graphics, cmt, (float) (bi.getWidth() - fontMetrics.stringWidth(cmt)) / 2, cfg.getCommentMargin());
-            case TOP_RIGHT -> printText(graphics, cmt, bi.getWidth() - fontMetrics.stringWidth(cmt) - cfg.getCommentMargin(),
-                    cfg.getCommentMargin());
-            case BOTTOM_LEFT -> printText(graphics, cmt, cfg.getCommentMargin(),
-                    bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
-            case BOTTOM_CENTER -> printText(graphics, cmt, (float) (bi.getWidth() - fontMetrics.stringWidth(cmt)) / 2,
-                    bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
-            case BOTTOM_RIGHT -> printText(graphics, cmt, bi.getWidth() - fontMetrics.stringWidth(cmt) - cfg.getCommentMargin(),
-                    bi.getHeight() - cfg.getCommentMargin() - fontMetrics.getHeight() * 2);
-            default -> throw new UserException("Invalid comment position!");
+    private void drawComment(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer, @NonNull final BufferedImage bi,
+                             @NonNull final Point2D marker) {
+        final var comment = getCommentString(marker);
+        if (comment != null && !comment.isBlank()) {
+            var position = cfg.getCommentPosition();
+            var margin = cfg.getCommentMargin();
+            var image = textRenderer.renderText(comment, forPosition(position));
+            imageRenderer.renderImage(image, position, margin, bi);
         }
     }
 
@@ -731,18 +719,18 @@ public final class Renderer {
         if (point instanceof GpxPoint) {
             final var gpxPoint = (GpxPoint) point;
             final var latLon = gpxPoint.getLatLon();
-            final var cmt = latLon.getCmt();
+            final var comment = latLon.getCmt();
 
             // null = use the last comment
-            if (cmt != null) {
+            if (comment != null) {
 
                 // blank = reset last comment
-                if (cmt.isBlank()) {
+                if (comment.isBlank()) {
                     lastComment = "";
 
                 // new comment
-                } else if (!cmt.isBlank()) {
-                    lastComment = cmt;
+                } else if (!comment.isBlank()) {
+                    lastComment = comment;
                 }
             }
         }
