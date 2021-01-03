@@ -92,6 +92,15 @@ public final class TextRenderer {
     }
 
     public enum TextAlignment {
-        LEFT, CENTER, RIGHT
+
+        LEFT, CENTER, RIGHT;
+
+        public static TextAlignment forPosition(@NonNull final Position position) {
+            return switch (position) {
+                case HIDDEN, TOP_LEFT, BOTTOM_LEFT -> LEFT;
+                case TOP_CENTER, BOTTOM_CENTER -> CENTER;
+                case TOP_RIGHT, BOTTOM_RIGHT -> RIGHT;
+            };
+        }
     }
 }

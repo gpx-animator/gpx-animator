@@ -51,6 +51,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
+import static app.gpx_animator.TextRenderer.TextAlignment.forPosition;
 import static app.gpx_animator.Utils.isEqual;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
@@ -170,11 +171,12 @@ public final class Renderer {
         final var bi = createBufferedImage(realWidth, realHeight, zoom);
         final var ga = (Graphics2D) bi.getGraphics();
 
-        final var imageRenderer = new ImageRenderer();
-        drawBackground(imageRenderer, rc, zoom, bi, ga);
-
         font = cfg.getFont();
         fontMetrics = ga.getFontMetrics(font);
+
+        final var textRenderer = new TextRenderer(font);
+        final var imageRenderer = new ImageRenderer();
+        drawBackground(imageRenderer, rc, zoom, bi, ga);
 
         speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / cfg.getTotalTime();
         final var frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
@@ -221,8 +223,10 @@ public final class Renderer {
             final var viewportImage = applyViewport(bi2, marker, realWidth, realHeight, viewportWidth, viewportHeight);
 
             if (font != null) {
-                drawInfo(viewportImage, frame, marker);
-                drawComment(viewportImage, marker);
+                if (marker != null) {
+                    drawInfo(textRenderer, imageRenderer, viewportImage, frame, marker);
+                    drawComment(viewportImage, marker);
+                }
 
                 var att = resourceBundle.getString("configuration.attribution");
                 var getAt = cfg.getAttribution();
@@ -237,7 +241,7 @@ public final class Renderer {
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
         }
 
-        keepLastFrame(rc, frameWriter, bi, frames, wpMap);
+        keepLastFrame(textRenderer, imageRenderer, rc, frameWriter, bi, frames, wpMap);
         frameWriter.close();
 
         final var renderFinishTime = LocalDateTime.now();
@@ -525,15 +529,18 @@ public final class Renderer {
         }
     }
 
-    private void keepLastFrame(final RenderingContext rc, final FrameWriter frameWriter, final BufferedImage bi, final int frames,
-                               final TreeMap<Long, Point2D> wpMap) throws UserException {
+    private void keepLastFrame(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer,
+                               @NonNull final RenderingContext rc, @NonNull final FrameWriter frameWriter, @NonNull final BufferedImage bi,
+                               final int frames, @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
         final var keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
         if (keepLastFrame) {
             drawWaypoints(bi, frames, wpMap);
             final var marker = drawMarker(bi, frames);
             if (font != null) {
-                drawInfo(bi, frames, marker);
-                drawComment(bi, marker);
+                if (marker != null) {
+                    drawInfo(textRenderer, imageRenderer, bi, frames, marker);
+                    drawComment(bi, marker);
+                }
 
                 var att = resourceBundle.getString("configuration.attribution");
                 if (cfg.getAttribution().equals(att)) {
@@ -662,63 +669,18 @@ public final class Renderer {
         }
     }
 
-    private void drawInfo(final BufferedImage bi, final int frame, final Point2D marker) throws UserException {
-        if (Position.HIDDEN.equals(cfg.getInformationPosition())) {
-            return;
-        }
-
+    private void drawInfo(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer, @NonNull final BufferedImage bi,
+                          final int frame, @NonNull final Point2D marker) {
         final var dateString = dateFormat.format(getTime(frame));
         final var latLongString = getLatLonString(marker);
         final var speedString = SpeedUtil.getSpeedString(marker, getTime(frame), frame, cfg.getFps(), cfg.getSpeedUnit());
-        final var graphics = getGraphics(bi);
 
-        switch (cfg.getInformationPosition()) {
-            case TOP_LEFT -> {
-                printText(graphics, dateString, cfg.getInformationMargin(), cfg.getInformationMargin() + fontMetrics.getHeight() * 2);
-                printText(graphics, latLongString, cfg.getInformationMargin(), cfg.getInformationMargin() + fontMetrics.getHeight());
-                printText(graphics, speedString, cfg.getInformationMargin(), cfg.getInformationMargin());
-            }
-            case TOP_CENTER -> {
-                printText(graphics, dateString, (float) (bi.getWidth() - fontMetrics.stringWidth(dateString)) / 2,
-                        cfg.getInformationMargin() + fontMetrics.getHeight() * 2);
-                printText(graphics, latLongString, (float) (bi.getWidth() - fontMetrics.stringWidth(latLongString)) / 2,
-                        cfg.getInformationMargin() + fontMetrics.getHeight());
-                printText(graphics, speedString, (float) (bi.getWidth() - fontMetrics.stringWidth(speedString)) / 2, cfg.getInformationMargin());
-            }
-            case TOP_RIGHT -> {
-                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getInformationMargin(),
-                        cfg.getInformationMargin() + fontMetrics.getHeight() * 2);
-                printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getInformationMargin(),
-                        cfg.getInformationMargin() + fontMetrics.getHeight());
-                printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getInformationMargin(),
-                        cfg.getInformationMargin());
-            }
-            case BOTTOM_LEFT -> {
-                printText(graphics, dateString, cfg.getInformationMargin(),
-                        bi.getHeight() - cfg.getInformationMargin());
-                printText(graphics, latLongString, cfg.getInformationMargin(),
-                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight());
-                printText(graphics, speedString, cfg.getInformationMargin(),
-                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight() * 2);
-            }
-            case BOTTOM_CENTER -> {
-                printText(graphics, dateString, (float) (bi.getWidth() - fontMetrics.stringWidth(dateString)) / 2,
-                        bi.getHeight() - cfg.getInformationMargin());
-                printText(graphics, latLongString, (float) (bi.getWidth() - fontMetrics.stringWidth(latLongString)) / 2,
-                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight());
-                printText(graphics, speedString, (float) (bi.getWidth() - fontMetrics.stringWidth(speedString)) / 2,
-                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight() * 2);
-            }
-            case BOTTOM_RIGHT -> {
-                printText(graphics, dateString, bi.getWidth() - fontMetrics.stringWidth(dateString) - cfg.getInformationMargin(),
-                        bi.getHeight() - cfg.getInformationMargin());
-                printText(graphics, latLongString, bi.getWidth() - fontMetrics.stringWidth(latLongString) - cfg.getInformationMargin(),
-                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight());
-                printText(graphics, speedString, bi.getWidth() - fontMetrics.stringWidth(speedString) - cfg.getInformationMargin(),
-                        bi.getHeight() - cfg.getInformationMargin() - fontMetrics.getHeight() * 2);
-            }
-            default -> throw new UserException("Invalid information position!");
-        }
+        final var text = "%s\n%s\n%s".formatted(speedString, latLongString, dateString);
+        final var position = cfg.getInformationPosition();
+        final var margin = cfg.getInformationMargin();
+
+        var image = textRenderer.renderText(text, forPosition(position));
+        imageRenderer.renderImage(image, position, margin, bi);
     }
 
     private void drawComment(final BufferedImage bi, final Point2D marker) throws UserException {
