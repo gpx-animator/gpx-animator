@@ -17,6 +17,7 @@ package app.gpx_animator;
 import app.gpx_animator.frameWriter.FileFrameWriter;
 import app.gpx_animator.frameWriter.FrameWriter;
 import app.gpx_animator.frameWriter.VideoFrameWriter;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
@@ -168,7 +169,9 @@ public final class Renderer {
 
         final var bi = createBufferedImage(realWidth, realHeight, zoom);
         final var ga = (Graphics2D) bi.getGraphics();
-        drawBackground(rc, zoom, bi, ga);
+
+        final var imageRenderer = new ImageRenderer();
+        drawBackground(imageRenderer, rc, zoom, bi, ga);
 
         font = cfg.getFont();
         fontMetrics = ga.getFontMetrics(font);
@@ -316,11 +319,12 @@ public final class Renderer {
         return skip;
     }
 
-    private void drawBackground(final RenderingContext rc, final Integer zoom, final BufferedImage bi, final Graphics2D ga) throws UserException {
+    private void drawBackground(@NonNull final ImageRenderer imageRenderer, @NonNull final RenderingContext rc, @NonNull final Integer zoom,
+                                @NonNull final BufferedImage bi, @NonNull final Graphics2D ga) throws UserException {
         drawBackgroundColor(bi, ga);
         drawBackgroundMap(rc, zoom, bi);
         drawBackgroundImage(bi);
-        drawLogo(bi);
+        drawLogo(imageRenderer, bi);
     }
 
     private void drawBackgroundColor(final BufferedImage bi, final Graphics2D ga) {
@@ -353,33 +357,14 @@ public final class Renderer {
         MapUtil.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
     }
 
-    private void drawLogo(final BufferedImage bi) throws UserException {
-        if (Position.HIDDEN.equals(cfg.getLogoPosition())) {
-            return;
-        }
-
+    private void drawLogo(@NonNull final ImageRenderer imageRenderer, @NonNull final BufferedImage bi) throws UserException {
         final var logo = cfg.getLogo();
         if (logo != null && logo.exists()) {
-            final BufferedImage image;
             try {
-                image = ImageIO.read(logo);
+                var image = ImageIO.read(logo);
+                imageRenderer.renderImage(image, cfg.getLogoPosition(), cfg.getLogoMargin(), bi);
             } catch (final IOException e) {
                 throw new UserException("Can't read logo: ".concat(e.getMessage()));
-            }
-            final var g2 = getGraphics(bi);
-            switch (cfg.getLogoPosition()) {
-                case TOP_LEFT -> g2.drawImage(image, cfg.getLogoMargin(), cfg.getLogoMargin(), image.getWidth(), image.getHeight(), null);
-                case TOP_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2, cfg.getLogoMargin(), image.getWidth(),
-                        image.getHeight(), null);
-                case TOP_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getLogoMargin(), cfg.getLogoMargin(),
-                        image.getWidth(), image.getHeight(), null);
-                case BOTTOM_LEFT -> g2.drawImage(image, cfg.getLogoMargin(), bi.getHeight() - image.getHeight() - cfg.getLogoMargin(),
-                        image.getWidth(), image.getHeight(), null);
-                case BOTTOM_CENTER -> g2.drawImage(image, (bi.getWidth() - image.getWidth()) / 2,
-                        bi.getHeight() - image.getHeight() - cfg.getLogoMargin(), image.getWidth(), image.getHeight(), null);
-                case BOTTOM_RIGHT -> g2.drawImage(image, bi.getWidth() - image.getWidth() - cfg.getLogoMargin(),
-                        bi.getHeight() - image.getHeight() - cfg.getLogoMargin(), image.getWidth(), image.getHeight(), null);
-                default -> throw new UserException("Invalid logo position!");
             }
         }
     }
