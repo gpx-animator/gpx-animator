@@ -52,8 +52,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
 import static app.gpx_animator.Utils.isEqual;
+import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class Renderer {
@@ -241,7 +241,7 @@ public final class Renderer {
             }
 
             frameWriter.addFrame(viewportImage);
-            photos.render(time, cfg, bi2, frameWriter, rc, pct);
+            photos.render(time, cfg, viewportImage, frameWriter, rc, pct);
 
             if (frame == frames - 1) {
                 keepLastFrame(textRenderer, imageRenderer, rc, frameWriter, viewportImage, frames, wpMap);

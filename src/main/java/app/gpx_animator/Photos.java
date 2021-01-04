@@ -117,7 +117,7 @@ public final class Photos {
                                     final RenderingContext rc, final int pct) {
         rc.setProgress1(pct, String.format(resourceBundle.getString("photos.progress.rendering"), photo.getFile().getName()));
 
-        final var image = readPhoto(photo, bi.getWidth(), bi.getHeight());
+        final var image = readPhoto(photo, bi.getWidth() - 20, bi.getHeight() - 20);
         if (image != null) {
             final var bi2 = Utils.deepCopy(bi);
             final var g2d = bi2.createGraphics();
