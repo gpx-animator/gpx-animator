@@ -175,7 +175,8 @@ public final class Renderer {
 
         final var textRenderer = new TextRenderer(font);
         final var imageRenderer = new ImageRenderer();
-        drawBackground(imageRenderer, rc, zoom, bi, ga);
+
+        drawBackground(rc, zoom, bi, ga);
 
         speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / cfg.getTotalTime();
         final var frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
@@ -220,6 +221,8 @@ public final class Renderer {
 
             // apply viewport over bi2 (which could be the full viewport)
             final var viewportImage = applyViewport(bi2, marker, realWidth, realHeight, viewportWidth, viewportHeight);
+
+            drawLogo(imageRenderer, viewportImage);
 
             if (font != null) {
                 if (marker != null) {
@@ -323,12 +326,11 @@ public final class Renderer {
         return skip;
     }
 
-    private void drawBackground(@NonNull final ImageRenderer imageRenderer, @NonNull final RenderingContext rc, @NonNull final Integer zoom,
-                                @NonNull final BufferedImage bi, @NonNull final Graphics2D ga) throws UserException {
+    private void drawBackground(@NonNull final RenderingContext rc, @NonNull final Integer zoom, @NonNull final BufferedImage bi,
+                                @NonNull final Graphics2D ga) throws UserException {
         drawBackgroundColor(bi, ga);
         drawBackgroundMap(rc, zoom, bi);
         drawBackgroundImage(bi);
-        drawLogo(imageRenderer, bi);
     }
 
     private void drawBackgroundColor(final BufferedImage bi, final Graphics2D ga) {
