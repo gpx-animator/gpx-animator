@@ -31,7 +31,8 @@ public final class CommandLineConfigurationFactory {
     private final List<TrackIcon> trackIconList = new ArrayList<>();
     private final List<Boolean> mirrorTrackIconList = new ArrayList<>();
     private final List<String> inputGpxList = new ArrayList<>();
-
+    private final List<Long> trimGpxStartList = new ArrayList<>();
+    private final List<Long> trimGpxEndList = new ArrayList<>();
     private final List<String> inputIconList = new ArrayList<>();
 
     private final List<Color> colorList = new ArrayList<>();
@@ -89,6 +90,8 @@ public final class CommandLineConfigurationFactory {
                             cfg.flashbackDuration(s.trim().isEmpty() ? null : Long.parseLong(s)); // NOPMD -- null = not set
                         }
                         case FONT -> cfg.font(new FontXmlAdapter().unmarshal(args[++i]));
+                        case TRIM_GPX_START -> trimGpxStartList.add(Long.parseLong(args[++i]));
+                        case TRIM_GPX_END -> trimGpxEndList.add(Long.parseLong(args[++i]));
                         case FORCED_POINT_TIME_INTERVAL -> {
                             final var s1 = args[++i].trim();
                             forcedPointIntervalList.add(s1.isEmpty() ? null : Long.valueOf(s1)); // NOPMD -- null = not set
@@ -117,6 +120,7 @@ public final class CommandLineConfigurationFactory {
                         case TRACK_ICON_FILE -> inputIconList.add(args[++i]);
                         case TRACK_ICON_MIRROR -> mirrorTrackIconList.add(true);
                         case KEEP_IDLE -> cfg.skipIdle(false);
+                        case KEEP_LAST_FRAME -> cfg.keepLastFrame(Long.parseLong(args[++i]));
                         case LABEL -> labelList.add(args[++i]);
                         case LINE_WIDTH -> lineWidthList.add(Float.valueOf(args[++i]));
                         case MARGIN -> cfg.margin(Integer.parseInt(args[++i]));
@@ -127,10 +131,12 @@ public final class CommandLineConfigurationFactory {
                         case MIN_LON -> cfg.minLon(Double.parseDouble(args[++i]));
                         case OUTPUT -> cfg.output(new File(args[++i]));
                         case LOGO -> cfg.logo(new File(args[++i]));
+                        case LOGO_POSITION -> cfg.logoPosition(Position.parse(args[++i]));
                         case LOGO_MARGIN -> cfg.logoMargin(Integer.parseInt(args[++i]));
                         case PHOTO_DIR -> cfg.photoDirectory(args[++i]);
                         case PHOTO_TIME -> cfg.photoTime(Long.parseLong(args[++i]));
                         case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
+                        case SKIP_IDLE -> cfg.skipIdle(Boolean.parseBoolean(args[++i]));
                         case PRE_DRAW_TRACK -> cfg.preDrawTrack(true);
                         case PRE_DRAW_TRACK_COLOR -> cfg.preDrawTrackColor(Color.decode(args[++i]));
                         case SPEEDUP -> cfg.speedup(Double.parseDouble(args[++i]));
@@ -173,6 +179,8 @@ public final class CommandLineConfigurationFactory {
         normalizeTrackIcons();
         normalizeInputIcons();
         normalizeMirrorTrackIcons();
+        normalizeTrimGpxStart();
+        normalizeTrimGpxEnd();
 
         for (int i = 0, n = inputGpxList.size(); i < n; i++) {
             final var tcb = TrackConfiguration.createBuilder();
@@ -187,7 +195,8 @@ public final class CommandLineConfigurationFactory {
             }
             tcb.inputIcon(new File(inputIconList.get(i)));
             tcb.mirrorTrackIcon(mirrorTrackIconList.get(i));
-
+            tcb.trimGpxStart(trimGpxStartList.get(i));
+            tcb.trimGpxEnd(trimGpxEndList.get(i));
             cfg.addTrackConfiguration(tcb.build());
         }
 
@@ -269,6 +278,34 @@ public final class CommandLineConfigurationFactory {
         } else if (size2 < size) {
             for (var i = size2; i < size; i++) {
                 mirrorTrackIconList.add(mirrorTrackIconList.get(i - size2));
+            }
+        }
+    }
+
+    private void normalizeTrimGpxStart() {
+        final var size = inputGpxList.size();
+        final var size2 = trimGpxStartList.size();
+        if (size2 == 0) {
+            for (var i = 0; i < size; i++) {
+                trimGpxStartList.add(0L);
+            }
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
+                trimGpxStartList.add(trimGpxStartList.get(i - size2));
+            }
+        }
+    }
+
+    private void normalizeTrimGpxEnd() {
+        final var size = inputGpxList.size();
+        final var size2 = trimGpxEndList.size();
+        if (size2 == 0) {
+            for (var i = 0; i < size; i++) {
+                trimGpxEndList.add(0L);
+            }
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
+                trimGpxEndList.add(trimGpxEndList.get(i - size2));
             }
         }
     }
