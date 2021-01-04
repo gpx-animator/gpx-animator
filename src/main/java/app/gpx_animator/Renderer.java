@@ -111,7 +111,7 @@ public final class Renderer {
         return new Color((int) r, (int) g, (int) b, (int) a);
     }
 
-    @SuppressWarnings("checkstyle:InnerAssignment") // Checkstyle 8.37 can't handle the enhanced switch properly
+    @SuppressWarnings({ "checkstyle:InnerAssignment", "checkstyle:MethodLength" }) // Checkstyle 8.37 can't handle the enhanced switch properly
     public void render(final RenderingContext rc) throws UserException {
         final var renderStartTime = LocalDateTime.now();
 
@@ -242,9 +242,12 @@ public final class Renderer {
 
             frameWriter.addFrame(viewportImage);
             photos.render(time, cfg, bi2, frameWriter, rc, pct);
+
+            if (frame == frames - 1) {
+                keepLastFrame(textRenderer, imageRenderer, rc, frameWriter, viewportImage, frames, wpMap);
+            }
         }
 
-        keepLastFrame(textRenderer, imageRenderer, rc, frameWriter, bi, frames, wpMap);
         frameWriter.close();
 
         final var renderFinishTime = LocalDateTime.now();
