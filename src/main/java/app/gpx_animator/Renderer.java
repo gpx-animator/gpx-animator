@@ -16,9 +16,9 @@ package app.gpx_animator;
 
 import app.gpx_animator.core.renderer.ImageRenderer;
 import app.gpx_animator.core.renderer.TextRenderer;
-import app.gpx_animator.frameWriter.FileFrameWriter;
-import app.gpx_animator.frameWriter.FrameWriter;
-import app.gpx_animator.frameWriter.VideoFrameWriter;
+import app.gpx_animator.core.renderer.framewriter.FileFrameWriter;
+import app.gpx_animator.core.renderer.framewriter.FrameWriter;
+import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NonNls;

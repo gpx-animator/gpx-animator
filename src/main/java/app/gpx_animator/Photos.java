@@ -14,7 +14,7 @@
  */
 package app.gpx_animator;
 
-import app.gpx_animator.frameWriter.FrameWriter;
+import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
