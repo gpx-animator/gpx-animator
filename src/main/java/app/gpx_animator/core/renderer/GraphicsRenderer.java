@@ -1,4 +1,4 @@
-package app.gpx_animator;
+package app.gpx_animator.core.renderer;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 

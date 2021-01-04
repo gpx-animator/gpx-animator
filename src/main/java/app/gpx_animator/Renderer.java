@@ -14,6 +14,8 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.core.renderer.ImageRenderer;
+import app.gpx_animator.core.renderer.TextRenderer;
 import app.gpx_animator.frameWriter.FileFrameWriter;
 import app.gpx_animator.frameWriter.FrameWriter;
 import app.gpx_animator.frameWriter.VideoFrameWriter;
@@ -50,7 +52,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import static app.gpx_animator.TextRenderer.TextAlignment.forPosition;
+import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
 import static app.gpx_animator.Utils.isEqual;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
