@@ -25,6 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static app.gpx_animator.TrackConfiguration.DEFAULT_PREDRAW_TRACK_COLOR;
+
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {
 
@@ -36,6 +38,7 @@ public final class CommandLineConfigurationFactory {
     private final List<String> inputIconList = new ArrayList<>();
 
     private final List<Color> colorList = new ArrayList<>();
+    private final List<Color> preDrawTrackColorList = new ArrayList<>();
 
     private final List<Float> lineWidthList = new ArrayList<>();
 
@@ -138,7 +141,7 @@ public final class CommandLineConfigurationFactory {
                         case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
                         case SKIP_IDLE -> cfg.skipIdle(Boolean.parseBoolean(args[++i]));
                         case PRE_DRAW_TRACK -> cfg.preDrawTrack(true);
-                        case PRE_DRAW_TRACK_COLOR -> cfg.preDrawTrackColor(Color.decode(args[++i]));
+                        case PRE_DRAW_TRACK_COLOR -> preDrawTrackColorList.add((Color.decode(args[++i])));
                         case SPEEDUP -> cfg.speedup(Double.parseDouble(args[++i]));
                         case SPEED_UNIT -> cfg.speedUnit(SpeedUnit.parse(args[++i], SpeedUnit.KMH));
                         case TAIL_DURATION -> cfg.tailDuration(Long.parseLong(args[++i]));
@@ -175,6 +178,7 @@ public final class CommandLineConfigurationFactory {
         }
 
         normalizeColors();
+        normalizePreDrawTrackColors();
         normalizeLineWidths();
         normalizeTrackIcons();
         normalizeInputIcons();
@@ -186,6 +190,7 @@ public final class CommandLineConfigurationFactory {
             final var tcb = TrackConfiguration.createBuilder();
             tcb.inputGpx(new File(inputGpxList.get(i)));
             tcb.color(colorList.get(i));
+            tcb.preDrawTrackColor(preDrawTrackColorList.get(i));
             tcb.lineWidth(lineWidthList.get(i));
             tcb.label(i < labelList.size() ? labelList.get(i) : "");
             tcb.timeOffset(i < timeOffsetList.size() ? timeOffsetList.get(i) : Long.valueOf(0));
@@ -225,6 +230,19 @@ public final class CommandLineConfigurationFactory {
         }
     }
 
+    private void normalizePreDrawTrackColors() {
+        final var size = inputGpxList.size();
+        final var size2 = preDrawTrackColorList.size();
+        if (size2 == 0) {
+            for (var i = 0; i < size; i++) {
+                preDrawTrackColorList.add(DEFAULT_PREDRAW_TRACK_COLOR);
+            }
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
+                preDrawTrackColorList.add(preDrawTrackColorList.get(i - size2));
+            }
+        }
+    }
 
     private void normalizeLineWidths() {
         final var size = inputGpxList.size();

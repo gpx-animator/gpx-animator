@@ -182,10 +182,7 @@ public final class Renderer {
         final var frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
         final var photos = new Photos(cfg.getPhotoDirectory());
 
-        // pre-draw the path in a different color
-        if (cfg.isPreDrawTrack()) {
-            paint(bi, frames - 1, getTime(frames - 1) - getTime(0), null, cfg.getPreDrawTrackColor());
-        }
+        predrawTracks(bi, frames);
 
         var skip = -1f;
         for (var frame = 1; frame < frames; frame++) {
@@ -210,9 +207,9 @@ public final class Renderer {
             final var pct = (int) (100.0 * frame / frames);
             rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.frame"), frame, (frames - 1)));
 
-            paint(bi, frame, 0, null, null);
+            paint(bi, frame, 0, null, false);
             final var bi2 = Utils.deepCopy(bi);
-            paint(bi2, frame, cfg.getTailDuration(), cfg.getTailColor(), null);
+            paint(bi2, frame, cfg.getTailDuration(), cfg.getTailColor(), false);
             drawWaypoints(bi2, frame, wpMap);
 
             final var marker = drawMarker(bi2, frame);
@@ -262,6 +259,12 @@ public final class Renderer {
             }
         } else {
             LOGGER.info("Canceled after {} seconds.", runtimeSeconds);
+        }
+    }
+
+    private void predrawTracks(@NonNull final BufferedImage bi, final int frames) {
+        if (cfg.isPreDrawTrack()) {
+            paint(bi, frames - 1, getTime(frames - 1) - getTime(0), null, true);
         }
     }
 
@@ -852,7 +855,7 @@ public final class Renderer {
         g2.drawImage(image, at, null);
     }
 
-    private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor, final Color preDrawTrackColor) {
+    private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor, final boolean isPreDraw) {
         final var g2 = getGraphics(bi);
 
         final var time = getTime(frame);
@@ -896,15 +899,15 @@ public final class Renderer {
                     for (final var entry : timePointMap.subMap(toTime - backTime, true, toTime, true).entrySet()) {
                         if (prevPoint != null) {
                             var drawSegment = false;
-                            if (preDrawTrackColor == null) {
+                            if (isPreDraw) {
+                                g2.setColor(trackConfiguration.getPreDrawTrackColor());
+                                drawSegment = true;
+                            } else {
                                 final var ratio = (backTime - time + entry.getKey()) * 1f / backTime;
                                 if (ratio > 0) {
                                     g2.setPaint(blendTailColor(trackConfiguration.getColor(), overrideColor, ratio));
                                     drawSegment = true;
                                 }
-                            } else {
-                                g2.setColor(preDrawTrackColor);
-                                drawSegment = true;
                             }
 
                             if (drawSegment) {

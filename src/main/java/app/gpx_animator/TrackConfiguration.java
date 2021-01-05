@@ -24,6 +24,8 @@ import java.io.File;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable, it uses XML transformation
 public final class TrackConfiguration {
 
+    public static final Color DEFAULT_PREDRAW_TRACK_COLOR = Color.lightGray;
+
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File inputGpx;
 
@@ -31,6 +33,9 @@ public final class TrackConfiguration {
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color color;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
+    private Color preDrawTrackColor = DEFAULT_PREDRAW_TRACK_COLOR;
 
     private Long timeOffset;
     private Long forcedPointInterval;
@@ -49,12 +54,13 @@ public final class TrackConfiguration {
 
 
     @SuppressWarnings("checkstyle:ParameterNumber")
-    private TrackConfiguration(final File inputGpx, final String label, final Color color, final Long timeOffset, final Long forcedPointInterval,
-                               final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth, final TrackIcon trackIcon,
-                               final File inputIcon, final boolean mirrorTrackIcon) {
+    private TrackConfiguration(final File inputGpx, final String label, final Color color, final Color preDrawTrackColor, final Long timeOffset,
+                               final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth,
+                               final TrackIcon trackIcon, final File inputIcon, final boolean mirrorTrackIcon) {
         this.inputGpx = inputGpx;
         this.label = label;
         this.color = color;
+        this.preDrawTrackColor = preDrawTrackColor;
         this.timeOffset = timeOffset;
         this.forcedPointInterval = forcedPointInterval;
         this.trimGpxStart = trimGpxStart;
@@ -93,6 +99,10 @@ public final class TrackConfiguration {
         return color;
     }
 
+    public Color getPreDrawTrackColor() {
+        return preDrawTrackColor;
+    }
+
     public Long getTimeOffset() {
         return timeOffset;
     }
@@ -119,8 +129,8 @@ public final class TrackConfiguration {
         private File inputGpx;
         private String label;
 
-        @XmlJavaTypeAdapter(ColorXmlAdapter.class)
         private Color color = Color.BLUE;
+        private Color preDrawTrackColor = DEFAULT_PREDRAW_TRACK_COLOR;
 
         private Long timeOffset;
         private Long forcedPointInterval;
@@ -138,7 +148,8 @@ public final class TrackConfiguration {
 
         public TrackConfiguration build() {
             return new TrackConfiguration(
-                inputGpx, label, color, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, trackIcon, inputIcon, mirrorTrackIcon
+                inputGpx, label, color, preDrawTrackColor, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, trackIcon, inputIcon,
+                    mirrorTrackIcon
             );
         }
 
@@ -156,6 +167,12 @@ public final class TrackConfiguration {
 
         public Builder color(final Color color) {
             this.color = color;
+            return this;
+        }
+
+
+        public Builder preDrawTrackColor(final Color preDrawTrackColor) {
+            this.preDrawTrackColor = preDrawTrackColor;
             return this;
         }
 
