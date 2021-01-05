@@ -182,7 +182,7 @@ public final class Renderer {
         final var frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
         final var photos = new Photos(cfg.getPhotoDirectory());
 
-        predrawTracks(bi, frames);
+        preDrawTracks(bi, frames);
 
         var skip = -1f;
         for (var frame = 1; frame < frames; frame++) {
@@ -262,7 +262,7 @@ public final class Renderer {
         }
     }
 
-    private void predrawTracks(@NonNull final BufferedImage bi, final int frames) {
+    private void preDrawTracks(@NonNull final BufferedImage bi, final int frames) {
         if (cfg.isPreDrawTrack()) {
             paint(bi, frames - 1, getTime(frames - 1) - getTime(0), null, true);
         }
