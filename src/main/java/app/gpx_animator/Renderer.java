@@ -855,7 +855,7 @@ public final class Renderer {
         g2.drawImage(image, at, null);
     }
 
-    private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor, final boolean isPreDraw) {
+    private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor, final boolean isPreDrawTrack) {
         final var g2 = getGraphics(bi);
 
         final var time = getTime(frame);
@@ -899,7 +899,7 @@ public final class Renderer {
                     for (final var entry : timePointMap.subMap(toTime - backTime, true, toTime, true).entrySet()) {
                         if (prevPoint != null) {
                             var drawSegment = false;
-                            if (isPreDraw) {
+                            if (isPreDrawTrack) {
                                 g2.setColor(trackConfiguration.getPreDrawTrackColor());
                                 drawSegment = true;
                             } else {
