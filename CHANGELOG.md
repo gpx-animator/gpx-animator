@@ -7,8 +7,9 @@ Release date: work in progress 🚧
 * Adding multiple GPX files at once
 * Adding an animation to smoothly fade photos in and out
 * Providing alternative speed units (km/h, mph, min/km, min/mi, knots...)
-* Adding support for moving map via --viewport-\*
-* Adding support for pre-drawing a track via --predraw-track
+* Adding support for moving map
+* Adding support for pre-drawing a track
+* Adding support to change the pre-draw color per track
 * New error dialog with additional internal information for better error reports
 * New and clear error message on missing track data in GPX file
 * Fixing `NullPointerException` when starting GPX Animator the first time
