@@ -35,7 +35,7 @@ java -jar ./build/libs/gpx-animator-1.6.0-SNAPSHOT-all.jar
 	  --viewport-height 640 --viewport-width 640
 	  --total-time 120000
 	  --tail-duration 10000
-	  --predraw-track --predraw-track-color '#808080'
+	  --pre-draw-track --pre-draw-track-color '#808080'
 	  --attribution ''
 	  --information-location 'bottom left'
 	  --output movie.mp4
