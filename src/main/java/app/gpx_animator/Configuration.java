@@ -39,7 +39,7 @@ public final class Configuration {
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
 
-    private int margin;
+    private int margin = DEFAULT_MARGIN;
     private Integer width;
     private Integer height;
     private Integer zoom;
@@ -77,11 +77,11 @@ public final class Configuration {
 
     private String attribution;
     private Position attributionPosition = Position.BOTTOM_LEFT;
-    private int attributionMargin;
+    private int attributionMargin = DEFAULT_MARGIN;
     private Position informationPosition = Position.BOTTOM_RIGHT;
-    private int informationMargin;
+    private int informationMargin = DEFAULT_MARGIN;
     private Position commentPosition = Position.BOTTOM_CENTER;
-    private int commentMargin;
+    private int commentMargin = DEFAULT_MARGIN;
 
     @XmlJavaTypeAdapter(FontXmlAdapter.class)
     private Font font;
@@ -97,7 +97,7 @@ public final class Configuration {
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File logo;
     private Position logoPosition = Position.TOP_LEFT;
-    private int logoMargin;
+    private int logoMargin = DEFAULT_MARGIN;
 
     private String photoDirectory;
     private Long photoTime;
