@@ -26,6 +26,7 @@ Release date: work in progress 🚧
 * Logo, attribution, and informations can now hidden
 * Adding support for background images (including transparency in PNG files)
 * Adding support for track point comments in GPX files
+* Fixing error in video frame size calculation with user specified bounding box
 
 ## Version 1.5.2
 

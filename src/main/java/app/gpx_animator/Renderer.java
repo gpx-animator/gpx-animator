@@ -94,8 +94,8 @@ public final class Renderer {
         this.recentMarkers = new LinkedList<>();
     }
 
-    private static double lonToX(final Double maxLon) {
-        return Math.toRadians(maxLon);
+    private static double lonToX(final Double lon) {
+        return Math.toRadians(lon);
     }
 
     private static double latToY(final double lat) {
@@ -617,11 +617,11 @@ public final class Renderer {
         if (maxLon != null) {
             maxX = lonToX(maxLon);
         }
-        if (maxLat != null) {
-            minY = latToY(maxLat);
-        }
         if (minLat != null) {
-            maxY = latToY(minLat);
+            minY = latToY(minLat);
+        }
+        if (maxLat != null) {
+            maxY = latToY(maxLat);
         }
 
         for (final var latLon : latLonList) {
