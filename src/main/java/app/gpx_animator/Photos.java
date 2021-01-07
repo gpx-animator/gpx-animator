@@ -232,4 +232,8 @@ public final class Photos {
             keys.forEach(allPhotos::remove);
         }
     }
+
+    public long count() {
+        return allPhotos.size();
+    }
 }

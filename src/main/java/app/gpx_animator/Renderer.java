@@ -178,9 +178,9 @@ public final class Renderer {
 
         drawBackground(rc, zoom, bi, ga);
 
-        speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / getAnimationTime();
-        final var frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
         final var photos = new Photos(cfg.getPhotoDirectory());
+        speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / getAnimationTime(photos);
+        final var frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
 
         preDrawTracks(bi, frames);
 
@@ -262,10 +262,12 @@ public final class Renderer {
         }
     }
 
-    private long getAnimationTime() {
+    private long getAnimationTime(@NonNull final Photos photos) {
         var totalTime = cfg.getTotalTime();
         var keepLastFrame = cfg.getKeepLastFrame() == null ? 0 : cfg.getKeepLastFrame();
-        return totalTime - keepLastFrame;
+        var photoTime = cfg.getPhotoTime() == null ? 0 : cfg.getPhotoTime();
+        var photoAnimationDuration = cfg.getPhotoAnimationDuration() == null ? 0 : photos.count() * cfg.getPhotoAnimationDuration() * 2;
+        return totalTime - keepLastFrame - photoTime - photoAnimationDuration;
     }
 
     private void preDrawTracks(@NonNull final BufferedImage bi, final int frames) {
