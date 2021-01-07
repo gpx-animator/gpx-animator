@@ -180,7 +180,7 @@ public final class Renderer {
 
         final var photos = new Photos(cfg.getPhotoDirectory());
         speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / getAnimationTime(photos);
-        final var frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
+        final var frames = (int) ((maxTime - minTime) * cfg.getFps() / (MS * speedup));
 
         preDrawTracks(bi, frames);
 
