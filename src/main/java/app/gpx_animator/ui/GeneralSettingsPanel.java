@@ -216,6 +216,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         heightSpinner.addChangeListener(changeListener);
 
         final Object[][] standardVideoSizes = {
+                {"Default", null, null}, //NON-NLS
                 {"SD, PAL", 768, 576}, //NON-NLS
                 {"HD-Ready", 1280, 720}, //NON-NLS
                 {"Full-HD", 1920, 1080}, //NON-NLS
@@ -228,9 +229,11 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var widthHeightPopup = new JPopupMenu();
         for (final var standardVideoSize : standardVideoSizes) {
             final var text = (String) standardVideoSize[0];
-            final var width = (int) standardVideoSize[1];
-            final var height = (int) standardVideoSize[2];
-            final var name = String.format("%s (%d x %d)", text, width, height); //NON-NLS
+            final var width = (Integer) standardVideoSize[1];
+            final var height = (Integer) standardVideoSize[2];
+            final var name = width == null && height == null
+                    ? resourceBundle.getString("ui.panel.generalsettings.widthheight.default")
+                    : String.format("%s (%d x %d)", text, width, height); //NON-NLS
             widthHeightPopup.add(new JMenuItem(new AbstractAction(name) {
                 @Serial
                 private static final long serialVersionUID = -1125796034755504311L;
@@ -300,9 +303,11 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var viewportWidthHeightPopup = new JPopupMenu();
         for (final var standardVideoSize : standardVideoSizes) {
             final var text = (String) standardVideoSize[0];
-            final var width = (int) standardVideoSize[1];
-            final var height = (int) standardVideoSize[2];
-            final var name = String.format("%s (%d x %d)", text, width, height); //NON-NLS
+            final var width = (Integer) standardVideoSize[1];
+            final var height = (Integer) standardVideoSize[2];
+            final var name = width == null && height == null
+                    ? resourceBundle.getString("ui.panel.generalsettings.widthheight.default")
+                    : String.format("%s (%d x %d)", text, width, height); //NON-NLS
             viewportWidthHeightPopup.add(new JMenuItem(new AbstractAction(name) {
                 @Serial
                 private static final long serialVersionUID = 3877332066001457485L;
@@ -1121,12 +1126,12 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     }
 
-    private void setVideoSize(final int width, final int height) {
+    private void setVideoSize(final Integer width, final Integer height) {
         widthSpinner.setValue(width);
         heightSpinner.setValue(height);
     }
 
-    private void setViewportSize(final int width, final int height) {
+    private void setViewportSize(final Integer width, final Integer height) {
         viewportWidthSpinner.setValue(width);
         viewportHeightSpinner.setValue(height);
     }
