@@ -178,7 +178,7 @@ public final class Renderer {
 
         drawBackground(rc, zoom, bi, ga);
 
-        speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / cfg.getTotalTime();
+        speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / getAnimationTime();
         final var frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
         final var photos = new Photos(cfg.getPhotoDirectory());
 
@@ -260,6 +260,12 @@ public final class Renderer {
         } else {
             LOGGER.info("Canceled after {} seconds.", runtimeSeconds);
         }
+    }
+
+    private long getAnimationTime() {
+        var totalTime = cfg.getTotalTime();
+        var keepLastFrame = cfg.getKeepLastFrame() == null ? 0 : cfg.getKeepLastFrame();
+        return totalTime - keepLastFrame;
     }
 
     private void preDrawTracks(@NonNull final BufferedImage bi, final int frames) {
