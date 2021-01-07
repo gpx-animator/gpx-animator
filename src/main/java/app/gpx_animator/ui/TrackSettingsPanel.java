@@ -128,13 +128,13 @@ abstract class TrackSettingsPanel extends JPanel {
             }
         });
 
-        final var lblColor1 = new JLabel(resourceBundle.getString("ui.panel.tracksettings.color.label"));
-        final var gbcLabelColor1 = new GridBagConstraints();
-        gbcLabelColor1.anchor = GridBagConstraints.LINE_END;
-        gbcLabelColor1.insets = new Insets(0, 0, 5, 5);
-        gbcLabelColor1.gridx = 0;
-        gbcLabelColor1.gridy = 2;
-        add(lblColor1, gbcLabelColor1);
+        final var lblColor = new JLabel(resourceBundle.getString("ui.panel.tracksettings.color.label"));
+        final var gbcLabelColor = new GridBagConstraints();
+        gbcLabelColor.anchor = GridBagConstraints.LINE_END;
+        gbcLabelColor.insets = new Insets(0, 0, 5, 5);
+        gbcLabelColor.gridx = 0;
+        gbcLabelColor.gridy = 2;
+        add(lblColor, gbcLabelColor);
 
         colorSelector = new ColorSelector();
         colorSelector.setToolTipText(Option.COLOR.getHelp());
