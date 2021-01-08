@@ -111,7 +111,7 @@ public final class Renderer {
         return new Color((int) r, (int) g, (int) b, (int) a);
     }
 
-    @SuppressWarnings({ "checkstyle:InnerAssignment", "checkstyle:MethodLength" }) // Checkstyle 8.37 can't handle the enhanced switch properly
+    @SuppressWarnings({ "checkstyle:InnerAssignment" }) // Checkstyle 8.37 can't handle the enhanced switch properly
     public void render(final RenderingContext rc) throws UserException {
         final var renderStartTime = LocalDateTime.now();
 
@@ -179,8 +179,6 @@ public final class Renderer {
         drawBackground(rc, zoom, bi, ga);
 
         final var photos = new Photos(cfg.getPhotoDirectory());
-        //speedup = calculateSpeedup(photos);
-        //final var frames = calculateFrames();
         final var frames = calculateSpeedupAndReturnFrames(photos);
 
         preDrawTracks(bi, frames);
@@ -281,22 +279,6 @@ public final class Renderer {
             speedup = (maxTime * fps + tailDuration * fps - minTime * fps) / (frames * MS);
             return frames;
         }
-    }
-
-    private int calculateFrames() {
-        return (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
-    }
-
-    private double calculateSpeedup(@NonNull final Photos photos) {
-        if (cfg.getTotalTime() == null) {
-            return cfg.getSpeedup();
-        }
-        var totalTime = cfg.getTotalTime();
-        var keepLastFrame = cfg.getKeepLastFrame() == null ? 0 : cfg.getKeepLastFrame();
-        var photoTime = cfg.getPhotoTime() == null ? 0 : cfg.getPhotoTime();
-        var photoAnimationDuration = cfg.getPhotoAnimationDuration() == null ? 0 : photos.count() * cfg.getPhotoAnimationDuration() * 2;
-        var animationTime = totalTime - keepLastFrame - photoTime - photoAnimationDuration;
-        return 1.0 * (maxTime - minTime) / animationTime;
     }
 
     private void preDrawTracks(@NonNull final BufferedImage bi, final int frames) {
