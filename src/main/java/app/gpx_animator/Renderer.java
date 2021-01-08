@@ -185,7 +185,7 @@ public final class Renderer {
         preDrawTracks(bi, frames);
 
         var skip = -1f;
-        for (var frame = 1; frame < frames; frame++) {
+        for (var frame = 1; frame <= frames; frame++) {
             if (rc.isCancelled1()) {
                 return;
             }
@@ -199,13 +199,13 @@ public final class Renderer {
                     }
                 }
                 rc.setProgress1((int) (100.0 * frame / frames),
-                        String.format(resourceBundle.getString("renderer.progress.unusedframes"), frame, (frames - 1)));
+                        String.format(resourceBundle.getString("renderer.progress.unusedframes"), frame, frames));
                 skip = 1f;
                 continue;
             }
 
             final var pct = (int) (100.0 * frame / frames);
-            rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.frame"), frame, (frames - 1)));
+            rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.frame"), frame, frames));
 
             paint(bi, frame, 0, null, false);
             final var bi2 = Utils.deepCopy(bi);
@@ -240,7 +240,7 @@ public final class Renderer {
             frameWriter.addFrame(viewportImage);
             photos.render(time, cfg, viewportImage, frameWriter, rc, pct);
 
-            if (frame == frames - 1) {
+            if (frame == frames) {
                 keepLastFrame(textRenderer, imageRenderer, rc, frameWriter, viewportImage, frames, wpMap);
             }
         }
@@ -272,7 +272,7 @@ public final class Renderer {
 
     private void preDrawTracks(@NonNull final BufferedImage bi, final int frames) {
         if (cfg.isPreDrawTrack()) {
-            paint(bi, frames - 1, getTime(frames - 1) - getTime(0), null, true);
+            paint(bi, frames, getTime(frames) - getTime(0), null, true);
         }
     }
 
