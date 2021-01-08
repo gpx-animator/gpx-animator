@@ -798,32 +798,29 @@ public final class Renderer {
                 }
 
                 point = floorEntry.getValue();
-                if (t2 - floorEntry.getKey() <= cfg.getTailDuration()) {
+                g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 
-                    g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
-
-                    final var trackIcon = trackConfiguration.getTrackIcon();
-                    final var trackIconFile = trackConfiguration.getInputIcon();
-                    if (trackIconFile != null && trackIconFile.exists() && trackIconFile.canRead()) {
-                        try {
-                            drawIconFileOnGraphics2D(point, g2, trackIconFile, trackConfiguration.isTrackIconMirrored());
-                        } catch (final IOException e) {
-                            throw new UserException(resourceBundle.getString("renderer.error.iconfile").formatted(trackIconFile), e);
-                        }
-                    } else if (trackIcon != null && !trackIcon.getKey().isEmpty()) {
-                        try {
-                            drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.isTrackIconMirrored());
-                        } catch (final IOException e) {
-                            throw new UserException(resourceBundle.getString("renderer.error.icon"), e);
-                        }
-                    } else {
-                        drawSimpleCircleOnGraphics2D(point, g2);
+                final var trackIcon = trackConfiguration.getTrackIcon();
+                final var trackIconFile = trackConfiguration.getInputIcon();
+                if (trackIconFile != null && trackIconFile.exists() && trackIconFile.canRead()) {
+                    try {
+                        drawIconFileOnGraphics2D(point, g2, trackIconFile, trackConfiguration.isTrackIconMirrored());
+                    } catch (final IOException e) {
+                        throw new UserException(resourceBundle.getString("renderer.error.iconfile").formatted(trackIconFile), e);
                     }
-
-                    final var label = trackConfiguration.getLabel();
-                    if (!label.isEmpty()) {
-                        printText(g2, label, (float) point.getX() + 8f, (float) point.getY() + 4f);
+                } else if (trackIcon != null && !trackIcon.getKey().isEmpty()) {
+                    try {
+                        drawIconOnGraphics2D(point, g2, trackIcon, trackConfiguration.isTrackIconMirrored());
+                    } catch (final IOException e) {
+                        throw new UserException(resourceBundle.getString("renderer.error.icon"), e);
                     }
+                } else {
+                    drawSimpleCircleOnGraphics2D(point, g2);
+                }
+
+                final var label = trackConfiguration.getLabel();
+                if (!label.isEmpty()) {
+                    printText(g2, label, (float) point.getX() + 8f, (float) point.getY() + 4f);
                 }
 
                 continue outer; // NOPMD -- Continue the outer loop, not the inner one
