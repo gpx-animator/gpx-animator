@@ -181,7 +181,7 @@ public final class Renderer {
         final var photos = new Photos(cfg.getPhotoDirectory());
         //speedup = calculateSpeedup(photos);
         //final var frames = calculateFrames();
-        final var frames = calculateSpeedupAndReturnFrames();
+        final var frames = calculateSpeedupAndReturnFrames(photos);
 
         preDrawTracks(bi, frames);
 
@@ -263,16 +263,21 @@ public final class Renderer {
         }
     }
 
-    private int calculateSpeedupAndReturnFrames() {
-        var totalTime = cfg.getTotalTime() == null ? 0 : cfg.getTotalTime();
-        var tailDuration = cfg.getTailDuration();
-        var fps = cfg.getFps();
+    private int calculateSpeedupAndReturnFrames(@NonNull final Photos photos) {
+        final var totalTime = cfg.getTotalTime() == null ? 0 : cfg.getTotalTime();
+        final var tailDuration = cfg.getTailDuration();
+        final var fps = cfg.getFps();
 
         if (totalTime == 0) {
             speedup = cfg.getSpeedup();
             return (int) ((maxTime + tailDuration - minTime) * fps / (MS * speedup));
         } else {
-            var frames = (int) Math.round(totalTime / MS * fps);
+            final var keepLastFrame = cfg.getKeepLastFrame() == null ? 0 : cfg.getKeepLastFrame();
+            var photoTime = cfg.getPhotoTime() == null ? 0 : cfg.getPhotoTime() * photos.count();
+            var photoAnimationTime = cfg.getPhotoAnimationDuration() == null ? 0 : photos.count() * cfg.getPhotoAnimationDuration() * 2;
+            final var animationTime = totalTime - keepLastFrame - photoTime - photoAnimationTime;
+
+            final var frames = (int) Math.round(animationTime / MS * fps);
             speedup = (maxTime * fps + tailDuration * fps - minTime * fps) / (frames * MS);
             return frames;
         }
