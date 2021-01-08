@@ -179,8 +179,9 @@ public final class Renderer {
         drawBackground(rc, zoom, bi, ga);
 
         final var photos = new Photos(cfg.getPhotoDirectory());
-        speedup = cfg.getTotalTime() == null ? cfg.getSpeedup() : 1.0 * (maxTime - minTime) / getAnimationTime(photos);
-        final var frames = (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
+        //speedup = calculateSpeedup(photos);
+        //final var frames = calculateFrames();
+        final var frames = calculateSpeedupAndReturnFrames();
 
         preDrawTracks(bi, frames);
 
@@ -262,12 +263,35 @@ public final class Renderer {
         }
     }
 
-    private long getAnimationTime(@NonNull final Photos photos) {
+    private int calculateSpeedupAndReturnFrames() {
+        var totalTime = cfg.getTotalTime() == null ? 0 : cfg.getTotalTime();
+        var tailDuration = cfg.getTailDuration();
+        var fps = cfg.getFps();
+
+        if (totalTime == 0) {
+            speedup = cfg.getSpeedup();
+            return (int) ((maxTime + tailDuration - minTime) * fps / (MS * speedup));
+        } else {
+            var frames = (int) Math.round(totalTime / MS * fps);
+            speedup = (maxTime * fps + tailDuration * fps - minTime * fps) / (frames * MS);
+            return frames;
+        }
+    }
+
+    private int calculateFrames() {
+        return (int) ((maxTime + cfg.getTailDuration() - minTime) * cfg.getFps() / (MS * speedup));
+    }
+
+    private double calculateSpeedup(@NonNull final Photos photos) {
+        if (cfg.getTotalTime() == null) {
+            return cfg.getSpeedup();
+        }
         var totalTime = cfg.getTotalTime();
         var keepLastFrame = cfg.getKeepLastFrame() == null ? 0 : cfg.getKeepLastFrame();
         var photoTime = cfg.getPhotoTime() == null ? 0 : cfg.getPhotoTime();
         var photoAnimationDuration = cfg.getPhotoAnimationDuration() == null ? 0 : photos.count() * cfg.getPhotoAnimationDuration() * 2;
-        return totalTime - keepLastFrame - photoTime - photoAnimationDuration;
+        var animationTime = totalTime - keepLastFrame - photoTime - photoAnimationDuration;
+        return 1.0 * (maxTime - minTime) / animationTime;
     }
 
     private void preDrawTracks(@NonNull final BufferedImage bi, final int frames) {
