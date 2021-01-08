@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -38,6 +39,8 @@ public final class Configuration {
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
+
+    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private int margin = DEFAULT_MARGIN;
     private Integer width;
@@ -361,6 +364,26 @@ public final class Configuration {
 
     private static File validateLogo(final File logo) {
         return logo != null && logo.isFile() ? logo : null;
+    }
+
+    public Configuration validate() throws UserException {
+        final var errors = new ArrayList<String>();
+
+        if (getMinLat() != null && getMaxLat() == null || getMaxLat() != null && getMinLat() == null) {
+            errors.add(resourceBundle.getString("configuration.validation.latitude"));
+        }
+        if (getMinLon() != null && getMaxLon() == null || getMaxLon() != null && getMinLon() == null) {
+            errors.add(resourceBundle.getString("configuration.validation.longitude"));
+        }
+
+        if (!errors.isEmpty()) {
+            var message = errors.stream()
+                    .map("- %s"::formatted)
+                    .collect(Collectors.joining("\n"));
+            throw new UserException("%s%n%s".formatted(resourceBundle.getString("configuration.validation.error"), message));
+        }
+
+        return this;
     }
 
     @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField", "UnusedReturnValue"}) // This is okay for the builder pattern

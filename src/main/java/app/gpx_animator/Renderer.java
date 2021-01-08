@@ -89,8 +89,8 @@ public final class Renderer {
 
     private String lastComment = "";
 
-    public Renderer(final Configuration cfg) {
-        this.cfg = cfg;
+    public Renderer(final Configuration cfg) throws UserException {
+        this.cfg = cfg.validate();
         this.recentMarkers = new LinkedList<>();
     }
 

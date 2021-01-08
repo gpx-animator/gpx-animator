@@ -46,7 +46,7 @@ public final class Main {
 
     public static void start(final String... args) throws Exception {
         final var cf = new CommandLineConfigurationFactory(args);
-        final var configuration = cf.getConfiguration();
+        final var configuration = cf.getConfiguration().validate();
 
         new Thread(TileCache::ageCache).start();
 
