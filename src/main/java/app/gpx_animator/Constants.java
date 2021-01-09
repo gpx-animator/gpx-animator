@@ -8,11 +8,11 @@ public enum Constants {
 
     public static final String APPNAME = "GPX Animator"; //NON-NLS
 
-    public static final String VERSION = "1.6.0-SNAPSHOT"; //NON-NLS
+    public static final String VERSION = "1.6.0"; //NON-NLS
 
     public static final String APPNAME_VERSION = APPNAME.concat(" ").concat(VERSION);
 
-    public static final String YEAR = "2020";
+    public static final String YEAR = "2021";
 
     public static final String COPYRIGHT = String.format("Copyright © %s Martin Ždila, Freemap Slovakia", Constants.YEAR); //NON-NLS
 

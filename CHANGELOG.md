@@ -2,7 +2,7 @@
 
 ## Version 1.6.0
 
-Release date: work in progress 🚧
+Release date: 2021-01-09
 
 * Adding multiple GPX files at once
 * Adding an animation to smoothly fade photos in and out
