@@ -28,6 +28,7 @@ Release date: work in progress 🚧
 * Adding support for track point comments in GPX files
 * Fixing error in video frame size calculation with user specified bounding box
 * Fixing some errors in animation length calculation when total time was set
+* Fixing errors with incomplete latitude/longitude (bounding box) settings
 
 ## Version 1.5.2
 
