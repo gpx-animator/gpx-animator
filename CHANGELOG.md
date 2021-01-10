@@ -29,6 +29,9 @@ Release date: 2021-01-09
 * Fixing error in video frame size calculation with user specified bounding box
 * Fixing some errors in animation length calculation when total time was set
 * Fixing errors with incomplete latitude/longitude (bounding box) settings
+* Fixing 21 broken background maps
+* Removing 8 broken background maps
+* Up to 15 % faster rendering
 
 ## Version 1.5.2
 
