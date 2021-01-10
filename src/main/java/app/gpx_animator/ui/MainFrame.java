@@ -2,7 +2,7 @@ package app.gpx_animator.ui;
 
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.Constants;
-import app.gpx_animator.FileXmlAdapter;
+import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
 import app.gpx_animator.Preferences;
 import app.gpx_animator.Renderer;
 import app.gpx_animator.RenderingContext;

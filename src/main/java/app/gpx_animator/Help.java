@@ -17,6 +17,8 @@ package app.gpx_animator;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
 
+import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
+
 import java.io.PrintWriter;
 
 

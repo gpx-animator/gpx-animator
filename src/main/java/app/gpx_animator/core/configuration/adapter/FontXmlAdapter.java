@@ -1,4 +1,4 @@
-package app.gpx_animator;
+package app.gpx_animator.core.configuration.adapter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
