@@ -21,7 +21,7 @@ public enum Sound {
         new Thread(() -> {
             final var filename = String.format(SOUND_RESOURCES, name().toLowerCase(Locale.getDefault()));
             final var url = getClass().getResource(filename);
-            try (final var audioInputStream = AudioSystem.getAudioInputStream(url)) {
+            try (var audioInputStream = AudioSystem.getAudioInputStream(url)) {
                 final var clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
                 clip.start();
