@@ -5,6 +5,7 @@ import app.gpx_animator.Preferences;
 import app.gpx_animator.Renderer;
 import app.gpx_animator.RenderingContext;
 import app.gpx_animator.UserException;
+import app.gpx_animator.core.Notification;
 import app.gpx_animator.core.Sound;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
@@ -87,6 +88,8 @@ public final class MainFrame extends JFrame {
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     public MainFrame() {
+        Notification.init();
+
         final var addTrackActionListener = new ActionListener() {
             private float hue = random.nextFloat();
 
@@ -438,32 +441,55 @@ public final class MainFrame extends JFrame {
 
                     try {
                         get();
-                        Sound.SUCCESS.play();
-                        JOptionPane.showMessageDialog(MainFrame.this,
-                                resourceBundle.getString("ui.mainframe.dialog.finished.message"),
-                                resourceBundle.getString("ui.mainframe.dialog.finished.title"), JOptionPane.INFORMATION_MESSAGE);
+                        final var title = resourceBundle.getString("ui.mainframe.dialog.finished.title");
+                        final var message = resourceBundle.getString("ui.mainframe.dialog.finished.message");
+                        if (Notification.isSupported()) {
+                            Notification.INFO.show(title, message);
+                        } else {
+                            Sound.SUCCESS.play();
+                        }
+                        JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.INFORMATION_MESSAGE);
                     } catch (final InterruptedException e) {
-                        Sound.ERROR.play();
-                        JOptionPane.showMessageDialog(MainFrame.this,
-                                resourceBundle.getString("ui.mainframe.dialog.interrupted.message"),
-                                resourceBundle.getString("ui.mainframe.dialog.interrupted.title"), JOptionPane.ERROR_MESSAGE);
+                        final var title = resourceBundle.getString("ui.mainframe.dialog.interrupted.title");
+                        final var message = resourceBundle.getString("ui.mainframe.dialog.interrupted.message");
+                        if (Notification.isSupported()) {
+                            Notification.ERROR.show(title, message);
+                        } else {
+                            Sound.ERROR.play();
+                        }
+                        JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.ERROR_MESSAGE);
                     } catch (final ExecutionException e) {
-                        Sound.ERROR.play();
                         final var cause = e.getCause();
                         if (cause instanceof UserException) {
-                            JOptionPane.showMessageDialog(MainFrame.this,
-                                    cause.getMessage(), resourceBundle.getString("ui.mainframe.dialog.title.error"), JOptionPane.ERROR_MESSAGE);
+                            final var title = resourceBundle.getString("ui.mainframe.dialog.title.error");
+                            final var message = cause.getMessage();
+                            if (Notification.isSupported()) {
+                                Notification.ERROR.show(title, message);
+                            } else {
+                                Sound.ERROR.play();
+                            }
+                            JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.ERROR_MESSAGE);
                         } else {
-                            e.printStackTrace();
-                            new ErrorDialog(MainFrame.this, String.format(
+                            final var title = resourceBundle.getString("ui.mainframe.dialog.title.error");
+                            final var message = String.format(
                                     resourceBundle.getString("ui.mainframe.dialog.rendering.error.message"),
-                                    e.getCause().getMessage()), e);
+                                    e.getCause().getMessage());
+                            if (Notification.isSupported()) {
+                                Notification.ERROR.show(title, message);
+                            } else {
+                                Sound.ERROR.play();
+                            }
+                            new ErrorDialog(MainFrame.this, message, e);
                         }
                     } catch (final CancellationException e) {
-                        Sound.ERROR.play();
-                        JOptionPane.showMessageDialog(MainFrame.this,
-                                resourceBundle.getString("ui.mainframe.dialog.cancelled.message"),
-                                resourceBundle.getString("ui.mainframe.dialog.cancelled.title"), JOptionPane.WARNING_MESSAGE);
+                        final var title = resourceBundle.getString("ui.mainframe.dialog.cancelled.title");
+                        final var message = resourceBundle.getString("ui.mainframe.dialog.cancelled.message");
+                        if (Notification.isSupported()) {
+                            Notification.WARNING.show(title, message);
+                        } else {
+                            Sound.ERROR.play();
+                        }
+                        JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.WARNING_MESSAGE);
                     }
                 }
             };
