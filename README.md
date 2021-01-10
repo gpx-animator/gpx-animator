@@ -132,6 +132,11 @@ Icons included in application and their source:
 * Trekking icon made by [monkik](https://www.flaticon.com/authors/monkik) from [flaticon](https://www.flaticon.com/).
 * Motorcycle icon made by [poorlymac](https://github.com/poorlymac) using images from [ducati](https://www.ducati.com/us/en/bikes/multistrada)
 
+Sounds included in application and their source:
+
+* Success sound made by [nckn](https://freesound.org/people/nckn/sounds/256113/) from [freesound](https://freesound.org/)
+* Error sound made by [lluiset7](https://freesound.org/people/lluiset7/sounds/141334/) from [freesound](https://freesound.org/)
+
 To create the installers, we use a free license of [Install4J](https://www.ej-technologies.com/products/install4j/overview.html) for open-source projects.
 
 [![Install4J multi-platform installer builder](https://www.ej-technologies.com/images/product_banners/install4j_large.png)](https://www.ej-technologies.com/products/install4j/overview.html)
