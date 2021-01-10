@@ -1,5 +1,6 @@
 package app.gpx_animator.ui;
 
+import app.gpx_animator.core.Sound;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.Constants;
 import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
@@ -437,14 +438,17 @@ public final class MainFrame extends JFrame {
 
                     try {
                         get();
+                        Sound.SUCCESS.play();
                         JOptionPane.showMessageDialog(MainFrame.this,
                                 resourceBundle.getString("ui.mainframe.dialog.finished.message"),
                                 resourceBundle.getString("ui.mainframe.dialog.finished.title"), JOptionPane.INFORMATION_MESSAGE);
                     } catch (final InterruptedException e) {
+                        Sound.ERROR.play();
                         JOptionPane.showMessageDialog(MainFrame.this,
                                 resourceBundle.getString("ui.mainframe.dialog.interrupted.message"),
                                 resourceBundle.getString("ui.mainframe.dialog.interrupted.title"), JOptionPane.ERROR_MESSAGE);
                     } catch (final ExecutionException e) {
+                        Sound.ERROR.play();
                         final var cause = e.getCause();
                         if (cause instanceof UserException) {
                             JOptionPane.showMessageDialog(MainFrame.this,
@@ -456,6 +460,7 @@ public final class MainFrame extends JFrame {
                                     e.getCause().getMessage()), e);
                         }
                     } catch (final CancellationException e) {
+                        Sound.ERROR.play();
                         JOptionPane.showMessageDialog(MainFrame.this,
                                 resourceBundle.getString("ui.mainframe.dialog.cancelled.message"),
                                 resourceBundle.getString("ui.mainframe.dialog.cancelled.title"), JOptionPane.WARNING_MESSAGE);
