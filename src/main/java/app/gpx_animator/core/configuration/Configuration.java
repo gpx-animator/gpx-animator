@@ -12,8 +12,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator;
+package app.gpx_animator.core.configuration;
 
+import app.gpx_animator.ColorXmlAdapter;
+import app.gpx_animator.Constants;
+import app.gpx_animator.FileXmlAdapter;
+import app.gpx_animator.FontXmlAdapter;
+import app.gpx_animator.Position;
+import app.gpx_animator.Preferences;
+import app.gpx_animator.SpeedUnit;
+import app.gpx_animator.UserException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;

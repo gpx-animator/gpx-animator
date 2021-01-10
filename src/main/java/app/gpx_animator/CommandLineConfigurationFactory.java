@@ -14,6 +14,8 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.core.configuration.Configuration;
+import app.gpx_animator.core.configuration.TrackConfiguration;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.awt.Color;
@@ -25,7 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static app.gpx_animator.TrackConfiguration.DEFAULT_PREDRAW_TRACK_COLOR;
+import static app.gpx_animator.core.configuration.TrackConfiguration.DEFAULT_PREDRAW_TRACK_COLOR;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {

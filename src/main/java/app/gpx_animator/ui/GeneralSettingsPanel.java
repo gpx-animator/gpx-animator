@@ -1,6 +1,6 @@
 package app.gpx_animator.ui;
 
-import app.gpx_animator.Configuration;
+import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.Constants;
 import app.gpx_animator.MapTemplate;
 import app.gpx_animator.MapUtil;

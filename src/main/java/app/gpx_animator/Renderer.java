@@ -14,6 +14,8 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.core.configuration.Configuration;
+import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.renderer.ImageRenderer;
 import app.gpx_animator.core.renderer.TextRenderer;
 import app.gpx_animator.core.renderer.framewriter.FileFrameWriter;

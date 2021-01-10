@@ -1,12 +1,12 @@
 package app.gpx_animator.ui;
 
-import app.gpx_animator.Configuration;
+import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.Constants;
 import app.gpx_animator.FileXmlAdapter;
 import app.gpx_animator.Preferences;
 import app.gpx_animator.Renderer;
 import app.gpx_animator.RenderingContext;
-import app.gpx_animator.TrackConfiguration;
+import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.UserException;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
