@@ -29,7 +29,7 @@ public enum Notification {
         this.type = type;
     }
 
-    public void show(@NonNull String title, @NonNull String message) {
+    public void show(@NonNull final String title, @NonNull final String message) {
         trayIcon.displayMessage(title, message, type);
     }
 
