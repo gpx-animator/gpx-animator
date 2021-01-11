@@ -1,4 +1,4 @@
-package app.gpx_animator.ui;
+package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.Constants;
 import app.gpx_animator.MapTemplate;

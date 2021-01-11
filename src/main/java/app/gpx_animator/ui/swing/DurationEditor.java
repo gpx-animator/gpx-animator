@@ -12,9 +12,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator.ui;
+package app.gpx_animator.ui.swing;
 
-import app.gpx_animator.ui.DurationSpinnerModel.Field;
+import app.gpx_animator.ui.swing.DurationSpinnerModel.Field;
 
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;

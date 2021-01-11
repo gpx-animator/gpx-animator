@@ -1,4 +1,4 @@
-package app.gpx_animator.ui;
+package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.core.preferences.Preferences;
 import org.jetbrains.annotations.NonNls;

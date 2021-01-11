@@ -13,7 +13,7 @@
  *  limitations under the License.
  */
 
-package app.gpx_animator.ui;
+package app.gpx_animator.ui.swing;
 
 import javax.swing.JFormattedTextField;
 import java.io.Serial;

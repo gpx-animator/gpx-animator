@@ -15,7 +15,8 @@
 package app.gpx_animator;
 
 import app.gpx_animator.core.renderer.RenderingContext;
-import app.gpx_animator.ui.MainFrame;
+import app.gpx_animator.ui.cli.CommandLineConfigurationFactory;
+import app.gpx_animator.ui.swing.MainFrame;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

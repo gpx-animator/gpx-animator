@@ -1,6 +1,5 @@
-package app.gpx_animator;
+package app.gpx_animator.core.configuration.adapter;
 
-import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
 import org.junit.jupiter.api.Test;
 
 import java.awt.Font;

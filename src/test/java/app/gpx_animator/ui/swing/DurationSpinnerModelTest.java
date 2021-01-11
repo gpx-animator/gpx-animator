@@ -1,4 +1,4 @@
-package app.gpx_animator.ui;
+package app.gpx_animator.ui.swing;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,15 +1,15 @@
-package app.gpx_animator.ui;
+package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.Constants;
-import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.Renderer;
-import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.UserException;
-import app.gpx_animator.core.util.Notification;
-import app.gpx_animator.core.util.Sound;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
+import app.gpx_animator.core.preferences.Preferences;
+import app.gpx_animator.core.renderer.RenderingContext;
+import app.gpx_animator.core.util.Notification;
+import app.gpx_animator.core.util.Sound;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

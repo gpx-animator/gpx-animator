@@ -1,4 +1,4 @@
-package app.gpx_animator.ui;
+package app.gpx_animator.ui.swing;
 
 import org.jetbrains.annotations.NonNls;
 import org.junit.jupiter.params.ParameterizedTest;

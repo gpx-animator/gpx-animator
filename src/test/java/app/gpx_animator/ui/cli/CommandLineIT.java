@@ -1,5 +1,8 @@
-package app.gpx_animator;
+package app.gpx_animator.ui.cli;
 
+import app.gpx_animator.Main;
+import app.gpx_animator.MemoryAppender;
+import app.gpx_animator.Renderer;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
