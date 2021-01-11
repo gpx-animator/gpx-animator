@@ -12,12 +12,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator.core;
+package app.gpx_animator.core.renderer;
 
+import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.data.Photo;
 import app.gpx_animator.core.preferences.Preferences;
-import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import app.gpx_animator.core.util.Utils;
 import com.drew.imaging.ImageMetadataReader;
@@ -46,10 +46,10 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.groupingBy;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
-public final class Photos {
+public final class PhotoRenderer {
 
     @NonNls
-    private static final Logger LOGGER = LoggerFactory.getLogger(Photos.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PhotoRenderer.class);
 
     private static final String SYSTEM_ZONE_OFFSET;
 
@@ -61,11 +61,11 @@ public final class Photos {
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final Map<Long, List<Photo>> allPhotos;
+    private final Map<Long, List<Photo>> photosToRender;
 
-    public Photos(final String dirname) {
+    public PhotoRenderer(final String dirname) {
         if (dirname == null || dirname.isBlank()) {
-            allPhotos = new HashMap<>();
+            photosToRender = new HashMap<>();
         } else {
             final var directory = new File(dirname);
             if (directory.isDirectory()) {
@@ -74,16 +74,16 @@ public final class Photos {
                     return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png"); //NON-NLS
                 });
                 if (files != null) {
-                    allPhotos = Arrays.stream(files)
+                    photosToRender = Arrays.stream(files)
                             .map(this::toPhoto)
                             .filter(this::validatePhotoTime)
                             .collect(groupingBy(Photo::getEpochSeconds));
                 } else {
-                    allPhotos = new HashMap<>();
+                    photosToRender = new HashMap<>();
                 }
             } else {
                 LOGGER.error("'{}' is not a directory!", directory);
-                allPhotos = new HashMap<>();
+                photosToRender = new HashMap<>();
             }
         }
     }
@@ -226,19 +226,19 @@ public final class Photos {
 
     public void render(final Long gpsTime, final Configuration cfg, final BufferedImage bi,
                        final FrameWriter frameWriter, final RenderingContext rc, final int pct) {
-        final var keys = allPhotos.keySet().stream()
+        final var keys = photosToRender.keySet().stream()
                 .filter(photoTime -> gpsTime >= photoTime)
                 .collect(Collectors.toList());
         if (!keys.isEmpty()) {
             keys.stream()
-                    .map(allPhotos::get)
+                    .map(photosToRender::get)
                     .flatMap(List::stream).collect(Collectors.toList())
                     .forEach(photo -> renderPhoto(photo, cfg, bi, frameWriter, rc, pct));
-            keys.forEach(allPhotos::remove);
+            keys.forEach(photosToRender::remove);
         }
     }
 
-    public long count() {
-        return allPhotos.size();
+    public long photosToRender() {
+        return photosToRender.size();
     }
 }

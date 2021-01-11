@@ -16,7 +16,6 @@ package app.gpx_animator.core.renderer;
 
 import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.MapUtil;
-import app.gpx_animator.core.Photos;
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
@@ -191,8 +190,8 @@ public final class Renderer {
 
         drawBackground(rc, zoom, bi, ga);
 
-        final var photos = new Photos(cfg.getPhotoDirectory());
-        final var frames = calculateSpeedupAndReturnFrames(photos);
+        final var photoRenderer = new PhotoRenderer(cfg.getPhotoDirectory());
+        final var frames = calculateSpeedupAndReturnFrames(photoRenderer.photosToRender());
 
         preDrawTracks(bi, frames);
 
@@ -250,7 +249,7 @@ public final class Renderer {
             }
 
             frameWriter.addFrame(viewportImage);
-            photos.render(time, cfg, viewportImage, frameWriter, rc, pct);
+            photoRenderer.render(time, cfg, viewportImage, frameWriter, rc, pct);
 
             if (frame == frames) {
                 keepLastFrame(textRenderer, imageRenderer, rc, frameWriter, viewportImage, frames, wpMap);
@@ -274,7 +273,7 @@ public final class Renderer {
         }
     }
 
-    private int calculateSpeedupAndReturnFrames(@NonNull final Photos photos) {
+    private int calculateSpeedupAndReturnFrames(final long numberOfPhotos) {
         final var totalTime = cfg.getTotalTime() == null ? 0 : cfg.getTotalTime();
         final var tailDuration = cfg.getTailDuration();
         final var fps = cfg.getFps();
@@ -284,8 +283,8 @@ public final class Renderer {
             return (int) ((maxTime + tailDuration - minTime) * fps / (MS * speedup));
         } else {
             final var keepLastFrame = cfg.getKeepLastFrame() == null ? 0 : cfg.getKeepLastFrame();
-            var photoTime = cfg.getPhotoTime() == null ? 0 : cfg.getPhotoTime() * photos.count();
-            var photoAnimationTime = cfg.getPhotoAnimationDuration() == null ? 0 : photos.count() * cfg.getPhotoAnimationDuration() * 2;
+            var photoTime = cfg.getPhotoTime() == null ? 0 : cfg.getPhotoTime() * numberOfPhotos;
+            var photoAnimationTime = cfg.getPhotoAnimationDuration() == null ? 0 : numberOfPhotos * cfg.getPhotoAnimationDuration() * 2;
             final var animationTime = totalTime - keepLastFrame - photoTime - photoAnimationTime;
 
             final var frames = (int) Math.round(animationTime / MS * fps);
