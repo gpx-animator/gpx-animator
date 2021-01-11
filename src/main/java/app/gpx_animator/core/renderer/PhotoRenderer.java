@@ -61,11 +61,11 @@ public final class PhotoRenderer {
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final Map<Long, List<Photo>> photosToRender;
+    private final Map<Long, List<Photo>> remainingPhotos;
 
     public PhotoRenderer(final String dirname) {
         if (dirname == null || dirname.isBlank()) {
-            photosToRender = new HashMap<>();
+            remainingPhotos = new HashMap<>();
         } else {
             final var directory = new File(dirname);
             if (directory.isDirectory()) {
@@ -74,16 +74,16 @@ public final class PhotoRenderer {
                     return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png"); //NON-NLS
                 });
                 if (files != null) {
-                    photosToRender = Arrays.stream(files)
+                    remainingPhotos = Arrays.stream(files)
                             .map(this::toPhoto)
                             .filter(this::validatePhotoTime)
                             .collect(groupingBy(Photo::getEpochSeconds));
                 } else {
-                    photosToRender = new HashMap<>();
+                    remainingPhotos = new HashMap<>();
                 }
             } else {
                 LOGGER.error("'{}' is not a directory!", directory);
-                photosToRender = new HashMap<>();
+                remainingPhotos = new HashMap<>();
             }
         }
     }
@@ -226,19 +226,19 @@ public final class PhotoRenderer {
 
     public void render(final Long gpsTime, final Configuration cfg, final BufferedImage bi,
                        final FrameWriter frameWriter, final RenderingContext rc, final int pct) {
-        final var keys = photosToRender.keySet().stream()
+        final var keys = remainingPhotos.keySet().stream()
                 .filter(photoTime -> gpsTime >= photoTime)
                 .collect(Collectors.toList());
         if (!keys.isEmpty()) {
             keys.stream()
-                    .map(photosToRender::get)
+                    .map(remainingPhotos::get)
                     .flatMap(List::stream).collect(Collectors.toList())
                     .forEach(photo -> renderPhoto(photo, cfg, bi, frameWriter, rc, pct));
-            keys.forEach(photosToRender::remove);
+            keys.forEach(remainingPhotos::remove);
         }
     }
 
     public long photosToRender() {
-        return photosToRender.size();
+        return remainingPhotos.size();
     }
 }

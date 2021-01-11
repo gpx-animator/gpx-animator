@@ -17,24 +17,24 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("unused") // Plugins are loaded using reflection
-public class BackgroundMapPlugin extends RendererPlugin {
+public final class BackgroundMapPlugin extends RendererPlugin {
 
     @SuppressWarnings({"RegExpAnonymousGroup", "RegExpRedundantEscape"})
     // This regex is tested and I don't want to rewrite it which may potentionally break it.
     private static final Pattern SWITCH_PATTERN = Pattern.compile("\\{switch:([^}]*)\\}");
 
-    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final String tmsUrlTemplate;
-    private final float backgroundMapVisibility;
+    private final transient String tmsUrlTemplate;
+    private final transient float backgroundMapVisibility;
 
-    private final int zoom;
-    private final double minX;
-    private final double maxX;
-    private final double minY;
-    private final double maxY;
+    private final transient int zoom;
+    private final transient double minX;
+    private final transient double maxX;
+    private final transient double minY;
+    private final transient double maxY;
 
-    public BackgroundMapPlugin(@NotNull Configuration configuration, @NonNull final Metadata metadata) {
+    public BackgroundMapPlugin(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
         super(configuration, metadata);
 
         tmsUrlTemplate = configuration.getTmsUrlTemplate();

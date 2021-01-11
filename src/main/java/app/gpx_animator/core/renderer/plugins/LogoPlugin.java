@@ -14,12 +14,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 @SuppressWarnings("unused") // Plugins are loaded using reflection
-public class LogoPlugin extends RendererPlugin {
+public final class LogoPlugin extends RendererPlugin {
 
-    private final BufferedImage logo;
-    private final Position position;
-    private final int margin;
-    private final ImageRenderer imageRenderer;
+    private final transient BufferedImage logo;
+    private final transient Position position;
+    private final transient int margin;
+    private final transient ImageRenderer imageRenderer;
 
     public LogoPlugin(final @NotNull Configuration configuration, final @NotNull Metadata metadata) throws UserException {
         super(configuration, metadata);

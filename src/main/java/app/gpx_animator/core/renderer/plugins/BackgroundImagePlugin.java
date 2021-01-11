@@ -16,9 +16,9 @@ import java.io.IOException;
 import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 
 @SuppressWarnings("unused") // Plugins are loaded using reflection
-public class BackgroundImagePlugin extends RendererPlugin {
+public final class BackgroundImagePlugin extends RendererPlugin {
 
-    private final BufferedImage backgroundImage;
+    private final transient BufferedImage backgroundImage;
 
     public BackgroundImagePlugin(@NotNull final Configuration configuration, @NonNull final Metadata metadata) throws UserException {
         super(configuration, metadata);

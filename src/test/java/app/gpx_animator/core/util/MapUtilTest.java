@@ -100,7 +100,7 @@ public class MapUtilTest {
         final Map<String, MapValidation> mapValidations = new HashMap<>();
 
         try {
-            try (final var is = MapUtil.class.getResourceAsStream("/maps-tests.xml")) { //NON-NLS
+            try (var is = MapUtil.class.getResourceAsStream("/maps-tests.xml")) { //NON-NLS
                 saxParser.parse(is, new DefaultHandler() {
                     private final StringBuilder sb = new StringBuilder();
                     private String id;

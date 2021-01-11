@@ -13,9 +13,9 @@ import java.awt.image.BufferedImage;
 import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 
 @SuppressWarnings("unused") // Plugins are loaded using reflection
-public class BackgroundColorPlugin extends RendererPlugin {
+public final class BackgroundColorPlugin extends RendererPlugin {
 
-    private final Color backgroundColor;
+    private final transient Color backgroundColor;
 
     public BackgroundColorPlugin(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
         super(configuration, metadata);

@@ -20,7 +20,7 @@ public abstract class RendererPlugin {
     @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(RendererPlugin.class);
 
-    public static List<RendererPlugin> getAvailablePlugins(@NotNull Configuration configuration, @NonNull final Metadata metadata) {
+    public static List<RendererPlugin> getAvailablePlugins(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
         final var plugins = new ArrayList<RendererPlugin>();
 
         final var reflections = new Reflections("app.gpx_animator.core.renderer.plugins");
@@ -56,12 +56,21 @@ public abstract class RendererPlugin {
         super();
     }
 
+    /**
+     * This method returns an integer value which is used to call the plugins
+     * in a specified order to enable "layering" of the output.
+     *
+     * Plugins with a lower value are executed first, followed by plugins with
+     * a higher value. Default is 0 and should be fine for most plugins.
+     *
+     * @return the order number
+     */
     public int getOrder() {
-        return Integer.MAX_VALUE;
+        return 0;
     }
 
-    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException {}
+    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException { }
 
-    public void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException {}
+    public void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException { }
 
 }

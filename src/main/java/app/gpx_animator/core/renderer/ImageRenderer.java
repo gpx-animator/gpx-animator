@@ -2,6 +2,7 @@ package app.gpx_animator.core.renderer;
 
 import app.gpx_animator.core.data.Position;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.awt.image.BufferedImage;
 
@@ -9,17 +10,18 @@ import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 
 public final class ImageRenderer {
 
-    private static ImageRenderer INSTANCE = null;
+    private static ImageRenderer instance = null;
 
+    @SuppressFBWarnings(value = "DC_DOUBLECHECK", justification = "Before and after synchronization") //NON-NLS
     public static ImageRenderer getInstance() {
-        if (INSTANCE == null) {
+        if (instance == null) {
             synchronized (ImageRenderer.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new ImageRenderer();
+                if (instance == null) {
+                    instance = new ImageRenderer();
                 }
             }
         }
-        return INSTANCE;
+        return instance;
     }
 
     public void renderImage(@NonNull final BufferedImage image, @NonNull final Position position, final int margin,

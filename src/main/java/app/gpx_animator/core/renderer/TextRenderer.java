@@ -28,7 +28,7 @@ public final class TextRenderer extends RendererPlugin {
     private final transient Font font;
     private final transient FontMetrics fontMetrics;
 
-    public TextRenderer(@NotNull Configuration configuration, @NonNull final Metadata metadata, @NonNull final Font font) {
+    public TextRenderer(@NotNull final Configuration configuration, @NonNull final Metadata metadata, @NonNull final Font font) {
         super(configuration, metadata);
         this.font = font;
         this.fontMetrics = getFontMetrics();
