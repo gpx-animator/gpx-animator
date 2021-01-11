@@ -189,7 +189,9 @@ public final class Renderer {
         final var textRenderer = new TextRenderer(cfg, font);
         final var imageRenderer = new ImageRenderer(cfg);
 
-        drawBackground(rc, zoom, bi, ga);
+        final var plugins = RendererPlugin.getAvailablePlugins(cfg);
+
+        drawBackground(plugins, rc, zoom, bi);
 
         final var photoRenderer = new PhotoRenderer(cfg.getPhotoDirectory());
         final var frames = calculateSpeedupAndReturnFrames(photoRenderer.photosToRender());
@@ -364,17 +366,11 @@ public final class Renderer {
         return skip;
     }
 
-    private void drawBackground(@NonNull final RenderingContext rc, @NonNull final Integer zoom, @NonNull final BufferedImage bi,
-                                @NonNull final Graphics2D ga) throws UserException {
-        drawBackgroundColor(bi, ga);
+    private void drawBackground(Set<RendererPlugin> plugins, @NonNull final RenderingContext rc, @NonNull final Integer zoom, @NonNull final BufferedImage bi)
+            throws UserException {
+        plugins.forEach(plugin -> plugin.renderBackground(bi));
         drawBackgroundMap(rc, zoom, bi);
         drawBackgroundImage(bi);
-    }
-
-    private void drawBackgroundColor(final BufferedImage bi, final Graphics2D ga) {
-        final var backgroundColor = cfg.getBackgroundColor();
-        ga.setColor(backgroundColor);
-        ga.fillRect(0, 0, bi.getWidth(), bi.getHeight());
     }
 
     private void drawBackgroundImage(final BufferedImage bi) throws UserException {
