@@ -12,36 +12,38 @@ import org.slf4j.LoggerFactory;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class RendererPlugin {
 
     @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(RendererPlugin.class);
 
-    public static Set<RendererPlugin> getAvailablePlugins(@NotNull Configuration configuration) {
-        final var plugins = new TreeSet<>(Comparator.comparingInt(RendererPlugin::getOrder));
+    public static List<RendererPlugin> getAvailablePlugins(@NotNull Configuration configuration) {
+        final var plugins = new ArrayList<RendererPlugin>();
 
         final var reflections = new Reflections("app.gpx_animator.core.renderer.plugins");
         final var classes = reflections.getSubTypesOf(RendererPlugin.class);
-        for (var aClass : classes) {
+        for (final var aClass : classes) {
             @SuppressWarnings("unchecked") final var constructors =
                     ReflectionUtils.getConstructors(aClass, ReflectionUtils.withParameters(Configuration.class));
             final var iterator = constructors.iterator();
             if (iterator.hasNext()) {
                 final var constructor = iterator.next();
                 try {
-                    final var instance = (RendererPlugin) constructor.newInstance(configuration);
+                    final var object = constructor.newInstance(configuration);
+                    final var instance = aClass.cast(object);
                     plugins.add(instance);
                 } catch (final Exception e) {
-                    LOGGER.error("Unable to initialize renderer plugin '%s'".formatted(aClass.getName()), e);
+                    LOGGER.error("Unable to initialize renderer plugin '{}'", aClass.getName(), e);
                 }
             } else {
-                LOGGER.error("Renderer plugin '%s' is missing the required constructor".formatted(aClass.getName()));
+                LOGGER.error("Renderer plugin '{}' is missing the required constructor", aClass.getName());
             }
         }
+
+        LOGGER.info("Loaded {} plugins", plugins.size());
 
         return plugins;
     }
