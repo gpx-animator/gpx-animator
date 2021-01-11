@@ -1,4 +1,6 @@
-package app.gpx_animator;
+package app.gpx_animator.core.data.gpx;
+
+import app.gpx_animator.core.data.LatLon;
 
 import java.awt.geom.Point2D;
 import java.io.Serial;

@@ -14,6 +14,7 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.core.data.LatLon;
 import java.io.Serial;
 
 public class Waypoint extends LatLon {

@@ -12,8 +12,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator;
+package app.gpx_animator.core.data.gpx;
 
+import app.gpx_animator.Waypoint;
+import app.gpx_animator.core.data.LatLon;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -24,7 +26,7 @@ import java.util.List;
 import static app.gpx_animator.core.util.Utils.isEqual;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
-final class GpxContentHandler extends DefaultHandler {
+public final class GpxContentHandler extends DefaultHandler {
 
     private static final String ATTR_LON = "lon"; //NON-NLS
     private static final String ATTR_LAT = "lat"; //NON-NLS

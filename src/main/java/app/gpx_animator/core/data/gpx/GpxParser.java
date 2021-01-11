@@ -12,7 +12,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator;
+package app.gpx_animator.core.data.gpx;
 
 import app.gpx_animator.core.UserException;
 import org.xml.sax.SAXException;
@@ -33,7 +33,7 @@ public final class GpxParser {
         throw new InstantiationException("GpxParser is a utility class and can't be instantiated!");
     }
 
-    static void parseGpx(final File inputGpx, final GpxContentHandler dh) throws UserException {
+    public static void parseGpx(final File inputGpx, final GpxContentHandler dh) throws UserException {
         final SAXParser saxParser;
         try {
             saxParser = SAXParserFactory.newInstance().newSAXParser();
