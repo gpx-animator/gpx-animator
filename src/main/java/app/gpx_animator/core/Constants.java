@@ -1,4 +1,4 @@
-package app.gpx_animator;
+package app.gpx_animator.core;
 
 import java.awt.Font;
 

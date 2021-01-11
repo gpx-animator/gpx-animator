@@ -1,6 +1,6 @@
 package app.gpx_animator.core.util;
 
-import app.gpx_animator.Constants;
+import app.gpx_animator.core.Constants;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;

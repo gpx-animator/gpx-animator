@@ -14,6 +14,8 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.core.Constants;
+import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;

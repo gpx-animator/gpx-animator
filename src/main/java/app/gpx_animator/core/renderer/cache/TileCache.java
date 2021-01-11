@@ -30,8 +30,10 @@
  *     is not done very often (might be a month or two between changes).
  */
 
-package app.gpx_animator;
+package app.gpx_animator.core.renderer.cache;
 
+import app.gpx_animator.core.UserException;
+import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.preferences.Preferences;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;

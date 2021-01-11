@@ -1,6 +1,6 @@
 package app.gpx_animator.ui.swing;
 
-import app.gpx_animator.Constants;
+import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.preferences.Preferences;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;

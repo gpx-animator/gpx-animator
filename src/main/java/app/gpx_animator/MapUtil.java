@@ -14,8 +14,10 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.RenderingContext;
+import app.gpx_animator.core.renderer.cache.TileCache;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.xml.sax.SAXException;

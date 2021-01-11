@@ -14,6 +14,7 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.core.UserException;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
