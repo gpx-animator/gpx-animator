@@ -1,4 +1,7 @@
-package app.gpx_animator;
+package app.gpx_animator.core.util;
+
+import app.gpx_animator.GpxPoint;
+import app.gpx_animator.SpeedUnit;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;

@@ -3,7 +3,7 @@ package app.gpx_animator;
 import java.awt.geom.Point2D;
 import java.io.Serial;
 
-class GpxPoint extends Point2D.Double {
+public class GpxPoint extends Point2D.Double {
 
     @Serial
     private static final long serialVersionUID = -1060001559230478467L;
@@ -11,17 +11,17 @@ class GpxPoint extends Point2D.Double {
     private final LatLon latLon;
     private final long time;
 
-    GpxPoint(final double x, final double y, final LatLon latLon, final long time) {
+    public GpxPoint(final double x, final double y, final LatLon latLon, final long time) {
         super(x, y);
         this.latLon = latLon;
         this.time = time;
     }
 
-    LatLon getLatLon() {
+    public LatLon getLatLon() {
         return latLon;
     }
 
-    long getTime() {
+    public long getTime() {
         return time;
     }
 }

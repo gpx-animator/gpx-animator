@@ -21,6 +21,8 @@ import app.gpx_animator.core.renderer.TextRenderer;
 import app.gpx_animator.core.renderer.framewriter.FileFrameWriter;
 import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
+import app.gpx_animator.core.util.SpeedUtil;
+import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NonNls;
@@ -54,7 +56,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import static app.gpx_animator.Utils.isEqual;
+import static app.gpx_animator.core.util.Utils.isEqual;
 import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable

@@ -1,5 +1,6 @@
 package app.gpx_animator;
 
+import app.gpx_animator.core.util.Utils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

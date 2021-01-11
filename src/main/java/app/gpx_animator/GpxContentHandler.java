@@ -21,7 +21,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static app.gpx_animator.Utils.isEqual;
+import static app.gpx_animator.core.util.Utils.isEqual;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 final class GpxContentHandler extends DefaultHandler {

@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static app.gpx_animator.Utils.isEqual;
+import static app.gpx_animator.core.util.Utils.isEqual;
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 import static javax.swing.JFileChooser.FILES_ONLY;
 

@@ -5,8 +5,8 @@ import app.gpx_animator.Preferences;
 import app.gpx_animator.Renderer;
 import app.gpx_animator.RenderingContext;
 import app.gpx_animator.UserException;
-import app.gpx_animator.core.Notification;
-import app.gpx_animator.core.Sound;
+import app.gpx_animator.core.util.Notification;
+import app.gpx_animator.core.util.Sound;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
@@ -57,7 +57,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-import static app.gpx_animator.Utils.isEqual;
+import static app.gpx_animator.core.util.Utils.isEqual;
 
 public final class MainFrame extends JFrame {
 

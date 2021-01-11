@@ -1,4 +1,4 @@
-package app.gpx_animator.core;
+package app.gpx_animator.core.util;
 
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
