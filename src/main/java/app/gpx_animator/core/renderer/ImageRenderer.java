@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 
 public final class ImageRenderer extends RendererPlugin {
 
-    public ImageRenderer(@NotNull Configuration configuration) {
-        super(configuration);
+    public ImageRenderer(@NotNull Configuration configuration, @NonNull final Metadata metadata) {
+        super(configuration, metadata);
     }
 
     public void renderImage(@NonNull final BufferedImage image, @NonNull final Position position, final int margin,

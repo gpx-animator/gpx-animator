@@ -49,7 +49,11 @@ run.classpath += configurations.developmentOnly
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
-    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
+    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked", "--enable-preview"]
+}
+
+tasks.withType(Test) {
+    jvmArgs += "--enable-preview"
 }
 
 task copyChangelog(type: Copy) {

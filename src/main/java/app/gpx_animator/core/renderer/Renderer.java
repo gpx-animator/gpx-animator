@@ -15,7 +15,6 @@
 package app.gpx_animator.core.renderer;
 
 import app.gpx_animator.core.Constants;
-import app.gpx_animator.core.MapUtil;
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
@@ -62,7 +61,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.TreeMap;
 
 import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
@@ -182,16 +180,17 @@ public final class Renderer {
                 : new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), viewportWidth, viewportHeight);
 
         final var bi = createBufferedImage(realWidth, realHeight, zoom);
-        final var ga = (Graphics2D) bi.getGraphics();
 
         font = cfg.getFont();
 
-        final var textRenderer = new TextRenderer(cfg, font);
-        final var imageRenderer = new ImageRenderer(cfg);
+        final var metadata = new Metadata(zoom, minX, maxX, minY, maxY);
 
-        final var plugins = RendererPlugin.getAvailablePlugins(cfg);
+        final var textRenderer = new TextRenderer(cfg, metadata, font);
+        final var imageRenderer = new ImageRenderer(cfg, metadata);
 
-        drawBackground(plugins, rc, zoom, bi);
+        final var plugins = RendererPlugin.getAvailablePlugins(cfg, metadata);
+
+        drawBackground(plugins, bi, rc);
 
         final var photoRenderer = new PhotoRenderer(cfg.getPhotoDirectory());
         final var frames = calculateSpeedupAndReturnFrames(photoRenderer.photosToRender());
@@ -366,10 +365,11 @@ public final class Renderer {
         return skip;
     }
 
-    private void drawBackground(Set<RendererPlugin> plugins, @NonNull final RenderingContext rc, @NonNull final Integer zoom, @NonNull final BufferedImage bi)
+    private void drawBackground(@NonNull final List<RendererPlugin> plugins, @NonNull final BufferedImage bi, @NonNull final RenderingContext rc)
             throws UserException {
-        plugins.forEach(plugin -> plugin.renderBackground(bi));
-        drawBackgroundMap(rc, zoom, bi);
+        for (final var plugin : plugins) {
+            plugin.renderBackground(bi, rc);
+        }
         drawBackgroundImage(bi);
     }
 
@@ -391,10 +391,6 @@ public final class Renderer {
             final var g2 = getGraphics(bi);
             g2.drawImage(scaledImage, 0, 0, scaledImage.getWidth(), scaledImage.getHeight(), null);
         }
-    }
-
-    private void drawBackgroundMap(final RenderingContext rc, final Integer zoom, final BufferedImage bi) throws UserException {
-        MapUtil.drawMap(bi, cfg.getTmsUrlTemplate(), cfg.getBackgroundMapVisibility(), zoom, minX, maxX, minY, maxY, rc);
     }
 
     private void drawLogo(@NonNull final ImageRenderer imageRenderer, @NonNull final BufferedImage bi) throws UserException {

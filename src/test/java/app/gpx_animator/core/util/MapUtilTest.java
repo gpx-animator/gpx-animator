@@ -1,5 +1,7 @@
-package app.gpx_animator.core;
+package app.gpx_animator.core.util;
 
+import app.gpx_animator.core.Constants;
+import app.gpx_animator.core.MapTemplate;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,10 +26,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("nightly")
-public class MapsTest {
+public class MapUtilTest {
 
     @NonNls
-    private static final Logger LOGGER = LoggerFactory.getLogger(MapsTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapUtilTest.class);
 
     @BeforeAll
     public static void setup() {
@@ -98,7 +100,7 @@ public class MapsTest {
         final Map<String, MapValidation> mapValidations = new HashMap<>();
 
         try {
-            try (var is = MapUtil.class.getResourceAsStream("/maps-tests.xml")) { //NON-NLS
+            try (final var is = MapUtil.class.getResourceAsStream("/maps-tests.xml")) { //NON-NLS
                 saxParser.parse(is, new DefaultHandler() {
                     private final StringBuilder sb = new StringBuilder();
                     private String id;
@@ -137,12 +139,7 @@ public class MapsTest {
         return mapValidations;
     }
 
-    private static final class MapValidation {
-        private final List<String> validationUrls;
-
-        private MapValidation(final List<String> validationUrls) {
-            this.validationUrls = validationUrls;
-        }
+    private static final record MapValidation(List<String> validationUrls) {
 
         public List<String> getValidationUrls() {
             return validationUrls;
