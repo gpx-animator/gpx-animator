@@ -1,16 +1,25 @@
 package app.gpx_animator.core.renderer;
 
-import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.data.Position;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.image.BufferedImage;
 
-public final class ImageRenderer extends RendererPlugin {
+import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 
-    public ImageRenderer(@NotNull Configuration configuration, @NonNull final Metadata metadata) {
-        super(configuration, metadata);
+public final class ImageRenderer {
+
+    private static ImageRenderer INSTANCE = null;
+
+    public static ImageRenderer getInstance() {
+        if (INSTANCE == null) {
+            synchronized (ImageRenderer.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ImageRenderer();
+                }
+            }
+        }
+        return INSTANCE;
     }
 
     public void renderImage(@NonNull final BufferedImage image, @NonNull final Position position, final int margin,

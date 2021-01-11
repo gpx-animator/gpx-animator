@@ -16,6 +16,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+import static app.gpx_animator.core.util.RenderUtil.getGraphics;
+
 public final class TextRenderer extends RendererPlugin {
 
     private static final int IMAGE_TYPE = BufferedImage.TYPE_4BYTE_ABGR;

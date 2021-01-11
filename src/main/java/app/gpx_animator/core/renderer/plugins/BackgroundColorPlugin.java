@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+import static app.gpx_animator.core.util.RenderUtil.getGraphics;
+
 @SuppressWarnings("unused") // Plugins are loaded using reflection
 public class BackgroundColorPlugin extends RendererPlugin {
 
@@ -26,7 +28,7 @@ public class BackgroundColorPlugin extends RendererPlugin {
     }
 
     @Override
-    public void renderBackground(@NotNull final BufferedImage image, @NotNull final RenderingContext rc) {
+    public void renderBackground(@NotNull final BufferedImage image, @NotNull final RenderingContext context) {
         final var graphics = getGraphics(image);
         graphics.setColor(backgroundColor);
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());

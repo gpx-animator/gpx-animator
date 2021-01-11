@@ -41,7 +41,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -64,6 +63,7 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
+import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 import static app.gpx_animator.core.util.Utils.isEqual;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
@@ -184,10 +184,7 @@ public final class Renderer {
         font = cfg.getFont();
 
         final var metadata = new Metadata(zoom, minX, maxX, minY, maxY);
-
         final var textRenderer = new TextRenderer(cfg, metadata, font);
-        final var imageRenderer = new ImageRenderer(cfg, metadata);
-
         final var plugins = RendererPlugin.getAvailablePlugins(cfg, metadata);
 
         drawBackground(plugins, bi, rc);
@@ -232,21 +229,23 @@ public final class Renderer {
             // apply viewport over bi2 (which could be the full viewport)
             final var viewportImage = applyViewport(bi2, marker, realWidth, realHeight, viewportWidth, viewportHeight);
 
-            drawLogo(imageRenderer, viewportImage);
+            for (final var plugin : plugins) {
+                plugin.renderFrame(frame, viewportImage, rc);
+            }
 
             if (font != null) {
                 if (marker != null) {
-                    drawInfo(textRenderer, imageRenderer, viewportImage, frame, marker);
-                    drawComment(textRenderer, imageRenderer, viewportImage, marker);
+                    drawInfo(textRenderer, ImageRenderer.getInstance(), viewportImage, frame, marker);
+                    drawComment(textRenderer, ImageRenderer.getInstance(), viewportImage, marker);
                 }
 
                 var att = resourceBundle.getString("configuration.attribution");
                 var getAt = cfg.getAttribution();
                 if (att.equals(getAt)) {
-                    drawAttribution(textRenderer, imageRenderer, viewportImage,
+                    drawAttribution(textRenderer, ImageRenderer.getInstance(), viewportImage,
                             att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
                 } else {
-                    drawAttribution(textRenderer, imageRenderer, viewportImage, getAt);
+                    drawAttribution(textRenderer, ImageRenderer.getInstance(), viewportImage, getAt);
                 }
             }
 
@@ -254,7 +253,7 @@ public final class Renderer {
             photoRenderer.render(time, cfg, viewportImage, frameWriter, rc, pct);
 
             if (frame == frames) {
-                keepLastFrame(textRenderer, imageRenderer, rc, frameWriter, viewportImage, frames, wpMap);
+                keepLastFrame(textRenderer, ImageRenderer.getInstance(), rc, frameWriter, viewportImage, frames, wpMap);
             }
         }
 
@@ -390,18 +389,6 @@ public final class Renderer {
 
             final var g2 = getGraphics(bi);
             g2.drawImage(scaledImage, 0, 0, scaledImage.getWidth(), scaledImage.getHeight(), null);
-        }
-    }
-
-    private void drawLogo(@NonNull final ImageRenderer imageRenderer, @NonNull final BufferedImage bi) throws UserException {
-        final var logo = cfg.getLogo();
-        if (logo != null && logo.exists()) {
-            try {
-                var image = ImageIO.read(logo);
-                imageRenderer.renderImage(image, cfg.getLogoPosition(), cfg.getLogoMargin(), bi);
-            } catch (final IOException e) {
-                throw new UserException("Can't read logo: ".concat(e.getMessage()));
-            }
         }
     }
 
@@ -730,8 +717,7 @@ public final class Renderer {
 
 
     private String getLatLonString(final Point2D point) {
-        if (point instanceof GpxPoint) {
-            final var gpxPoint = (GpxPoint) point;
+        if (point instanceof GpxPoint gpxPoint) {
             final var latLon = gpxPoint.getLatLon();
             return String.format("%.4f, %.4f", latLon.getLat(), latLon.getLon()); //NON-NLS
         } else {
@@ -747,8 +733,7 @@ public final class Renderer {
      * - If the track point has an empty comment, it resets the comment.
      */
     private String getCommentString(final Point2D point) {
-        if (point instanceof GpxPoint) {
-            final var gpxPoint = (GpxPoint) point;
+        if (point instanceof GpxPoint gpxPoint) {
             final var latLon = gpxPoint.getLatLon();
             final var comment = latLon.getCmt();
 
@@ -968,17 +953,6 @@ public final class Renderer {
 
             yy += height;
         }
-    }
-
-    private Graphics2D getGraphics(final BufferedImage bi) {
-        final var g2 = (Graphics2D) bi.getGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        return g2;
     }
 
     private static class NamedPoint extends Point2D.Double {

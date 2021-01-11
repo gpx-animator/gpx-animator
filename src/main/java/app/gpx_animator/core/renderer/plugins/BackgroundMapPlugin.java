@@ -53,7 +53,7 @@ public class BackgroundMapPlugin extends RendererPlugin {
     }
 
     @Override
-    public void renderBackground(@NotNull final BufferedImage image, @NotNull final RenderingContext rc) throws UserException {
+    public void renderBackground(@NotNull final BufferedImage image, @NotNull final RenderingContext context) throws UserException {
         if (tmsUrlTemplate == null || backgroundMapVisibility <= 0.0) {
             // no map defined or map should not be visible
             return;
@@ -83,7 +83,7 @@ public class BackgroundMapPlugin extends RendererPlugin {
 
         for (var x = tileX; x <= maxXtile; x++) {
             for (var y = tileY; y >= maxYtile; y--) {
-                if (rc.isCancelled1()) {
+                if (context.isCancelled1()) {
                     return;
                 }
 
@@ -104,7 +104,7 @@ public class BackgroundMapPlugin extends RendererPlugin {
                     url = sb.toString();
                 }
 
-                rc.setProgress1((int) (100.0 * i / total), String.format(resourceBundle.getString("map.loadingtiles.progress"), i, total));
+                context.setProgress1((int) (100.0 * i / total), String.format(resourceBundle.getString("map.loadingtiles.progress"), i, total));
 
                 final var tile = TileCache.getTile(url, tileCacheDir, tileCacheTimeLimit);
 
