@@ -15,6 +15,7 @@
 package app.gpx_animator;
 
 import app.gpx_animator.core.UserException;
+import app.gpx_animator.core.renderer.Renderer;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.cache.TileCache;
 import app.gpx_animator.ui.cli.CommandLineConfigurationFactory;

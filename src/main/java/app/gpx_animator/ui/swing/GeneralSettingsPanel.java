@@ -1,13 +1,13 @@
 package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.core.Constants;
-import app.gpx_animator.MapTemplate;
-import app.gpx_animator.MapUtil;
-import app.gpx_animator.Option;
-import app.gpx_animator.Position;
-import app.gpx_animator.core.preferences.Preferences;
-import app.gpx_animator.SpeedUnit;
+import app.gpx_animator.core.MapTemplate;
+import app.gpx_animator.core.MapUtil;
+import app.gpx_animator.core.Option;
 import app.gpx_animator.core.configuration.Configuration;
+import app.gpx_animator.core.data.Position;
+import app.gpx_animator.core.data.SpeedUnit;
+import app.gpx_animator.core.preferences.Preferences;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;

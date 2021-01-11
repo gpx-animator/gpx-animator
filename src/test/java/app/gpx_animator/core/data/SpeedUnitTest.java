@@ -1,4 +1,4 @@
-package app.gpx_animator;
+package app.gpx_animator.core.data;
 
 import org.junit.jupiter.api.Test;
 

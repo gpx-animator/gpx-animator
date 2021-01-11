@@ -12,20 +12,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator;
+package app.gpx_animator.core.renderer;
 
 import app.gpx_animator.core.Constants;
+import app.gpx_animator.core.MapUtil;
+import app.gpx_animator.core.Photos;
 import app.gpx_animator.core.UserException;
+import app.gpx_animator.core.configuration.Configuration;
+import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.data.LatLon;
+import app.gpx_animator.core.data.TrackIcon;
+import app.gpx_animator.core.data.Waypoint;
 import app.gpx_animator.core.data.gpx.GpxContentHandler;
 import app.gpx_animator.core.data.gpx.GpxParser;
 import app.gpx_animator.core.data.gpx.GpxPoint;
 import app.gpx_animator.core.preferences.Preferences;
-import app.gpx_animator.core.configuration.Configuration;
-import app.gpx_animator.core.configuration.TrackConfiguration;
-import app.gpx_animator.core.renderer.ImageRenderer;
-import app.gpx_animator.core.renderer.RenderingContext;
-import app.gpx_animator.core.renderer.TextRenderer;
 import app.gpx_animator.core.renderer.framewriter.FileFrameWriter;
 import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
@@ -64,8 +65,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import static app.gpx_animator.core.util.Utils.isEqual;
 import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
+import static app.gpx_animator.core.util.Utils.isEqual;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class Renderer {

@@ -12,7 +12,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator;
+package app.gpx_animator.core.data;
 
 import com.drew.lang.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;

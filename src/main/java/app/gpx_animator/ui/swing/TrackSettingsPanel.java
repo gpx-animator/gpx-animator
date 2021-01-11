@@ -1,9 +1,9 @@
 package app.gpx_animator.ui.swing;
 
-import app.gpx_animator.Option;
-import app.gpx_animator.core.preferences.Preferences;
-import app.gpx_animator.TrackIcon;
+import app.gpx_animator.core.Option;
 import app.gpx_animator.core.configuration.TrackConfiguration;
+import app.gpx_animator.core.data.TrackIcon;
+import app.gpx_animator.core.preferences.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;

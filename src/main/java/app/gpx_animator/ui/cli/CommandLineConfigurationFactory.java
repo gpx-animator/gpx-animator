@@ -15,15 +15,15 @@
 package app.gpx_animator.ui.cli;
 
 import app.gpx_animator.core.Constants;
-import app.gpx_animator.Help;
-import app.gpx_animator.Option;
-import app.gpx_animator.Position;
-import app.gpx_animator.SpeedUnit;
-import app.gpx_animator.TrackIcon;
+import app.gpx_animator.core.Help;
+import app.gpx_animator.core.Option;
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
+import app.gpx_animator.core.data.Position;
+import app.gpx_animator.core.data.SpeedUnit;
+import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

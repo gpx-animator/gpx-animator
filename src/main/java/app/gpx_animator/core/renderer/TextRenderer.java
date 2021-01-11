@@ -1,6 +1,6 @@
 package app.gpx_animator.core.renderer;
 
-import app.gpx_animator.Position;
+import app.gpx_animator.core.data.Position;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.awt.BasicStroke;

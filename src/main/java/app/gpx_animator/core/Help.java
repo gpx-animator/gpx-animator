@@ -12,12 +12,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator;
+package app.gpx_animator.core;
 
-import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
+import app.gpx_animator.core.preferences.Preferences;
 
 import java.io.PrintWriter;
 

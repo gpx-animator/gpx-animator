@@ -14,8 +14,8 @@
  */
 package app.gpx_animator.core.data.gpx;
 
-import app.gpx_animator.Waypoint;
 import app.gpx_animator.core.data.LatLon;
+import app.gpx_animator.core.data.Waypoint;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 

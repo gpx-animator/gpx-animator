@@ -2,7 +2,7 @@ package app.gpx_animator.ui.cli;
 
 import app.gpx_animator.Main;
 import app.gpx_animator.MemoryAppender;
-import app.gpx_animator.Renderer;
+import app.gpx_animator.core.renderer.Renderer;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;

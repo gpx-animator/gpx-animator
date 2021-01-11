@@ -15,9 +15,9 @@
 package app.gpx_animator.core.configuration;
 
 import app.gpx_animator.core.configuration.adapter.ColorXmlAdapter;
-import app.gpx_animator.TrackIcon;
 import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
 import app.gpx_animator.core.configuration.adapter.TrackIconXmlAdapter;
+import app.gpx_animator.core.data.TrackIcon;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
