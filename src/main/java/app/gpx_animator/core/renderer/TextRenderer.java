@@ -1,7 +1,9 @@
 package app.gpx_animator.core.renderer;
 
+import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.data.Position;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -14,7 +16,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-public final class TextRenderer extends GraphicsRenderer {
+public final class TextRenderer extends RendererPlugin {
 
     private static final int IMAGE_TYPE = BufferedImage.TYPE_4BYTE_ABGR;
     private static final int ANTI_ALIAS_COMPENSATION = 10;
@@ -24,7 +26,8 @@ public final class TextRenderer extends GraphicsRenderer {
     private final transient Font font;
     private final transient FontMetrics fontMetrics;
 
-    public TextRenderer(@NonNull final Font font) {
+    public TextRenderer(@NotNull Configuration configuration, @NonNull final Font font) {
+        super(configuration);
         this.font = font;
         this.fontMetrics = getFontMetrics();
     }

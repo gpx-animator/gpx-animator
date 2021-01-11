@@ -1,11 +1,17 @@
 package app.gpx_animator.core.renderer;
 
+import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.data.Position;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.image.BufferedImage;
 
-public final class ImageRenderer extends GraphicsRenderer {
+public final class ImageRenderer extends RendererPlugin {
+
+    public ImageRenderer(@NotNull Configuration configuration) {
+        super(configuration);
+    }
 
     public void renderImage(@NonNull final BufferedImage image, @NonNull final Position position, final int margin,
                             @NonNull final BufferedImage targetImage) {

@@ -62,6 +62,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.TreeMap;
 
 import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
@@ -185,8 +186,8 @@ public final class Renderer {
 
         font = cfg.getFont();
 
-        final var textRenderer = new TextRenderer(font);
-        final var imageRenderer = new ImageRenderer();
+        final var textRenderer = new TextRenderer(cfg, font);
+        final var imageRenderer = new ImageRenderer(cfg);
 
         drawBackground(rc, zoom, bi, ga);
 
