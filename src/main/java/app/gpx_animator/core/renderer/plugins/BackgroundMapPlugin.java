@@ -49,7 +49,7 @@ public class BackgroundMapPlugin extends RendererPlugin {
 
     @Override
     public int getOrder() {
-        return 1_000;
+        return -1_000;
     }
 
     @Override

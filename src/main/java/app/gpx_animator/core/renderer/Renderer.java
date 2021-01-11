@@ -31,7 +31,6 @@ import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
 import app.gpx_animator.core.util.SpeedUtil;
 import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -368,27 +367,6 @@ public final class Renderer {
             throws UserException {
         for (final var plugin : plugins) {
             plugin.renderBackground(bi, rc);
-        }
-        drawBackgroundImage(bi);
-    }
-
-    private void drawBackgroundImage(final BufferedImage bi) throws UserException {
-        final var backgroundImage = cfg.getBackgroundImage();
-        if (backgroundImage != null && backgroundImage.exists()) {
-            final BufferedImage image;
-            try {
-                image = ImageIO.read(backgroundImage);
-            } catch (final IOException e) {
-                throw new UserException("Can't read background image: ".concat(e.getMessage()));
-            }
-
-            var scaledImage = image.getWidth() <= bi.getWidth() && image.getHeight() <= bi.getHeight() ? image
-                    : Scalr.resize(Scalr.resize(image,
-                            Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, bi.getWidth()),
-                            Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, bi.getHeight());
-
-            final var g2 = getGraphics(bi);
-            g2.drawImage(scaledImage, 0, 0, scaledImage.getWidth(), scaledImage.getHeight(), null);
         }
     }
 

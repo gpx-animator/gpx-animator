@@ -44,12 +44,14 @@ public abstract class RendererPlugin {
         }
 
         plugins.sort(Comparator.comparingInt(RendererPlugin::getOrder));
+        plugins.forEach(plugin -> LOGGER.info("Plugin '{}' with order {}", plugin.getClass(), plugin.getOrder()));
 
         LOGGER.info("Loaded {} plugins", plugins.size());
 
         return plugins;
     }
 
+    @SuppressWarnings("unused") // forcing the subsclasses to use this constructor
     public RendererPlugin(@NonNull final Configuration configuration, @NonNull final Metadata metadata) {
         super();
     }
