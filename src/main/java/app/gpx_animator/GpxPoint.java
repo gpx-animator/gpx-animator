@@ -3,7 +3,7 @@ package app.gpx_animator;
 import java.awt.geom.Point2D;
 import java.io.Serial;
 
-public class GpxPoint extends Point2D.Double {
+public final class GpxPoint extends Point2D.Double {
 
     @Serial
     private static final long serialVersionUID = -1060001559230478467L;

@@ -15,7 +15,7 @@
 package app.gpx_animator.ui;
 
 import app.gpx_animator.Help;
-import app.gpx_animator.Preferences;
+import app.gpx_animator.core.preferences.Preferences;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;

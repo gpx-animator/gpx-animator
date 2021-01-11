@@ -14,6 +14,7 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.core.preferences.Preferences;
 import com.drew.lang.annotations.NotNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;

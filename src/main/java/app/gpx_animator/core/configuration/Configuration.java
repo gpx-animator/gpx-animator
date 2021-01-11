@@ -17,7 +17,7 @@ package app.gpx_animator.core.configuration;
 import app.gpx_animator.ColorXmlAdapter;
 import app.gpx_animator.Constants;
 import app.gpx_animator.Position;
-import app.gpx_animator.Preferences;
+import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.SpeedUnit;
 import app.gpx_animator.UserException;
 import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;

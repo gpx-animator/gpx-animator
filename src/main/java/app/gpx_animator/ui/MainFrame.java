@@ -1,9 +1,9 @@
 package app.gpx_animator.ui;
 
 import app.gpx_animator.Constants;
-import app.gpx_animator.Preferences;
+import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.Renderer;
-import app.gpx_animator.RenderingContext;
+import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.UserException;
 import app.gpx_animator.core.util.Notification;
 import app.gpx_animator.core.util.Sound;

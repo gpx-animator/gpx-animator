@@ -1,6 +1,6 @@
 package app.gpx_animator.ui;
 
-import app.gpx_animator.Preferences;
+import app.gpx_animator.core.preferences.Preferences;
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.vladsch.flexmark.html.HtmlRenderer;

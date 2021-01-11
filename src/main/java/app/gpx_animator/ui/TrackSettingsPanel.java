@@ -1,7 +1,7 @@
 package app.gpx_animator.ui;
 
 import app.gpx_animator.Option;
-import app.gpx_animator.Preferences;
+import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.TrackIcon;
 import app.gpx_animator.core.configuration.TrackConfiguration;
 

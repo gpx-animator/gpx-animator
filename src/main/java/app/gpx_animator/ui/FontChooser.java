@@ -1,7 +1,7 @@
 package app.gpx_animator.ui;
 
 import app.gpx_animator.Constants;
-import app.gpx_animator.Preferences;
+import app.gpx_animator.core.preferences.Preferences;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

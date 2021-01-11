@@ -5,7 +5,7 @@ import app.gpx_animator.MapTemplate;
 import app.gpx_animator.MapUtil;
 import app.gpx_animator.Option;
 import app.gpx_animator.Position;
-import app.gpx_animator.Preferences;
+import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.SpeedUnit;
 import app.gpx_animator.core.configuration.Configuration;
 

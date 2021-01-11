@@ -14,7 +14,7 @@
  */
 package app.gpx_animator.core.renderer.framewriter;
 
-import app.gpx_animator.Preferences;
+import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.UserException;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;

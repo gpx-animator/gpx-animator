@@ -14,7 +14,9 @@
  */
 package app.gpx_animator;
 
+import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.configuration.Configuration;
+import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import app.gpx_animator.core.util.Utils;
 import com.drew.imaging.ImageMetadataReader;
@@ -115,8 +117,8 @@ public final class Photos {
     }
 
     private void renderPhoto(final Photo photo, final Configuration cfg,
-                                    final BufferedImage bi, final FrameWriter frameWriter,
-                                    final RenderingContext rc, final int pct) {
+                             final BufferedImage bi, final FrameWriter frameWriter,
+                             final RenderingContext rc, final int pct) {
         rc.setProgress1(pct, String.format(resourceBundle.getString("photos.progress.rendering"), photo.getFile().getName()));
 
         final var image = readPhoto(photo, bi.getWidth() - 20, bi.getHeight() - 20);

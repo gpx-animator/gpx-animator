@@ -1,5 +1,7 @@
 package app.gpx_animator;
 
+import app.gpx_animator.core.preferences.Preferences;
+
 import javax.swing.JComboBox;
 import java.util.Arrays;
 import java.util.Locale;
