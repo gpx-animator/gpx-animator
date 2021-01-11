@@ -14,7 +14,7 @@
  */
 package app.gpx_animator.core.configuration;
 
-import app.gpx_animator.ColorXmlAdapter;
+import app.gpx_animator.core.configuration.adapter.ColorXmlAdapter;
 import app.gpx_animator.Constants;
 import app.gpx_animator.Position;
 import app.gpx_animator.core.preferences.Preferences;

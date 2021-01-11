@@ -1,6 +1,6 @@
 package app.gpx_animator.core.preferences;
 
-import app.gpx_animator.ColorXmlAdapter;
+import app.gpx_animator.core.configuration.adapter.ColorXmlAdapter;
 
 import java.awt.Color;
 import java.io.File;
