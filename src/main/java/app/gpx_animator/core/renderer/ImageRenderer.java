@@ -9,6 +9,14 @@ import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 
 public abstract class ImageRenderer {
 
+    /**
+     * Render image on the video frame.
+     *
+     * @param image       the image to render on the video frame
+     * @param position    the position of the text on the video frame
+     * @param margin      the margin from the text to the border of the video frame
+     * @param targetImage the target image representing the video frame
+     */
     public void renderImage(@NonNull final BufferedImage image, @NonNull final Position position, final int margin,
                             @NonNull final BufferedImage targetImage) {
         if (Position.HIDDEN.equals(position)) {

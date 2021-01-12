@@ -51,8 +51,15 @@ public abstract class TextRenderer extends ImageRenderer {
         return lines * fontMetrics.getHeight();
     }
 
-    public void renderText(@NonNull final String text, @NonNull final Position position, final int margin,
-                                    @NonNull final BufferedImage targetImage) {
+    /**
+     * Render text on the video frame.
+     *
+     * @param text        the text to render on the video frame
+     * @param position    the position of the text on the video frame
+     * @param margin      the margin from the text to the border of the video frame
+     * @param targetImage the target image representing the video frame
+     */
+    public void renderText(@NonNull final String text, @NonNull final Position position, final int margin, @NonNull final BufferedImage targetImage) {
         final var trimmedText = text.trim();
         final var width = calculateTextWidth(trimmedText) + ANTI_ALIAS_COMPENSATION;
         final var height = calculateTextHeight(trimmedText);
