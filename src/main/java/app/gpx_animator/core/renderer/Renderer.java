@@ -14,7 +14,6 @@
  */
 package app.gpx_animator.core.renderer;
 
-import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
@@ -236,22 +235,13 @@ public final class Renderer {
                     drawInfo(textRenderer, viewportImage, frame, marker);
                     drawComment(textRenderer, viewportImage, marker);
                 }
-
-                var att = resourceBundle.getString("configuration.attribution");
-                var getAt = cfg.getAttribution();
-                if (att.equals(getAt)) {
-                    drawAttribution(textRenderer, viewportImage,
-                            att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
-                } else {
-                    drawAttribution(textRenderer, viewportImage, getAt);
-                }
             }
 
             frameWriter.addFrame(viewportImage);
             photoRenderer.render(time, cfg, viewportImage, frameWriter, rc, pct);
 
             if (frame == frames) {
-                keepLastFrame(textRenderer, rc, frameWriter, viewportImage, frames, wpMap);
+                keepLastFrame(plugins, textRenderer, rc, frameWriter, viewportImage, frames, wpMap);
             }
         }
 
@@ -525,26 +515,24 @@ public final class Renderer {
         }
     }
 
-    private void keepLastFrame(@NonNull final TextRenderer textRenderer, @NonNull final RenderingContext rc, @NonNull final FrameWriter frameWriter,
-                               @NonNull final BufferedImage bi, final int frames, @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
+    private void keepLastFrame(@NonNull final List<RendererPlugin> plugins, @NonNull final TextRenderer textRenderer,
+                               @NonNull final RenderingContext rc, @NonNull final FrameWriter frameWriter, @NonNull final BufferedImage bi,
+                               final int frames, @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
         final var keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
         if (keepLastFrame) {
             drawWaypoints(bi, frames, wpMap);
             final var marker = drawMarker(bi, frames);
+
+            for (final var plugin : plugins) {
+                plugin.renderFrame(frames, bi, rc);
+            }
             if (font != null) {
                 if (marker != null) {
                     drawInfo(textRenderer, bi, frames, marker);
                     drawComment(textRenderer, bi, marker);
                 }
-
-                var att = resourceBundle.getString("configuration.attribution");
-                if (cfg.getAttribution().equals(att)) {
-                    drawAttribution(textRenderer, bi,
-                            att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
-                } else {
-                    drawAttribution(textRenderer, bi, cfg.getAttribution());
-                }
             }
+
             final long ms = cfg.getKeepLastFrame();
             final var fps = Double.valueOf(cfg.getFps()).longValue();
             final var stillFrames = ms / 1_000 * fps;
@@ -725,16 +713,6 @@ public final class Renderer {
         return lastComment;
     }
 
-
-    private void drawAttribution(@NonNull final TextRenderer textRenderer, @NonNull final BufferedImage bi, @NonNull final String attribution) {
-        if (attribution.isBlank()) {
-            return;
-        }
-        var position = cfg.getAttributionPosition();
-        var margin = cfg.getAttributionMargin();
-
-        textRenderer.renderText(attribution, position, margin, bi);
-    }
 
     private Point2D drawMarker(final BufferedImage bi, final int frame) throws UserException {
         if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {

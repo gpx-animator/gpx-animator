@@ -19,7 +19,7 @@ public final class LogoPlugin extends ImageRenderer implements RendererPlugin {
     private final transient Position position;
     private final transient int margin;
 
-    public LogoPlugin(final @NotNull Configuration configuration) throws UserException {
+    public LogoPlugin(@NotNull final Configuration configuration) throws UserException {
         position = configuration.getLogoPosition();
         margin = configuration.getLogoMargin();
 

@@ -88,4 +88,14 @@ public final class MapUtil {
         return labeledItems;
     }
 
+    public static MapTemplate getMapTemplate(final String tmsUrlTemplate) {
+        if (tmsUrlTemplate == null || tmsUrlTemplate.isBlank()) {
+            return null;
+        }
+
+        return readMaps().stream()
+                .filter(m -> tmsUrlTemplate.equals(m.getUrl()))
+                .findFirst()
+                .orElse(null);
+    }
 }
