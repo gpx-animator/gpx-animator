@@ -27,6 +27,7 @@ import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.framewriter.FileFrameWriter;
 import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
+import app.gpx_animator.core.util.PluginUtil;
 import app.gpx_animator.core.util.SpeedUtil;
 import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -181,7 +182,7 @@ public final class Renderer {
         font = cfg.getFont();
 
         final var metadata = new Metadata(zoom, minX, maxX, minY, maxY);
-        final var plugins = RendererPlugin.getAvailablePlugins(cfg, metadata);
+        final var plugins = PluginUtil.getAvailablePlugins(cfg, metadata);
 
         drawBackground(plugins, bi, rc);
 
