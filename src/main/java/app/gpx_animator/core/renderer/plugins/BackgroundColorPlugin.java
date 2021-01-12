@@ -1,10 +1,8 @@
 package app.gpx_animator.core.renderer.plugins;
 
 import app.gpx_animator.core.configuration.Configuration;
-import app.gpx_animator.core.renderer.Metadata;
 import app.gpx_animator.core.renderer.RendererPlugin;
 import app.gpx_animator.core.renderer.RenderingContext;
-import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
@@ -13,12 +11,11 @@ import java.awt.image.BufferedImage;
 import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 
 @SuppressWarnings("unused") // Plugins are loaded using reflection
-public final class BackgroundColorPlugin extends RendererPlugin {
+public final class BackgroundColorPlugin implements RendererPlugin {
 
     private final transient Color backgroundColor;
 
-    public BackgroundColorPlugin(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
-        super(configuration, metadata);
+    public BackgroundColorPlugin(@NotNull final Configuration configuration) {
         this.backgroundColor = configuration.getBackgroundColor();
     }
 
@@ -33,5 +30,8 @@ public final class BackgroundColorPlugin extends RendererPlugin {
         graphics.setColor(backgroundColor);
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
     }
+
+    @Override
+    public void renderFrame(final int frame, @NotNull final BufferedImage image, @NotNull final RenderingContext context) { }
 
 }

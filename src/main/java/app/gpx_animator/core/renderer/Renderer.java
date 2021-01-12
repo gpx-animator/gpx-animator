@@ -183,7 +183,7 @@ public final class Renderer {
         font = cfg.getFont();
 
         final var metadata = new Metadata(zoom, minX, maxX, minY, maxY);
-        final var textRenderer = new TextRenderer(cfg, metadata, font);
+        final var textRenderer = new TextRenderer(font);
         final var plugins = RendererPlugin.getAvailablePlugins(cfg, metadata);
 
         drawBackground(plugins, bi, rc);
@@ -232,19 +232,20 @@ public final class Renderer {
                 plugin.renderFrame(frame, viewportImage, rc);
             }
 
+            final var imageRenderer = new ImageRenderer() {};
             if (font != null) {
                 if (marker != null) {
-                    drawInfo(textRenderer, ImageRenderer.getInstance(), viewportImage, frame, marker);
-                    drawComment(textRenderer, ImageRenderer.getInstance(), viewportImage, marker);
+                    drawInfo(textRenderer, imageRenderer, viewportImage, frame, marker);
+                    drawComment(textRenderer, imageRenderer, viewportImage, marker);
                 }
 
                 var att = resourceBundle.getString("configuration.attribution");
                 var getAt = cfg.getAttribution();
                 if (att.equals(getAt)) {
-                    drawAttribution(textRenderer, ImageRenderer.getInstance(), viewportImage,
+                    drawAttribution(textRenderer, imageRenderer, viewportImage,
                             att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
                 } else {
-                    drawAttribution(textRenderer, ImageRenderer.getInstance(), viewportImage, getAt);
+                    drawAttribution(textRenderer, imageRenderer, viewportImage, getAt);
                 }
             }
 
@@ -252,7 +253,7 @@ public final class Renderer {
             photoRenderer.render(time, cfg, viewportImage, frameWriter, rc, pct);
 
             if (frame == frames) {
-                keepLastFrame(textRenderer, ImageRenderer.getInstance(), rc, frameWriter, viewportImage, frames, wpMap);
+                keepLastFrame(textRenderer, imageRenderer, rc, frameWriter, viewportImage, frames, wpMap);
             }
         }
 

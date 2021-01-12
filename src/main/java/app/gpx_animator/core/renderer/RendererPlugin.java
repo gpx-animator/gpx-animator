@@ -15,26 +15,45 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class RendererPlugin {
+public interface RendererPlugin {
 
     @NonNls
-    private static final Logger LOGGER = LoggerFactory.getLogger(RendererPlugin.class);
+    Logger LOGGER = LoggerFactory.getLogger(RendererPlugin.class);
 
-    public static List<RendererPlugin> getAvailablePlugins(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
+    static List<RendererPlugin> getAvailablePlugins(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
         final var plugins = new ArrayList<RendererPlugin>();
 
         final var reflections = new Reflections("app.gpx_animator.core.renderer.plugins");
         final var classes = reflections.getSubTypesOf(RendererPlugin.class);
         for (final var aClass : classes) {
-            @SuppressWarnings("unchecked") final var constructors =
-                    ReflectionUtils.getConstructors(aClass, ReflectionUtils.withParameters(Configuration.class, Metadata.class));
+            @SuppressWarnings("unchecked") final var constructors = ReflectionUtils.getAllConstructors(aClass);
             final var iterator = constructors.iterator();
             if (iterator.hasNext()) {
                 final var constructor = iterator.next();
                 try {
-                    final var object = constructor.newInstance(configuration, metadata);
-                    final var instance = aClass.cast(object);
-                    plugins.add(instance);
+                    Object object = null;
+                    final var parameterTypes = constructor.getParameterTypes();
+                    if (constructor.getParameterCount() == 0) {
+                        object = constructor.newInstance();
+                    } else if (parameterTypes.length == 1) {
+                        if (parameterTypes[0] == Configuration.class) {
+                            object = constructor.newInstance(configuration);
+                        } else if (parameterTypes[0] == Metadata.class) {
+                            object = constructor.newInstance(metadata);
+                        }
+                    } else if (parameterTypes.length == 2) {
+                        if (parameterTypes[0] == Configuration.class && parameterTypes[1] == Metadata.class) {
+                            object = constructor.newInstance(configuration, metadata);
+                        } else if (parameterTypes[0] == Metadata.class && parameterTypes[1] == Configuration.class) {
+                            object = constructor.newInstance(metadata, configuration);
+                        }
+                    }
+                    if (object != null) {
+                        final var instance = aClass.cast(object);
+                        plugins.add(instance);
+                    } else {
+                        LOGGER.error("No suitable constructor found for renderer plugin '{}'", aClass.getName());
+                    }
                 } catch (final Exception e) {
                     LOGGER.error("Unable to initialize renderer plugin '{}'", aClass.getName(), e);
                 }
@@ -51,26 +70,19 @@ public abstract class RendererPlugin {
         return plugins;
     }
 
-    @SuppressWarnings("unused") // forcing the subsclasses to use this constructor
-    public RendererPlugin(@NonNull final Configuration configuration, @NonNull final Metadata metadata) {
-        super();
-    }
-
     /**
      * This method returns an integer value which is used to call the plugins
      * in a specified order to enable "layering" of the output.
      *
      * Plugins with a lower value are executed first, followed by plugins with
-     * a higher value. Default is 0 and should be fine for most plugins.
+     * a higher value.
      *
      * @return the order number
      */
-    public int getOrder() {
-        return 0;
-    }
+    int getOrder();
 
-    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException { }
+    void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException;
 
-    public void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException { }
+    void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException;
 
 }

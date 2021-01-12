@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("unused") // Plugins are loaded using reflection
-public final class BackgroundMapPlugin extends RendererPlugin {
+public final class BackgroundMapPlugin implements RendererPlugin {
 
     @SuppressWarnings({"RegExpAnonymousGroup", "RegExpRedundantEscape"})
     // This regex is tested and I don't want to rewrite it which may potentionally break it.
@@ -35,8 +35,6 @@ public final class BackgroundMapPlugin extends RendererPlugin {
     private final transient double maxY;
 
     public BackgroundMapPlugin(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
-        super(configuration, metadata);
-
         tmsUrlTemplate = configuration.getTmsUrlTemplate();
         backgroundMapVisibility = configuration.getBackgroundMapVisibility();
 
@@ -119,6 +117,8 @@ public final class BackgroundMapPlugin extends RendererPlugin {
             }
         }
     }
+
+    public void renderFrame(final int frame, @NotNull final BufferedImage image, @NotNull final RenderingContext context) { }
 
     private static double yToTileY(final int zoom, final double minY) {
         return latToTileY(zoom, yToLat(minY));
