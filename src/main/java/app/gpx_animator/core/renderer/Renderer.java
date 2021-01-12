@@ -96,8 +96,6 @@ public final class Renderer {
 
     private double speedup;
 
-    private String lastComment = "";
-
     public Renderer(final Configuration cfg) throws UserException {
         this.cfg = cfg.validate();
         this.recentMarkers = new LinkedList<>();
@@ -227,14 +225,13 @@ public final class Renderer {
             final var viewportImage = applyViewport(bi2, marker, realWidth, realHeight, viewportWidth, viewportHeight);
 
             for (final var plugin : plugins) {
-                plugin.renderFrame(frame, viewportImage, rc);
+                plugin.renderFrame(frame, marker, viewportImage, rc);
             }
 
             final var textRenderer = new TextRenderer(font) { };
             if (font != null) {
                 if (marker != null) {
                     drawInfo(textRenderer, viewportImage, frame, marker);
-                    drawComment(textRenderer, viewportImage, marker);
                 }
             }
 
@@ -525,12 +522,11 @@ public final class Renderer {
             final var marker = drawMarker(bi, frames);
 
             for (final var plugin : plugins) {
-                plugin.renderFrame(frames, bi, rc);
+                plugin.renderFrame(frames, marker, bi, rc);
             }
             if (font != null) {
                 if (marker != null) {
                     drawInfo(textRenderer, bi, frames, marker);
-                    drawComment(textRenderer, bi, marker);
                 }
             }
 
@@ -666,17 +662,6 @@ public final class Renderer {
         textRenderer.renderText(text, position, margin, bi);
     }
 
-    private void drawComment(@NonNull final TextRenderer textRenderer, @NonNull final BufferedImage bi, @NonNull final Point2D marker) {
-        final var comment = getCommentString(marker);
-        if (comment != null && !comment.isBlank()) {
-            var position = cfg.getCommentPosition();
-            var margin = cfg.getCommentMargin();
-            textRenderer.renderText(comment, position, margin, bi);
-        }
-    }
-
-
-
     private String getLatLonString(final Point2D point) {
         if (point instanceof GpxPoint gpxPoint) {
             final var latLon = gpxPoint.getLatLon();
@@ -685,35 +670,6 @@ public final class Renderer {
             return "";
         }
     }
-
-
-    /**
-     * This method has a special behaviour:
-     * - If the track point has a comment, it returns the comment.
-     * - If the track point has no comment, it returns the last comment.
-     * - If the track point has an empty comment, it resets the comment.
-     */
-    private String getCommentString(final Point2D point) {
-        if (point instanceof GpxPoint gpxPoint) {
-            final var latLon = gpxPoint.getLatLon();
-            final var comment = latLon.getCmt();
-
-            // null = use the last comment
-            if (comment != null) {
-
-                // blank = reset last comment
-                if (comment.isBlank()) {
-                    lastComment = "";
-
-                // new comment
-                } else if (!comment.isBlank()) {
-                    lastComment = comment;
-                }
-            }
-        }
-        return lastComment;
-    }
-
 
     private Point2D drawMarker(final BufferedImage bi, final int frame) throws UserException {
         if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {

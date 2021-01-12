@@ -5,9 +5,11 @@ import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.renderer.RendererPlugin;
 import app.gpx_animator.core.renderer.RenderingContext;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -54,6 +56,7 @@ public final class BackgroundImagePlugin implements RendererPlugin {
     }
 
     @Override
-    public void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) { }
+    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image,
+                            @NonNull final RenderingContext context) { }
 
 }

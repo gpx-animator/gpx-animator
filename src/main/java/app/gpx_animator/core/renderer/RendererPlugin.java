@@ -2,7 +2,9 @@ package app.gpx_animator.core.renderer;
 
 import app.gpx_animator.core.UserException;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public interface RendererPlugin {
@@ -40,9 +42,10 @@ public interface RendererPlugin {
      *
      * @param frame   the frame number
      * @param image   the image of the frame to be modified
+     * @param marker  the track point marking the actual position // TODO get the marker based on the frame number
      * @param context the rendering context
      * @throws UserException error to be shown to the user
      */
-    void renderFrame(int frame, @NonNull BufferedImage image, @NonNull RenderingContext context) throws UserException;
+    void renderFrame(int frame, @Nullable Point2D marker, @NonNull BufferedImage image, @NonNull RenderingContext context) throws UserException;
 
 }

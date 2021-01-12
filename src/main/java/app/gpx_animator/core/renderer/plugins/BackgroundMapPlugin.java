@@ -8,8 +8,10 @@ import app.gpx_animator.core.renderer.RendererPlugin;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.cache.TileCache;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.util.ResourceBundle;
@@ -117,7 +119,8 @@ public final class BackgroundMapPlugin implements RendererPlugin {
         }
     }
 
-    public void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) { }
+    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image,
+                            @NonNull final RenderingContext context) { }
 
     private static double yToTileY(final int zoom, final double minY) {
         return latToTileY(zoom, yToLat(minY));
