@@ -14,9 +14,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
 import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 
-public final class TextRenderer {
+public abstract class TextRenderer extends ImageRenderer {
 
     private static final int IMAGE_TYPE = BufferedImage.TYPE_4BYTE_ABGR;
     private static final int ANTI_ALIAS_COMPENSATION = 10;
@@ -50,10 +51,12 @@ public final class TextRenderer {
         return lines * fontMetrics.getHeight();
     }
 
-    public BufferedImage renderText(@NonNull final String text, @NonNull final TextAlignment alignment) {
+    public void renderText(@NonNull final String text, @NonNull final Position position, final int margin,
+                                    @NonNull final BufferedImage targetImage) {
         final var trimmedText = text.trim();
         final var width = calculateTextWidth(trimmedText) + ANTI_ALIAS_COMPENSATION;
         final var height = calculateTextHeight(trimmedText);
+        final var alignment = forPosition(position);
 
         final var image = new BufferedImage(width, height, IMAGE_TYPE);
         final var graphics = getGraphics(image);
@@ -81,7 +84,7 @@ public final class TextRenderer {
             graphics.drawString(trimmedLine, xPosition, yPosition);
         }
 
-        return image;
+        renderImage(image, position, margin, targetImage);
     }
 
     private int calculateHorizontalPosition(@NonNull final TextAlignment alignment, @NonNull final String line, final int width) {

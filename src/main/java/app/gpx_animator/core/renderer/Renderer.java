@@ -61,7 +61,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import static app.gpx_animator.core.renderer.TextRenderer.TextAlignment.forPosition;
 import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 import static app.gpx_animator.core.util.Utils.isEqual;
 
@@ -183,7 +182,6 @@ public final class Renderer {
         font = cfg.getFont();
 
         final var metadata = new Metadata(zoom, minX, maxX, minY, maxY);
-        final var textRenderer = new TextRenderer(font);
         final var plugins = RendererPlugin.getAvailablePlugins(cfg, metadata);
 
         drawBackground(plugins, bi, rc);
@@ -232,20 +230,20 @@ public final class Renderer {
                 plugin.renderFrame(frame, viewportImage, rc);
             }
 
-            final var imageRenderer = new ImageRenderer() {};
+            final var textRenderer = new TextRenderer(font) { };
             if (font != null) {
                 if (marker != null) {
-                    drawInfo(textRenderer, imageRenderer, viewportImage, frame, marker);
-                    drawComment(textRenderer, imageRenderer, viewportImage, marker);
+                    drawInfo(textRenderer, viewportImage, frame, marker);
+                    drawComment(textRenderer, viewportImage, marker);
                 }
 
                 var att = resourceBundle.getString("configuration.attribution");
                 var getAt = cfg.getAttribution();
                 if (att.equals(getAt)) {
-                    drawAttribution(textRenderer, imageRenderer, viewportImage,
+                    drawAttribution(textRenderer, viewportImage,
                             att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
                 } else {
-                    drawAttribution(textRenderer, imageRenderer, viewportImage, getAt);
+                    drawAttribution(textRenderer, viewportImage, getAt);
                 }
             }
 
@@ -253,7 +251,7 @@ public final class Renderer {
             photoRenderer.render(time, cfg, viewportImage, frameWriter, rc, pct);
 
             if (frame == frames) {
-                keepLastFrame(textRenderer, imageRenderer, rc, frameWriter, viewportImage, frames, wpMap);
+                keepLastFrame(textRenderer, rc, frameWriter, viewportImage, frames, wpMap);
             }
         }
 
@@ -527,25 +525,24 @@ public final class Renderer {
         }
     }
 
-    private void keepLastFrame(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer,
-                               @NonNull final RenderingContext rc, @NonNull final FrameWriter frameWriter, @NonNull final BufferedImage bi,
-                               final int frames, @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
+    private void keepLastFrame(@NonNull final TextRenderer textRenderer, @NonNull final RenderingContext rc, @NonNull final FrameWriter frameWriter,
+                               @NonNull final BufferedImage bi, final int frames, @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
         final var keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
         if (keepLastFrame) {
             drawWaypoints(bi, frames, wpMap);
             final var marker = drawMarker(bi, frames);
             if (font != null) {
                 if (marker != null) {
-                    drawInfo(textRenderer, imageRenderer, bi, frames, marker);
-                    drawComment(textRenderer, imageRenderer, bi, marker);
+                    drawInfo(textRenderer, bi, frames, marker);
+                    drawComment(textRenderer, bi, marker);
                 }
 
                 var att = resourceBundle.getString("configuration.attribution");
                 if (cfg.getAttribution().equals(att)) {
-                    drawAttribution(textRenderer, imageRenderer, bi,
+                    drawAttribution(textRenderer, bi,
                             att.replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION).replace("%MAP_ATTRIBUTION%", ""));
                 } else {
-                    drawAttribution(textRenderer, imageRenderer, bi, cfg.getAttribution());
+                    drawAttribution(textRenderer, bi, cfg.getAttribution());
                 }
             }
             final long ms = cfg.getKeepLastFrame();
@@ -668,8 +665,7 @@ public final class Renderer {
         }
     }
 
-    private void drawInfo(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer, @NonNull final BufferedImage bi,
-                          final int frame, @NonNull final Point2D marker) {
+    private void drawInfo(@NonNull final TextRenderer textRenderer, @NonNull final BufferedImage bi, final int frame, @NonNull final Point2D marker) {
         final var dateString = dateFormat.format(getTime(frame));
         final var latLongString = getLatLonString(marker);
         final var speedString = SpeedUtil.getSpeedString(marker, getTime(frame), frame, cfg.getFps(), cfg.getSpeedUnit());
@@ -678,18 +674,15 @@ public final class Renderer {
         final var position = cfg.getInformationPosition();
         final var margin = cfg.getInformationMargin();
 
-        var image = textRenderer.renderText(text, forPosition(position));
-        imageRenderer.renderImage(image, position, margin, bi);
+        textRenderer.renderText(text, position, margin, bi);
     }
 
-    private void drawComment(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer, @NonNull final BufferedImage bi,
-                             @NonNull final Point2D marker) {
+    private void drawComment(@NonNull final TextRenderer textRenderer, @NonNull final BufferedImage bi, @NonNull final Point2D marker) {
         final var comment = getCommentString(marker);
         if (comment != null && !comment.isBlank()) {
             var position = cfg.getCommentPosition();
             var margin = cfg.getCommentMargin();
-            var image = textRenderer.renderText(comment, forPosition(position));
-            imageRenderer.renderImage(image, position, margin, bi);
+            textRenderer.renderText(comment, position, margin, bi);
         }
     }
 
@@ -733,15 +726,14 @@ public final class Renderer {
     }
 
 
-    private void drawAttribution(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer,
-                                 @NonNull final BufferedImage bi, @NonNull final String attribution) {
+    private void drawAttribution(@NonNull final TextRenderer textRenderer, @NonNull final BufferedImage bi, @NonNull final String attribution) {
         if (attribution.isBlank()) {
             return;
         }
         var position = cfg.getAttributionPosition();
         var margin = cfg.getAttributionMargin();
-        var image = textRenderer.renderText(attribution, forPosition(position));
-        imageRenderer.renderImage(image, position, margin, bi);
+
+        textRenderer.renderText(attribution, position, margin, bi);
     }
 
     private Point2D drawMarker(final BufferedImage bi, final int frame) throws UserException {
