@@ -20,6 +20,7 @@ public interface RendererPlugin {
     @NonNls
     Logger LOGGER = LoggerFactory.getLogger(RendererPlugin.class);
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition") // checking parameter count in constructor examination is quite okay
     static List<RendererPlugin> getAvailablePlugins(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
         final var plugins = new ArrayList<RendererPlugin>();
 
@@ -28,10 +29,10 @@ public interface RendererPlugin {
         for (final var aClass : classes) {
             @SuppressWarnings("unchecked") final var constructors = ReflectionUtils.getAllConstructors(aClass);
             final var iterator = constructors.iterator();
-            if (iterator.hasNext()) {
+            Object object = null;
+            while (object == null && iterator.hasNext()) {
                 final var constructor = iterator.next();
                 try {
-                    Object object = null;
                     final var parameterTypes = constructor.getParameterTypes();
                     if (constructor.getParameterCount() == 0) {
                         object = constructor.newInstance();
@@ -51,14 +52,13 @@ public interface RendererPlugin {
                     if (object != null) {
                         final var instance = aClass.cast(object);
                         plugins.add(instance);
-                    } else {
-                        LOGGER.error("No suitable constructor found for renderer plugin '{}'", aClass.getName());
                     }
                 } catch (final Exception e) {
                     LOGGER.error("Unable to initialize renderer plugin '{}'", aClass.getName(), e);
                 }
-            } else {
-                LOGGER.error("Renderer plugin '{}' is missing the required constructor", aClass.getName());
+            }
+            if (object == null) {
+                LOGGER.error("No suitable constructor found for renderer plugin '{}'", aClass.getName());
             }
         }
 
@@ -81,8 +81,8 @@ public interface RendererPlugin {
      */
     int getOrder();
 
-    void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException;
+    void renderBackground(@NonNull BufferedImage image, @NonNull RenderingContext context) throws UserException;
 
-    void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException;
+    void renderFrame(int frame, @NonNull BufferedImage image, @NonNull RenderingContext context) throws UserException;
 
 }
