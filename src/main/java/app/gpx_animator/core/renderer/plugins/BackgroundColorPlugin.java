@@ -3,7 +3,7 @@ package app.gpx_animator.core.renderer.plugins;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.renderer.RendererPlugin;
 import app.gpx_animator.core.renderer.RenderingContext;
-import org.jetbrains.annotations.NotNull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -15,7 +15,7 @@ public final class BackgroundColorPlugin implements RendererPlugin {
 
     private final transient Color backgroundColor;
 
-    public BackgroundColorPlugin(@NotNull final Configuration configuration) {
+    public BackgroundColorPlugin(@NonNull final Configuration configuration) {
         this.backgroundColor = configuration.getBackgroundColor();
     }
 
@@ -25,13 +25,13 @@ public final class BackgroundColorPlugin implements RendererPlugin {
     }
 
     @Override
-    public void renderBackground(@NotNull final BufferedImage image, @NotNull final RenderingContext context) {
+    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) {
         final var graphics = getGraphics(image);
         graphics.setColor(backgroundColor);
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
     }
 
     @Override
-    public void renderFrame(final int frame, @NotNull final BufferedImage image, @NotNull final RenderingContext context) { }
+    public void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) { }
 
 }

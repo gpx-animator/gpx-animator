@@ -14,7 +14,7 @@
  */
 package app.gpx_animator.core.data;
 
-import com.drew.lang.annotations.NotNull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
@@ -25,7 +25,7 @@ public final class Photo {
     private final Long epochSeconds;
     private final File file;
 
-    public Photo(@NotNull final Long epochSeconds, @NotNull final File file) {
+    public Photo(@NonNull final Long epochSeconds, @NonNull final File file) {
         this.epochSeconds = epochSeconds;
         this.file = file;
     }

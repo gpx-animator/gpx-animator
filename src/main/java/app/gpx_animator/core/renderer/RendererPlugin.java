@@ -4,7 +4,6 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ public interface RendererPlugin {
     Logger LOGGER = LoggerFactory.getLogger(RendererPlugin.class);
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition") // checking parameter count in constructor examination is quite okay
-    static List<RendererPlugin> getAvailablePlugins(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
+    static List<RendererPlugin> getAvailablePlugins(@NonNull final Configuration configuration, @NonNull final Metadata metadata) {
         final var plugins = new ArrayList<RendererPlugin>();
 
         final var reflections = new Reflections("app.gpx_animator.core.renderer.plugins");

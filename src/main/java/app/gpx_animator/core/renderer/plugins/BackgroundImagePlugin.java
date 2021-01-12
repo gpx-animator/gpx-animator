@@ -4,8 +4,8 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.renderer.RendererPlugin;
 import app.gpx_animator.core.renderer.RenderingContext;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.imgscalr.Scalr;
-import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,7 +18,7 @@ public final class BackgroundImagePlugin implements RendererPlugin {
 
     private final transient BufferedImage backgroundImage;
 
-    public BackgroundImagePlugin(@NotNull final Configuration configuration) throws UserException {
+    public BackgroundImagePlugin(@NonNull final Configuration configuration) throws UserException {
         final var file = configuration.getBackgroundImage();
         if (file != null && file.exists()) {
             try {
@@ -37,7 +37,7 @@ public final class BackgroundImagePlugin implements RendererPlugin {
     }
 
     @Override
-    public void renderBackground(@NotNull final BufferedImage image, @NotNull final RenderingContext context) {
+    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) {
         if (backgroundImage == null) {
             // no image defined
             return;
@@ -54,6 +54,6 @@ public final class BackgroundImagePlugin implements RendererPlugin {
     }
 
     @Override
-    public void renderFrame(final int frame, @NotNull final BufferedImage image, @NotNull final RenderingContext context) { }
+    public void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) { }
 
 }

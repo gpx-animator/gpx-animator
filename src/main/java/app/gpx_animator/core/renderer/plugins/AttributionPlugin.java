@@ -7,7 +7,7 @@ import app.gpx_animator.core.renderer.RendererPlugin;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.TextRenderer;
 import app.gpx_animator.core.util.MapUtil;
-import org.jetbrains.annotations.NotNull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.awt.image.BufferedImage;
 
@@ -18,7 +18,7 @@ public final class AttributionPlugin extends TextRenderer implements RendererPlu
     private final transient Position position;
     private final transient int margin;
 
-    public AttributionPlugin(@NotNull final Configuration configuration) {
+    public AttributionPlugin(@NonNull final Configuration configuration) {
         super(configuration.getFont());
 
         final var mapTemplate = MapUtil.getMapTemplate(configuration.getTmsUrlTemplate());
@@ -37,10 +37,10 @@ public final class AttributionPlugin extends TextRenderer implements RendererPlu
     }
 
     @Override
-    public void renderBackground(@NotNull final BufferedImage image, @NotNull final RenderingContext context) { }
+    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) { }
 
     @Override
-    public void renderFrame(final int frame, @NotNull final BufferedImage image, @NotNull final RenderingContext context) {
+    public void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) {
         renderText(attribution, position, margin, image);
     }
 

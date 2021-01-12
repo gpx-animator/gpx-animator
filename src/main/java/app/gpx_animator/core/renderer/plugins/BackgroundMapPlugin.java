@@ -8,7 +8,6 @@ import app.gpx_animator.core.renderer.RendererPlugin;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.cache.TileCache;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -34,7 +33,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
     private final transient double minY;
     private final transient double maxY;
 
-    public BackgroundMapPlugin(@NotNull final Configuration configuration, @NonNull final Metadata metadata) {
+    public BackgroundMapPlugin(@NonNull final Configuration configuration, @NonNull final Metadata metadata) {
         tmsUrlTemplate = configuration.getTmsUrlTemplate();
         backgroundMapVisibility = configuration.getBackgroundMapVisibility();
 
@@ -51,7 +50,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
     }
 
     @Override
-    public void renderBackground(@NotNull final BufferedImage image, @NotNull final RenderingContext context) throws UserException {
+    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException {
         if (tmsUrlTemplate == null || backgroundMapVisibility <= 0.0) {
             // no map defined or map should not be visible
             return;
@@ -118,7 +117,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
         }
     }
 
-    public void renderFrame(final int frame, @NotNull final BufferedImage image, @NotNull final RenderingContext context) { }
+    public void renderFrame(final int frame, @NonNull final BufferedImage image, @NonNull final RenderingContext context) { }
 
     private static double yToTileY(final int zoom, final double minY) {
         return latToTileY(zoom, yToLat(minY));

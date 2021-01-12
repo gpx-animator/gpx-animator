@@ -15,7 +15,7 @@
 package app.gpx_animator.core.data;
 
 import app.gpx_animator.core.preferences.Preferences;
-import com.drew.lang.annotations.NotNull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 
@@ -55,17 +55,17 @@ public final class TrackIcon {
         return trackIcons;
     }
 
-    @NotNull
+    @NonNull
     private final String key;
 
-    @NotNull
+    @NonNull
     private final String name;
 
-    public TrackIcon(@NotNull final String key) {
+    public TrackIcon(@NonNull final String key) {
         this(key, RESOURCE_BUNDLE.getString(RESOURCE_BUNDLE_TRACKICON_PREFIX.concat(key)));
     }
 
-    public TrackIcon(@NotNull final String key, @NotNull final String name) {
+    public TrackIcon(@NonNull final String key, @NonNull final String name) {
         this.key = key;
         this.name = name;
     }
@@ -92,11 +92,11 @@ public final class TrackIcon {
         return Objects.hash(key);
     }
 
-    public String getKey() {
+    public @NonNull String getKey() {
         return key;
     }
 
-    public String getName() {
+    public @NonNull String getName() {
         return name;
     }
 

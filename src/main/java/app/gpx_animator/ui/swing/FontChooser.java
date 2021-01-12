@@ -2,8 +2,8 @@ package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.preferences.Preferences;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -278,7 +278,7 @@ public final class FontChooser extends JComponent {
      * @param name the family name of the selected font.
      * @see #getSelectedFontFamily
      **/
-    public void setSelectedFontFamily(@NotNull final String name) {
+    public void setSelectedFontFamily(@NonNull final String name) {
         final var names = getFontFamilies();
         for (var i = 0; i < names.length; i++) {
             if (names[i].equalsIgnoreCase(name)) {

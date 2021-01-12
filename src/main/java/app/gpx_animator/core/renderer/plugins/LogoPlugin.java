@@ -6,7 +6,7 @@ import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.renderer.ImageRenderer;
 import app.gpx_animator.core.renderer.RendererPlugin;
 import app.gpx_animator.core.renderer.RenderingContext;
-import org.jetbrains.annotations.NotNull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -19,7 +19,7 @@ public final class LogoPlugin extends ImageRenderer implements RendererPlugin {
     private final transient Position position;
     private final transient int margin;
 
-    public LogoPlugin(@NotNull final Configuration configuration) throws UserException {
+    public LogoPlugin(@NonNull final Configuration configuration) throws UserException {
         position = configuration.getLogoPosition();
         margin = configuration.getLogoMargin();
 
@@ -41,10 +41,10 @@ public final class LogoPlugin extends ImageRenderer implements RendererPlugin {
     }
 
     @Override
-    public void renderBackground(@NotNull final BufferedImage image, @NotNull final RenderingContext context) { }
+    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) { }
 
     @Override
-    public void renderFrame(final int frame, final @NotNull BufferedImage image, final @NotNull RenderingContext context) {
+    public void renderFrame(final int frame, final @NonNull BufferedImage image, final @NonNull RenderingContext context) {
         if (logo == null || position.equals(Position.HIDDEN)) {
             // no logo defined or logo should not be visible
             return;

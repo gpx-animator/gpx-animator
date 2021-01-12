@@ -1,8 +1,8 @@
 package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.core.preferences.Preferences;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Box;
@@ -75,7 +75,7 @@ public final class FontSelector extends JPanel {
         }
     }
 
-    private static String getStyleText(@NotNull final Font font, @NotNull final ResourceBundle resourceBundle) {
+    private static String getStyleText(@NonNull final Font font, @NonNull final ResourceBundle resourceBundle) {
         if (font.isBold() && font.isItalic()) {
             return resourceBundle.getString("ui.dialog.fontchooser.fontstyle.bolditalic");
         } else if (font.isBold()) {

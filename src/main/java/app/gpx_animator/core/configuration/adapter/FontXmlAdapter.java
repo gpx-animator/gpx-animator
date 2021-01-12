@@ -1,6 +1,6 @@
 package app.gpx_animator.core.configuration.adapter;
 
-import org.jetbrains.annotations.NotNull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -19,14 +19,14 @@ public final class FontXmlAdapter extends XmlAdapter<String, Font> {
         return font != null ? encode(font) : null;
     }
 
-    private String encode(@NotNull final Font font) {
+    private String encode(@NonNull final Font font) {
         final var name = font.getName();
         final var style = getStyle(font);
         final var size = font.getSize();
         return "%s-%s-%d".formatted(name, style, size);
     }
 
-    private String getStyle(@NotNull final Font font) {
+    private String getStyle(@NonNull final Font font) {
         if (font.isBold() && font.isItalic()) {
             return "BOLDITALIC";
         } else if (font.isBold()) {
