@@ -27,17 +27,17 @@ Advanced command line example
 
 This example takes GPX file `input.gpx` as input, uses Google Maps as background map, makes the background non-transparent, makes the map movable by placing a 640x640 viewport over the map, forces the video to be 120000ms (2 minutes) long, makes the dot trail 10000ms (10 seconds) long, pre-draws the full track in grey (RGB color code #808080), hides the attribution overlay, and places the default information (lat/lng, speed, time) overlay at the bottom left. Output is stored in `movie.mp4`.
 
-```
+```bash
 java -jar ./build/libs/gpx-animator-1.6.0-SNAPSHOT-all.jar
-	  --input input.gpx
 	  --tms-url-template 'http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={zoom}'
 	  --background-map-visibility 1.0
 	  --viewport-height 640 --viewport-width 640
 	  --total-time 120000
 	  --tail-duration 10000
 	  --pre-draw-track --pre-draw-track-color '#808080'
-	  --attribution ''
-	  --information-location 'bottom left'
+	  --attribution-position hidden
+	  --information-position 'bottom left'
+	  --input input.gpx
 	  --output movie.mp4
 ```
 
@@ -57,9 +57,9 @@ You can open this project in a preconfigured Gitpod online IDE based on Theia (V
 
 ### Slack Channel
 
-There is a public Slack channel for GPX Animator available, which is hosted by the [Java User Group Switzerland](https://www.jug.ch/). If you are not already a member of this workspace, you can request a free invitation link with your email address (and nothing more) here: [Join Slack Workspace](http://slack.jug.ch/)
+There is a public Slack channel for GPX Animator available, which is hosted by the [Java User Group Switzerland](https://www.jug.ch/). If you are not already a member of this workspace, you can request a free invitation link with your email address (and nothing more) here: [Join Slack Workspace.](http://slack.jug.ch/)
 
-After you have entered the Slack Workspace, join the "gpx-animator" channel.
+After you have entered the Slack Workspace, join the #gpx-animator channel.
 
 
 Build
@@ -114,9 +114,14 @@ Tutorials
 --------
 - [GPS Tracks Animation mit "GPX Animator" (Marcus Bersheim)](https://www.youtube.com/watch?v=AtcBVrbB6bg) :de:
 
+Related projects
+--------
+
+- [gopro-map-sync](https://github.com/thomergil/gopro-map-sync): uses GPX Animator to synchronize a moving map video with GoPro footage.
 
 Credits
 --------
+
 Icons included in application and their source:
 
 * Airplane icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [flaticon](https://www.flaticon.com/).
