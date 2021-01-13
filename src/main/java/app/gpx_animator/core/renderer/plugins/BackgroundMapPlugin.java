@@ -25,6 +25,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
+    private final transient RenderingContext context;
     private final transient String tmsUrlTemplate;
     private final transient float backgroundMapVisibility;
 
@@ -34,7 +35,9 @@ public final class BackgroundMapPlugin implements RendererPlugin {
     private final transient double minY;
     private final transient double maxY;
 
-    public BackgroundMapPlugin(@NonNull final Configuration configuration, @NonNull final Metadata metadata) {
+    public BackgroundMapPlugin(@NonNull final Configuration configuration, @NonNull final Metadata metadata,
+                               @NonNull final RenderingContext renderingContext) {
+        context = renderingContext;
         tmsUrlTemplate = configuration.getTmsUrlTemplate();
         backgroundMapVisibility = configuration.getBackgroundMapVisibility();
 
@@ -51,7 +54,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
     }
 
     @Override
-    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) throws UserException {
+    public void renderBackground(@NonNull final BufferedImage image) throws UserException {
         if (tmsUrlTemplate == null || backgroundMapVisibility <= 0.0) {
             // no map defined or map should not be visible
             return;
@@ -118,8 +121,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
         }
     }
 
-    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image,
-                            @NonNull final RenderingContext context) { }
+    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image) { }
 
     private static double yToTileY(final int zoom, final double minY) {
         return latToTileY(zoom, yToLat(minY));

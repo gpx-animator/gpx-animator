@@ -4,7 +4,6 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.renderer.ImageRenderer;
-import app.gpx_animator.core.renderer.RenderingContext;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
@@ -42,11 +41,10 @@ public final class LogoPlugin extends ImageRenderer implements RendererPlugin {
     }
 
     @Override
-    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) { }
+    public void renderBackground(@NonNull final BufferedImage image) { }
 
     @Override
-    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image,
-                            @NonNull final RenderingContext context) {
+    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image) {
         if (logo == null || position.equals(Position.HIDDEN)) {
             // no logo defined or logo should not be visible
             return;

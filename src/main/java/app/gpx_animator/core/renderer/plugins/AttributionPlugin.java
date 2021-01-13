@@ -3,7 +3,6 @@ package app.gpx_animator.core.renderer.plugins;
 import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.data.Position;
-import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.TextRenderer;
 import app.gpx_animator.core.util.MapUtil;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -38,11 +37,10 @@ public final class AttributionPlugin extends TextRenderer implements RendererPlu
     }
 
     @Override
-    public void renderBackground(@NonNull final BufferedImage image, @NonNull final RenderingContext context) { }
+    public void renderBackground(@NonNull final BufferedImage image) { }
 
     @Override
-    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image,
-                            @NonNull final RenderingContext context) {
+    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image) {
         renderText(attribution, position, margin, image);
     }
 

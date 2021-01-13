@@ -1,7 +1,6 @@
 package app.gpx_animator.core.renderer.plugins;
 
 import app.gpx_animator.core.UserException;
-import app.gpx_animator.core.renderer.RenderingContext;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
@@ -29,10 +28,9 @@ public interface RendererPlugin {
      * usually is bigger than the viewport.
      *
      * @param image   the background image to be modified
-     * @param context the rendering context
      * @throws UserException error to be shown to the user
      */
-    void renderBackground(@NonNull BufferedImage image, @NonNull RenderingContext context) throws UserException;
+    void renderBackground(@NonNull BufferedImage image) throws UserException;
 
     /**
      * This render method is called to render one frame of the video. The size
@@ -41,9 +39,8 @@ public interface RendererPlugin {
      * @param frame   the frame number
      * @param image   the image of the frame to be modified
      * @param marker  the track point marking the actual position // TODO get the marker based on the frame number
-     * @param context the rendering context
      * @throws UserException error to be shown to the user
      */
-    void renderFrame(int frame, @Nullable Point2D marker, @NonNull BufferedImage image, @NonNull RenderingContext context) throws UserException;
+    void renderFrame(int frame, @Nullable Point2D marker, @NonNull BufferedImage image) throws UserException;
 
 }

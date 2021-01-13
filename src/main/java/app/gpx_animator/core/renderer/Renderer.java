@@ -181,9 +181,9 @@ public final class Renderer {
         font = cfg.getFont();
 
         final var metadata = new Metadata(zoom, minX, maxX, minY, maxY);
-        final var plugins = PluginUtil.getAvailablePlugins(cfg, metadata);
+        final var plugins = PluginUtil.getAvailablePlugins(cfg, metadata, rc);
 
-        drawBackground(plugins, bi, rc);
+        drawBackground(plugins, bi);
 
         final var photoRenderer = new PhotoRenderer(cfg.getPhotoDirectory());
         final var frames = calculateSpeedupAndReturnFrames(photoRenderer.photosToRender());
@@ -226,7 +226,7 @@ public final class Renderer {
             final var viewportImage = applyViewport(bi2, marker, realWidth, realHeight, viewportWidth, viewportHeight);
 
             for (final var plugin : plugins) {
-                plugin.renderFrame(frame, marker, viewportImage, rc);
+                plugin.renderFrame(frame, marker, viewportImage);
             }
 
             final var textRenderer = new TextRenderer(font) { };
@@ -351,10 +351,10 @@ public final class Renderer {
         return skip;
     }
 
-    private void drawBackground(@NonNull final List<RendererPlugin> plugins, @NonNull final BufferedImage bi, @NonNull final RenderingContext rc)
+    private void drawBackground(@NonNull final List<RendererPlugin> plugins, @NonNull final BufferedImage bi)
             throws UserException {
         for (final var plugin : plugins) {
-            plugin.renderBackground(bi, rc);
+            plugin.renderBackground(bi);
         }
     }
 
@@ -523,7 +523,7 @@ public final class Renderer {
             final var marker = drawMarker(bi, frames);
 
             for (final var plugin : plugins) {
-                plugin.renderFrame(frames, marker, bi, rc);
+                plugin.renderFrame(frames, marker, bi);
             }
             if (font != null) {
                 if (marker != null) {
