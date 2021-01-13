@@ -14,11 +14,13 @@ public interface RendererPlugin {
      * in a specified order to enable "layering" of the output.
      *
      * Plugins with a lower value are executed first, followed by plugins with
-     * a higher value.
+     * a higher value. The default value is <code>0</code>
      *
      * @return the order number
      */
-    int getOrder();
+    default int getOrder() {
+        return 0;
+    }
 
     /**
      * This render method is called to render the background image of the
@@ -30,7 +32,7 @@ public interface RendererPlugin {
      * @param image   the background image to be modified
      * @throws UserException error to be shown to the user
      */
-    void renderBackground(@NonNull BufferedImage image) throws UserException;
+    default void renderBackground(@NonNull BufferedImage image) throws UserException { };
 
     /**
      * This render method is called to render one frame of the video. The size
@@ -41,6 +43,6 @@ public interface RendererPlugin {
      * @param marker  the track point marking the actual position // TODO get the marker based on the frame number
      * @throws UserException error to be shown to the user
      */
-    void renderFrame(int frame, @Nullable Point2D marker, @NonNull BufferedImage image) throws UserException;
+    default void renderFrame(int frame, @Nullable Point2D marker, @NonNull BufferedImage image) throws UserException { };
 
 }

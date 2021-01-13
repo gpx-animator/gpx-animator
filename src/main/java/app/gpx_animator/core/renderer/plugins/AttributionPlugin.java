@@ -37,9 +37,6 @@ public final class AttributionPlugin extends TextRenderer implements RendererPlu
     }
 
     @Override
-    public void renderBackground(@NonNull final BufferedImage image) { }
-
-    @Override
     public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image) {
         renderText(attribution, position, margin, image);
     }

@@ -3,11 +3,9 @@ package app.gpx_animator.core.renderer.plugins;
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -52,8 +50,5 @@ public final class BackgroundImagePlugin implements RendererPlugin {
         final var graphics = getGraphics(image);
         graphics.drawImage(scaledImage, 0, 0, scaledImage.getWidth(), scaledImage.getHeight(), null);
     }
-
-    @Override
-    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image) { }
 
 }

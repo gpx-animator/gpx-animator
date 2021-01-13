@@ -41,9 +41,6 @@ public final class LogoPlugin extends ImageRenderer implements RendererPlugin {
     }
 
     @Override
-    public void renderBackground(@NonNull final BufferedImage image) { }
-
-    @Override
     public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image) {
         if (logo == null || position.equals(Position.HIDDEN)) {
             // no logo defined or logo should not be visible

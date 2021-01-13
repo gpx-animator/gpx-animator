@@ -2,10 +2,8 @@ package app.gpx_animator.core.renderer.plugins;
 
 import app.gpx_animator.core.configuration.Configuration;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 
 import java.awt.Color;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 import static app.gpx_animator.core.util.RenderUtil.getGraphics;
@@ -30,8 +28,5 @@ public final class BackgroundColorPlugin implements RendererPlugin {
         graphics.setColor(backgroundColor);
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
     }
-
-    @Override
-    public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image) { }
 
 }
