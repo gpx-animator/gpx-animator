@@ -336,7 +336,7 @@ public final class Renderer {
         } else if ((y + viewportHeight) > realHeight) {
             y = realHeight - viewportHeight;
         }
-        return Utils.deepCopy(bi, (int) x, (int) y, viewportWidth, viewportHeight);
+        return bi.getSubimage((int) x, (int) y, viewportWidth, viewportHeight);
     }
 
     private float renderFlashback(final float skip, final BufferedImage bi2) {
