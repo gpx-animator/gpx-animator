@@ -6,6 +6,7 @@ import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.Metadata;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.cache.TileCache;
+import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.awt.Graphics2D;
@@ -33,7 +34,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
     private final transient double minY;
     private final transient double maxY;
 
-    public BackgroundMapPlugin(@NonNull final Configuration configuration, @NonNull final Metadata metadata,
+    public BackgroundMapPlugin(@NonNull final Configuration configuration, @NonNull final Metadata metadata, @NonNull final FrameWriter frameWriter,
                                @NonNull final RenderingContext renderingContext) {
         context = renderingContext;
         tmsUrlTemplate = configuration.getTmsUrlTemplate();
