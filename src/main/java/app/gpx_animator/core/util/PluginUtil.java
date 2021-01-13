@@ -2,7 +2,7 @@ package app.gpx_animator.core.util;
 
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.renderer.Metadata;
-import app.gpx_animator.core.renderer.RendererPlugin;
+import app.gpx_animator.core.renderer.plugins.RendererPlugin;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.NonNls;
 import org.reflections.ReflectionUtils;

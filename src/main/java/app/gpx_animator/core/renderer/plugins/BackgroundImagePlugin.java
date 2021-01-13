@@ -2,7 +2,6 @@ package app.gpx_animator.core.renderer.plugins;
 
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
-import app.gpx_animator.core.renderer.RendererPlugin;
 import app.gpx_animator.core.renderer.RenderingContext;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;

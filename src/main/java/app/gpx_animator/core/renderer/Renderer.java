@@ -27,6 +27,7 @@ import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.framewriter.FileFrameWriter;
 import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
+import app.gpx_animator.core.renderer.plugins.RendererPlugin;
 import app.gpx_animator.core.util.PluginUtil;
 import app.gpx_animator.core.util.SpeedUtil;
 import app.gpx_animator.core.util.Utils;
