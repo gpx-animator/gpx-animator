@@ -35,11 +35,8 @@ public interface RendererPlugin {
     void renderBackground(@NonNull BufferedImage image, @NonNull RenderingContext context) throws UserException;
 
     /**
-     * This render method is called to render the background image of the
-     * video. If the video does not use the moving map feature, the background
-     * has the same size as the video. If the video makes use of the moving
-     * map, the background has the size of the map behind the video, which
-     * usually is bigger than the viewport.
+     * This render method is called to render one frame of the video. The size
+     * of this frame is equal to the resolution of the resulting video.
      *
      * @param frame   the frame number
      * @param image   the image of the frame to be modified
