@@ -23,4 +23,8 @@ public final class RenderUtil {
         return graphics;
     }
 
+    public static long getTime(final int frame, final long minTime, final double fps, final double speedup) {
+        return (long) Math.floor(minTime + frame / fps * 1000d * speedup);
+    }
+
 }

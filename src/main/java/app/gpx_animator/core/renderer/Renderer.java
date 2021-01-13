@@ -29,6 +29,7 @@ import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
 import app.gpx_animator.core.renderer.plugins.RendererPlugin;
 import app.gpx_animator.core.util.PluginUtil;
+import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.SpeedUtil;
 import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -180,14 +181,15 @@ public final class Renderer {
 
         font = cfg.getFont();
 
-        final var metadata = new Metadata(zoom, minX, maxX, minY, maxY);
-        final var plugins = PluginUtil.getAvailablePlugins(cfg, metadata, rc);
+        final var plugins = PluginUtil.getAvailablePlugins(cfg, frameWriter, rc);
+        final var frames = calculateSpeedupAndReturnFrames(plugins);
+        final var metadata = new Metadata(zoom, minX, maxX, minY, maxY, minTime, maxTime, speedup);
+
+        for (final var plugin : plugins) {
+            plugin.setMetadata(metadata);
+        }
 
         drawBackground(plugins, bi);
-
-        final var photoRenderer = new PhotoRenderer(cfg.getPhotoDirectory());
-        final var frames = calculateSpeedupAndReturnFrames(photoRenderer.photosToRender());
-
         preDrawTracks(bi, frames);
 
         var skip = -1f;
@@ -237,7 +239,6 @@ public final class Renderer {
             }
 
             frameWriter.addFrame(viewportImage);
-            photoRenderer.render(time, cfg, viewportImage, frameWriter, rc, pct);
 
             if (frame == frames) {
                 keepLastFrame(plugins, textRenderer, rc, frameWriter, viewportImage, frames, wpMap);
@@ -261,7 +262,7 @@ public final class Renderer {
         }
     }
 
-    private int calculateSpeedupAndReturnFrames(final long numberOfPhotos) {
+    private int calculateSpeedupAndReturnFrames(@NonNull final List<RendererPlugin> plugins) {
         final var totalTime = cfg.getTotalTime() == null ? 0 : cfg.getTotalTime();
         final var tailDuration = cfg.getTailDuration();
         final var fps = cfg.getFps();
@@ -271,11 +272,9 @@ public final class Renderer {
             return (int) ((maxTime + tailDuration - minTime) * fps / (MS * speedup));
         } else {
             final var keepLastFrame = cfg.getKeepLastFrame() == null ? 0 : cfg.getKeepLastFrame();
-            var photoTime = cfg.getPhotoTime() == null ? 0 : cfg.getPhotoTime() * numberOfPhotos;
-            var photoAnimationTime = cfg.getPhotoAnimationDuration() == null ? 0 : numberOfPhotos * cfg.getPhotoAnimationDuration() * 2;
-            final var animationTime = totalTime - keepLastFrame - photoTime - photoAnimationTime;
-
-            final var frames = (int) Math.round(animationTime / MS * fps);
+            final var animationTime = totalTime - keepLastFrame;
+            final var pluginFrames = plugins.stream().mapToInt(RendererPlugin::getAdditionalFrameCount).sum();
+            final var frames = (int) Math.round(animationTime / MS * fps) - pluginFrames;
             speedup = (maxTime * fps + tailDuration * fps - minTime * fps) / (frames * MS);
             return frames;
         }
@@ -835,7 +834,7 @@ public final class Renderer {
     }
 
     private long getTime(final int frame) {
-        return (long) Math.floor(minTime + frame / cfg.getFps() * MS * speedup);
+        return RenderUtil.getTime(frame, minTime, cfg.getFps(), speedup);
     }
 
     private void printText(final Graphics2D g2, final String text, final float x, final float y) {

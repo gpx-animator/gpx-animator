@@ -6,8 +6,8 @@ import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.Metadata;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.cache.TileCache;
-import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -24,27 +24,34 @@ public final class BackgroundMapPlugin implements RendererPlugin {
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient RenderingContext context;
     private final transient String tmsUrlTemplate;
     private final transient float backgroundMapVisibility;
 
-    private final transient int zoom;
-    private final transient double minX;
-    private final transient double maxX;
-    private final transient double minY;
-    private final transient double maxY;
+    private transient int zoom;
+    private transient double minX;
+    private transient double maxX;
+    private transient double minY;
+    private transient double maxY;
 
-    public BackgroundMapPlugin(@NonNull final Configuration configuration, @NonNull final Metadata metadata, @NonNull final FrameWriter frameWriter,
-                               @NonNull final RenderingContext renderingContext) {
-        context = renderingContext;
+    private transient RenderingContext context;
+
+    public BackgroundMapPlugin(@NonNull final Configuration configuration) {
         tmsUrlTemplate = configuration.getTmsUrlTemplate();
         backgroundMapVisibility = configuration.getBackgroundMapVisibility();
+    }
 
+    @Override
+    public void setMetadata(@NotNull final Metadata metadata) {
         zoom = metadata.zoom();
         minX = metadata.minX();
         maxX = metadata.maxX();
         minY = metadata.minY();
         maxY = metadata.maxY();
+    }
+
+    @Override
+    public void setRenderingContext(@NotNull final RenderingContext renderingContext) {
+        this.context = renderingContext;
     }
 
     @Override
@@ -118,6 +125,8 @@ public final class BackgroundMapPlugin implements RendererPlugin {
                         image.getHeight() - (256 * (tileY - y) + offsetY));
             }
         }
+
+        context.setProgress1(100, String.format(resourceBundle.getString("map.loadingtiles.progress"), i, total));
     }
 
     private static double yToTileY(final int zoom, final double minY) {
