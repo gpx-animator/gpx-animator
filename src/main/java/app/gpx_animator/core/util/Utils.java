@@ -17,9 +17,7 @@ package app.gpx_animator.core.util;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import java.text.Collator;
 
 public final class Utils {
@@ -38,15 +36,6 @@ public final class Utils {
         g.dispose();
         return b;
     }
-
-    public static BufferedImage deepCopy(final BufferedImage bi, final Integer x, final Integer y, final Integer width, final Integer height) {
-        final var cm = bi.getColorModel();
-        final var isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        final var raster = (WritableRaster) bi.getData(new Rectangle(x, y, width, height));
-        final var movedRaster = raster.createWritableTranslatedChild(0, 0);
-        return new BufferedImage(cm, movedRaster, isAlphaPremultiplied, null);
-    }
-
 
     @SuppressWarnings({"PMD.CompareObjectsWithEquals", "StringEquality"})
     @SuppressFBWarnings("ES_COMPARING_PARAMETER_STRING_WITH_EQ") //NON-NLS
