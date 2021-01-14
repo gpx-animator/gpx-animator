@@ -32,6 +32,7 @@ import app.gpx_animator.core.util.PluginUtil;
 import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
@@ -77,8 +77,6 @@ public final class Renderer {
     private final Configuration cfg;
 
     private final List<List<TreeMap<Long, Point2D>>> timePointMapListList = new ArrayList<>();
-
-    private Font font;
 
     private long minTime = Long.MAX_VALUE;
     private long maxTime = Long.MIN_VALUE;
@@ -175,8 +173,6 @@ public final class Renderer {
                 : new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), viewportWidth, viewportHeight);
 
         final var bi = createBufferedImage(realWidth, realHeight, zoom);
-
-        font = cfg.getFont();
 
         final var plugins = PluginUtil.getAvailablePlugins(cfg, frameWriter, rc);
         final var frames = calculateSpeedupAndReturnFrames(plugins);
@@ -808,12 +804,13 @@ public final class Renderer {
         return RenderUtil.getTime(frame, minTime, cfg.getFps(), speedup);
     }
 
-    private void printText(final Graphics2D g2, final String text, final float x, final float y) {
+    private void printText(@NonNull final Graphics2D g2, @Nullable final String text, final float x, final float y) {
+        final var font = cfg.getFont();
         final var frc = g2.getFontRenderContext();
         g2.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         final var height = g2.getFontMetrics(font).getHeight();
-
         final var lines = text == null ? new String[0] : text.split("\n");
+
         var yy = y - (lines.length - 1) * height;
         for (final var line : lines) {
             if (!line.isEmpty()) {
@@ -827,7 +824,6 @@ public final class Renderer {
                 g2.setColor(Color.black);
                 g2.drawString(line, x, yy);
             }
-
             yy += height;
         }
     }
