@@ -26,7 +26,7 @@ public final class CommentPlugin extends TextRenderer implements RendererPlugin 
 
     @Override
     public int getOrder() {
-        return 0;
+        return 1_000;
     }
 
     @Override
