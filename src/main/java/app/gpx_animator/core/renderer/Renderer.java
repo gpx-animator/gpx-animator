@@ -203,6 +203,7 @@ public final class Renderer {
         }
     }
 
+    @SuppressWarnings("ParameterNumber") // TODO refactoring in progress
     private void renderFrames(@NonNull final List<RendererPlugin> plugins, @NonNull final BufferedImage bi,
                               final int realWidth, final int realHeight, final int viewportWidth, final int viewportHeight,
                               @NonNull final FrameWriter frameWriter, final int frames,
