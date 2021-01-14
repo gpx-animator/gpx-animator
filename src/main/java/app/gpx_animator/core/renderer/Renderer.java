@@ -188,7 +188,30 @@ public final class Renderer {
 
         drawBackground(plugins, bi);
         preDrawTracks(bi, frames);
+        renderFrames(plugins, bi, realWidth, realHeight, viewportWidth, viewportHeight, frameWriter, frames, spanList, wpMap, rc);
 
+        frameWriter.close();
+
+        final var renderFinishTime = LocalDateTime.now();
+        final var runtimeSeconds = ChronoUnit.SECONDS.between(renderStartTime, renderFinishTime);
+
+        if (!rc.isCancelled1()) {
+            rc.setProgress1(100, "Finished in %d seconds".formatted(runtimeSeconds)); // TODO i18n
+            if (toImages) {
+                LOGGER.info("Done in {} seconds. Images written to {}", runtimeSeconds, frameFilePattern);
+            } else {
+                LOGGER.info("Done in {} seconds. Movie written to {}", runtimeSeconds, cfg.getOutput());
+            }
+        } else {
+            LOGGER.info("Canceled after {} seconds.", runtimeSeconds);
+        }
+    }
+
+    private void renderFrames(@NonNull final List<RendererPlugin> plugins, @NonNull final BufferedImage bi,
+                              final int realWidth, final int realHeight, final int viewportWidth, final int viewportHeight,
+                              @NonNull final FrameWriter frameWriter, final int frames,
+                              @NonNull final List<Long[]> spanList, @NonNull final TreeMap<Long, Point2D> wpMap,
+                              @NonNull final RenderingContext rc) throws UserException {
         var skip = -1f;
         for (var frame = 1; frame <= frames; frame++) {
             if (rc.isCancelled1()) {
@@ -233,22 +256,6 @@ public final class Renderer {
             if (frame == frames) {
                 keepLastFrame(plugins, rc, frameWriter, viewportImage, frames, wpMap);
             }
-        }
-
-        frameWriter.close();
-
-        final var renderFinishTime = LocalDateTime.now();
-        final var runtimeSeconds = ChronoUnit.SECONDS.between(renderStartTime, renderFinishTime);
-
-        if (!rc.isCancelled1()) {
-            rc.setProgress1(100, "Finished in %d seconds".formatted(runtimeSeconds)); // TODO i18n
-            if (toImages) {
-                LOGGER.info("Done in {} seconds. Images written to {}", runtimeSeconds, frameFilePattern);
-            } else {
-                LOGGER.info("Done in {} seconds. Movie written to {}", runtimeSeconds, cfg.getOutput());
-            }
-        } else {
-            LOGGER.info("Canceled after {} seconds.", runtimeSeconds);
         }
     }
 
