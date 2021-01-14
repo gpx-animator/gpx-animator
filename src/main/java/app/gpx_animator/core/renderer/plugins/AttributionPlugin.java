@@ -38,6 +38,11 @@ public final class AttributionPlugin extends TextRenderer implements RendererPlu
 
     @Override
     public void renderFrame(final int frame, @Nullable final Point2D marker, @NonNull final BufferedImage image) {
+        if (Position.HIDDEN.equals(position)) {
+            // attribution should not be visible
+            return;
+        }
+
         renderText(attribution, position, margin, image);
     }
 
