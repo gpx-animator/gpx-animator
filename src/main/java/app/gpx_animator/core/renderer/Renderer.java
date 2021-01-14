@@ -30,7 +30,6 @@ import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
 import app.gpx_animator.core.renderer.plugins.RendererPlugin;
 import app.gpx_animator.core.util.PluginUtil;
 import app.gpx_animator.core.util.RenderUtil;
-import app.gpx_animator.core.util.SpeedUtil;
 import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.NonNls;
@@ -52,7 +51,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -79,8 +77,6 @@ public final class Renderer {
     private final Configuration cfg;
 
     private final List<List<TreeMap<Long, Point2D>>> timePointMapListList = new ArrayList<>();
-
-    private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
     private Font font;
 
@@ -231,17 +227,10 @@ public final class Renderer {
                 plugin.renderFrame(frame, marker, viewportImage);
             }
 
-            final var textRenderer = new TextRenderer(font) { };
-            if (font != null) {
-                if (marker != null) {
-                    drawInfo(textRenderer, viewportImage, frame, marker);
-                }
-            }
-
             frameWriter.addFrame(viewportImage);
 
             if (frame == frames) {
-                keepLastFrame(plugins, textRenderer, rc, frameWriter, viewportImage, frames, wpMap);
+                keepLastFrame(plugins, rc, frameWriter, viewportImage, frames, wpMap);
             }
         }
 
@@ -513,9 +502,9 @@ public final class Renderer {
         }
     }
 
-    private void keepLastFrame(@NonNull final List<RendererPlugin> plugins, @NonNull final TextRenderer textRenderer,
-                               @NonNull final RenderingContext rc, @NonNull final FrameWriter frameWriter, @NonNull final BufferedImage bi,
-                               final int frames, @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
+    private void keepLastFrame(@NonNull final List<RendererPlugin> plugins, @NonNull final RenderingContext rc,
+                               @NonNull final FrameWriter frameWriter, @NonNull final BufferedImage bi, final int frames,
+                               @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
         final var keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
         if (keepLastFrame) {
             drawWaypoints(bi, frames, wpMap);
@@ -523,11 +512,6 @@ public final class Renderer {
 
             for (final var plugin : plugins) {
                 plugin.renderFrame(frames, marker, bi);
-            }
-            if (font != null) {
-                if (marker != null) {
-                    drawInfo(textRenderer, bi, frames, marker);
-                }
             }
 
             final long ms = cfg.getKeepLastFrame();
@@ -647,27 +631,6 @@ public final class Renderer {
                 freeTime++;
             }
             timePointMap.put(freeTime, point);
-        }
-    }
-
-    private void drawInfo(@NonNull final TextRenderer textRenderer, @NonNull final BufferedImage bi, final int frame, @NonNull final Point2D marker) {
-        final var dateString = dateFormat.format(getTime(frame));
-        final var latLongString = getLatLonString(marker);
-        final var speedString = SpeedUtil.getSpeedString(marker, getTime(frame), frame, cfg.getFps(), cfg.getSpeedUnit());
-
-        final var text = "%s\n%s\n%s".formatted(speedString, latLongString, dateString);
-        final var position = cfg.getInformationPosition();
-        final var margin = cfg.getInformationMargin();
-
-        textRenderer.renderText(text, position, margin, bi);
-    }
-
-    private String getLatLonString(final Point2D point) {
-        if (point instanceof GpxPoint gpxPoint) {
-            final var latLon = gpxPoint.getLatLon();
-            return String.format("%.4f, %.4f", latLon.getLat(), latLon.getLon()); //NON-NLS
-        } else {
-            return "";
         }
     }
 
