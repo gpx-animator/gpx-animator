@@ -7,6 +7,7 @@ Release date: work in progress 🚧
 * Playing a sound when rendering is finished or errors occur
 * Using the OS notification system when rendering is finished or errors occur
 * Refactored the rendering process to support plugins
+* Fixing wrong photo size with vertical videos
 
 ## Version 1.6.0
 

@@ -206,8 +206,8 @@ public final class PhotoPlugin implements RendererPlugin {
     private BufferedImage readPhoto(@NonNull final Photo photo, final int width, final int height) {
         try {
             final var image = ImageIO.read(photo.getFile());
-            final var scaledWidth = Math.round(width * 0.7f);
-            final var scaledHeight = Math.round(height * 0.7f);
+            final var scaledWidth = Math.round(width * 0.8f);
+            final var scaledHeight = Math.round(height * 0.8f);
             final var scaledImage = scaleImage(image, scaledWidth, scaledHeight);
             final var borderedImage = addBorder(scaledImage);
             borderedImage.flush();
@@ -257,9 +257,21 @@ public final class PhotoPlugin implements RendererPlugin {
     }
 
     private static BufferedImage scaleImage(@NonNull final BufferedImage photoImage, final int width, final int height) {
-        return Scalr.resize(Scalr.resize(photoImage,
-                Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, width),
-                Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, height);
+        BufferedImage image;
+
+        if (width >= height) {
+            image = Scalr.resize(photoImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, width);
+            if (image.getHeight() > height) {
+                image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, height);
+            }
+        } else {
+            image = Scalr.resize(photoImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, height);
+            if (image.getWidth() > width) {
+                image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, width);
+            }
+        }
+
+        return image;
     }
 
     private static BufferedImage addBorder(@NonNull final BufferedImage photoImage) {
