@@ -158,7 +158,6 @@ public final class Renderer {
 
         final var realWidth = calculateRealWidth(userSpecifiedWidth, scale, toImages);
         final var realHeight = calculateRealHeight(scale, toImages);
-        LOGGER.info("{}x{};{}", realWidth, realHeight, scale);
 
         var viewportWidth = cfg.getViewportWidth() == null ? realWidth : cfg.getViewportWidth();
         if (viewportWidth > realWidth) {
@@ -168,6 +167,8 @@ public final class Renderer {
         if (viewportHeight > realHeight) {
             viewportHeight = realHeight;
         }
+
+        LOGGER.info("{} x {}; {} x {}; {}", realWidth, realHeight, viewportWidth, viewportHeight, scale);
 
         final var frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
