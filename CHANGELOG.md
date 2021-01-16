@@ -9,6 +9,12 @@ Release date: work in progress 🚧
 * Refactored the rendering process to support plugins
 * Fixing wrong photo size with vertical videos
 
+## Version 1.6.1
+
+Release date: work in progress 🚧
+
+* Fixing date time parsing error when time zone information is missing
+
 ## Version 1.6.0
 
 Release date: 2021-01-09
