@@ -14,17 +14,28 @@
  */
 package app.gpx_animator;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
+import org.jetbrains.annotations.NonNls;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static app.gpx_animator.Utils.isEqual;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 final class GpxContentHandler extends DefaultHandler {
+
+    @NonNls
+    private static final Logger LOGGER = LoggerFactory.getLogger(GpxContentHandler.class);
 
     private static final String ATTR_LON = "lon"; //NON-NLS
     private static final String ATTR_LAT = "lat"; //NON-NLS
@@ -34,6 +45,8 @@ final class GpxContentHandler extends DefaultHandler {
     private static final String ELEM_TIME = "time"; //NON-NLS
     private static final String ELEM_NAME = "name"; //NON-NLS
     private static final String ELEM_CMT = "cmt"; //NON-NLS
+
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final List<List<LatLon>> timePointListList = new ArrayList<>();
     private final List<LatLon> waypointList = new ArrayList<>();
@@ -80,7 +93,7 @@ final class GpxContentHandler extends DefaultHandler {
         } else if (isEqual(ELEM_WPT, qName)) {
             waypointList.add(new Waypoint(lat, lon, time, name));
         } else if (isEqual(ELEM_TIME, qName)) {
-            final var dateTime = ZonedDateTime.parse(sb.toString());
+            final var dateTime = parseDateTime(sb.toString());
             time = dateTime.toInstant().toEpochMilli();
             sb = null;
         } else if (isEqual(ELEM_NAME, qName)) {
@@ -90,6 +103,25 @@ final class GpxContentHandler extends DefaultHandler {
             cmt = sb.toString();
             sb = null;
         }
+    }
+
+
+    private ZonedDateTime parseDateTime(@Nullable final String dateTimeString) {
+        if (dateTimeString == null || dateTimeString.isBlank()) {
+            return null;
+        }
+
+        try {
+            return ZonedDateTime.parse(sb.toString());
+        } catch (final DateTimeParseException ignored) { }
+
+        try {
+            return LocalDateTime.parse(sb.toString()).atZone(ZoneId.systemDefault());
+        } catch (final DateTimeParseException ignored) { }
+
+        LOGGER.error("Unable to parse date and time from string '{}'", sb.toString());
+        throw new RuntimeException(
+                new UserException(resourceBundle.getString("gpxparser.error.datetimeformat").formatted(sb.toString())));
     }
 
 
