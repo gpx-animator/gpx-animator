@@ -14,6 +14,7 @@
  */
 package app.gpx_animator.core.data.gpx;
 
+import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.data.LatLon;
 import app.gpx_animator.core.data.Waypoint;
 import app.gpx_animator.core.preferences.Preferences;
@@ -117,7 +118,8 @@ public final class GpxContentHandler extends DefaultHandler {
         } catch (final DateTimeParseException ignored) { }
 
         LOGGER.error("Unable to parse date and time from string '{}'", sb.toString());
-        return null;
+        throw new RuntimeException(
+                new UserException(resourceBundle.getString("gpxparser.error.datetimeformat").formatted(sb.toString())));
     }
 
 

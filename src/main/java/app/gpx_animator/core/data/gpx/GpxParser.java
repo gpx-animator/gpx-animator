@@ -48,11 +48,14 @@ public final class GpxParser {
                 } catch (final SAXException e) {
                     throw new UserException("error parsing input GPX file", e);
                 } catch (final RuntimeException e) {
+                    if (e.getCause() != null && e.getCause() instanceof UserException userException) {
+                        throw userException;
+                    }
                     throw new RuntimeException("internal error when parsing GPX file", e);
                 }
             }
         } catch (final IOException e) {
-            throw new UserException("error reading input file", e);
+            throw new UserException("error reading input file", e); // TODO translate all user exceptions
         }
     }
 
