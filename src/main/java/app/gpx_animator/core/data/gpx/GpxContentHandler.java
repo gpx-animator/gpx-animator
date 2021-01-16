@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -115,6 +117,10 @@ public final class GpxContentHandler extends DefaultHandler {
 
         try {
             return ZonedDateTime.parse(sb.toString());
+        } catch (final DateTimeParseException ignored) { }
+
+        try {
+            return LocalDateTime.parse(sb.toString()).atZone(ZoneId.systemDefault());
         } catch (final DateTimeParseException ignored) { }
 
         LOGGER.error("Unable to parse date and time from string '{}'", sb.toString());
