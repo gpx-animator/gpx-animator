@@ -96,6 +96,10 @@ shadowJar {
     mergeServiceFiles()
 }
 
+spotbugs {
+    toolVersion = '4.2.0'
+}
+
 spotbugsMain {
     reports {
         xml.enabled = false

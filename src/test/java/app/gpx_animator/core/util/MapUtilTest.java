@@ -139,6 +139,7 @@ public class MapUtilTest {
         return mapValidations;
     }
 
+    @SuppressFBWarnings("EQ_UNUSUAL") // TODO SpotBugs 4.2.0 does not know how to handle the equals method of Java records #305
     private static final record MapValidation(List<String> validationUrls) {
 
         public List<String> getValidationUrls() {
