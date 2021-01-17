@@ -58,6 +58,11 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import static app.gpx_animator.core.util.Utils.isEqual;
+import static java.awt.event.InputEvent.ALT_DOWN_MASK;
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.KeyEvent.VK_F1;
+import static java.awt.event.KeyEvent.VK_F4;
+import static javax.swing.KeyStroke.getKeyStroke;
 
 public final class MainFrame extends JFrame {
 
@@ -162,6 +167,7 @@ public final class MainFrame extends JFrame {
                 loadDefaults();
             }
         });
+        mntmNew.setAccelerator(getKeyStroke('N', CTRL_DOWN_MASK));
         mnFile.add(mntmNew);
 
         final var mntmOpen = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.open"));
@@ -176,6 +182,7 @@ public final class MainFrame extends JFrame {
                 }
             }
         });
+        mntmOpen.setAccelerator(getKeyStroke('O', CTRL_DOWN_MASK));
         mnFile.add(mntmOpen);
 
         openRecent = new JMenu(resourceBundle.getString("ui.mainframe.menu.file.openrecent"));
@@ -192,10 +199,12 @@ public final class MainFrame extends JFrame {
                 save(file);
             }
         });
+        mntmSave.setAccelerator(getKeyStroke('S', CTRL_DOWN_MASK));
         mnFile.add(mntmSave);
 
         final var mntmSaveAs = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.saveas"));
         mntmSaveAs.addActionListener(e -> saveAs());
+        mntmSaveAs.setAccelerator(getKeyStroke('S', CTRL_DOWN_MASK + ALT_DOWN_MASK));
         mnFile.add(mntmSaveAs);
 
         mnFile.addSeparator();
@@ -212,12 +221,14 @@ public final class MainFrame extends JFrame {
 
         final var preferencesMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.preferences"));
         preferencesMenu.addActionListener(e -> SwingUtilities.invokeLater(() -> new PreferencesDialog(this).setVisible(true)));
+        preferencesMenu.setAccelerator(getKeyStroke('.', CTRL_DOWN_MASK));
         mnFile.add(preferencesMenu);
 
         mnFile.addSeparator();
 
         final var mntmExit = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.exit"));
         mntmExit.addActionListener(this::exitApplication);
+        mntmExit.setAccelerator(getKeyStroke(VK_F4, ALT_DOWN_MASK));
         mnFile.add(mntmExit);
 
         final var mnTrack = new JMenu(resourceBundle.getString("ui.mainframe.menu.track"));
@@ -225,6 +236,7 @@ public final class MainFrame extends JFrame {
 
         final var mntmAddTrack = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.track.add"));
         mntmAddTrack.addActionListener(addTrackActionListener);
+        mntmAddTrack.setAccelerator(getKeyStroke('A', CTRL_DOWN_MASK));
         mnTrack.add(mntmAddTrack);
 
         final var mntmRemoveTrack = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.track.remove"));
@@ -238,6 +250,7 @@ public final class MainFrame extends JFrame {
                 }
             }
         });
+        mntmRemoveTrack.setAccelerator(getKeyStroke('R', CTRL_DOWN_MASK));
         mnTrack.add(mntmRemoveTrack);
 
         final var mnHelp = new JMenu(resourceBundle.getString("ui.mainframe.menu.help"));
@@ -256,6 +269,7 @@ public final class MainFrame extends JFrame {
             SwingUtilities.invokeLater(() -> new MarkdownDialog(this,
                     aboutText, "ABOUT.md", variables, 550, 330));
         });
+        mntmAbout.setAccelerator(getKeyStroke(VK_F1, 0));
         mnHelp.add(mntmAbout);
 
         final var mntmUsage = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.usage"));

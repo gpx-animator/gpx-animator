@@ -8,6 +8,7 @@ Release date: work in progress 🚧
 * Using the OS notification system when rendering is finished or errors occur
 * Refactored the rendering process to support plugins
 * Fixing wrong photo size with vertical videos
+* Adding hotkeys for menu entries
 
 ## Version 1.6.1
 
