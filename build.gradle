@@ -56,6 +56,10 @@ tasks.withType(Test) {
     jvmArgs += "--enable-preview"
 }
 
+tasks.withType(JavaExec) {
+    jvmArgs += "--enable-preview"
+}
+
 task copyChangelog(type: Copy) {
     from "."
     include "CHANGELOG.md"
