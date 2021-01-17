@@ -274,7 +274,7 @@ public final class MainFrame extends JFrame {
 
         final var mntmUsage = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.usage"));
         mntmUsage.addActionListener(e -> {
-            final var usageDialog = new UsageDialog();
+            final var usageDialog = new UsageDialog(MainFrame.this);
             usageDialog.setLocationRelativeTo(MainFrame.this);
             usageDialog.setVisible(true);
         });

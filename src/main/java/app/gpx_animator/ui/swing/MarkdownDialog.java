@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class MarkdownDialog extends JDialog {
+public class MarkdownDialog extends EscapeDialog {
 
     @Serial
     private static final long serialVersionUID = 1629914977489396863L;

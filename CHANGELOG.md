@@ -9,6 +9,7 @@ Release date: work in progress 🚧
 * Refactored the rendering process to support plugins
 * Fixing wrong photo size with vertical videos
 * Adding hotkeys for menu entries
+* Closing dialogs using the Esc key
 
 ## Version 1.6.1
 

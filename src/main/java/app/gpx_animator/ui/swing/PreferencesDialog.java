@@ -18,7 +18,7 @@ import java.io.Serial;
 
 import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
 
-public class PreferencesDialog extends JDialog {
+public class PreferencesDialog extends EscapeDialog {
 
     @Serial
     private static final long serialVersionUID = -8767146323054030406L;

@@ -19,8 +19,8 @@ import app.gpx_animator.core.preferences.Preferences;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -31,7 +31,7 @@ import java.io.PrintWriter;
 import java.io.Serial;
 import java.io.StringWriter;
 
-public class UsageDialog extends JDialog {
+public class UsageDialog extends EscapeDialog {
 
     @Serial
     private static final long serialVersionUID = -8639477664121609849L;
@@ -39,7 +39,9 @@ public class UsageDialog extends JDialog {
     /**
      * Create the dialog.
      */
-    public UsageDialog() {
+    public UsageDialog(final JFrame owner) {
+        super(owner, true);
+
         final var resourceBundle = Preferences.getResourceBundle();
 
         setTitle(resourceBundle.getString("ui.dialog.usage.title"));
