@@ -541,7 +541,7 @@ public final class MainFrame extends JFrame {
         SwingUtilities.invokeLater(this::showChangelogOnce);
     }
 
-    @SuppressWarnings({"PMD.DoNotCallSystemExit", "DuplicateStringLiteralInspection"}) // Exit the application on user request
+    @SuppressWarnings({"PMD.DoNotTerminateVM", "DuplicateStringLiteralInspection"}) // Exit the application on user request
     @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request") //NON-NLS
     private void exitApplication(final ActionEvent e) {
         if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,

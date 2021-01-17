@@ -37,7 +37,7 @@ public final class Utils {
         return b;
     }
 
-    @SuppressWarnings({"PMD.CompareObjectsWithEquals", "StringEquality"})
+    @SuppressWarnings({"PMD.CompareObjectsWithEquals", "PMD.UseEqualsToCompareStrings", "StringEquality"})
     @SuppressFBWarnings("ES_COMPARING_PARAMETER_STRING_WITH_EQ") //NON-NLS
     public static boolean isEqual(final String source, final String target) {
         if (source == target) {

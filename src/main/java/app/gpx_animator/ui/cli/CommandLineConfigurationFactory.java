@@ -221,7 +221,7 @@ public final class CommandLineConfigurationFactory {
         configuration = cfg.build();
     }
 
-    @SuppressWarnings({"PMD.DoNotCallSystemExit", "DuplicateStringLiteralInspection"}) // Exit after printing command line help message
+    @SuppressWarnings({"PMD.DoNotTerminateVM", "DuplicateStringLiteralInspection"}) // Exit after printing command line help message
     @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit after printing command line help message") //NON-NLS
     private void exit() {
         System.exit(0);
