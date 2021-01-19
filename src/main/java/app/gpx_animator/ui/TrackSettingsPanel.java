@@ -408,7 +408,8 @@ abstract class TrackSettingsPanel extends JPanel {
 
             @Override
             public boolean accept(final File f) {
-                return f.isDirectory() || f.getName().endsWith(".png"); //NON-NLS
+                final var filename = f.getName().toLowerCase(Locale.getDefault());
+                return f.isDirectory() || filename.endsWith(".png"); //NON-NLS
             }
         });
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
