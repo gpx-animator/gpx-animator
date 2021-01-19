@@ -5,6 +5,7 @@ import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.preferences.Preferences;
 
+import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -376,7 +377,8 @@ abstract class TrackSettingsPanel extends JPanel {
 
             @Override
             public boolean accept(final File f) {
-                return f.isDirectory() || f.getName().endsWith(".gpx") || f.getName().endsWith(".gpx.gz"); //NON-NLS
+                final var filename = f.getName().toLowerCase(Locale.getDefault());
+                return f.isDirectory() || filename.endsWith(".gpx") || filename.endsWith(".gpx.gz"); //NON-NLS
             }
         });
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
@@ -389,7 +391,8 @@ abstract class TrackSettingsPanel extends JPanel {
 
             @Override
             public boolean accept(final File f) {
-                return f.isDirectory() || f.getName().endsWith(".gpx.gz"); //NON-NLS
+                final var filename = f.getName().toLowerCase(Locale.getDefault());
+                return f.isDirectory() || filename.endsWith(".gpx.gz"); //NON-NLS
             }
         });
     }
