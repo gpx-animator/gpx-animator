@@ -38,6 +38,10 @@ java -jar ./build/libs/gpx-animator-1.6.0-SNAPSHOT-all.jar
 ```
 
 
+## Contributors
+
+Special thanks for all the people who had helped this project so far! Please take a look at the [CONTRIBUTORS](CONTRIBUTORS.md) file for a complete list of all contributors.
+
 ## Contributing
 
 ### Good First Issues
