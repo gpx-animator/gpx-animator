@@ -13,6 +13,7 @@ In alphabetical order:
 * [n76](https://github.com/n76)
 * [poorlymac](https://github.com/poorlymac)
 * [SirCremefresh](https://github.com/SirCremefresh)
+* [thomergil](https://github.com/thomergil)
 * [zdila](https://github.com/zdila)
 
 ## I would like to join this list. How can I help the project?
