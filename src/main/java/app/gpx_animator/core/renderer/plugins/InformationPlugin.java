@@ -24,6 +24,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     private final transient int margin;
     private final transient double fps;
     private final transient SpeedUnit speedUnit;
+    private final transient boolean showDateTime;
 
     private transient long minTime;
     private transient double speedup;
@@ -37,6 +38,8 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
         this.margin = configuration.getInformationMargin();
         this.fps = configuration.getFps();
         this.speedUnit = configuration.getSpeedUnit();
+        this.showDateTime = configuration.getTrackConfigurationList().stream()
+                .noneMatch(tc -> tc.getForcedPointInterval() != null);
     }
 
     @Override
@@ -58,10 +61,10 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
         }
 
         final var time = RenderUtil.getTime(frame, minTime, fps, speedup);
-        final var dateString = dateFormat.format(time);
+        final var dateString = showDateTime ? dateFormat.format(time) : "";
         final var latLongString = getLatLonString(marker);
         final var speedString = getSpeedString(marker, time, frame);
-        final var text = "%s\n%s\n%s".formatted(speedString, latLongString, dateString);
+        final var text = "%s\n%s\n%s".formatted(speedString, latLongString, dateString).trim();
         renderText(text, position, margin, image);
     }
 
