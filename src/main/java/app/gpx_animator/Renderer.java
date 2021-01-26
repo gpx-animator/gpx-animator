@@ -86,7 +86,7 @@ public final class Renderer {
     private double recentMarkersYSum = 0.0;
 
     private double speedup;
-
+    private boolean showDateTime;
     private String lastComment = "";
 
     public Renderer(final Configuration cfg) throws UserException {
@@ -114,6 +114,9 @@ public final class Renderer {
     @SuppressWarnings({ "checkstyle:InnerAssignment" }) // Checkstyle 8.37 can't handle the enhanced switch properly
     public void render(final RenderingContext rc) throws UserException {
         final var renderStartTime = LocalDateTime.now();
+
+        showDateTime = cfg.getTrackConfigurationList().stream()
+                .noneMatch(tc -> tc.getForcedPointInterval() != null);
 
         final List<Long[]> spanList = new ArrayList<>();
         final var wpMap = new TreeMap<Long, Point2D>();
@@ -699,11 +702,11 @@ public final class Renderer {
 
     private void drawInfo(@NonNull final TextRenderer textRenderer, @NonNull final ImageRenderer imageRenderer, @NonNull final BufferedImage bi,
                           final int frame, @NonNull final Point2D marker) {
-        final var dateString = dateFormat.format(getTime(frame));
+        final var dateString = showDateTime ? dateFormat.format(getTime(frame)) : "";
         final var latLongString = getLatLonString(marker);
         final var speedString = SpeedUtil.getSpeedString(marker, getTime(frame), frame, cfg.getFps(), cfg.getSpeedUnit());
 
-        final var text = "%s\n%s\n%s".formatted(speedString, latLongString, dateString);
+        final var text = "%s\n%s\n%s".formatted(speedString, latLongString, dateString).trim();
         final var position = cfg.getInformationPosition();
         final var margin = cfg.getInformationMargin();
 

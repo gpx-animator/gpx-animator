@@ -5,6 +5,7 @@
 Release date: work in progress 🚧
 
 * Fixing date time parsing error when time zone information is missing
+* Fixing date from the 1970s when forced point time interval option was set
 * Accepting uppercase file endings of GPX and PNG files
 * Adding trim options to command line help
 
