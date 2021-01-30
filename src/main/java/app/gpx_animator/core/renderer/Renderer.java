@@ -369,10 +369,11 @@ public final class Renderer {
             for (final var latLonList : pointLists) {
                 sigmaRoxRepair(latLonList);
                 final var timePointMap = new TreeMap<Long, Point2D>();
-                toTimePointMap(timePointMap, trackIndex, latLonList);
+                toTimePointMap(timePointMap, trackIndex, latLonList, Long.MIN_VALUE);
                 trimGpxData(timePointMap, trackConfiguration);
                 timePointMapList.add(timePointMap);
-                toTimePointMap(wpMap, trackIndex, gch.getWaypointList());
+                var oldestTimeAsDefaultForWaypoints = timePointMap.keySet().stream().min(Long::compareTo).orElse(Long.MIN_VALUE);
+                toTimePointMap(wpMap, trackIndex, gch.getWaypointList(), oldestTimeAsDefaultForWaypoints);
                 mergeConnectedSpans(spanList, timePointMap);
             }
 
@@ -562,7 +563,8 @@ public final class Renderer {
         return new Ellipse2D.Double(point.getX() - size / 2.0, point.getY() - size / 2.0, size, size);
     }
 
-    private void toTimePointMap(final TreeMap<Long, Point2D> timePointMap, final int trackIndex, final List<LatLon> latLonList) throws UserException {
+    private void toTimePointMap(@NonNull final TreeMap<Long, Point2D> timePointMap, final int trackIndex, @NonNull final List<LatLon> latLonList,
+                                final long defaultTimeIfMissing) throws UserException {
         long forcedTime = 0;
 
         final var trackConfiguration = cfg.getTrackConfigurationList().get(trackIndex);
@@ -608,7 +610,7 @@ public final class Renderer {
                 forcedTime += forcedPointInterval;
                 time = forcedTime;
             } else {
-                time = latLon.getTime();
+                time = latLon.getTime() == Long.MIN_VALUE ? defaultTimeIfMissing : latLon.getTime();
                 if (time == Long.MIN_VALUE) {
                     final var filename = trackConfiguration.getInputGpx().getName();
                     throw new UserException(
