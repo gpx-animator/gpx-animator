@@ -33,7 +33,7 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'com.drewnoakes:metadata-extractor:2.15.0'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
-    implementation 'commons-io:commons-io:2.6'
+    implementation 'commons-io:commons-io:2.8.0'
     implementation 'com.jgoodies:jgoodies-forms:1.9.0'
     implementation 'com.vladsch.flexmark:flexmark-all:0.50.44'
     implementation 'org.jetbrains:annotations:18.0.0'
