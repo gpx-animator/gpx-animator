@@ -36,7 +36,6 @@ dependencies {
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'com.jgoodies:jgoodies-forms:1.9.0'
     implementation 'com.vladsch.flexmark:flexmark-all:0.62.2'
-    implementation 'org.jetbrains:annotations:18.0.0'
     implementation 'org.reflections:reflections:0.9.12'
     testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.2.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
