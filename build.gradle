@@ -40,7 +40,7 @@ dependencies {
     implementation 'org.reflections:reflections:0.9.12'
     testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.2.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
     testImplementation 'org.junit.platform:junit-platform-engine:+'
 }
 
