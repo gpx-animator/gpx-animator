@@ -153,17 +153,6 @@
         <attribution-url>https://openstreetmap.org/</attribution-url>
     </entry>
     <entry>
-        <name>OpenPT Map (overlay)</name>
-        <id>openpt_map</id>
-        <type>tms</type>
-        <url>http://openptmap.de/tiles/{zoom}/{x}/{y}.png</url>
-        <min-zoom>4</min-zoom>
-        <max-zoom>17</max-zoom>
-        <icon>http://openptmap.de/favicon_pt.png</icon>
-        <attribution-text mandatory="true">© OpenStreetMap contributors, CC-BY-SA</attribution-text>
-        <attribution-url>http://openptmap.de/</attribution-url>
-    </entry>
-    <entry>
         <name>Strava cycling heatmap</name>
         <id>strava_cycling_heatmap</id>
         <type>tms</type>

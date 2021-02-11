@@ -159,12 +159,6 @@
         </validation>
     </map>
     <map>
-        <id>openpt_map</id>
-        <validation>
-            <url>http://openptmap.de/tiles/10/535/359.png</url>
-        </validation>
-    </map>
-    <map>
         <id>opentopomap</id>
         <validation>
             <url>https://a.tile.opentopomap.org/10/535/359.png</url>
