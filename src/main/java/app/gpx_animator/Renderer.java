@@ -264,7 +264,7 @@ public final class Renderer {
         }
     }
 
-    private int calculateSpeedupAndReturnFrames(@NonNull final Photos photos) {
+    private int calculateSpeedupAndReturnFrames(@NonNull final Photos photos) throws UserException {
         final var totalTime = cfg.getTotalTime() == null ? 0 : cfg.getTotalTime();
         final var tailDuration = cfg.getTailDuration();
         final var fps = cfg.getFps();
@@ -280,6 +280,12 @@ public final class Renderer {
 
             final var frames = (int) Math.round(animationTime / MS * fps);
             speedup = (maxTime * fps + tailDuration * fps - minTime * fps) / (frames * MS);
+
+            if (frames <= 0) {
+                final var addTime = (Math.abs(frames) + 1) / fps;
+                throw new UserException(resourceBundle.getString("renderer.error.addtime").formatted(addTime));
+            }
+
             return frames;
         }
     }
