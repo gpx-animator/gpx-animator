@@ -86,6 +86,12 @@ To run GPX Animator from source:
 ./gradlew run
 ```
 
+To run GPX Animator from source with command line parameters:
+
+```
+./gradlew run --args="--input ./src/test/resources/gpx/bikeride.gpx --output test.mp4"
+```
+
 If necessary, the project will be (re)compiled.
 
 ## Test
