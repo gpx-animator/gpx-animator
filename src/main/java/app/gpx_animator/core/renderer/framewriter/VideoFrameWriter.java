@@ -14,33 +14,65 @@
  */
 package app.gpx_animator.core.renderer.framewriter;
 
-import com.xuggle.mediatool.IMediaWriter;
-import com.xuggle.mediatool.ToolFactory;
-import com.xuggle.xuggler.IRational;
+import app.gpx_animator.core.UserException;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import org.bytedeco.javacv.FFmpegFrameRecorder;
+import org.bytedeco.javacv.FrameRecorder;
+import org.bytedeco.javacv.Java2DFrameConverter;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.concurrent.TimeUnit;
+
+import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_H264;
+import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_NONE;
+import static org.bytedeco.ffmpeg.global.avutil.AV_PIX_FMT_YUV420P;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class VideoFrameWriter implements FrameWriter {
-    private final IMediaWriter writer;
-    private final double interval;
-    private int frame;
 
-    public VideoFrameWriter(final File file, final double fps, final int width, final int height) {
-        writer = ToolFactory.makeWriter(file.toString());
-        writer.addVideoStream(0, 0, IRational.make(fps), width, height);
-        interval = 1000d / fps;
+    private final Java2DFrameConverter frameConverter;
+    private final FrameRecorder recorder;
+
+    public VideoFrameWriter(@NonNull final File file, final double fps, final int width, final int height) throws UserException {
+        frameConverter = new Java2DFrameConverter();
+
+        try {
+            recorder = FFmpegFrameRecorder.createDefault(file, width, height);
+        } catch (final FrameRecorder.Exception e) {
+            throw new UserException(e.getMessage(), e); // TODO add a good error message
+        }
+
+        recorder.setFormat("matroska"); // mp4 doesn't support streaming
+        recorder.setAudioCodec(AV_CODEC_ID_NONE);
+        recorder.setVideoCodec(AV_CODEC_ID_H264);
+        recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
+        recorder.setFormat("mp4");
+        recorder.setVideoQuality(24);
+        recorder.setFrameRate(fps);
+
+        try {
+            recorder.start();
+        } catch (final FrameRecorder.Exception e) {
+            throw new UserException(e.getMessage(), e); // TODO add a good error message
+        }
     }
 
     @Override
-    public void addFrame(final BufferedImage bi) {
-        writer.encodeVideo(0, bi, (int) (frame++ * interval), TimeUnit.MILLISECONDS);
+    public void addFrame(@NonNull final BufferedImage image) {
+        final var frame = frameConverter.convert(image);
+        try {
+            recorder.record(frame);
+        } catch (final FrameRecorder.Exception e) {
+            throw new RuntimeException(new UserException(e.getMessage(), e)); // TODO add a good error message
+        }
     }
 
     @Override
     public void close() {
-        writer.close();
+        try {
+            recorder.close();
+        } catch (final FrameRecorder.Exception e) {
+            throw new RuntimeException(new UserException(e.getMessage(), e)); // TODO add a good error message
+        }
     }
 }

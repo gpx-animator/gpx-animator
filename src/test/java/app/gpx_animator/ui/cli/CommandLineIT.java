@@ -63,8 +63,8 @@ public final class CommandLineIT {
         assertDone();
 
         final var fileSize = new File(outputFile).length();
-        assertTrue(fileSize > 550_000, "Output file size (%s bytes) too small, check content".formatted(fileSize));
-        assertTrue(fileSize < 650_000, "Output file size (%s bytes) too big, check content".formatted(fileSize));
+        assertTrue(fileSize > 500_000, "Output file size (%s bytes) too small, check content".formatted(fileSize));
+        assertTrue(fileSize < 550_000, "Output file size (%s bytes) too big, check content".formatted(fileSize));
     }
 
     @AfterEach
