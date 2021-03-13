@@ -10,6 +10,7 @@ Release date: work in progress 🚧
 * Fixing wrong photo size with vertical videos
 * Adding hotkeys for menu entries
 * Closing dialogs using the Esc key
+* Replacing enf of life Xuggler library with JavaCV for video rendering
 
 ## Version 1.6.1
 
