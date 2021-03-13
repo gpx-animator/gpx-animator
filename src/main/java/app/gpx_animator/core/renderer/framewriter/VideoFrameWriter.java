@@ -15,7 +15,11 @@
 package app.gpx_animator.core.renderer.framewriter;
 
 import app.gpx_animator.core.UserException;
+import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.NonNull;
+
+import java.util.ResourceBundle;
+
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.FrameRecorder;
 import org.bytedeco.javacv.Java2DFrameConverter;
@@ -30,6 +34,7 @@ import static org.bytedeco.ffmpeg.global.avutil.AV_PIX_FMT_YUV420P;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class VideoFrameWriter implements FrameWriter {
 
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
     private final Java2DFrameConverter frameConverter;
     private final FrameRecorder recorder;
 
@@ -39,7 +44,7 @@ public final class VideoFrameWriter implements FrameWriter {
         try {
             recorder = FFmpegFrameRecorder.createDefault(file, width, height);
         } catch (final FrameRecorder.Exception e) {
-            throw new UserException(e.getMessage(), e); // TODO add a good error message
+            throw new UserException(resourceBundle.getString("framewriter.error.createrecorder").formatted(e.getMessage()), e);
         }
 
         recorder.setFormat("matroska"); // mp4 doesn't support streaming
@@ -53,7 +58,7 @@ public final class VideoFrameWriter implements FrameWriter {
         try {
             recorder.start();
         } catch (final FrameRecorder.Exception e) {
-            throw new UserException(e.getMessage(), e); // TODO add a good error message
+            throw new UserException(resourceBundle.getString("framewriter.error.startrecorder").formatted(e.getMessage()), e);
         }
     }
 
@@ -63,7 +68,7 @@ public final class VideoFrameWriter implements FrameWriter {
         try {
             recorder.record(frame);
         } catch (final FrameRecorder.Exception e) {
-            throw new RuntimeException(new UserException(e.getMessage(), e)); // TODO add a good error message
+            throw new RuntimeException(new UserException(resourceBundle.getString("framewriter.error.record").formatted(e.getMessage()), e));
         }
     }
 
@@ -72,7 +77,7 @@ public final class VideoFrameWriter implements FrameWriter {
         try {
             recorder.close();
         } catch (final FrameRecorder.Exception e) {
-            throw new RuntimeException(new UserException(e.getMessage(), e)); // TODO add a good error message
+            throw new RuntimeException(new UserException(resourceBundle.getString("framewriter.error.closerecorder").formatted(e.getMessage()), e));
         }
     }
 }
