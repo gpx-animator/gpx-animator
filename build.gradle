@@ -135,7 +135,16 @@ pmd {
     ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
 }
 
+task createVersionFile {
+    doLast {
+        def version = project.version.toString()
+        def file = new File("$buildDir/resources/main/version.txt")
+        file.write(version)
+    }
+}
+
 compileJava.dependsOn copyChangelog
+compileJava.dependsOn createVersionFile
 clean.dependsOn deleteChangelog
 assemble.dependsOn check
 check.dependsOn installGitHooks
