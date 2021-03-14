@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="8.0.10" transformSequenceNumber="8">
   <directoryPresets config="C:/Users/McPringle/IdeaProjects/gpx-animator/src/main/resources" />
-  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.6.0" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="15" javaMaxVersion="15">
+  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.6.1" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="15" javaMaxVersion="15">
     <jreBundles jdkProviderId="AdoptOpenJDK" release="openjdk15/jdk-15+36" />
   </application>
   <files keepModificationTimes="true" missingFilesStrategy="error">
@@ -9,7 +9,7 @@
       <mountPoint id="58" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="58" file="C:/Users/McPringle/IdeaProjects/gpx-animator/build/libs/gpx-animator-1.6.0-all.jar" />
+      <fileEntry mountPoint="58" file="C:/Users/McPringle/IdeaProjects/gpx-animator/build/libs/gpx-animator-1.6.1-all.jar" />
     </entries>
   </files>
   <launchers>
@@ -18,7 +18,7 @@
       <splashScreen show="true" bitmapFile="C:/Users/McPringle/IdeaProjects/gpx-animator/src/main/resources/splash.png" />
       <java mainClass="app.gpx_animator.Main">
         <classPath>
-          <archive location="gpx-animator-1.6.0-all.jar" failOnError="false" />
+          <archive location="gpx-animator-1.6.1-all.jar" failOnError="false" />
         </classPath>
       </java>
       <iconImageFiles>

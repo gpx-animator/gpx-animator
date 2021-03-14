@@ -2,7 +2,7 @@
 
 ## Version 1.6.1
 
-Release date: work in progress 🚧
+Release date: 2021-03-14
 
 * Fixing date time parsing error when time zone information is missing
 * Fixing date from the 1970s when forced point time interval option was set
