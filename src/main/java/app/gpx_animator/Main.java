@@ -49,7 +49,7 @@ public final class Main {
         }
     }
 
-    public static void start(final String... args) throws Exception {
+    public static void start(final String... args) throws Exception { // NOSONAR - Catching all uncatched exceptions in main method.
         final var cf = new CommandLineConfigurationFactory(args);
         final var configuration = cf.getConfiguration().validate();
 
