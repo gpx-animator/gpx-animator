@@ -96,60 +96,38 @@
         <h3>Latest Stable Version</h3>
 
         <p>
-            It is recommended, to download the latest stable version. As of today, this is v1.6.0, released on January 9th, 2021.
+            It is recommended, to download the latest stable version. As of today, this is v1.6.1, released on March 14th, 2021.
             These are the most important changes:
         </p>
 
         <ul>
-            <li>Adding support for moving map</li>
-            <li>Adding support for pre-drawing a track</li>
-            <li>Adding support to change the pre-draw color per track</li>
-            <li>Adding multiple GPX files at once</li>
-            <li>Adding support for background images (including transparency in PNG files)</li>
-            <li>Adding support for track point comments in GPX files</li>
-            <li>Adding an animation to smoothly fade photos in and out</li>
-            <li>Adding font selection for the text in the animation</li>
-            <li>Adding a Motorcycle icon</li>
-            <li>Adding support for choosing an external PNG file as a track icon</li>
-            <li>Track icons can now be mirrored to match the general direction</li>
-            <li>Up to 15 % faster rendering</li>
-            <li>Providing alternative speed units (km/h, mph, min/km, min/mi, knots...)</li>
-            <li>Margin for track, logo, attribution and informations can be set separately</li>
-            <li>Positions of logo, attribution, and informations are now configurable</li>
-            <li>Logo, attribution, and informations can now hidden</li>
-            <li>Migrating to Java 15</li>
-            <li>New error dialog with additional internal information for better error reports</li>
-            <li>New and clear error message on missing track data in GPX file</li>
-            <li>Fixing NullPointerException when starting GPX Animator the first time</li>
-            <li>Fixing NullPointerException when showing the Changelog</li>
-            <li>Fixing a bug causing image series export to stop working</li>
-            <li>Fixing error in video frame size calculation with user specified bounding box</li>
-            <li>Fixing some errors in animation length calculation when total time was set</li>
-            <li>Fixing errors with incomplete latitude/longitude (bounding box) settings</li>
-            <li>Fixing a bunch of compiler warnings</li>
-            <li>Fixing 21 broken background maps</li>
-            <li>Removing 8 broken background maps</li>
+            <li>Fixing date time parsing error when time zone information is missing</li>
+            <li>Fixing date from the 1970s when forced point time interval option was set</li>
+            <li>Fixing waypoints do not require a time anymore</li>
+            <li>Fixing negative total time crashing the rendering process</li>
+            <li>Accepting uppercase file endings of GPX and PNG files</li>
+            <li>Adding trim options to command line help</li>
         </ul>
 
         <p>
-            <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_6_0.exe"
-               download="gpx-animator_windows-x64_1_6_0.exe">
+            <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_6_1.exe"
+               download="gpx-animator_windows-x64_1_6_1.exe">
                 <button><i class="fa fa-windows"></i> Windows (64 Bit)</button>
             </a>
-            <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_6_0.exe"
-               download="gpx-animator_windows-x32_1_6_0.exe">
+            <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_6_1.exe"
+               download="gpx-animator_windows-x32_1_6_1.exe">
                 <button><i class="fa fa-windows"></i> Windows (32 Bit)</button>
             </a><br/>
-            <a href="https://download.gpx-animator.app/gpx-animator_macos_1_6_0.dmg"
-               download="gpx-animator_macos_1_6_0.dmg">
+            <a href="https://download.gpx-animator.app/gpx-animator_macos_1_6_1.dmg"
+               download="gpx-animator_macos_1_6_1.dmg">
                 <button><i class="fa fa-apple"></i> macOS (Intel)</button>
             </a>
-            <a href="https://download.gpx-animator.app/gpx-animator_unix_1_6_0.sh"
-               download="gpx-animator_unix_1_6_0.sh">
+            <a href="https://download.gpx-animator.app/gpx-animator_unix_1_6_1.sh"
+               download="gpx-animator_unix_1_6_1.sh">
                 <button><i class="fa fa-linux"></i> Linux</button>
             </a><br/>
-            <a href="https://download.gpx-animator.app/gpx-animator-1.6.0-all.jar"
-               download="gpx-animator-1.6.0-all.jar">
+            <a href="https://download.gpx-animator.app/gpx-animator-1.6.1-all.jar"
+               download="gpx-animator-1.6.1-all.jar">
                 <button><i class="fa fa-download"></i> Java Archive</button>
             </a>
         </p>
@@ -207,13 +185,13 @@
         <p>GPX Animator needs at least Java 15 or newer! We suggest to use <a href="https://adoptopenjdk.net/" target="_blank" title="AdoptOpenJDK project website">AdoptOpenJDK</a>, but any other distribution should work, too.</p>
 
         <p>For default GUI run:</p>
-        <pre><code>java -jar gpx-animator-1.6.0-all.jar</code></pre>
+        <pre><code>java -jar gpx-animator-1.6.1-all.jar</code></pre>
 
         <p>For program help run:</p>
-        <pre><code>java -jar gpx-animator-1.6.0-all.jar --help</code></pre>
+        <pre><code>java -jar gpx-animator-1.6.1-all.jar --help</code></pre>
 
         <p>For direct rendering run:</p>
-        <pre><code>java -jar gpx-animator-1.6.0-all.jar --input track.gpx</code></pre>
+        <pre><code>java -jar gpx-animator-1.6.1-all.jar --input track.gpx</code></pre>
 
         <h4>Command line parameters</h4>
 
@@ -345,7 +323,7 @@
         <h2 id="faq">FAQ</h2>
         <h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
         <p>
-            Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.6.0-all.jar</code>.
+            Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.6.1-all.jar</code>.
             If the problem persists, try higher value or check if your GPX trace doesn't cover too big area.
             If it does then try to specify lower zoom, width and/or height.
         </p>
@@ -368,7 +346,7 @@
             support, use the following command line to set the scaling factor
             accordingly:
         </p>
-        <pre><code>GDK_SCALE=2 java -jar gpx-animator-1.6.0-all.jar</code></pre>
+        <pre><code>GDK_SCALE=2 java -jar gpx-animator-1.6.1-all.jar</code></pre>
 
         <h3>Error While Rendering - Invalid frame size (0x0)</h3>
         <p>
