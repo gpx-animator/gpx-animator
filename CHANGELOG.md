@@ -4,6 +4,7 @@
 
 Release date: work in progress 🚧
 
+* Showing a preview while rendering is in progress (can be disabled)
 * Playing a sound when rendering is finished or errors occur
 * Using the OS notification system when rendering is finished or errors occur
 * Refactored the rendering process to support plugins
