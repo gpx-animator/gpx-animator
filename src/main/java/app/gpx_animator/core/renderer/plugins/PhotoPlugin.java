@@ -144,7 +144,7 @@ public final class PhotoPlugin implements RendererPlugin {
      */
     @Override
     public int getOrder() {
-        return Integer.MAX_VALUE;
+        return 1_000_000;
     }
 
     @Override
