@@ -100,4 +100,17 @@ public interface RendererPlugin {
      */
     default void renderFrame(int frame, @Nullable Point2D marker, @NonNull BufferedImage image) throws UserException { }
 
+    /**
+     * This method is called when the rendering has finished successfully.
+     *
+     * @throws UserException error to be shown to the user
+     */
+    default void renderingFinished() throws UserException { }
+
+    /**
+     * This method is called when the rendering was canceled.
+     *
+     * @throws UserException error to be shown to the user
+     */
+    default void renderingCanceled() throws UserException { }
 }

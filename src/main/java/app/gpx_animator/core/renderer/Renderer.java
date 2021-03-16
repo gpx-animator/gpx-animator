@@ -198,8 +198,14 @@ public final class Renderer {
             } else {
                 LOGGER.info("Done in {} seconds. Movie written to {}", runtimeSeconds, cfg.getOutput());
             }
+            for (final var plugin : plugins) {
+                plugin.renderingFinished();
+            }
         } else {
             LOGGER.info("Canceled after {} seconds.", runtimeSeconds);
+            for (final var plugin : plugins) {
+                plugin.renderingCanceled();
+            }
         }
     }
 
