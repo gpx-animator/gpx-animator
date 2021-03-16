@@ -18,6 +18,7 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.renderer.Renderer;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.cache.TileCache;
+import app.gpx_animator.ui.UIMode;
 import app.gpx_animator.ui.cli.CommandLineConfigurationFactory;
 import app.gpx_animator.ui.swing.MainFrame;
 import org.jetbrains.annotations.NonNls;
@@ -56,6 +57,7 @@ public final class Main {
         new Thread(TileCache::ageCache).start();
 
         if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
+            UIMode.setMode(UIMode.EXPERT);
             EventQueue.invokeLater(() -> {
                 try {
                     final var frame = new MainFrame();
@@ -66,6 +68,7 @@ public final class Main {
                 }
             });
         } else {
+            UIMode.setMode(UIMode.CLI);
             new Renderer(configuration).render(new RenderingContext() {
                 @Override
                 public void setProgress1(final int pct, final String message) {
