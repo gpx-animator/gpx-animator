@@ -14,7 +14,6 @@ import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import org.imgscalr.Scalr;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -208,7 +207,7 @@ public final class PhotoPlugin implements RendererPlugin {
             final var image = ImageIO.read(photo.getFile());
             final var scaledWidth = Math.round(width * 0.8f);
             final var scaledHeight = Math.round(height * 0.8f);
-            final var scaledImage = scaleImage(image, scaledWidth, scaledHeight);
+            final var scaledImage = RenderUtil.scaleImage(image, scaledWidth, scaledHeight);
             final var borderedImage = addBorder(scaledImage);
             borderedImage.flush();
             return borderedImage;
@@ -242,7 +241,7 @@ public final class PhotoPlugin implements RendererPlugin {
                                  final long frame) throws UserException {
         final var width = (int) (photoImage.getWidth() * frame / frames);
         final var height = (int) (photoImage.getHeight() * frame / frames);
-        final var scaledImage = scaleImage(photoImage, width, height);
+        final var scaledImage = RenderUtil.scaleImage(photoImage, width, height);
 
         final var posX = (frameImage.getWidth() - scaledImage.getWidth()) / 2;
         final var posY = (frameImage.getHeight() - scaledImage.getHeight()) / 2;
@@ -254,24 +253,6 @@ public final class PhotoPlugin implements RendererPlugin {
         g2d.dispose();
 
         frameWriter.addFrame(bi2);
-    }
-
-    private static BufferedImage scaleImage(@NonNull final BufferedImage photoImage, final int width, final int height) {
-        BufferedImage image;
-
-        if (width >= height) {
-            image = Scalr.resize(photoImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, width);
-            if (image.getHeight() > height) {
-                image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, height);
-            }
-        } else {
-            image = Scalr.resize(photoImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, height);
-            if (image.getWidth() > width) {
-                image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, width);
-            }
-        }
-
-        return image;
     }
 
     private static BufferedImage addBorder(@NonNull final BufferedImage photoImage) {

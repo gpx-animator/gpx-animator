@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
+import org.imgscalr.Scalr;
+
 public final class RenderUtil {
 
     private RenderUtil() throws InstantiationException {
@@ -25,6 +27,24 @@ public final class RenderUtil {
 
     public static long getTime(final int frame, final long minTime, final double fps, final double speedup) {
         return (long) Math.floor(minTime + frame / fps * 1000d * speedup);
+    }
+
+    public static BufferedImage scaleImage(@NonNull final BufferedImage photoImage, final int width, final int height) {
+        BufferedImage image;
+
+        if (width >= height) {
+            image = Scalr.resize(photoImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, width);
+            if (image.getHeight() > height) {
+                image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, height);
+            }
+        } else {
+            image = Scalr.resize(photoImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, height);
+            if (image.getWidth() > width) {
+                image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, width);
+            }
+        }
+
+        return image;
     }
 
 }
