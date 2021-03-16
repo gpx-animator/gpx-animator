@@ -1,6 +1,7 @@
 package app.gpx_animator.core.preferences;
 
 import app.gpx_animator.core.configuration.adapter.ColorXmlAdapter;
+import app.gpx_animator.ui.UIMode;
 
 import java.awt.Color;
 import java.io.File;
@@ -20,6 +21,7 @@ public final class Preferences {
 
     private static final String CHANGELOG_VERSION = "changelog_version"; //NON-NLS
     private static final String LAST_WORKING_DIR = "last_working_dir"; //NON-NLS
+    private static final String PREVIEW_ENABLED = "preview_enabled"; //NON-NLS
     private static final String RECENT_FILES = "recent_files"; //NON-NLS
     private static final String TILE_CACHE_DIR = "tile_cache_dir"; //NON-NLS
     private static final String TILE_CACHE_TIME_LIMIT = "tile_cache_time_limit"; //NON-NLS
@@ -56,6 +58,14 @@ public final class Preferences {
 
     public static void setLastWorkingDir(final String lastWorkingDir) {
         PREFS.put(LAST_WORKING_DIR, lastWorkingDir);
+    }
+
+    public static void setPreviewEnabled(final Boolean previewEnabled) {
+        PREFS.put(PREVIEW_ENABLED, previewEnabled.toString());
+    }
+
+    public static boolean isPreviewEnabled() {
+        return PREFS.getBoolean(PREVIEW_ENABLED, UIMode.getMode() != UIMode.CLI);
     }
 
     public static List<File> getRecentFiles() {

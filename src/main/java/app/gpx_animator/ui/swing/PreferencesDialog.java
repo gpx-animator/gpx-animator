@@ -56,6 +56,8 @@ public class PreferencesDialog extends EscapeDialog {
         trackColorPanel.add(trackColorRandom, BorderLayout.LINE_START);
         trackColorPanel.add(trackColorSelector, BorderLayout.CENTER);
 
+        final var enablePreview = new JCheckBox();
+        enablePreview.setSelected(Preferences.isPreviewEnabled());
 
         final var cancelButton = new JButton(resourceBundle.getString("ui.dialog.preferences.button.cancel"));
         cancelButton.addActionListener(e -> SwingUtilities.invokeLater(() -> {
@@ -69,6 +71,7 @@ public class PreferencesDialog extends EscapeDialog {
             Preferences.setTileCacheTimeLimit((Long) tileCacheTimeLimitSpinner.getValue());
             Preferences.setTrackColorRandom(trackColorRandom.isSelected());
             Preferences.setTrackColorDefault(trackColorSelector.getColor());
+            Preferences.setPreviewEnabled(enablePreview.isSelected());
             setVisible(false);
             dispose();
         }));
@@ -76,7 +79,7 @@ public class PreferencesDialog extends EscapeDialog {
         setContentPane(FormBuilder.create()
                 .padding(new EmptyBorder(20, 20, 20, 20))
                 .columns("right:p, 5dlu, fill:[200dlu, pref]") //NON-NLS
-                .rows("p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 10dlu, p") //NON-NLS
+                .rows("p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 10dlu, p") //NON-NLS
 
                 .addSeparator(resourceBundle.getString("ui.dialog.preferences.cache.separator")).xyw(1, 1, 3)
                 .add(resourceBundle.getString("ui.dialog.preferences.cachepath.label")).xy(1, 3)
@@ -88,8 +91,12 @@ public class PreferencesDialog extends EscapeDialog {
                 .add(resourceBundle.getString("ui.dialog.preferences.track.color")).xy(1, 9)
                 .add(trackColorPanel).xy(3, 9)
 
-                .addSeparator("").xyw(1, 11, 3)
-                .addBar(cancelButton, saveButton).xyw(1, 13, 3, CellConstraints.RIGHT, CellConstraints.FILL)
+                .addSeparator(resourceBundle.getString("ui.dialog.preferences.rendering")).xyw(1, 11, 3)
+                .add(resourceBundle.getString("ui.dialog.preferences.rendering.enablepreview")).xy(1, 13)
+                .add(enablePreview).xy(3, 13)
+
+                .addSeparator("").xyw(1, 15, 3)
+                .addBar(cancelButton, saveButton).xyw(1, 17, 3, CellConstraints.RIGHT, CellConstraints.FILL)
                 .build());
 
         tileCachePathSelector.setFilename(Preferences.getTileCacheDir());
