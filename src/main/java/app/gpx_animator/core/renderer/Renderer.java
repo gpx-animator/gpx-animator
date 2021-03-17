@@ -215,9 +215,14 @@ public final class Renderer {
                               @NonNull final FrameWriter frameWriter, final int frames,
                               @NonNull final List<Long[]> spanList, @NonNull final TreeMap<Long, Point2D> wpMap,
                               @NonNull final RenderingContext rc) throws UserException {
+        final var stopAfterFrame = cfg.getPreviewLength() == null ? Long.MAX_VALUE : cfg.getPreviewLength() * cfg.getFps() / 1_000;
         var skip = -1f;
         for (var frame = 1; frame <= frames; frame++) {
             if (rc.isCancelled1()) {
+                return;
+            }
+
+            if (frame > stopAfterFrame) {
                 return;
             }
 

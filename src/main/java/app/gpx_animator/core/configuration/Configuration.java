@@ -117,6 +117,8 @@ public final class Configuration {
 
     private SpeedUnit speedUnit;
 
+    private Long previewLength;
+
     @XmlElementWrapper
     @XmlElement(name = "trackConfiguration") //NON-NLS
     private List<TrackConfiguration> trackConfigurationList;
@@ -143,6 +145,7 @@ public final class Configuration {
             final Position informationPosition, final int informationMargin,
             final Position commentPosition, final int commentMargin,
             final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
+            final Long previewLength,
             final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
@@ -189,6 +192,7 @@ public final class Configuration {
         this.photoTime = photoTime;
         this.photoAnimationDuration = photoAnimationDuration;
         this.speedUnit = speedUnit;
+        this.previewLength = previewLength;
     }
 
     public static Builder createBuilder() {
@@ -367,6 +371,10 @@ public final class Configuration {
         return photoAnimationDuration;
     }
 
+    public Long getPreviewLength() {
+        return previewLength;
+    }
+
     public List<TrackConfiguration> getTrackConfigurationList() {
         return trackConfigurationList;
     }
@@ -442,6 +450,7 @@ public final class Configuration {
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
         private SpeedUnit speedUnit = SpeedUnit.KMH;
+        private Long previewLength;
 
 
         public Configuration build() {
@@ -460,6 +469,7 @@ public final class Configuration {
                     informationPosition, informationMargin,
                     commentPosition, commentMargin,
                     photoDirectory, photoTime, photoAnimationDuration,
+                    previewLength,
                     Collections.unmodifiableList(trackConfigurationList)
             );
         }
@@ -682,6 +692,11 @@ public final class Configuration {
 
         public Builder speedUnit(final SpeedUnit speedUnit) {
             this.speedUnit = speedUnit;
+            return this;
+        }
+
+        public Builder previewLength(final Long previewLength) {
+            this.previewLength = previewLength;
             return this;
         }
     }
