@@ -144,7 +144,7 @@ task createVersionFile {
 }
 
 compileJava.dependsOn copyChangelog
-compileJava.dependsOn createVersionFile
 clean.dependsOn deleteChangelog
 assemble.dependsOn check
 check.dependsOn installGitHooks
+jar.dependsOn createVersionFile
