@@ -10,6 +10,7 @@ import app.gpx_animator.core.renderer.Renderer;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.util.Notification;
 import app.gpx_animator.core.util.Sound;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -402,125 +403,7 @@ public final class MainFrame extends JFrame {
         gbcRenderButton.gridx = 3;
         gbcRenderButton.gridy = 0;
         panel.add(renderButton, gbcRenderButton);
-        renderButton.addActionListener(e -> {
-            if (swingWorker != null) {
-                swingWorker.cancel(false);
-                return;
-            }
-
-            final var cfg = createConfiguration(true, true);
-            if (cfg.getOutput().exists()) {
-                final var message = String.format(
-                        resourceBundle.getString("ui.mainframe.dialog.message.overwrite"), cfg.getOutput());
-                final var result = JOptionPane.showConfirmDialog(MainFrame.this,
-                        message, warningTitle, JOptionPane.YES_NO_OPTION);
-                if (result == JOptionPane.NO_OPTION) {
-                    return;
-                }
-            }
-
-            swingWorker = new SwingWorker<>() {
-                @Override
-                protected Void doInBackground() throws Exception {
-                    new Renderer(cfg).render(new RenderingContext() {
-                        @Override
-                        public void setProgress1(final int pct, final String message) {
-                            LOGGER.info("[{}%] {}", pct, message);
-                            setProgress(pct);
-                            publish(String.format("%s (%d%%)", message, pct)); //NON-NLS
-                        }
-
-                        @Override
-                        public boolean isCancelled1() {
-                            return isCancelled();
-                        }
-                    });
-
-                    return null;
-                }
-
-                @Override
-                protected void process(final List<String> chunks) {
-                    if (!chunks.isEmpty()) {
-                        progressBar.setString(chunks.get(chunks.size() - 1));
-                    }
-                }
-
-                @Override
-                protected void done() {
-                    swingWorker = null; // NOPMD -- dereference the SwingWorker to make it available for garbage collection
-                    progressBar.setVisible(false);
-                    //noinspection DuplicateStringLiteralInspection
-                    renderButton.setText(resourceBundle.getString("ui.mainframe.button.render"));
-
-                    try {
-                        get();
-                        final var title = resourceBundle.getString("ui.mainframe.dialog.finished.title");
-                        final var message = resourceBundle.getString("ui.mainframe.dialog.finished.message");
-                        if (Notification.isSupported()) {
-                            Notification.INFO.show(title, message);
-                        } else {
-                            Sound.SUCCESS.play();
-                        }
-                        JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.INFORMATION_MESSAGE);
-                    } catch (final InterruptedException e) {
-                        final var title = resourceBundle.getString("ui.mainframe.dialog.interrupted.title");
-                        final var message = resourceBundle.getString("ui.mainframe.dialog.interrupted.message");
-                        if (Notification.isSupported()) {
-                            Notification.ERROR.show(title, message);
-                        } else {
-                            Sound.ERROR.play();
-                        }
-                        JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.ERROR_MESSAGE);
-                    } catch (final ExecutionException e) {
-                        final var cause = e.getCause();
-                        if (cause instanceof UserException) {
-                            final var title = resourceBundle.getString("ui.mainframe.dialog.title.error");
-                            final var message = cause.getMessage();
-                            if (Notification.isSupported()) {
-                                Notification.ERROR.show(title, message);
-                            } else {
-                                Sound.ERROR.play();
-                            }
-                            JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.ERROR_MESSAGE);
-                        } else {
-                            final var title = resourceBundle.getString("ui.mainframe.dialog.title.error");
-                            final var message = String.format(
-                                    resourceBundle.getString("ui.mainframe.dialog.rendering.error.message"),
-                                    e.getCause().getMessage());
-                            if (Notification.isSupported()) {
-                                Notification.ERROR.show(title, message);
-                            } else {
-                                Sound.ERROR.play();
-                            }
-                            new ErrorDialog(MainFrame.this, message, e);
-                        }
-                    } catch (final CancellationException e) {
-                        final var title = resourceBundle.getString("ui.mainframe.dialog.cancelled.title");
-                        final var message = resourceBundle.getString("ui.mainframe.dialog.cancelled.message");
-                        if (Notification.isSupported()) {
-                            Notification.WARNING.show(title, message);
-                        } else {
-                            Sound.ERROR.play();
-                        }
-                        JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.WARNING_MESSAGE);
-                    }
-                }
-            };
-
-            swingWorker.addPropertyChangeListener(evt -> {
-                final var propertyName = evt.getPropertyName();
-                if (isEqual("progress", propertyName)) { //NON-NLS
-                    progressBar.setValue((Integer) evt.getNewValue());
-                }
-            });
-
-            progressBar.setString("");
-            progressBar.setValue(0);
-            progressBar.setVisible(true);
-            renderButton.setText(resourceBundle.getString("ui.mainframe.button.cancel"));
-            swingWorker.execute();
-        });
+        renderButton.addActionListener(e -> render(progressBar));
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -539,6 +422,126 @@ public final class MainFrame extends JFrame {
 
         SwingUtilities.invokeLater(this::loadDefaults);
         SwingUtilities.invokeLater(this::showChangelogOnce);
+    }
+
+    private void render(@NonNull final JProgressBar progressBar) {
+        if (swingWorker != null) {
+            swingWorker.cancel(false);
+            return;
+        }
+
+        final var cfg = createConfiguration(true, true);
+        if (cfg.getOutput().exists()) {
+            final var message = String.format(
+                    resourceBundle.getString("ui.mainframe.dialog.message.overwrite"), cfg.getOutput());
+            final var result = JOptionPane.showConfirmDialog(MainFrame.this,
+                    message, warningTitle, JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.NO_OPTION) {
+                return;
+            }
+        }
+
+        swingWorker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                new Renderer(cfg).render(new RenderingContext() {
+                    @Override
+                    public void setProgress1(final int pct, final String message) {
+                        LOGGER.info("[{}%] {}", pct, message);
+                        setProgress(pct);
+                        publish(String.format("%s (%d%%)", message, pct)); //NON-NLS
+                    }
+
+                    @Override
+                    public boolean isCancelled1() {
+                        return isCancelled();
+                    }
+                });
+
+                return null;
+            }
+
+            @Override
+            protected void process(final List<String> chunks) {
+                if (!chunks.isEmpty()) {
+                    progressBar.setString(chunks.get(chunks.size() - 1));
+                }
+            }
+
+            @Override
+            protected void done() {
+                swingWorker = null; // NOPMD -- dereference the SwingWorker to make it available for garbage collection
+                progressBar.setVisible(false);
+                //noinspection DuplicateStringLiteralInspection
+                renderButton.setText(resourceBundle.getString("ui.mainframe.button.render"));
+
+                try {
+                    get();
+                    final var title = resourceBundle.getString("ui.mainframe.dialog.finished.title");
+                    final var message = resourceBundle.getString("ui.mainframe.dialog.finished.message");
+                    if (Notification.isSupported()) {
+                        Notification.INFO.show(title, message);
+                    } else {
+                        Sound.SUCCESS.play();
+                    }
+                    JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.INFORMATION_MESSAGE);
+                } catch (final InterruptedException e) {
+                    final var title = resourceBundle.getString("ui.mainframe.dialog.interrupted.title");
+                    final var message = resourceBundle.getString("ui.mainframe.dialog.interrupted.message");
+                    if (Notification.isSupported()) {
+                        Notification.ERROR.show(title, message);
+                    } else {
+                        Sound.ERROR.play();
+                    }
+                    JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.ERROR_MESSAGE);
+                } catch (final ExecutionException e) {
+                    final var cause = e.getCause();
+                    if (cause instanceof UserException) {
+                        final var title = resourceBundle.getString("ui.mainframe.dialog.title.error");
+                        final var message = cause.getMessage();
+                        if (Notification.isSupported()) {
+                            Notification.ERROR.show(title, message);
+                        } else {
+                            Sound.ERROR.play();
+                        }
+                        JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        final var title = resourceBundle.getString("ui.mainframe.dialog.title.error");
+                        final var message = String.format(
+                                resourceBundle.getString("ui.mainframe.dialog.rendering.error.message"),
+                                e.getCause().getMessage());
+                        if (Notification.isSupported()) {
+                            Notification.ERROR.show(title, message);
+                        } else {
+                            Sound.ERROR.play();
+                        }
+                        new ErrorDialog(MainFrame.this, message, e);
+                    }
+                } catch (final CancellationException e) {
+                    final var title = resourceBundle.getString("ui.mainframe.dialog.cancelled.title");
+                    final var message = resourceBundle.getString("ui.mainframe.dialog.cancelled.message");
+                    if (Notification.isSupported()) {
+                        Notification.WARNING.show(title, message);
+                    } else {
+                        Sound.ERROR.play();
+                    }
+                    JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        };
+
+        swingWorker.addPropertyChangeListener(evt -> {
+            final var propertyName = evt.getPropertyName();
+            if (isEqual("progress", propertyName)) { //NON-NLS
+                progressBar.setValue((Integer) evt.getNewValue());
+            }
+        });
+
+        progressBar.setString("");
+        progressBar.setValue(0);
+        progressBar.setVisible(true);
+        renderButton.setText(resourceBundle.getString("ui.mainframe.button.cancel"));
+        swingWorker.execute();
     }
 
     @SuppressWarnings({"PMD.DoNotTerminateVM", "DuplicateStringLiteralInspection"}) // Exit the application on user request
