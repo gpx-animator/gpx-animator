@@ -113,23 +113,23 @@
         <p>
             <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_6_1.exe"
                download="gpx-animator_windows-x64_1_6_1.exe">
-                <button><i class="fa fa-windows"></i> Windows (64 Bit)</button>
+                <button><em class="fa fa-windows"></em> Windows (64 Bit)</button>
             </a>
             <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_6_1.exe"
                download="gpx-animator_windows-x32_1_6_1.exe">
-                <button><i class="fa fa-windows"></i> Windows (32 Bit)</button>
+                <button><em class="fa fa-windows"></em> Windows (32 Bit)</button>
             </a><br/>
             <a href="https://download.gpx-animator.app/gpx-animator_macos_1_6_1.dmg"
                download="gpx-animator_macos_1_6_1.dmg">
-                <button><i class="fa fa-apple"></i> macOS (Intel)</button>
+                <button><em class="fa fa-apple"></em> macOS (Intel)</button>
             </a>
             <a href="https://download.gpx-animator.app/gpx-animator_unix_1_6_1.sh"
                download="gpx-animator_unix_1_6_1.sh">
-                <button><i class="fa fa-linux"></i> Linux</button>
+                <button><em class="fa fa-linux"></em> Linux</button>
             </a><br/>
             <a href="https://download.gpx-animator.app/gpx-animator-1.6.1-all.jar"
                download="gpx-animator-1.6.1-all.jar">
-                <button><i class="fa fa-download"></i> Java Archive</button>
+                <button><em class="fa fa-download"></em> Java Archive</button>
             </a>
         </p>
 
@@ -197,126 +197,126 @@
         <h4>Command line parameters</h4>
 
         <dl>
-            <dt><b>--attribution &lt;text&gt;</b></dt>
+            <dt><strong>--attribution &lt;text&gt;</strong></dt>
             <dd>map attribution text; %MAP_ATTRIBUTION% placeholder is replaced by attribution of selected pre-defined map; default
 <pre>Created by %APPNAME_VERSION%
 %MAP_ATTRIBUTION%</pre>
             </dd>
-            <dt><b>--attribution-position &lt;position&gt;</b></dt>
+            <dt><strong>--attribution-position &lt;position&gt;</strong></dt>
             <dd>sets position for the attribution to be placed on the animation; default bottom left</dd>
-            <dt><b>--attribution-margin &lt;attribution-margin&gt;</b></dt>
+            <dt><strong>--attribution-margin &lt;attribution-margin&gt;</strong></dt>
             <dd>sets margin (in pixels) from edge for the attribution block; default 20</dd>
-            <dt><b>--background-color &lt;background-color&gt;</b></dt>
+            <dt><strong>--background-color &lt;background-color&gt;</strong></dt>
             <dd>background color (behind the map and the background image); default java.awt.Color[r=255,g=255,b=255]</dd>
-            <dt><b>--background-image &lt;background-image&gt;</b></dt>
+            <dt><strong>--background-image &lt;background-image&gt;</strong></dt>
             <dd>background image (above the map)</dd>
-            <dt><b>--background-map-visibility &lt;background-map-visibility&gt;</b></dt>
+            <dt><strong>--background-map-visibility &lt;background-map-visibility&gt;</strong></dt>
             <dd>opacity of the background map from 0.0 to 1.0; default 0.5</dd>
-            <dt><b>--color &lt;color&gt;</b></dt>
+            <dt><strong>--color &lt;color&gt;</strong></dt>
             <dd>track color in #RRGGBB representation; can be specified multiple times if multiple tracks are provided; default some nice color :-)
             </dd>
-            <dt><b>--flashback-color &lt;ARGBcolor&gt;</b></dt>
+            <dt><strong>--flashback-color &lt;ARGBcolor&gt;</strong></dt>
             <dd>transition color between non-idle parts; default opaque white - #ffffffff</dd>
-            <dt><b>--flashback-duration &lt;duration&gt;</b></dt>
+            <dt><strong>--flashback-duration &lt;duration&gt;</strong></dt>
             <dd>time of the idle-skipping flashback effect in milliseconds; default 250</dd>
-            <dt><b>--font &lt;font&gt;</b></dt>
+            <dt><strong>--font &lt;font&gt;</strong></dt>
             <dd>text font for attribution and information; default Monospaced-PLAIN-12</dd>
-            <dt><b>--forced-point-time-interval &lt;milliseconds&gt;</b></dt>
+            <dt><strong>--forced-point-time-interval &lt;milliseconds&gt;</strong></dt>
             <dd>interval between adjanced GPS points in milliseconds - useful for GPX files with missing point time information; if specified then
                 time offset must be set representing absolute; empty for no forcing; can be specified multiple times if multiple tracks are provided
             </dd>
-            <dt><b>--fps &lt;fps&gt;</b></dt>
+            <dt><strong>--fps &lt;fps&gt;</strong></dt>
             <dd>frames per second; default 30.0</dd>
-            <dt><b>--gui &lt;gui&gt;</b></dt>
+            <dt><strong>--gui &lt;gui&gt;</strong></dt>
             <dd>show GUI; default if no argument is specified</dd>
-            <dt><b>--height &lt;height&gt;</b></dt>
+            <dt><strong>--height &lt;height&gt;</strong></dt>
             <dd>video height in pixels; if unspecified, it is derived from width, GPX bounding box and margin</dd>
-            <dt><b>--help &lt;help&gt;</b></dt>
+            <dt><strong>--help &lt;help&gt;</strong></dt>
             <dd>this help</dd>
-            <dt><b>--input &lt;input&gt;</b></dt>
+            <dt><strong>--input &lt;input&gt;</strong></dt>
             <dd>input GPX filename; can be specified multiple times if multiple tracks are provided</dd>
-            <dt><b>--information-position &lt;information-position&gt;</b></dt>
+            <dt><strong>--information-position &lt;information-position&gt;</strong></dt>
             <dd>sets position for the information to be placed on the animation; default bottom right</dd>
-            <dt><b>--information-margin &lt;information-margin&gt;</b></dt>
+            <dt><strong>--information-margin &lt;information-margin&gt;</strong></dt>
             <dd>sets margin (in pixels) from edge for the information block; default 20</dd>
-            <dt><b>--comment-position &lt;comment-position&gt;</b></dt>
+            <dt><strong>--comment-position &lt;comment-position&gt;</strong></dt>
             <dd>sets position for the comment to be placed on the animation; default bottom center</dd>
-            <dt><b>--comment-margin &lt;comment-margin&gt;</b></dt>
+            <dt><strong>--comment-margin &lt;comment-margin&gt;</strong></dt>
             <dd>sets margin (in pixels) from edge for the comment block; default 20</dd>
-            <dt><b>--track-icon &lt;trackIcon&gt;</b></dt>
+            <dt><strong>--track-icon &lt;trackIcon&gt;</strong></dt>
             <dd>enables an icon that replaces the standard circle of the current position (valid values: Airplane, Bicycle, Bus, Car, Jogging,
                 Motorcycle, Riding, Sailing, Ship, Train, Tramway, Trekking); can be specified multiple times if multiple tracks are provided
             </dd>
-            <dt><b>--track-icon-file &lt;trackIconFile&gt;</b></dt>
+            <dt><strong>--track-icon-file &lt;trackIconFile&gt;</strong></dt>
             <dd>allows you to set an icon file for a track; can be specified multiple times if multiple tracks are provided</dd>
-            <dt><b>--track-icon-mirror &lt;mirrorTrackIcon&gt;</b></dt>
+            <dt><strong>--track-icon-mirror &lt;mirrorTrackIcon&gt;</strong></dt>
             <dd>mirror the track icon horizontally; can be specified multiple times if multiple tracks are provided; default false</dd>
-            <dt><b>--label &lt;label&gt;</b></dt>
+            <dt><strong>--label &lt;label&gt;</strong></dt>
             <dd>text displayed next to marker; can be specified multiple times if multiple tracks are provided</dd>
-            <dt><b>--line-width &lt;width&gt;</b></dt>
+            <dt><strong>--line-width &lt;width&gt;</strong></dt>
             <dd>track line width in pixels; can be specified multiple times if multiple tracks are provided; default 2.0</dd>
-            <dt><b>--logo-position &lt;logo-position&gt;</b></dt>
+            <dt><strong>--logo-position &lt;logo-position&gt;</strong></dt>
             <dd>selects position for optional logo to be placed on the animation; default top left</dd>
-            <dt><b>--logo-margin &lt;logo-margin&gt;</b></dt>
+            <dt><strong>--logo-margin &lt;logo-margin&gt;</strong></dt>
             <dd>sets margin (in pixels) from edge for the logo; default 20</dd>
-            <dt><b>--margin &lt;margin&gt;</b></dt>
+            <dt><strong>--margin &lt;margin&gt;</strong></dt>
             <dd>margin in pixels; default 20</dd>
-            <dt><b>--marker-size &lt;size&gt;</b></dt>
+            <dt><strong>--marker-size &lt;size&gt;</strong></dt>
             <dd>marker size in pixels; default 8.0</dd>
-            <dt><b>--max-lat &lt;latitude&gt;</b></dt>
+            <dt><strong>--max-lat &lt;latitude&gt;</strong></dt>
             <dd>maximal latitude; leave empty if it should be automatically computed from the GPX tracks</dd>
-            <dt><b>--max-lon &lt;longitude&gt;</b></dt>
+            <dt><strong>--max-lon &lt;longitude&gt;</strong></dt>
             <dd>maximal longitude; leave empty if it should be automatically computed from the GPX tracks</dd>
-            <dt><b>--min-lat &lt;latitude&gt;</b></dt>
+            <dt><strong>--min-lat &lt;latitude&gt;</strong></dt>
             <dd>minimal latitude; leave empty if it should be automatically computed from the GPX tracks</dd>
-            <dt><b>--min-lon &lt;longitude&gt;</b></dt>
+            <dt><strong>--min-lon &lt;longitude&gt;</strong></dt>
             <dd>minimal longitude; leave empty if it should be automatically computed from the GPX tracks</dd>
-            <dt><b>--output &lt;output&gt;</b></dt>
+            <dt><strong>--output &lt;output&gt;</strong></dt>
             <dd>filename for generated video or filename template for saved image frames where %06d will be replaced by frame sequence number; default
                 D:\tmp\gpx-animator\GPX-Animation.mp4
             </dd>
-            <dt><b>--photo-time &lt;milliseconds&gt;</b></dt>
+            <dt><strong>--photo-time &lt;milliseconds&gt;</strong></dt>
             <dd>the amount of time, a photo should be shown above the map; default 3000</dd>
-            <dt><b>--photo-dir &lt;directory&gt;</b></dt>
+            <dt><strong>--photo-dir &lt;directory&gt;</strong></dt>
             <dd>a directory containing photos to be added to the animation (must contain EXIF information with date and time of photo taken)</dd>
-            <dt><b>--pre-draw-track &lt;predraw-track&gt;</b></dt>
+            <dt><strong>--pre-draw-track &lt;predraw-track&gt;</strong></dt>
             <dd>pre-draw the entire track on the map; default false</dd>
-            <dt><b>--pre-draw-track-color &lt;predraw-track-color&gt;</b></dt>
+            <dt><strong>--pre-draw-track-color &lt;predraw-track-color&gt;</strong></dt>
             <dd>pre-drawn track color in #RRGGBB representation; can be specified multiple times if multiple tracks are provided; default
                 java.awt.Color[r=192,g=192,b=192]
             </dd>
-            <dt><b>--skip-idle &lt;skip-idle&gt;</b></dt>
+            <dt><strong>--skip-idle &lt;skip-idle&gt;</strong></dt>
             <dd>idle-skipping flashback effect duration in milliseconds; set to empty for no flashback; default true</dd>
-            <dt><b>--speedup &lt;speedup&gt;</b></dt>
+            <dt><strong>--speedup &lt;speedup&gt;</strong></dt>
             <dd>speed multiplication of the real time; complementary to specifying total time; default 1000.0</dd>
-            <dt><b>--tail-duration &lt;time&gt;</b></dt>
+            <dt><strong>--tail-duration &lt;time&gt;</strong></dt>
             <dd>highlighted tail length in real time milliseconds; default 3600000</dd>
-            <dt><b>--tail-color &lt;tail-color&gt;</b></dt>
+            <dt><strong>--tail-color &lt;tail-color&gt;</strong></dt>
             <dd>highlighted tail color; default java.awt.Color[r=0,g=0,b=0]</dd>
-            <dt><b>--time-offset &lt;milliseconds&gt;</b></dt>
+            <dt><strong>--time-offset &lt;milliseconds&gt;</strong></dt>
             <dd>time offset for track in milliseconds; can be specified multiple times if multiple tracks are provided</dd>
-            <dt><b>--tms-url-template &lt;tms-url-template&gt;</b></dt>
+            <dt><strong>--tms-url-template &lt;tms-url-template&gt;</strong></dt>
             <dd>slippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; for example use
                 http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap; default
                 https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png
             </dd>
-            <dt><b>--total-time &lt;time&gt;</b></dt>
+            <dt><strong>--total-time &lt;time&gt;</strong></dt>
             <dd>total length of video in milliseconds; complementary to speedup</dd>
-            <dt><b>--speed-unit &lt;speed&gt;</b></dt>
+            <dt><strong>--speed-unit &lt;speed&gt;</strong></dt>
             <dd>sets the unit of speed; default Kilometers per hour</dd>
-            <dt><b>--viewport-width &lt;viewport-width&gt;</b></dt>
+            <dt><strong>--viewport-width &lt;viewport-width&gt;</strong></dt>
             <dd>video viewport width in pixels; if not specified equals width</dd>
-            <dt><b>--viewport-height &lt;viewport-height&gt;</b></dt>
+            <dt><strong>--viewport-height &lt;viewport-height&gt;</strong></dt>
             <dd>video viewport height in pixels; if not specified equals height</dd>
-            <dt><b>--viewport-inertia &lt;viewport-inertia&gt;</b></dt>
+            <dt><strong>--viewport-inertia &lt;viewport-inertia&gt;</strong></dt>
             <dd>video viewport inertia as number of most recent locations used to compute viewport location; default 50</dd>
-            <dt><b>--waypoint-size &lt;size&gt;</b></dt>
+            <dt><strong>--waypoint-size &lt;size&gt;</strong></dt>
             <dd>waypoint size in pixels; for no waypoints specify 0; default 6.0</dd>
-            <dt><b>--width &lt;width&gt;</b></dt>
+            <dt><strong>--width &lt;width&gt;</strong></dt>
             <dd>video width in pixels; if not specified but zoom is specified, then computed from GPX bounding box and margin, otherwise 800; default
                 (800)
             </dd>
-            <dt><b>--zoom &lt;zoom&gt;</b></dt>
+            <dt><strong>--zoom &lt;zoom&gt;</strong></dt>
             <dd>map zoom typically from 1 to 18; if not specified and TMS URL Template (Background Map) is specified then it is computed from width
             </dd>
         </dl>
