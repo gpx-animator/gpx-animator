@@ -127,22 +127,7 @@ public final class Renderer {
         final var zoom = calculateZoomFactor(rc, width);
         final var scale = calculateScaleFactor(width, zoom);
 
-        minX -= cfg.getMargin() / scale;
-        maxX += cfg.getMargin() / scale;
-        minY -= cfg.getMargin() / scale;
-        maxY += cfg.getMargin() / scale;
-
-        if (userSpecifiedWidth) {
-            final var ww = width - (maxX - minX) * scale;
-            minX -= ww / scale / 2.0;
-            maxX += ww / scale / 2.0;
-        }
-
-        if (cfg.getHeight() != null) {
-            final var hh = cfg.getHeight() - (maxY - minY) * scale;
-            minY -= hh / scale / 2.0;
-            maxY += hh / scale / 2.0;
-        }
+        calculateMinMaxValues(userSpecifiedWidth, width, scale);
 
         timePointMapListList.forEach((timePointMapList) -> timePointMapList
                             .forEach((timePointMap) -> translateCoordinatesToZeroZero(scale, timePointMap)));
@@ -206,6 +191,25 @@ public final class Renderer {
             for (final var plugin : plugins) {
                 plugin.renderingCanceled();
             }
+        }
+    }
+
+    private void calculateMinMaxValues(final boolean userSpecifiedWidth, final int width, final double scale) {
+        minX -= cfg.getMargin() / scale;
+        maxX += cfg.getMargin() / scale;
+        minY -= cfg.getMargin() / scale;
+        maxY += cfg.getMargin() / scale;
+
+        if (userSpecifiedWidth) {
+            final var ww = width - (maxX - minX) * scale;
+            minX -= ww / scale / 2.0;
+            maxX += ww / scale / 2.0;
+        }
+
+        if (cfg.getHeight() != null) {
+            final var hh = cfg.getHeight() - (maxY - minY) * scale;
+            minY -= hh / scale / 2.0;
+            maxY += hh / scale / 2.0;
         }
     }
 
