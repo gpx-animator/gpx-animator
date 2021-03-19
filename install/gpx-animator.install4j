@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="8.0.10" transformSequenceNumber="8">
   <directoryPresets config="C:/Users/McPringle/IdeaProjects/gpx-animator/src/main/resources" />
-  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.6.0" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="15" javaMaxVersion="15">
-    <jreBundles jdkProviderId="AdoptOpenJDK" release="openjdk15/jdk-15+36" />
+  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.6.0" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="16" javaMaxVersion="16">
+    <jreBundles jdkProviderId="AdoptOpenJDK" release="openjdk16/jdk-16+36" />
   </application>
   <files keepModificationTimes="true" missingFilesStrategy="error">
     <mountPoints>
