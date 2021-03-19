@@ -2,7 +2,7 @@
 
 ## Version {{VERSION}}
 
-Copyright © {{YEAR}} [Freemap Slovakia](http://www.freemap.sk/)
+{{COPYRIGHT}}
 
 {{DESCRIPTION}}  
 {{LINK}}

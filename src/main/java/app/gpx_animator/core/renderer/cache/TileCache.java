@@ -1,5 +1,6 @@
 /*
- *  Copyright 2019 Martin Ždila, Freemap Slovakia
+ *  Copyright Contributors to the GPX Animator project.
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -12,24 +13,6 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-/*
- *  Caching characteristics:
- *  1. User specifies location of map tile image file cache.
- *  2. If no cache specified, then no caching occurs.
- *  3. Cache design assumes relatively few files (within OS limits of
- *     number of files per directory).
- *  4. Cache file names are based on a hash of the URL. This should remove
- *     any naming issues because of special characters in the URL that might
- *     be incompatible with the OS file naming restrictions. It also allows
- *     for the cache to hold files for more than one TMS or for more than
- *     one zoom level, etc.
- *  5. Cache files age out based on a user specified age limit. By default
- *     this is quite large (12 hours) because with the possible exception of
- *     tiles from the default renderer at openstreetmap.org map tile generation
- *     is not done very often (might be a month or two between changes).
- */
-
 package app.gpx_animator.core.renderer.cache;
 
 import app.gpx_animator.core.Constants;

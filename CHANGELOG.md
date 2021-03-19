@@ -12,6 +12,7 @@ Release date: work in progress 🚧
 * Adding hotkeys for menu entries
 * Closing dialogs using the Esc key
 * Replacing enf of life Xuggler library with JavaCV for video rendering
+* Fixing more broken maps (please report broken maps to [support@gpx-animator.app](mailto:support@gpx-animator.app))
 
 ## Version 1.6.1
 
