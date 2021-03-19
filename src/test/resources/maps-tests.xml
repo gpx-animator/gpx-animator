@@ -81,10 +81,10 @@
     <map>
         <id>osm-cambodia_laos_thailand_vietnam-bilingual</id>
         <validation>
-            <url>http://a.tile.osm-tools.org/osm_then/10/535/359.png</url>
-            <url>http://b.tile.osm-tools.org/osm_then/10/535/359.png</url>
-            <url>http://c.tile.osm-tools.org/osm_then/10/535/359.png</url>
-            <url>http://d.tile.osm-tools.org/osm_then/10/535/359.png</url>
+            <url>http://a.tile.osm-tools.org/osm/10/535/359.png</url>
+            <url>http://b.tile.osm-tools.org/osm/10/535/359.png</url>
+            <url>http://c.tile.osm-tools.org/osm/10/535/359.png</url>
+            <url>http://d.tile.osm-tools.org/osm/10/535/359.png</url>
         </validation>
     </map>
     <map>

@@ -136,7 +136,7 @@
         <name>Cambodia, Laos, Thailand, Vietnam bilingual</name>
         <id>osm-cambodia_laos_thailand_vietnam-bilingual</id>
         <type>tms</type>
-        <url>http://{switch:a,b,c,d}.tile.osm-tools.org/osm_then/{zoom}/{x}/{y}.png</url>
+        <url>http://{switch:a,b,c,d}.tile.osm-tools.org/osm/{zoom}/{x}/{y}.png</url>
         <max-zoom>19</max-zoom>
         <bounds min-lat="5.6" min-lon="97.3" max-lat="23.4" max-lon="109.6" />
         <attribution-text mandatory="true">© osm-tools.org &amp; OpenStreetMap contributors, CC-BY-SA</attribution-text>
