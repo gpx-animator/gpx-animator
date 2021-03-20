@@ -22,8 +22,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Tag("nightly")
 public class MapUtilTest {
@@ -64,7 +65,8 @@ public class MapUtilTest {
         });
 
         LOGGER.info("{} maps passed, {} maps failed, {} maps skipped", testPassed.size(), testFailed.size(), testSkipped.size());
-        assertTrue(testFailed.isEmpty());
+        final var failedMaps = testFailed.stream().map(MapTemplate::toString).collect(Collectors.joining(", "));
+        assertEquals("", failedMaps);
     }
 
     private boolean validateMap(final MapTemplate mapTemplate, final MapValidation mapValidation) {
