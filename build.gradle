@@ -112,6 +112,7 @@ def it = tasks.register("it", Test) {
 }
 
 def nightly = tasks.register("nightly", Test) {
+    dependsOn 'createVersionFile'
     useJUnitPlatform {
         includeTags "nightly"
     }
