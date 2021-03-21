@@ -91,7 +91,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient FontSelector fontSelector;
     private final transient JComboBox<Position> logoLocationComboBox;
-    private final transient JComboBox<Position> attriLocationComboBox;
+    private final transient JComboBox<Position> attributionLocationComboBox;
     private final transient JComboBox<Position> informationLocationComboBox;
     private final transient JComboBox<Position> commentLocationComboBox;
     private final transient JCheckBox skipIdleCheckBox;
@@ -984,14 +984,14 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelAttributionPosition.gridy = 30;
         add(lblAttriPosition, gbcLabelAttributionPosition);
 
-        attriLocationComboBox = new JComboBox<>();
-        attriLocationComboBox.setToolTipText(Option.ATTRIBUTION_POSITION.getHelp());
-        Position.fillComboBox(attriLocationComboBox);
+        attributionLocationComboBox = new JComboBox<>();
+        attributionLocationComboBox.setToolTipText(Option.ATTRIBUTION_POSITION.getHelp());
+        Position.fillComboBox(attributionLocationComboBox);
         final var gbcAttributionPositioning = new GridBagConstraints();
         gbcAttributionPositioning.fill = GridBagConstraints.HORIZONTAL;
         gbcAttributionPositioning.gridx = 1;
         gbcAttributionPositioning.gridy = 30;
-        add(attriLocationComboBox, gbcAttributionPositioning);
+        add(attributionLocationComboBox, gbcAttributionPositioning);
 
         final var lblAttributionMargin = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionMargin.label"));
         final var gbcAttributionLabelMargin = new GridBagConstraints();
@@ -1207,7 +1207,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         flashbackColorSelector.setColor(c.getFlashbackColor());
         flashbackDurationSpinner.setValue(c.getFlashbackDuration());
         logoLocationComboBox.setSelectedItem(c.getLogoPosition() != null ? c.getLogoPosition() : Position.TOP_LEFT);
-        attriLocationComboBox.setSelectedItem(c.getAttributionPosition() != null ? c.getAttributionPosition() : Position.BOTTOM_LEFT);
+        attributionLocationComboBox.setSelectedItem(c.getAttributionPosition() != null ? c.getAttributionPosition() : Position.BOTTOM_LEFT);
         informationLocationComboBox.setSelectedItem(c.getInformationPosition() != null ? c.getInformationPosition() : Position.BOTTOM_RIGHT);
         commentLocationComboBox.setSelectedItem(c.getCommentPosition() != null ? c.getCommentPosition() : Position.BOTTOM_CENTER);
         speedUnitComboBox.setSelectedItem(c.getSpeedUnit() != null ? c.getSpeedUnit() : SpeedUnit.KMH);
@@ -1262,7 +1262,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
                 .attribution(attribution)
-                .attributionPosition((Position) attriLocationComboBox.getSelectedItem())
+                .attributionPosition((Position) attributionLocationComboBox.getSelectedItem())
                 .speedUnit(speedUnit);
     }
 
