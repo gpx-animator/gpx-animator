@@ -178,6 +178,13 @@ public final class CommandLineConfigurationFactory {
                         case WAYPOINT_SIZE -> cfg.waypointSize(Double.parseDouble(args[++i]));
                         case WIDTH -> cfg.width(Integer.parseInt(args[++i]));
                         case ZOOM -> cfg.zoom(Integer.parseInt(args[++i]));
+                        case VERSION -> {
+                            try (var pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
+                                pw.println(Constants.APPNAME_VERSION);
+                                pw.flush();
+                            }
+                            exit();
+                        }
                         default -> throw new AssertionError();
                     }
 
