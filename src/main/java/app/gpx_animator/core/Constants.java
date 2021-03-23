@@ -39,6 +39,8 @@ public enum Constants {
 
     public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 
+    public static final String UPDATES_URL = "https://download.gpx-animator.app/updates.xml";
+
     private static String loadVersionString() {
         final var stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("version.txt");
         assert stream != null : "Version file is missing!";

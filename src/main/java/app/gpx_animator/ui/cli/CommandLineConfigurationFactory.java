@@ -26,16 +26,25 @@ import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.preferences.Preferences;
+import com.jgoodies.common.base.SystemUtils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static app.gpx_animator.core.configuration.TrackConfiguration.DEFAULT_PREDRAW_TRACK_COLOR;
 
@@ -180,9 +189,13 @@ public final class CommandLineConfigurationFactory {
                         case ZOOM -> cfg.zoom(Integer.parseInt(args[++i]));
                         case VERSION -> {
                             try (var pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
-                                pw.println(Constants.APPNAME_VERSION);
+                                pw.print(Constants.APPNAME_VERSION);
+                                pw.print(" (");
+                                pw.print(checkVersion(resourceBundle));
+                                pw.print(")");
                                 pw.flush();
                             }
+
                             exit();
                         }
                         default -> throw new AssertionError();
@@ -346,6 +359,41 @@ public final class CommandLineConfigurationFactory {
                 trimGpxEndList.add(trimGpxEndList.get(i - size2));
             }
         }
+    }
+
+    private static String checkVersion(final ResourceBundle resourceBundle) {
+        final var currentVersion = new DefaultArtifactVersion(Constants.VERSION.replace("-SNAPSHOT", ""));
+
+        try {
+            final var dbf = DocumentBuilderFactory.newInstance();
+            final var db = dbf.newDocumentBuilder();
+            final var doc = db.parse(new URL(Constants.UPDATES_URL).openStream());
+            doc.getDocumentElement().normalize();
+
+            final var entries = doc.getElementsByTagName("entry");
+            for (var i = 0; i < entries.getLength(); i++) {
+                final var elem = (Element) entries.item(i);
+                final var updatesVersion = new DefaultArtifactVersion(elem.getAttribute("newVersion"));
+                final var fileName = elem.getAttribute("fileName");
+                final var isWindows = SystemUtils.IS_OS_WINDOWS && fileName.contains("windows");
+                final var isWindows64 = isWindows && Constants.OS_ARCH.contains("64") && fileName.contains("x64");
+                final var isWindows32 = isWindows && !isWindows64;
+
+                if (isWindows64 || isWindows32
+                        || (SystemUtils.IS_OS_MAC && fileName.contains("macos"))
+                        || (SystemUtils.IS_OS_LINUX && fileName.contains("unix"))) {
+                    return updatesVersion.compareTo(currentVersion) <= 0
+                            ? resourceBundle.getString("version.check.latest")
+                            : String.format(resourceBundle.getString("version.check.newer"), updatesVersion);
+                }
+            }
+        } catch (ParserConfigurationException | SAXException e) {
+            return resourceBundle.getString("version.check.error.xml");
+        } catch (IOException e) {
+            return resourceBundle.getString("version.check.error.network");
+        }
+
+        return resourceBundle.getString("version.check.error.unknown");
     }
 
     public Configuration getConfiguration() {
