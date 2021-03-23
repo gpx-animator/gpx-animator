@@ -81,7 +81,8 @@ public enum Option {
     TRACK_ICON_FILE("track-icon-file"),
     TRACK_ICON_MIRROR("track-icon-mirror"),
     SPEED_UNIT("speed-unit"),
-    PREVIEW_LENGTH("preview-length");
+    PREVIEW_LENGTH("preview-length"),
+    VERSION("version");
 
     private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();
 

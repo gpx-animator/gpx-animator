@@ -90,6 +90,7 @@ public final class Help {
         w.writeOptionHelp(Option.WAYPOINT_SIZE, "size", false, cfg.getWaypointSize()); //NON-NLS
         w.writeOptionHelp(Option.WIDTH, "width", false, "(800)"); // TODO cfg.getWidth() NON-NLS
         w.writeOptionHelp(Option.ZOOM, "zoom", false, cfg.getZoom()); //NON-NLS
+        w.writeOptionHelp(Option.VERSION, "version", false, null); //NON-NLS
     }
 
     public interface OptionHelpWriter {
