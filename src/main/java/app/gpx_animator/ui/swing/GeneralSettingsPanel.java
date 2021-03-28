@@ -24,6 +24,7 @@ import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.util.MapUtil;
 
+import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -703,6 +704,20 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         attributionTextArea = new JTextArea();
         attributionTextArea.setToolTipText(Option.ATTRIBUTION.getHelp());
+        final var attributionPopupMenu = new JPopupMenu();
+        Map.of("%APPNAME_VERSION%", "application name and version", "%MAP_ATTRIBUTION%", "map attribution text")
+                .forEach((variable, title) -> {
+                    final var menuItem = new JMenuItem("insert %s".formatted(title));
+                    menuItem.addActionListener(l -> {
+                        if (attributionTextArea.getSelectedText() != null) {
+                            attributionTextArea.replaceSelection(variable);
+                        } else {
+                            attributionTextArea.insert(variable, attributionTextArea.getCaretPosition());
+                        }
+                    });
+                    attributionPopupMenu.add(menuItem);
+                });
+        attributionTextArea.setComponentPopupMenu(attributionPopupMenu);
         scrollPane.setViewportView(attributionTextArea);
 
         final var lblVisibility = new JLabel(resourceBundle.getString("ui.panel.generalsettings.visibility.label"));
