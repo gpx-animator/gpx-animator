@@ -7,11 +7,12 @@ Release date: work in progress 🚧
 * Showing a preview while rendering is in progress (can be disabled)
 * Playing a sound when rendering is finished or errors occur
 * Using the OS notification system when rendering is finished or errors occur
+* Configure separate font for waypoints
 * Refactored the rendering process to support plugins
 * Fixing wrong photo size with vertical videos
 * Adding hotkeys for menu entries
 * Closing dialogs using the Esc key
-* Replacing enf of life Xuggler library with JavaCV for video rendering
+* Replacing end of life Xuggler library with JavaCV for video rendering
 * Fixing more broken maps (please report broken maps to [support@gpx-animator.app](mailto:support@gpx-animator.app))
 
 ## Version 1.6.1

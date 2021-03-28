@@ -91,6 +91,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JComboBox<SpeedUnit> speedUnitComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient FontSelector fontSelector;
+    private final transient FontSelector waypointFontSelector;
     private final transient JComboBox<Position> logoLocationComboBox;
     private final transient JComboBox<Position> attributionLocationComboBox;
     private final transient JComboBox<Position> informationLocationComboBox;
@@ -123,9 +124,9 @@ abstract class GeneralSettingsPanel extends JPanel {
         gridBagLayout.columnWidths  = new int[]    {91,  100, 0,  0};
         gridBagLayout.columnWeights = new double[] {0.0, 1.0, 0.0, Double.MIN_VALUE};
         gridBagLayout.rowHeights    = new int[]    {14,  20,  20,  20,  20,  20,  14,  20,  20,  20,  20,  20,  20,  20,  20,  50,  45,  20,  21,
-                23,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
+                23,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
         gridBagLayout.rowWeights    = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         setLayout(gridBagLayout);
 
         final var lblOutput = new JLabel(resourceBundle.getString("ui.panel.generalsettings.output.label"));
@@ -1115,12 +1116,28 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcFontName.gridy = 36;
         add(fontSelector, gbcFontName);
 
+        final var lblWaypointFont = new JLabel(resourceBundle.getString("ui.panel.generalsettings.waypointfont.label"));
+        final var gbcLabelWaypointFont = new GridBagConstraints();
+        gbcLabelWaypointFont.anchor = GridBagConstraints.LINE_END;
+        gbcLabelWaypointFont.insets = new Insets(0, 0, 5, 5);
+        gbcLabelWaypointFont.gridx = 0;
+        gbcLabelWaypointFont.gridy = 37;
+        add(lblWaypointFont, gbcLabelWaypointFont);
+
+        waypointFontSelector = new FontSelector();
+        waypointFontSelector.setToolTipText(Option.WAYPOINT_FONT.getHelp());
+        final var gbcWaypointFontName = new GridBagConstraints();
+        gbcWaypointFontName.fill = GridBagConstraints.HORIZONTAL;
+        gbcWaypointFontName.gridx = 1;
+        gbcWaypointFontName.gridy = 37;
+        add(waypointFontSelector, gbcWaypointFontName);
+
         final var lblSpeedUnit = new JLabel(resourceBundle.getString("ui.panel.generalsettings.speedunit.label"));
         final var gbcLabelSpeedUnit = new GridBagConstraints();
         gbcLabelSpeedUnit.anchor = GridBagConstraints.LINE_END;
         gbcLabelSpeedUnit.insets = new Insets(0, 0, 5, 5);
         gbcLabelSpeedUnit.gridx = 0;
-        gbcLabelSpeedUnit.gridy = 37;
+        gbcLabelSpeedUnit.gridy = 38;
         add(lblSpeedUnit, gbcLabelSpeedUnit);
 
         speedUnitComboBox = new JComboBox<>();
@@ -1129,7 +1146,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gbcSpeedUnit = new GridBagConstraints();
         gbcSpeedUnit.fill = GridBagConstraints.HORIZONTAL;
         gbcSpeedUnit.gridx = 1;
-        gbcSpeedUnit.gridy = 37;
+        gbcSpeedUnit.gridy = 38;
         add(speedUnitComboBox, gbcSpeedUnit);
     }
 
@@ -1216,6 +1233,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         logoFileSelector.setFilename(c.getLogo() != null ? c.getLogo().toString() : "");
         fontSelector.setSelectedFont(c.getFont());
         markerSizeSpinner.setValue(c.getMarkerSize());
+        waypointFontSelector.setSelectedFont(c.getWaypointFont());
         waypointSizeSpinner.setValue(c.getWaypointSize());
         backgroundColorSelector.setColor(c.getBackgroundColor());
         backgroundImageSelector.setFilename(c.getBackgroundImage() != null ? c.getBackgroundImage().toString() : "");
@@ -1271,6 +1289,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .output(new File(outputFileSelector.getFilename()))
                 .font(fontSelector.getSelectedFont())
                 .markerSize((Double) markerSizeSpinner.getValue())
+                .waypointFont(waypointFontSelector.getSelectedFont())
                 .waypointSize((Double) waypointSizeSpinner.getValue())
                 .logo(new File(logoFileSelector.getFilename()))
                 .photoDirectory(photosDirectorySelector.getFilename())

@@ -34,6 +34,9 @@ import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+
+import java.awt.Font;
+
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -544,7 +547,7 @@ public final class Renderer {
                 g2.setColor(Color.black);
                 g2.draw(marker);
 
-                printText(g2, ((NamedPoint) p).getName(), (float) p.getX() + 8f, (float) p.getY() + 4f);
+                printText(g2, ((NamedPoint) p).getName(), (float) p.getX() + 8f, (float) p.getY() + 4f, cfg.getWaypointFont());
             }
         }
     }
@@ -676,7 +679,7 @@ public final class Renderer {
 
                 final var label = trackConfiguration.getLabel();
                 if (!label.isEmpty()) {
-                    printText(g2, label, (float) point.getX() + 8f, (float) point.getY() + 4f);
+                    printText(g2, label, (float) point.getX() + 8f, (float) point.getY() + 4f, cfg.getFont());
                 }
 
                 continue outer; // NOPMD -- Continue the outer loop, not the inner one
@@ -797,8 +800,7 @@ public final class Renderer {
         return RenderUtil.getTime(frame, minTime, cfg.getFps(), speedup);
     }
 
-    private void printText(@NonNull final Graphics2D g2, @Nullable final String text, final float x, final float y) {
-        final var font = cfg.getFont();
+    private void printText(@NonNull final Graphics2D g2, @Nullable final String text, final float x, final float y, @NonNull final Font font) {
         final var frc = g2.getFontRenderContext();
         g2.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         final var height = g2.getFontMetrics(font).getHeight();

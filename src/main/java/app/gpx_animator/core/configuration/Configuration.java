@@ -100,6 +100,9 @@ public final class Configuration {
     private Font font;
 
     private Double markerSize;
+
+    @XmlJavaTypeAdapter(FontXmlAdapter.class)
+    private Font waypointFont;
     private Double waypointSize;
 
     private Double minLon;
@@ -139,7 +142,7 @@ public final class Configuration {
             final Color backgroundColor, final File backgroundImage, final Color flashbackColor, final Long flashbackDuration,
             final boolean preDrawTrack,
             final Long keepLastFrame, final File output, final String attribution, final SpeedUnit speedUnit,
-            final Font font, final Double markerSize, final Double waypointSize,
+            final Font font, final Double markerSize, final Font waypointFont, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final Position logoPosition, final int logoMargin,
             final Position attributionPosition, final int attributionMargin,
@@ -174,6 +177,7 @@ public final class Configuration {
         this.attribution = attribution;
         this.font = font;
         this.markerSize = markerSize;
+        this.waypointFont = waypointFont;
         this.waypointSize = waypointSize;
         this.trackConfigurationList = trackConfigurationList;
         this.minLon = minLon;
@@ -302,6 +306,10 @@ public final class Configuration {
 
     public Double getMarkerSize() {
         return markerSize;
+    }
+
+    public Font getWaypointFont() {
+        return waypointFont != null ? waypointFont : getFont();
     }
 
     public Double getWaypointSize() {
@@ -433,6 +441,7 @@ public final class Configuration {
         private String attribution = resourceBundle.getString("configuration.attribution");
         private Font font;
         private Double markerSize = 8.0;
+        private Font waypointFont;
         private Double waypointSize = 6.0;
         private Double minLon;
         private Double maxLon;
@@ -463,7 +472,7 @@ public final class Configuration {
                     skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
                     preDrawTrack,
                     keepLastFrame, output, attribution, speedUnit,
-                    font, markerSize, waypointSize,
+                    font, markerSize, waypointFont, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, logoPosition, logoMargin,
                     attributionPosition, attributionMargin,
@@ -598,6 +607,11 @@ public final class Configuration {
 
         public Builder markerSize(final Double markerSize) {
             this.markerSize = markerSize;
+            return this;
+        }
+
+        public Builder waypointFont(final Font waypointFont) {
+            this.waypointFont = waypointFont;
             return this;
         }
 

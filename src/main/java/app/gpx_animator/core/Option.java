@@ -51,6 +51,7 @@ public enum Option {
     VIEWPORT_HEIGHT("viewport-height"),
     VIEWPORT_INERTIA("viewport-inertia"),
     FONT("font"),
+    WAYPOINT_FONT("waypoint-font"),
     TMS_URL_TEMPLATE("tms-url-template"),
     ATTRIBUTION("attribution"),
     BACKGROUND_MAP_VISIBILITY("background-map-visibility"),
