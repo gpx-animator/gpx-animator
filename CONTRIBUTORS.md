@@ -10,6 +10,7 @@ In alphabetical order:
 * [heroichornet](https://github.com/heroichornet)
 * [markus-schmidlin](https://github.com/markus-schmidlin)
 * [McPringle](https://github.com/McPringle)
+* [mundry](https://github.com/mundry)
 * [n76](https://github.com/n76)
 * [poorlymac](https://github.com/poorlymac)
 * [SirCremefresh](https://github.com/SirCremefresh)
