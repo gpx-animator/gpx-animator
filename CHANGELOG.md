@@ -4,16 +4,50 @@
 
 Release date: work in progress 🚧
 
-* Showing a preview while rendering is in progress (can be disabled)
-* Playing a sound when rendering is finished or errors occur
-* Using the OS notification system when rendering is finished or errors occur
-* Configure separate font for waypoints
-* Refactored the rendering process to support plugins
-* Fixing wrong photo size with vertical videos
-* Adding hotkeys for menu entries
-* Closing dialogs using the Esc key
-* Replacing end of life Xuggler library with JavaCV for video rendering
-* Fixing more broken maps (please report broken maps to [support@gpx-animator.app](mailto:support@gpx-animator.app))
+### New features
+
+#### Realtime preview
+
+When you start the rendering, a new window will open automatically and show you a preview of your video. The preview is updated once a second. You can close the window and if you don't like this new feature, you can disable it in the settings.
+
+#### Notifications
+
+When the rendering finishes, either successful or with an error, you will now hear a sound and see a notification from your OS. 
+
+### Enhancements
+
+#### Waypoint font
+
+You can now configure a separate font for the text of waypoints. If you don't configure a font, the generic font configured will be used. If you don't specify that one either, the standard font will be used.
+
+#### Usability improvements
+
+* All important features in the menu are now accessible via hotkeys.
+* All dialogs can be closed using the `Esc` key.
+
+#### Changelog formatting
+
+To provide you more information about all new and updated things in every new version of GPX Animator, we have introduced this new format to present you all important changes. Do you like the more detailed changelog? Please send your opinion to [support@gpx-animator.app](mailto:support@gpx-animator.app). We would love to read your feedback!
+
+### Fixed bugs
+
+#### Cropped photos
+
+If the videos are higher than wider (vertical videos), added photos could be accidentally cropped. This is now fixed and all photos should fit perfectly in the video frame size. Regardless of whether the video or photo is oriented horizontally or vertically.
+
+### Maintenance
+
+#### Plugin support
+
+To clean up the rendering process, we added plugin support. Now it is much easier to add new features to the track animation. If you want to extend the GPX Animator rendering process, please have a look at the [RendererPlugin](https://github.com/zdila/gpx-animator/blob/master/src/main/java/app/gpx_animator/core/renderer/plugins/RendererPlugin.java) interface.
+
+#### Xuggler end of life
+
+GPX Animator used the [Xuggler](http://www.xuggle.com/xuggler/status) library to create the MP4 files. Xuggler is end of life and was not actively maintained since 2012. For GPX Animator, Xuggler was a risk because bugs and security issued were not fixed anymore. We have replaced Xuggler with [JavaCV](https://github.com/bytedeco/javacv), which is actively maintained, open source, and supports a lot of platforms and codecs.
+
+#### Broken maps
+
+Again in this release, we have removed or fixed more broken maps. Sometimes, the map provider changes the URL, adds a paywall, or just discontinues the service. If you find a broken map in the background map dropdown box, please [create an issue on GitHub](https://github.com/zdila/gpx-animator/issues/new/choose) or email us at [support@gpx-animator.app](mailto:support@gpx-animator.app), so we can fix it in the next version of GPX Animator.
 
 ## Version 1.6.1
 
