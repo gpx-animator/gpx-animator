@@ -2,7 +2,7 @@
 
 ## Version {{VERSION}}
 
-{{COPYRIGHT}}
+_{{COPYRIGHT}}_
 
 {{DESCRIPTION}}  
 {{LINK}}

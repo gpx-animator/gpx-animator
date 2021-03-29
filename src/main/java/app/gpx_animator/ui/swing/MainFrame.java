@@ -86,7 +86,7 @@ public final class MainFrame extends JFrame {
 
     private static final String PROJECT_FILENAME_SUFFIX = ".ga.xml"; //NON-NLS
     @Serial
-    private static final long serialVersionUID = 190371886979948114L;
+    private static final long serialVersionUID = 8250354536303830558L;
     private static final int FIXED_TABS = 1;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
@@ -283,7 +283,7 @@ public final class MainFrame extends JFrame {
             variables.put("LINK", String.format(resourceBundle.getString("ui.dialog.about.link"), //NON-NLS
                     "<a href=\"https://gpx-animator.app\">https://gpx-animator.app</a>")); //NON-NLS
             SwingUtilities.invokeLater(() -> new MarkdownDialog(this,
-                    aboutText, "ABOUT.md", variables, 550, 330));
+                    aboutText, "ABOUT.md", variables, 550, 350));
         });
         mntmAbout.setAccelerator(getKeyStroke(VK_F1, 0));
         mnHelp.add(mntmAbout);

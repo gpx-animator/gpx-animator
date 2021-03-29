@@ -2,7 +2,7 @@
 
 ## Version 1.7.0
 
-Release date: work in progress 🚧
+**Release date: work in progress** 🚧
 
 ### New features
 

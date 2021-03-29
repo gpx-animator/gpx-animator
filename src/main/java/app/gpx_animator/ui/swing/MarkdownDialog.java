@@ -47,7 +47,45 @@ import java.util.stream.Collectors;
 public class MarkdownDialog extends EscapeDialog {
 
     @Serial
-    private static final long serialVersionUID = 1629914977489396863L;
+    private static final long serialVersionUID = 2089322264740577286L;
+
+    private static final String TEMPLATE = """
+            <html lang="en"><head>
+                <meta charset="utf-8" />
+                <title>%s</title>
+                <style>
+                    body {
+                        font-family: sans-serif;
+                        font-size: 12px;
+                    }
+                    h1 {
+                        font-size: 24px;
+                        font-weight: bold;
+                    }
+                    h2 {
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        font-weight: bold;
+                        margin-top: 24px;
+                        margin-bottom: 0;
+                    }
+                    h4 {
+                        font-size: 12px;
+                        font-weight: bold;
+                        margin-top: 12px;
+                        margin-bottom: 0;
+                    }
+                    p {
+                        margin-top: 6px;
+                        margin-bottom: 6px;
+                    }
+                </style>
+            </head><body>
+                %s
+            </body>""";
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
@@ -129,7 +167,8 @@ public class MarkdownDialog extends EscapeDialog {
     private String readFileAsHTML() {
         try {
             final var md = readFileAsMarkdown();
-            return convertMarkdownToHTML(md);
+            final var html = convertMarkdownToHTML(md);
+            return TEMPLATE.formatted(getTitle(), html);
         } catch (final IOException | NullPointerException e) { // NOPMD -- NPE happens on missing file
             e.printStackTrace();
             JOptionPane.showMessageDialog(MarkdownDialog.this,
