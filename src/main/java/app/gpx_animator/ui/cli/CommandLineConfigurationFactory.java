@@ -188,8 +188,8 @@ public final class CommandLineConfigurationFactory {
                         case ZOOM -> cfg.zoom(Integer.parseInt(args[++i]));
                         case VERSION -> {
                             try (var pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
-                                pw.print(Constants.APPNAME_VERSION);
-                                pw.print(" (");
+                                pw.println(Constants.APPNAME_VERSION);
+                                pw.print("(");
                                 pw.print(checkVersion(resourceBundle));
                                 pw.print(")");
                                 pw.flush();
