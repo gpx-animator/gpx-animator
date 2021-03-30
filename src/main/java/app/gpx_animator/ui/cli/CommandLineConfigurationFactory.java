@@ -27,15 +27,23 @@ import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static app.gpx_animator.core.configuration.TrackConfiguration.DEFAULT_PREDRAW_TRACK_COLOR;
 
@@ -182,8 +190,12 @@ public final class CommandLineConfigurationFactory {
                         case VERSION -> {
                             try (var pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
                                 pw.println(Constants.APPNAME_VERSION);
+                                pw.print("(");
+                                pw.print(checkVersion(resourceBundle));
+                                pw.print(")");
                                 pw.flush();
                             }
+
                             exit();
                         }
                         default -> throw new AssertionError();
@@ -346,6 +358,31 @@ public final class CommandLineConfigurationFactory {
             for (var i = size2; i < size; i++) {
                 trimGpxEndList.add(trimGpxEndList.get(i - size2));
             }
+        }
+    }
+
+    private static String checkVersion(final ResourceBundle resourceBundle) {
+        final var currentVersion = new DefaultArtifactVersion(Constants.VERSION.replace("-SNAPSHOT", ""));
+
+        try {
+            final var dbf = DocumentBuilderFactory.newInstance();
+            final var db = dbf.newDocumentBuilder();
+            final var doc = db.parse(new URL(Constants.UPDATES_URL).openStream());
+            doc.getDocumentElement().normalize();
+
+            final var elem = (Element) doc.getElementsByTagName("entry").item(0);
+            if (elem == null) {
+                return resourceBundle.getString("version.check.error.xml");
+            }
+
+            final var updatesVersion = new DefaultArtifactVersion(elem.getAttribute("newVersion"));
+            return updatesVersion.compareTo(currentVersion) <= 0
+                    ? resourceBundle.getString("version.check.latest")
+                    : String.format(resourceBundle.getString("version.check.newer"), updatesVersion);
+        } catch (ParserConfigurationException | SAXException e) {
+            return resourceBundle.getString("version.check.error.xml");
+        } catch (IOException e) {
+            return resourceBundle.getString("version.check.error.network");
         }
     }
 
