@@ -99,25 +99,36 @@ task installGitHooks(type: Copy) {
     fileMode 0755
 }
 
-def test = tasks.named("test") {
+test {
     useJUnitPlatform {
         excludeTags "it", "nightly"
     }
+    maxParallelForks = 4
+    minHeapSize = "1G"
+    maxHeapSize = "2G"
+    dependsOn 'createVersionFile'
 }
 
-def it = tasks.register("it", Test) {
+task it(type: Test) {
     useJUnitPlatform {
         includeTags "it"
     }
+    maxParallelForks = 4
+    minHeapSize = "1G"
+    maxHeapSize = "2G"
     shouldRunAfter test
+    dependsOn 'createVersionFile'
 }
 
-def nightly = tasks.register("nightly", Test) {
-    dependsOn 'createVersionFile'
+task nightly(type: Test) {
     useJUnitPlatform {
         includeTags "nightly"
     }
+    maxParallelForks = 4
+    minHeapSize = "1G"
+    maxHeapSize = "2G"
     shouldRunAfter test
+    dependsOn 'createVersionFile'
 }
 
 shadowJar {
