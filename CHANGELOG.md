@@ -20,6 +20,10 @@ When the rendering finishes, either successful or with an error, you will now he
 
 You can now configure a separate font for the text of waypoints. If you don't configure a font, the generic font configured will be used. If you don't specify that one either, the standard font will be used.
 
+#### Read speed from GPX file
+
+If your GPX file contains speed data, GPX Animator will use the speed values from your file instead of calculating the speed by distance and time on its own. The speed values provided by your GPS recording device is usually more accurate than a calculation afterwards.
+
 #### Usability improvements
 
 * All important features in the menu are now accessible via hotkeys.

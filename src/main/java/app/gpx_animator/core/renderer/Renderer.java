@@ -622,7 +622,7 @@ public final class Renderer {
                 namedPoint.setName(((Waypoint) latLon).getName());
                 point = namedPoint;
             } else {
-                point = new GpxPoint(x, y, latLon, time);
+                point = new GpxPoint(x, y, latLon, time, latLon.getSpeed());
             }
 
             // hack to prevent overwriting existing (way)point with same time

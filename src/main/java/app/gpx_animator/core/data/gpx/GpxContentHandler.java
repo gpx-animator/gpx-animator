@@ -48,6 +48,7 @@ public final class GpxContentHandler extends DefaultHandler {
     private static final String ELEM_TRKPT = "trkpt"; //NON-NLS
     private static final String ELEM_WPT = "wpt"; //NON-NLS
     private static final String ELEM_TIME = "time"; //NON-NLS
+    private static final String ELEM_SPEED = "speed"; //NON-NLS
     private static final String ELEM_NAME = "name"; //NON-NLS
     private static final String ELEM_CMT = "cmt"; //NON-NLS
 
@@ -58,6 +59,7 @@ public final class GpxContentHandler extends DefaultHandler {
     private List<LatLon> timePointList;
     private StringBuilder sb;
     private long time = Long.MIN_VALUE;
+    private Double speed = null;
     private double lat;
     private double lon;
     private String name;
@@ -71,7 +73,10 @@ public final class GpxContentHandler extends DefaultHandler {
         } else if (isEqual(ELEM_TRKPT, qName) || isEqual(ELEM_WPT, qName)) {
             lat = Double.parseDouble(attributes.getValue(ATTR_LAT));
             lon = Double.parseDouble(attributes.getValue(ATTR_LON));
-        } else if (isEqual(ELEM_TIME, qName) || isEqual(ELEM_NAME, qName) || isEqual(ELEM_CMT, qName)) {
+        } else if (isEqual(ELEM_TIME, qName)
+                || isEqual(ELEM_SPEED, qName)
+                || isEqual(ELEM_NAME, qName)
+                || isEqual(ELEM_CMT, qName)) {
             sb = new StringBuilder();
         }
     }
@@ -92,8 +97,9 @@ public final class GpxContentHandler extends DefaultHandler {
             timePointListList.add(timePointList);
             timePointList = null;
         } else if (isEqual(ELEM_TRKPT, qName)) {
-            timePointList.add(new LatLon(lat, lon, time, cmt));
+            timePointList.add(new LatLon(lat, lon, time, speed, cmt));
             time = Long.MIN_VALUE;
+            speed = null;
             cmt = null;
         } else if (isEqual(ELEM_WPT, qName)) {
             waypointList.add(new Waypoint(lat, lon, time, name));
@@ -101,6 +107,10 @@ public final class GpxContentHandler extends DefaultHandler {
             final var dateTime = parseDateTime(sb.toString());
             time = dateTime.toInstant().toEpochMilli();
             sb = null;
+        } else if (isEqual(ELEM_SPEED, qName)) {
+            if (!sb.isEmpty()) {
+                speed = Double.parseDouble(sb.toString());
+            }
         } else if (isEqual(ELEM_NAME, qName)) {
             name = sb.toString();
             sb = null;

@@ -15,6 +15,8 @@
  */
 package app.gpx_animator.core.data;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -29,12 +31,15 @@ public class LatLon implements Serializable {
 
     private final long time;
 
+    private final Double speed;
+
     private final String cmt;
 
-    public LatLon(final double lat, final double lon, final long time, final String cmt) {
+    public LatLon(final double lat, final double lon, final long time, @Nullable final Double speed, final String cmt) {
         this.lat = lat;
         this.lon = lon;
         this.time = time;
+        this.speed = speed;
         this.cmt = cmt;
     }
 
@@ -48,6 +53,10 @@ public class LatLon implements Serializable {
 
     public final long getTime() {
         return time;
+    }
+
+    public final Double getSpeed() {
+        return speed;
     }
 
     public final String getCmt() {

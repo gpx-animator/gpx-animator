@@ -27,6 +27,7 @@ interface Calculation {
 }
 
 public enum SpeedUnit {
+    MPS("mps", kmh -> kmh * 0.277778),
     KMH("km/h", kmh -> kmh),
     MPH("mph", kmh -> kmh * 0.62137119223733),
     MIN_KM("min/km", kmh -> 3600 / kmh / 60),

@@ -17,6 +17,8 @@ package app.gpx_animator.core.data.gpx;
 
 import app.gpx_animator.core.data.LatLon;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
+
 import java.awt.geom.Point2D;
 import java.io.Serial;
 
@@ -27,11 +29,13 @@ public final class GpxPoint extends Point2D.Double {
 
     private final LatLon latLon;
     private final long time;
+    private final java.lang.Double speed;
 
-    public GpxPoint(final double x, final double y, final LatLon latLon, final long time) {
+    public GpxPoint(final double x, final double y, final LatLon latLon, final long time, @Nullable final java.lang.Double speed) {
         super(x, y);
         this.latLon = latLon;
         this.time = time;
+        this.speed = speed;
     }
 
     public LatLon getLatLon() {
@@ -40,5 +44,9 @@ public final class GpxPoint extends Point2D.Double {
 
     public long getTime() {
         return time;
+    }
+
+    public java.lang.Double getSpeed() {
+        return speed;
     }
 }

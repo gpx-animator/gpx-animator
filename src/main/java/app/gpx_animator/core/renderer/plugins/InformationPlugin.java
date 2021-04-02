@@ -45,7 +45,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     private transient long minTime;
     private transient double speedup;
 
-    private final transient Map<Integer, Long> speedValues = new HashMap<>();
+    private final transient Map<Integer, Double> speedValues = new HashMap<>();
     private transient GpxPoint lastSpeedPoint = null;
 
     public InformationPlugin(@NonNull final Configuration configuration) {
@@ -105,22 +105,24 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
 
 
     private double calculateSpeedForDisplay(final GpxPoint point, final long time, final int frame) {
-        final var speed = calculateSpeed(point, time);
+        final var speed = point.getSpeed() != null
+                ? point.getSpeed() * 3.6 // mps to kmh
+                : calculateSpeed(point, time);
         speedValues.put(frame, speed);
 
         final var deleteBefore = frame - (Math.round(fps)); // 1 second
         speedValues.keySet().removeIf((f) -> f < deleteBefore);
 
-        return speedUnit.convertSpeed(Math.round(speedValues.values().stream().mapToLong(Long::longValue).average().orElse(0)));
+        return speedUnit.convertSpeed(Math.round(speedValues.values().stream().mapToDouble(Double::doubleValue).average().orElse(0)));
     }
 
 
-    private long calculateSpeed(final GpxPoint point, final long time) {
+    private double calculateSpeed(final GpxPoint point, final long time) {
         final var timeout = time - 1_000 * 60; // 1 minute // TODO use speedup and fps
         final var distance = calculateDistance(lastSpeedPoint, point);
         final double timeDiff = lastSpeedPoint == null ? 0 : point.getTime() - lastSpeedPoint.getTime();
 
-        final long speed;
+        final double speed;
         if (distance > 0 && point.getTime() > timeout) {
             speed = Math.round((3_600 * distance) / timeDiff);
         } else {
