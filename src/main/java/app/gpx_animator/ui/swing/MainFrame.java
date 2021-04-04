@@ -289,10 +289,8 @@ public final class MainFrame extends JFrame {
         mnHelp.add(mntmAbout);
 
         final var mntmLicense = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.license"));
-        mntmLicense.addActionListener(e -> {
-            new MarkdownDialog(MainFrame.this, resourceBundle.getString("ui.mainframe.menu.help.license"),
-                    "LICENSE.md", 700, 500);
-        });
+        mntmLicense.addActionListener(e -> new MarkdownDialog(MainFrame.this, resourceBundle.getString("ui.mainframe.menu.help.license"),
+                "LICENSE.md", 700, 500));
         mnHelp.add(mntmLicense);
 
         final var mntmUsage = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.usage"));
