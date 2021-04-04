@@ -606,12 +606,18 @@ public final class MainFrame extends JFrame {
 
     private void pupulateOpenRecentMenu() {
         openRecent.removeAll();
+        var ref = new Object() {
+            int counter = 0;
+        };
         Preferences.getRecentFiles().forEach(recentFile -> {
-            var item = new JMenuItem(recentFile.getName());
-                    openRecent.add(item);
-                    item.addActionListener(e -> openFile(recentFile));
-                }
-        );
+            final var item = new JMenuItem(recentFile.getName());
+            if (++ref.counter < 10) {
+                item.setAccelerator(getKeyStroke(48 + ref.counter, CTRL_DOWN_MASK));
+            }
+            openRecent.add(item);
+            item.addActionListener(e -> openFile(recentFile));
+        });
+        openRecent.setEnabled(ref.counter > 0);
     }
 
     private void openFile(final File fileToOpen) {

@@ -27,6 +27,7 @@ If your GPX file contains speed data, GPX Animator will use the speed values fro
 #### Usability improvements
 
 * All important features in the menu are now accessible via hotkeys.
+* Recently opened files can be accessed via hotkeys.
 * All dialogs can be closed using the `Esc` key.
 * License information can be found in the `Help` menu.
 
