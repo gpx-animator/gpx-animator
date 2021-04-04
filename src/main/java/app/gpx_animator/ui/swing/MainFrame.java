@@ -27,6 +27,9 @@ import app.gpx_animator.core.util.Notification;
 import app.gpx_animator.core.util.Sound;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -604,20 +607,19 @@ public final class MainFrame extends JFrame {
         setChanged(false);
     }
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition") // maximum of 10 items can get a hotkey (see if-condition)
     private void pupulateOpenRecentMenu() {
         openRecent.removeAll();
-        var ref = new Object() {
-            int counter = 0;
-        };
+        final var counter = new AtomicInteger(0);
         Preferences.getRecentFiles().forEach(recentFile -> {
             final var item = new JMenuItem(recentFile.getName());
-            if (++ref.counter < 10) {
-                item.setAccelerator(getKeyStroke(48 + ref.counter, CTRL_DOWN_MASK));
+            if (counter.incrementAndGet() < 10) {
+                item.setAccelerator(getKeyStroke(48 + counter.get(), CTRL_DOWN_MASK));
             }
             openRecent.add(item);
             item.addActionListener(e -> openFile(recentFile));
         });
-        openRecent.setEnabled(ref.counter > 0);
+        openRecent.setEnabled(counter.get() > 0);
     }
 
     private void openFile(final File fileToOpen) {
