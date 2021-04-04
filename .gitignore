@@ -36,6 +36,7 @@ Thumbs.db
 
 # Files copied at build time
 /src/main/resources/CHANGELOG.md
+/src/main/resources/LICENSE.md
 
 # Install4J
 /install/gpx-animator.install4j~
