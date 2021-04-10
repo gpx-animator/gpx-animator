@@ -165,7 +165,7 @@ public final class Renderer {
 
         final var plugins = PluginUtil.getAvailablePlugins(cfg, frameWriter, rc);
         final var frames = calculateSpeedupAndReturnFrames(plugins);
-        final var metadata = new Metadata(zoom, minX, maxX, minY, maxY, minTime, maxTime, speedup);
+        final var metadata = new Metadata(zoom, minX, maxX, minY, maxY, minTime, maxTime, speedup, frames);
 
         for (final var plugin : plugins) {
             plugin.setMetadata(metadata);

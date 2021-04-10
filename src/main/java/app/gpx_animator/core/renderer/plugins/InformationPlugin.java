@@ -44,6 +44,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
 
     private transient long minTime;
     private transient double speedup;
+    private transient int frames;
 
     private final transient Map<Integer, Double> speedValues = new HashMap<>();
     private transient GpxPoint lastSpeedPoint = null;
@@ -62,6 +63,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     public void setMetadata(@NonNull final Metadata metadata) {
         this.minTime = metadata.minTime();
         this.speedup = metadata.speedup();
+        this.frames = metadata.frames();
     }
 
     @Override
@@ -105,6 +107,10 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
 
 
     private double calculateSpeedForDisplay(final GpxPoint point, final long time, final int frame) {
+        if (frame == frames) {
+            return 0.0; // for the last frame always zero
+        }
+
         final var speed = point.getSpeed() != null
                 ? point.getSpeed() * 3.6 // mps to kmh
                 : calculateSpeed(point, time);
