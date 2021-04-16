@@ -135,6 +135,10 @@ pmd {
     ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
 }
 
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
 task createVersionFile {
     doLast {
         def version = project.version.toString()
