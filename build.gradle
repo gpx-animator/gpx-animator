@@ -139,7 +139,7 @@ task createVersionFile {
     }
 }
 
-compileJava.dependsOn copyChangelog
+processResources.dependsOn copyChangelog
 clean.dependsOn deleteChangelog
 assemble.dependsOn check
 check.dependsOn installGitHooks
