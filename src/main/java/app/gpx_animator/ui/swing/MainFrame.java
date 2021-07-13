@@ -20,13 +20,18 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
+import app.gpx_animator.core.data.MapTemplate;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.Renderer;
 import app.gpx_animator.core.renderer.RenderingContext;
+import app.gpx_animator.core.util.MapUtil;
 import app.gpx_animator.core.util.Notification;
 import app.gpx_animator.core.util.Sound;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import java.awt.Cursor;
+
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -210,6 +215,11 @@ public final class MainFrame extends JFrame {
 
         mnFile.addSeparator();
 
+        final var updateMapsMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.updatemaps"));
+        mnFile.add(updateMapsMenu);
+
+        mnFile.addSeparator();
+
         final var mntmExit = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.exit"));
         mntmExit.addActionListener(this::exitApplication);
         mntmExit.setAccelerator(getKeyStroke(VK_F4, ALT_DOWN_MASK));
@@ -348,8 +358,8 @@ public final class MainFrame extends JFrame {
                 setChanged(true);
             }
         };
-
         generalScrollPane.setViewportView(generalSettingsPanel);
+        updateMapsMenu.addActionListener(e -> new MapLoader(this, generalSettingsPanel, resourceBundle).execute());
 
         final var panel = new JPanel();
         final var gbcPanel = new GridBagConstraints();
@@ -409,6 +419,7 @@ public final class MainFrame extends JFrame {
         });
 
         SwingUtilities.invokeLater(this::loadDefaults);
+        SwingUtilities.invokeLater(this::checkMapData);
         SwingUtilities.invokeLater(this::showChangelogOnce);
     }
 
@@ -763,6 +774,17 @@ public final class MainFrame extends JFrame {
         }
     }
 
+    private void checkMapData() {
+        if (MapUtil.hasNoMaps() && JOptionPane.showConfirmDialog(this,
+                resourceBundle.getString("ui.mainframe.dialog.message.mapdata"),
+                resourceBundle.getString("ui.mainframe.dialog.title.mapdata"),
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            new MapLoader(this, generalSettingsPanel, resourceBundle).execute();
+        } else {
+            MapUtil.touchMapFile();
+        }
+    }
+
     @SuppressFBWarnings(value = "DMI_RANDOM_USED_ONLY_ONCE", justification = "we need just ONE random number ONCE")
     static class TrackActionListener implements ActionListener {
 
@@ -809,4 +831,44 @@ public final class MainFrame extends JFrame {
         }
     }
 
+    static class MapLoader extends SwingWorker<List<MapTemplate>, Void> {
+
+        private final MainFrame mainFrame;
+        private final GeneralSettingsPanel generalSettingsPanel;
+        private final ResourceBundle resourceBundle;
+
+        public MapLoader(@NotNull final MainFrame mainFrame,
+                         @NotNull final GeneralSettingsPanel generalSettingsPanel,
+                         @NotNull final ResourceBundle resourceBundle) {
+            this.mainFrame = mainFrame;
+            this.generalSettingsPanel = generalSettingsPanel;
+            this.resourceBundle = resourceBundle;
+            mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        }
+
+        @Override
+        protected List<MapTemplate> doInBackground() {
+            return MapUtil.updateMaps();
+        }
+
+        @Override
+        public void done() {
+            try {
+                final var mapTemplateList = get();
+                generalSettingsPanel.updateMaps(mapTemplateList);
+                mainFrame.setCursor(Cursor.getDefaultCursor());
+                JOptionPane.showMessageDialog(mainFrame,
+                        String.format(resourceBundle.getString("ui.mainframe.dialog.message.mapupdate.success"), mapTemplateList.size()),
+                        resourceBundle.getString("ui.mainframe.dialog.title.success"),
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (final Exception e) {
+                new ErrorDialog(mainFrame,
+                        String.format(resourceBundle.getString("ui.mainframe.dialog.message.mapupdate.error"),
+                                e.getMessage()), e);
+
+            } finally {
+                mainFrame.setCursor(Cursor.getDefaultCursor());
+            }
+        }
+    }
 }

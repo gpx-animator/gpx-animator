@@ -14,6 +14,10 @@ When you start the rendering, a new window will open automatically and show you 
 
 When the rendering finishes, either successful or with an error, you will now hear a sound and see a notification from your OS. 
 
+#### Map data update
+
+GPX Animator can provide you with an extensive list of maps that you can use as background for your animations. This list is now loaded from the Internet and you can update it at any time independent of a release.
+
 ### Enhancements
 
 #### Waypoint font

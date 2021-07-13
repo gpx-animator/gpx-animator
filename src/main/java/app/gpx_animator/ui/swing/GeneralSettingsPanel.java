@@ -16,15 +16,15 @@
 package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.core.Constants;
-import app.gpx_animator.core.data.MapTemplate;
 import app.gpx_animator.core.Option;
 import app.gpx_animator.core.configuration.Configuration;
+import app.gpx_animator.core.data.MapTemplate;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.util.MapUtil;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -56,6 +56,7 @@ import java.io.File;
 import java.io.Serial;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import static app.gpx_animator.core.util.Utils.isEqual;
@@ -109,11 +110,12 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner photoTimeSpinner;
     private final transient JSpinner photoAnimationDurationSpinner;
     private final transient JTextArea attributionTextArea;
-    private final transient List<MapTemplate> mapTemplateList;
     private final transient JSpinner maxLatSpinner;
     private final transient JSpinner minLonSpinner;
     private final transient JSpinner maxLonSpinner;
     private final transient JSpinner minLatSpinner;
+
+    private transient List<MapTemplate> mapTemplateList;
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
@@ -1148,6 +1150,11 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcSpeedUnit.gridx = 1;
         gbcSpeedUnit.gridy = 38;
         add(speedUnitComboBox, gbcSpeedUnit);
+    }
+
+    public void updateMaps(@NotNull final List<MapTemplate> mapTemplateList) {
+        this.mapTemplateList = mapTemplateList;
+        tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<>(mapTemplateList.toArray(new MapTemplate[0])));
     }
 
     private FileSelector createImageFileSelector() {

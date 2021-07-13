@@ -16,6 +16,7 @@
 package app.gpx_animator.core.util;
 
 import app.gpx_animator.core.data.MapTemplate;
+import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.xml.sax.SAXException;
@@ -24,18 +25,70 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public final class MapUtil {
 
+    private static final String MAPS_UPDATE_URL = "https://josm.openstreetmap.de/maps";
+
     private MapUtil() throws InstantiationException {
         throw new InstantiationException("MapUtil is a utility class and can't be instantiated!");
     }
 
+    private static Path getMapPath() {
+        return Path.of(Preferences.getConfigurationDir(), "maps.xml");
+    }
+
+    public static boolean hasNoMaps() {
+        return !getMapPath().toFile().exists();
+    }
+
+    public static List<MapTemplate> updateMaps() {
+        try {
+            final var client = HttpClient.newHttpClient();
+            final var request = HttpRequest.newBuilder()
+                    .uri(URI.create(MAPS_UPDATE_URL))
+                    .GET()
+                    .build();
+
+            final var response = client.send(
+                    request, HttpResponse.BodyHandlers.ofString());
+
+            final var xml = response.body();
+
+            Files.writeString(getMapPath(), xml);
+
+            return readMaps();
+        } catch (final InterruptedException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void touchMapFile() {
+        if (hasNoMaps()) {
+            try {
+                Files.writeString(getMapPath(), "");
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static List<MapTemplate> readMaps() {
+        if (hasNoMaps() || getMapPath().toFile().length() == 0) {
+            return List.of();
+        }
+
         final var factory = SAXParserFactory.newInstance();
         final SAXParser saxParser;
         try {
@@ -47,7 +100,7 @@ public final class MapUtil {
         final List<MapTemplate> labeledItems = new ArrayList<>();
 
         try {
-            try (var is = MapUtil.class.getResourceAsStream("/maps.xml")) { //NON-NLS
+            try (var is = new FileInputStream(getMapPath().toFile())) {
                 saxParser.parse(is, new DefaultHandler() {
                     private final StringBuilder sb = new StringBuilder();
                     private String id;
