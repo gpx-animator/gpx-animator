@@ -1152,8 +1152,8 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(speedUnitComboBox, gbcSpeedUnit);
     }
 
-    public void updateMaps(@NotNull final List<MapTemplate> mapTemplateList) {
-        this.mapTemplateList = mapTemplateList;
+    public void updateMaps(@NotNull final List<MapTemplate> newMapTemplateList) {
+        mapTemplateList = newMapTemplateList;
         tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<>(mapTemplateList.toArray(new MapTemplate[0])));
     }
 

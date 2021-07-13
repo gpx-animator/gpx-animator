@@ -19,4 +19,5 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressFBWarnings("EQ_UNUSUAL") // TODO SpotBugs 4.2.0 does not know how to handle the equals method of Java records #305
-public record Metadata(@Nullable Integer zoom, double minX, double maxX, double minY, double maxY, long minTime, long maxTime, double speedup, int frames) { }
+public record Metadata(@Nullable Integer zoom, double minX, double maxX, double minY, double maxY, long minTime, long maxTime,
+                       double speedup, int frames) { }

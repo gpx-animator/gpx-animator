@@ -833,11 +833,11 @@ public final class MainFrame extends JFrame {
 
     static class MapLoader extends SwingWorker<List<MapTemplate>, Void> {
 
-        private final MainFrame mainFrame;
-        private final GeneralSettingsPanel generalSettingsPanel;
-        private final ResourceBundle resourceBundle;
+        private final transient MainFrame mainFrame;
+        private final transient GeneralSettingsPanel generalSettingsPanel;
+        private final transient ResourceBundle resourceBundle;
 
-        public MapLoader(@NotNull final MainFrame mainFrame,
+        MapLoader(@NotNull final MainFrame mainFrame,
                          @NotNull final GeneralSettingsPanel generalSettingsPanel,
                          @NotNull final ResourceBundle resourceBundle) {
             this.mainFrame = mainFrame;
