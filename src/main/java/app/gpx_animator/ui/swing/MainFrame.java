@@ -27,9 +27,6 @@ import app.gpx_animator.core.util.Notification;
 import app.gpx_animator.core.util.Sound;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,12 +72,14 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static app.gpx_animator.core.util.Utils.isEqual;
 import static java.awt.event.InputEvent.ALT_DOWN_MASK;
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.KeyEvent.VK_F1;
 import static java.awt.event.KeyEvent.VK_F4;
+import static java.util.Objects.requireNonNull;
 import static javax.swing.KeyStroke.getKeyStroke;
 
 public final class MainFrame extends JFrame {
@@ -97,7 +96,6 @@ public final class MainFrame extends JFrame {
     private final transient String warningTitle = resourceBundle.getString("ui.mainframe.dialog.title.warning");
     private final transient String errorTitle = resourceBundle.getString("ui.mainframe.dialog.title.error");
 
-    private final transient Random random = new Random();
     private final transient File defaultConfigFile = new File(Preferences.getConfigurationDir()
             + Preferences.FILE_SEPARATOR + "defaultConfig.ga.xml");
     private final transient JTabbedPane tabbedPane;
@@ -115,7 +113,8 @@ public final class MainFrame extends JFrame {
         Notification.init();
 
         final var addTrackActionListener = new ActionListener() {
-            private float hue = random.nextFloat();
+            @SuppressFBWarnings(value = "DMI_RANDOM_USED_ONLY_ONCE", justification = "we need just ONE random number ONCE")
+            private float hue = new Random().nextFloat();
 
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -166,8 +165,8 @@ public final class MainFrame extends JFrame {
         setTitle(Constants.APPNAME_VERSION);
         setIconImages(
                 Arrays.asList(
-                        new ImageIcon(getClass().getResource("/icon_16.png")).getImage(), //NON-NLS
-                        new ImageIcon(getClass().getResource("/icon_32.png")).getImage() //NON-NLS
+                        new ImageIcon(requireNonNull(getClass().getResource("/icon_16.png"))).getImage(), //NON-NLS
+                        new ImageIcon(requireNonNull(getClass().getResource("/icon_32.png"))).getImage() //NON-NLS
                 )
         );
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
