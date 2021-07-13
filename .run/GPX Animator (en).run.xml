@@ -13,7 +13,7 @@
           <option value="run" />
         </list>
       </option>
-      <option name="vmOptions" value="-Duser.country=US -Duser.language=en --enable-preview" />
+      <option name="vmOptions" value="-Duser.country=US -Duser.language=en" />
     </ExternalSystemSettings>
     <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
