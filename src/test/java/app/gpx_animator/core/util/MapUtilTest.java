@@ -1,7 +1,7 @@
 package app.gpx_animator.core.util;
 
 import app.gpx_animator.core.Constants;
-import app.gpx_animator.core.MapTemplate;
+import app.gpx_animator.core.data.MapTemplate;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.junit.jupiter.api.BeforeAll;

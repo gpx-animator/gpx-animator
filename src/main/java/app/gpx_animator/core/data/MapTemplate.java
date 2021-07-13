@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator.core;
+package app.gpx_animator.core.data;
 
 public record MapTemplate(String id, String name, String url,
                           String attributionText) { }

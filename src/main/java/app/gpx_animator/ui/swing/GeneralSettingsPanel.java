@@ -16,7 +16,7 @@
 package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.core.Constants;
-import app.gpx_animator.core.MapTemplate;
+import app.gpx_animator.core.data.MapTemplate;
 import app.gpx_animator.core.Option;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.data.Position;
