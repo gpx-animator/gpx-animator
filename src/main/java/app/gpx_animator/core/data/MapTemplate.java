@@ -18,4 +18,9 @@ package app.gpx_animator.core.data;
 public record MapTemplate(String id,
                           String name,
                           String url,
-                          String attributionText) { }
+                          String attributionText) {
+    @Override
+    public String toString() {
+        return name();
+    }
+}
