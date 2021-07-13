@@ -22,6 +22,7 @@ import app.gpx_animator.core.renderer.Metadata;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.cache.TileCache;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Graphics2D;
@@ -65,6 +66,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
     }
 
     @Override
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "RenderingContext is used for callbacks")
     public void setRenderingContext(@NotNull final RenderingContext renderingContext) {
         this.context = renderingContext;
     }
@@ -117,7 +119,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
                         .replace("{y}", Integer.toString(y)); //NON-NLS
 
                 if (options != null) {
-                    final var sb = new StringBuffer();
+                    final var sb = new StringBuilder();
                     final var matcher = SWITCH_PATTERN.matcher(url);
                     if (matcher.find()) {
                         matcher.appendReplacement(sb, options[i % options.length]);

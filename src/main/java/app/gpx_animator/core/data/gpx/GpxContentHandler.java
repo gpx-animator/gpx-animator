@@ -20,6 +20,9 @@ import app.gpx_animator.core.data.LatLon;
 import app.gpx_animator.core.data.Waypoint;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.Nullable;
+
+import java.util.Collections;
+
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,12 +144,12 @@ public final class GpxContentHandler extends DefaultHandler {
 
 
     public List<List<LatLon>> getPointLists() {
-        return timePointListList;
+        return Collections.unmodifiableList(timePointListList);
     }
 
 
     public List<LatLon> getWaypointList() {
-        return waypointList;
+        return Collections.unmodifiableList(waypointList);
     }
 
 }

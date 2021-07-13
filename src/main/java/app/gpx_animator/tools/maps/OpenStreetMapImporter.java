@@ -23,7 +23,10 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class OpenStreetMapImporter {
+public final class OpenStreetMapImporter {
+
+    private OpenStreetMapImporter() {
+    }
 
     public static void main(final String... args) {
         try {

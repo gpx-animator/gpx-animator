@@ -29,6 +29,7 @@ import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -90,11 +91,13 @@ public final class PhotoPlugin implements RendererPlugin {
     }
 
     @Override
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "FrameWriter is collecting the frames")
     public void setFrameWriter(@NotNull final FrameWriter frameWriter) {
         this.frameWriter = frameWriter;
     }
 
     @Override
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "RenderingContext is used for callbacks")
     public void setRenderingContext(@NotNull final RenderingContext renderingContext) {
         this.context = renderingContext;
     }

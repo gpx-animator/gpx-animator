@@ -18,6 +18,7 @@ package app.gpx_animator.ui.swing;
 import app.gpx_animator.core.preferences.Preferences;
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -44,12 +45,12 @@ public class ErrorDialog extends JDialog {
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final transient String message;
-    private final transient Exception exception;
+    private final transient String stackTrace;
 
     public ErrorDialog(final JFrame owner, final String message, final Exception exception) {
         super(owner, true);
         this.message = message;
-        this.exception = exception;
+        this.stackTrace = getStackTrace(exception);
         setTitle(resourceBundle.getString("ui.dialog.error.title"));
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setContentPane(buildContent());
@@ -73,7 +74,7 @@ public class ErrorDialog extends JDialog {
 
         final var textPane = new JTextPane();
         textPane.setEditable(false);
-        textPane.setText(getStrackTrace());
+        textPane.setText(stackTrace);
         textPane.setCaretPosition(0);
 
         final var scrollPane = new JScrollPane(textPane,
@@ -94,7 +95,7 @@ public class ErrorDialog extends JDialog {
                 .build();
     }
 
-    private String getStrackTrace() {
+    private String getStackTrace(@Nullable final Exception exception) {
         final var sw = new StringWriter();
         final var pw = new PrintWriter(sw);
         if (exception != null) {
@@ -106,7 +107,7 @@ public class ErrorDialog extends JDialog {
     }
 
     private void copyMessage() {
-        final var stringSelection = new StringSelection(getStrackTrace());
+        final var stringSelection = new StringSelection(stackTrace);
         final var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
     }

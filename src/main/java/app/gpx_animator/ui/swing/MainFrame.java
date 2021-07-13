@@ -27,9 +27,7 @@ import app.gpx_animator.core.util.Notification;
 import app.gpx_animator.core.util.Sound;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,12 +73,14 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static app.gpx_animator.core.util.Utils.isEqual;
 import static java.awt.event.InputEvent.ALT_DOWN_MASK;
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.KeyEvent.VK_F1;
 import static java.awt.event.KeyEvent.VK_F4;
+import static java.util.Objects.requireNonNull;
 import static javax.swing.KeyStroke.getKeyStroke;
 
 public final class MainFrame extends JFrame {
@@ -97,7 +97,6 @@ public final class MainFrame extends JFrame {
     private final transient String warningTitle = resourceBundle.getString("ui.mainframe.dialog.title.warning");
     private final transient String errorTitle = resourceBundle.getString("ui.mainframe.dialog.title.error");
 
-    private final transient Random random = new Random();
     private final transient File defaultConfigFile = new File(Preferences.getConfigurationDir()
             + Preferences.FILE_SEPARATOR + "defaultConfig.ga.xml");
     private final transient JTabbedPane tabbedPane;
@@ -114,41 +113,7 @@ public final class MainFrame extends JFrame {
     public MainFrame() {
         Notification.init();
 
-        final var addTrackActionListener = new ActionListener() {
-            private float hue = random.nextFloat();
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-
-                final var gpxFileChooser = new JFileChooser();
-                TrackSettingsPanel.configureGpxFileChooser(resourceBundle, gpxFileChooser);
-                gpxFileChooser.setMultiSelectionEnabled(true);
-                gpxFileChooser.setCurrentDirectory(new File(Preferences.getLastWorkingDir()));
-
-                if (gpxFileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-                    final var gpxFiles = gpxFileChooser.getSelectedFiles();
-                    if (gpxFiles != null && gpxFiles.length > 0) {
-                        Preferences.setLastWorkingDir(gpxFiles[0].getParent());
-                        for (final var gpxFile : gpxFiles) {
-                            final var trackColor = Preferences.getTrackColorRandom()
-                                    ? Color.getHSBColor(hue, 0.8f, 0.8f)
-                                    : Preferences.getTrackColorDefault();
-
-                            addTrackSettingsTab(TrackConfiguration
-                                    .createBuilder()
-                                    .inputGpx(gpxFile)
-                                    .color(trackColor)
-                                    .build());
-
-                            hue += 0.275f;
-                            while (hue >= 1f) {
-                                hue -= 1f;
-                            }
-                        }
-                    }
-                }
-            }
-        };
+        final var addTrackActionListener = new TrackActionListener(MainFrame.this, resourceBundle);
 
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.addChoosableFileFilter(new FileFilter() {
@@ -166,8 +131,8 @@ public final class MainFrame extends JFrame {
         setTitle(Constants.APPNAME_VERSION);
         setIconImages(
                 Arrays.asList(
-                        new ImageIcon(getClass().getResource("/icon_16.png")).getImage(), //NON-NLS
-                        new ImageIcon(getClass().getResource("/icon_32.png")).getImage() //NON-NLS
+                        new ImageIcon(requireNonNull(getClass().getResource("/icon_16.png"))).getImage(), //NON-NLS
+                        new ImageIcon(requireNonNull(getClass().getResource("/icon_32.png"))).getImage() //NON-NLS
                 )
         );
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -656,7 +621,7 @@ public final class MainFrame extends JFrame {
         setTitle(Constants.APPNAME_VERSION.concat(" - ").concat(filename).concat(changed ? " (*)" : ""));
     }
 
-    private void addTrackSettingsTab(final TrackConfiguration tc) {
+    void addTrackSettingsTab(final TrackConfiguration tc) {
         final var trackTabTitle = resourceBundle.getString("ui.mainframe.tab.track");
         final var trackScrollPane = new JScrollPane();
         final var trackSettingsPanel = new TrackSettingsPanel() {
@@ -795,6 +760,52 @@ public final class MainFrame extends JFrame {
         if (Collator.getInstance().compare(Preferences.getChangelogVersion(), Constants.VERSION) != 0) {
             showChangelog();
             Preferences.setChangelogVersion(Constants.VERSION);
+        }
+    }
+
+    @SuppressFBWarnings(value = "DMI_RANDOM_USED_ONLY_ONCE", justification = "we need just ONE random number ONCE")
+    static class TrackActionListener implements ActionListener {
+
+        private final transient MainFrame mainFrame;
+        private final transient ResourceBundle resourceBundle;
+
+        TrackActionListener(@NotNull final MainFrame mainFrame, @NotNull final ResourceBundle resourceBundle) {
+            this.mainFrame = mainFrame;
+            this.resourceBundle = resourceBundle;
+        }
+
+        private transient float hue = new Random().nextFloat();
+
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+
+            final var gpxFileChooser = new JFileChooser();
+            TrackSettingsPanel.configureGpxFileChooser(resourceBundle, gpxFileChooser);
+            gpxFileChooser.setMultiSelectionEnabled(true);
+            gpxFileChooser.setCurrentDirectory(new File(Preferences.getLastWorkingDir()));
+
+            if (gpxFileChooser.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
+                final var gpxFiles = gpxFileChooser.getSelectedFiles();
+                if (gpxFiles != null && gpxFiles.length > 0) {
+                    Preferences.setLastWorkingDir(gpxFiles[0].getParent());
+                    for (final var gpxFile : gpxFiles) {
+                        final var trackColor = Preferences.getTrackColorRandom()
+                                ? Color.getHSBColor(hue, 0.8f, 0.8f)
+                                : Preferences.getTrackColorDefault();
+
+                        mainFrame.addTrackSettingsTab(TrackConfiguration
+                                .createBuilder()
+                                .inputGpx(gpxFile)
+                                .color(trackColor)
+                                .build());
+
+                        hue += 0.275f;
+                        while (hue >= 1f) {
+                            hue -= 1f;
+                        }
+                    }
+                }
+            }
         }
     }
 

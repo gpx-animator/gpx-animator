@@ -104,7 +104,7 @@ public class MarkdownDialog extends EscapeDialog {
                           final int width, final int height) {
         super(owner, true);
         this.filename = filename;
-        this.variables = variables;
+        this.variables = Map.copyOf(variables);
         setTitle(title);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setContentPane(buildContent());

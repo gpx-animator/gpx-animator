@@ -20,6 +20,8 @@ import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
 import app.gpx_animator.core.preferences.Preferences;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.io.PrintWriter;
 
 
@@ -97,8 +99,10 @@ public final class Help {
         void writeOptionHelp(Option option, String argument, boolean track, Object defaultValue);
     }
 
-    @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
+    @SuppressWarnings({"PMD.BeanMembersShouldSerialize", "ClassCanBeRecord"}) // This class is not serializable
     public static final class PrintWriterOptionHelpWriter implements OptionHelpWriter {
+
+        @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "it's just a generic printer")
         private final PrintWriter pw;
 
         public PrintWriterOptionHelpWriter(final PrintWriter pw) {

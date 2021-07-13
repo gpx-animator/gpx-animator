@@ -385,7 +385,7 @@ public final class Configuration {
     }
 
     public List<TrackConfiguration> getTrackConfigurationList() {
-        return trackConfigurationList;
+        return Collections.unmodifiableList(trackConfigurationList);
     }
 
     private static File validateLogo(final File logo) {
