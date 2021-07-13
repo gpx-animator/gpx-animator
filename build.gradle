@@ -70,6 +70,10 @@ dependencies {
 test.classpath += configurations.developmentOnly
 run.classpath += configurations.developmentOnly
 
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked", "--enable-preview"]
@@ -172,7 +176,7 @@ task createVersionFile {
     }
 }
 
-compileJava.dependsOn copyFiles
+processResources.dependsOn copyFiles
 clean.dependsOn deleteFiles
 assemble.dependsOn check
 check.dependsOn installGitHooks
