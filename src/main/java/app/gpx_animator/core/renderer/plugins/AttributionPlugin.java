@@ -37,7 +37,7 @@ public final class AttributionPlugin extends TextRenderer implements RendererPlu
         super(configuration.getFont());
 
         final var mapTemplate = MapUtil.getMapTemplate(configuration.getTmsUrlTemplate());
-        final var mapAttribution = mapTemplate == null ? "" : mapTemplate.getAttributionText();
+        final var mapAttribution = mapTemplate == null ? "" : mapTemplate.attributionText();
 
         attribution = configuration.getAttribution()
                 .replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION)

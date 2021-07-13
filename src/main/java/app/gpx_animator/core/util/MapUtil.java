@@ -95,7 +95,7 @@ public final class MapUtil {
         }
 
         return readMaps().stream()
-                .filter(m -> tmsUrlTemplate.equals(m.getUrl()))
+                .filter(m -> tmsUrlTemplate.equals(m.url()))
                 .findFirst()
                 .orElse(null);
     }
