@@ -78,7 +78,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
 
     @Override
     public void renderBackground(@NonNull final BufferedImage image) throws UserException {
-        if (tmsUrlTemplate == null || backgroundMapVisibility <= 0.0 || zoom == null) {
+        if (tmsUrlTemplate == null || tmsUrlTemplate.isBlank() || backgroundMapVisibility <= 0.0 || zoom == null) {
             // no map defined or map should not be visible
             return;
         }
