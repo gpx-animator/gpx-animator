@@ -17,7 +17,7 @@
 plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
-    id 'com.github.spotbugs' version '4.6.0'
+    id 'com.github.spotbugs' version '4.7.2'
     id 'pmd'
     id 'checkstyle'
     id 'java-library'
@@ -45,7 +45,7 @@ ext {
 }
 
 dependencies {
-    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.2.0'
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.3.0'
     implementation 'org.bytedeco:javacv:1.5.5'
     implementation 'org.bytedeco:ffmpeg-platform-gpl:4.3.2-1.5.5'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
@@ -129,10 +129,6 @@ task nightly(type: Test) {
 
 shadowJar {
     mergeServiceFiles()
-}
-
-spotbugs {
-    toolVersion = '4.2.2'
 }
 
 spotbugsMain {
