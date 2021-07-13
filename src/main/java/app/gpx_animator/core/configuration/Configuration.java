@@ -45,7 +45,6 @@ import java.util.stream.Collectors;
 public final class Configuration {
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
-    private static final String DEFAULT_TMS_URL_TEMPLATE = "https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png";
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
@@ -429,7 +428,7 @@ public final class Configuration {
         private double fps = 30.0;
         private Long totalTime;
         private float backgroundMapVisibility = 0.5f;
-        private String tmsUrlTemplate = DEFAULT_TMS_URL_TEMPLATE;
+        private String tmsUrlTemplate = "";
         private boolean skipIdle = true;
         private boolean preDrawTrack = false;
         private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
