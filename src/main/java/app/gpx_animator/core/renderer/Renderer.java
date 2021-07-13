@@ -305,7 +305,7 @@ public final class Renderer {
         }
     }
 
-    private BufferedImage createBufferedImage(final int width, final int height, final int zoom) throws UserException {
+    private BufferedImage createBufferedImage(final int width, final int height, @Nullable final Integer zoom) throws UserException {
         try {
             return new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         } catch (final IllegalArgumentException | NegativeArraySizeException e) {

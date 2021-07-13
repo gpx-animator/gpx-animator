@@ -43,7 +43,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
     private final transient String tmsUrlTemplate;
     private final transient float backgroundMapVisibility;
 
-    private transient int zoom;
+    private transient Integer zoom;
     private transient double minX;
     private transient double maxX;
     private transient double minY;
@@ -78,7 +78,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
 
     @Override
     public void renderBackground(@NonNull final BufferedImage image) throws UserException {
-        if (tmsUrlTemplate == null || backgroundMapVisibility <= 0.0) {
+        if (tmsUrlTemplate == null || backgroundMapVisibility <= 0.0 || zoom == null) {
             // no map defined or map should not be visible
             return;
         }
