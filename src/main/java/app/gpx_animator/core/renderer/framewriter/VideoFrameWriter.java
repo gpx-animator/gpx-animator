@@ -53,7 +53,7 @@ public final class VideoFrameWriter implements FrameWriter {
         recorder.setVideoCodec(AV_CODEC_ID_H264);
         recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
         recorder.setFormat("mp4");
-        recorder.setVideoQuality(24);
+        recorder.setVideoOption("crf", "24"); // recorder.setVideoQuality(24); -> crashes on systems with comma as decimal separator
         recorder.setFrameRate(fps);
 
         try {
