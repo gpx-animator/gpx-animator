@@ -49,12 +49,12 @@ public class MapUtilTest {
         final List<MapTemplate> testPassed = new ArrayList<>();
 
         mapTemplates.forEach(mapTemplate -> {
-            final var id = mapTemplate.getId();
+            final var id = mapTemplate.id();
             final var mapValidation = mapValidations.get(id);
 
             if (mapValidation == null || mapValidation.getValidationUrls().isEmpty()) {
                 testSkipped.add(mapTemplate);
-                LOGGER.warn("No test for map '{} (ID: {})'", mapTemplate.toString(), mapTemplate.getId());
+                LOGGER.warn("No test for map '{} (ID: {})'", mapTemplate, mapTemplate.id());
             } else {
                 if (validateMap(mapTemplate, mapValidation)) {
                     testPassed.add(mapTemplate);
@@ -78,12 +78,12 @@ public class MapUtilTest {
                 if (mapTile == null) {
                     okay = false;
                     LOGGER.error("Failed test for map '{} (ID: {})' with URL '{}': {}",
-                            mapTemplate.toString(), mapTemplate.getId(), url, "no image");
+                            mapTemplate.toString(), mapTemplate.id(), url, "no image");
                 }
             } catch (final Exception e) {
                 okay = false;
                 LOGGER.error("Failed test for map '{} (ID: {})' with URL '{}': {}",
-                        mapTemplate.toString(), mapTemplate.getId(), url, e.getMessage());
+                        mapTemplate.toString(), mapTemplate.id(), url, e.getMessage());
             }
         }
 
