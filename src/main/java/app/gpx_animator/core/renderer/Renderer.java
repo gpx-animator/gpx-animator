@@ -34,9 +34,6 @@ import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-
-import java.awt.Font;
-
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
@@ -67,6 +65,7 @@ import java.util.TreeMap;
 
 import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 import static app.gpx_animator.core.util.Utils.isEqual;
+import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class Renderer {
@@ -701,7 +700,7 @@ public final class Renderer {
 
     private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon, final boolean mirrorTrackIcon)
             throws IOException {
-        final var trackIconImage = ImageIO.read(getClass().getResource(trackIcon.getFilename()));
+        final var trackIconImage = ImageIO.read(requireNonNull(getClass().getResource(trackIcon.getFilename())));
         drawImageOnGraphics2D(point, g2, trackIconImage, mirrorTrackIcon);
     }
 
