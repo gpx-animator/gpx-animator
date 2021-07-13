@@ -1214,7 +1214,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         {
             if (tmsUrlTemplate != null) {
                 for (final var mapTemplate : mapTemplateList) {
-                    if (isEqual(mapTemplate.getUrl(), tmsUrlTemplate)) {
+                    if (isEqual(mapTemplate.url(), tmsUrlTemplate)) {
                         tmsUrlTemplateComboBox.setSelectedItem(mapTemplate);
                         break found;
                     }
@@ -1250,7 +1250,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     public void buildConfiguration(final Configuration.Builder builder, final boolean replacePlaceholders) {
         final var td = (Long) tailDurationSpinner.getValue();
         final var tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
-        final var tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).getUrl() : (String) tmsItem;
+        final var tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).url() : (String) tmsItem;
         final var attribution = generateAttributionText(replacePlaceholders, tmsItem);
         final var speedUnit = (SpeedUnit) speedUnitComboBox.getSelectedItem();
 
@@ -1308,8 +1308,8 @@ abstract class GeneralSettingsPanel extends JPanel {
         return attributionTextArea.getText()
                 .replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION)  //NON-NLS
                 .replace("%MAP_ATTRIBUTION%", //NON-NLS
-                        tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).getAttributionText() != null
-                                ? ((MapTemplate) tmsItem).getAttributionText() : "")
+                        tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).attributionText() != null
+                                ? ((MapTemplate) tmsItem).attributionText() : "")
                 .trim();
     }
 

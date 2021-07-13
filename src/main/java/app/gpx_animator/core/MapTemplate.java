@@ -15,43 +15,5 @@
  */
 package app.gpx_animator.core;
 
-@SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
-public final class MapTemplate {
-
-    private final String id;
-
-    private final String name;
-
-    private final String url;
-
-    private final String attributionText;
-
-
-    public MapTemplate(final String id, final String name, final String url, final String attributionText) {
-        this.id = id;
-        this.name = name;
-        this.url = url;
-        this.attributionText = attributionText;
-    }
-
-
-    public String getId() {
-        return id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-
-    public String getAttributionText() {
-        return attributionText;
-    }
-
-}
+public record MapTemplate(String id, String name, String url,
+                          String attributionText) { }
