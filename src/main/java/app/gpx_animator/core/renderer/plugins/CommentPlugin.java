@@ -31,7 +31,7 @@ public final class CommentPlugin extends TextRenderer implements RendererPlugin 
     private final transient Position position;
     private final transient int margin;
 
-    private String lastComment;
+    private transient String lastComment;
 
     public CommentPlugin(@NonNull final Configuration configuration) {
         super(configuration.getFont());
