@@ -107,6 +107,7 @@ public final class MapUtil {
                     private String name;
                     private String url;
                     private String attributionText;
+                    private Integer maxZoom;
 
                     @Override
                     @SuppressWarnings({
@@ -120,7 +121,8 @@ public final class MapUtil {
                             case "name" -> name = sb.toString().trim();
                             case "url" -> url = sb.toString().trim();
                             case "attribution-text" -> attributionText = sb.toString().trim();
-                            case "entry" -> labeledItems.add(new MapTemplate(id, name, url, attributionText));
+                            case "max-zoom" -> maxZoom = Integer.parseInt(sb.toString().trim());
+                            case "entry" -> labeledItems.add(new MapTemplate(id, name, url, attributionText, maxZoom));
                         }
                         sb.setLength(0);
                     }

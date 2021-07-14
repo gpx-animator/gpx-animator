@@ -19,15 +19,17 @@ import javax.swing.AbstractSpinnerModel;
 import java.io.Serial;
 import java.math.BigDecimal;
 
+import org.jetbrains.annotations.Nullable;
+
 public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
 
     @Serial
-    private static final long serialVersionUID = -8064362052986633347L;
+    private static final long serialVersionUID = -7525679442817416995L;
 
     private final transient boolean zeroEmpty;
     private final transient Number stepSize;
     private final transient Number minimum;
-    private final transient Number maximum;
+    private transient Number maximum;
     private final transient int fractions;
     private final transient double fractionValue;
     private transient Number value;
@@ -150,5 +152,9 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
         var b1 = BigDecimal.valueOf(n1.doubleValue());
         var b2 = BigDecimal.valueOf(n2.doubleValue());
         return b1.compareTo(b2);
+    }
+
+    public void setMaximum(@Nullable final Number maximum) {
+        this.maximum = maximum;
     }
 }

@@ -687,6 +687,23 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcTmsUrlTemplateComboBox.gridy = 14;
         add(tmsUrlTemplateComboBox, gbcTmsUrlTemplateComboBox);
         tmsUrlTemplateComboBox.setPreferredSize(new Dimension(10, tmsUrlTemplateComboBox.getPreferredSize().height));
+        tmsUrlTemplateComboBox.addItemListener(event -> {
+            var maxZoom = 18;
+
+            final var item = event.getItem();
+            if (item instanceof final MapTemplate mapTemplate) {
+                if (mapTemplate.maxZoom() != null) {
+                    maxZoom = mapTemplate.maxZoom();
+                }
+            }
+
+            ((EmptyNullSpinnerModel) zoomSpinner.getModel()).setMaximum(maxZoom);
+
+            final var value = zoomSpinner.getValue();
+            if (value instanceof final Number number && number.intValue() > maxZoom) {
+                zoomSpinner.setValue(maxZoom);
+            }
+        });
 
         final var lblAttribution = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attribution.label"));
         final var gbcLabelAttribution = new GridBagConstraints();
