@@ -22,6 +22,7 @@
 
 * Accidentally cropping of photos
 * Crazy path information with dots in filenames
+* Incorrect handling of keep last frame option
 * Fixed a bunch of (possible) `NullPointerException`s
 
 ### Maintenance

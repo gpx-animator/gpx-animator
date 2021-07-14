@@ -223,6 +223,7 @@ public final class Renderer {
                               @NonNull final List<Long[]> spanList, @NonNull final TreeMap<Long, Point2D> wpMap,
                               @NonNull final RenderingContext rc) throws UserException {
         final var stopAfterFrame = cfg.getPreviewLength() == null ? Long.MAX_VALUE : cfg.getPreviewLength() * cfg.getFps() / 1_000;
+        BufferedImage lastRenderedFrame = null;
         var skip = -1f;
         for (var frame = 1; frame <= frames; frame++) {
             if (rc.isCancelled1()) {
@@ -272,10 +273,9 @@ public final class Renderer {
                 keepFrame(plugins, rc, frameWriter, viewportImage, frame, wpMap, cfg.getKeepFirstFrame());
             }
 
-            if (frame == frames) {
-                keepFrame(plugins, rc, frameWriter, viewportImage, frame, wpMap, cfg.getKeepLastFrame());
-            }
+            lastRenderedFrame = viewportImage;
         }
+        keepFrame(plugins, rc, frameWriter, lastRenderedFrame, frames, wpMap, cfg.getKeepLastFrame());
     }
 
     private int calculateSpeedupAndReturnFrames(@NonNull final List<RendererPlugin> plugins) throws UserException {
@@ -506,9 +506,9 @@ public final class Renderer {
     }
 
     private void keepFrame(@NonNull final List<RendererPlugin> plugins, @NonNull final RenderingContext rc,
-                               @NonNull final FrameWriter frameWriter, @NonNull final BufferedImage bi, final int frames,
+                               @NonNull final FrameWriter frameWriter, @Nullable final BufferedImage bi, final int frames,
                                @NonNull final TreeMap<Long, Point2D> wpMap, @Nullable final Long keepFrame) throws UserException {
-        if (keepFrame != null && keepFrame > 0) {
+        if (bi != null && keepFrame != null && keepFrame > 0) {
             drawWaypoints(bi, frames, wpMap);
             final var marker = drawMarker(bi, frames);
 
