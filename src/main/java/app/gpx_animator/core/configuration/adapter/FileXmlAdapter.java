@@ -31,7 +31,7 @@ public final class FileXmlAdapter extends XmlAdapter<String, File> {
     @Override
     public File unmarshal(final String string) {
         return base != null
-                ? base.resolve(string).toFile()
+                ? base.resolve(string).normalize().toFile()
                 : new File(string);
     }
 
