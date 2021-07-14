@@ -108,6 +108,7 @@ public final class MapUtil {
                     private String url;
                     private String attributionText;
                     private Integer maxZoom;
+                    private String countryCode = "";
 
                     @Override
                     @SuppressWarnings({
@@ -122,7 +123,11 @@ public final class MapUtil {
                             case "url" -> url = sb.toString().trim();
                             case "attribution-text" -> attributionText = sb.toString().trim();
                             case "max-zoom" -> maxZoom = Integer.parseInt(sb.toString().trim());
-                            case "entry" -> labeledItems.add(new MapTemplate(id, name, url, attributionText, maxZoom));
+                            case "country-code" -> countryCode = sb.toString().trim();
+                            case "entry" -> {
+                                labeledItems.add(new MapTemplate(id, name, url, attributionText, maxZoom, countryCode));
+                                id = null; name = null; url = null; attributionText = null; maxZoom = null; countryCode = "";
+                            }
                         }
                         sb.setLength(0);
                     }
@@ -139,7 +144,8 @@ public final class MapUtil {
             throw new RuntimeException(e);
         }
 
-        labeledItems.sort(Comparator.comparing(MapTemplate::toString));
+        labeledItems.sort(Comparator.comparing(MapTemplate::countryCode)
+                .thenComparing(MapTemplate::name));
 
         return labeledItems;
     }

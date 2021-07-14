@@ -19,9 +19,10 @@ public record MapTemplate(String id,
                           String name,
                           String url,
                           String attributionText,
-                          Integer maxZoom) {
+                          Integer maxZoom,
+                          String countryCode) {
     @Override
     public String toString() {
-        return name();
+        return "%s: %s".formatted(countryCode == null || countryCode.isBlank() ? "World" : countryCode, name);
     }
 }
