@@ -63,6 +63,8 @@ public final class Help {
         w.writeOptionHelp(Option.TRACK_ICON, "trackIcon", true, tc.getTrackIcon()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON_FILE, "trackIconFile", true, tc.getInputIcon()); //NON-NLS
         w.writeOptionHelp(Option.TRACK_ICON_MIRROR, "mirrorTrackIcon", true, tc.isTrackIconMirrored()); //NON-NLS
+        w.writeOptionHelp(Option.KEEP_FIRST_FRAME, "keep-first-frame", false, cfg.getKeepFirstFrame()); //NON-NLS
+        w.writeOptionHelp(Option.KEEP_LAST_FRAME, "keep-last-frame", false, cfg.getKeepLastFrame()); //NON-NLS
         w.writeOptionHelp(Option.LABEL, "label", true, tc.getLabel()); //NON-NLS
         w.writeOptionHelp(Option.LINE_WIDTH, "width", true, tc.getLineWidth()); //NON-NLS
         w.writeOptionHelp(Option.LOGO_POSITION, "logo-position", false, cfg.getLogoPosition()); //NON-NLS

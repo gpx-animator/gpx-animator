@@ -16,6 +16,7 @@
 * All dialogs can be closed using the `Esc` key
 * License information can be found in the `Help` menu
 * New plugin support for extending GPX Animator easily
+* Delay the start of the animation (keep first frame)
 
 ### Fixed bugs
 

@@ -61,6 +61,7 @@ public enum Option {
     BACKGROUND_IMAGE("background-image"),
     FLASHBACK_COLOR("flashback-color"),
     FLASHBACK_DURATION("flashback-duration"),
+    KEEP_FIRST_FRAME("keep-first-frame"),
     KEEP_LAST_FRAME("keep-last-frame"),
     SKIP_IDLE("skip-idle"),
     PRE_DRAW_TRACK("pre-draw-track"),

@@ -82,6 +82,7 @@ public final class Configuration {
     private Color flashbackColor;
     private Long flashbackDuration;
 
+    private Long keepFirstFrame;
     private Long keepLastFrame;
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
@@ -139,9 +140,8 @@ public final class Configuration {
             final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
             final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final File backgroundImage, final Color flashbackColor, final Long flashbackDuration,
-            final boolean preDrawTrack,
-            final Long keepLastFrame, final File output, final String attribution, final SpeedUnit speedUnit,
-            final Font font, final Double markerSize, final Font waypointFont, final Double waypointSize,
+            final boolean preDrawTrack, final Long keepFirstFrame, final Long keepLastFrame, final File output, final String attribution,
+            final SpeedUnit speedUnit, final Font font, final Double markerSize, final Font waypointFont, final Double waypointSize,
             final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final Position logoPosition, final int logoMargin,
             final Position attributionPosition, final int attributionMargin,
@@ -171,6 +171,7 @@ public final class Configuration {
         this.backgroundImage = backgroundImage;
         this.flashbackColor = flashbackColor;
         this.flashbackDuration = flashbackDuration;
+        this.keepFirstFrame = keepFirstFrame;
         this.keepLastFrame = keepLastFrame;
         this.output = output;
         this.attribution = attribution;
@@ -285,6 +286,10 @@ public final class Configuration {
 
     public Long getFlashbackDuration() {
         return flashbackDuration;
+    }
+
+    public Long getKeepFirstFrame() {
+        return keepFirstFrame;
     }
 
     public Long getKeepLastFrame() {
@@ -435,6 +440,7 @@ public final class Configuration {
         private File backgroundImage;
         private Color flashbackColor = Color.white;
         private Long flashbackDuration = 250L;
+        private Long keepFirstFrame;
         private Long keepLastFrame;
         private File output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
         private String attribution = resourceBundle.getString("configuration.attribution");
@@ -469,8 +475,7 @@ public final class Configuration {
                     speedup, tailDuration, tailColor, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
-                    preDrawTrack,
-                    keepLastFrame, output, attribution, speedUnit,
+                    preDrawTrack, keepFirstFrame, keepLastFrame, output, attribution, speedUnit,
                     font, markerSize, waypointFont, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, logoPosition, logoMargin,
@@ -581,6 +586,11 @@ public final class Configuration {
 
         public Builder flashbackDuration(final Long flashbackDuration) {
             this.flashbackDuration = flashbackDuration;
+            return this;
+        }
+
+        public Builder keepFirstFrame(final Long keepFirstFrame) {
+            this.keepFirstFrame = keepFirstFrame;
             return this;
         }
 

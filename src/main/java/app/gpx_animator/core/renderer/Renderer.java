@@ -268,8 +268,12 @@ public final class Renderer {
 
             frameWriter.addFrame(viewportImage);
 
+            if (frame == 1) { // NOPMD - AvoidLiteralsInIfCondition - this number never changes
+                keepFrame(plugins, rc, frameWriter, viewportImage, frame, wpMap, cfg.getKeepFirstFrame());
+            }
+
             if (frame == frames) {
-                keepLastFrame(plugins, rc, frameWriter, viewportImage, frames, wpMap);
+                keepFrame(plugins, rc, frameWriter, viewportImage, frame, wpMap, cfg.getKeepLastFrame());
             }
         }
     }
@@ -283,8 +287,9 @@ public final class Renderer {
             speedup = cfg.getSpeedup();
             return (int) ((maxTime + tailDuration - minTime) * fps / (MS * speedup));
         } else {
+            final var keepFirstFrame = cfg.getKeepFirstFrame() == null ? 0 : cfg.getKeepFirstFrame();
             final var keepLastFrame = cfg.getKeepLastFrame() == null ? 0 : cfg.getKeepLastFrame();
-            final var animationTime = totalTime - keepLastFrame;
+            final var animationTime = totalTime - keepFirstFrame - keepLastFrame;
             final var pluginFrames = plugins.stream().mapToInt(RendererPlugin::getAdditionalFrameCount).sum();
             final var frames = (int) Math.round(animationTime / MS * fps) - pluginFrames;
             speedup = (maxTime * fps + tailDuration * fps - minTime * fps) / (frames * MS);
@@ -500,11 +505,10 @@ public final class Renderer {
         }
     }
 
-    private void keepLastFrame(@NonNull final List<RendererPlugin> plugins, @NonNull final RenderingContext rc,
+    private void keepFrame(@NonNull final List<RendererPlugin> plugins, @NonNull final RenderingContext rc,
                                @NonNull final FrameWriter frameWriter, @NonNull final BufferedImage bi, final int frames,
-                               @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
-        final var keepLastFrame = cfg.getKeepLastFrame() != null && cfg.getKeepLastFrame() > 0;
-        if (keepLastFrame) {
+                               @NonNull final TreeMap<Long, Point2D> wpMap, @Nullable final Long keepFrame) throws UserException {
+        if (keepFrame != null && keepFrame > 0) {
             drawWaypoints(bi, frames, wpMap);
             final var marker = drawMarker(bi, frames);
 
@@ -512,12 +516,11 @@ public final class Renderer {
                 plugin.renderFrame(frames, marker, bi);
             }
 
-            final long ms = cfg.getKeepLastFrame();
             final var fps = Double.valueOf(cfg.getFps()).longValue();
-            final var stillFrames = ms / 1_000 * fps;
+            final var stillFrames = keepFrame / 1_000 * fps;
             for (long stillFrame = 0; stillFrame < stillFrames; stillFrame++) {
                 final var pct = (int) (100.0 * stillFrame / stillFrames);
-                rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.keeplastframe"), stillFrame, stillFrames));
+                rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.keepframe"), stillFrame, stillFrames));
                 frameWriter.addFrame(bi);
                 if (rc.isCancelled1()) {
                     return;
