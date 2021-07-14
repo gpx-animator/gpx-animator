@@ -147,7 +147,7 @@ spotbugsTest {
 
 checkstyle {
     configFile file("${projectDir}/config/checkstyle/checkstyle.xml")
-    toolVersion "8.39"
+    toolVersion "8.44"
 }
 
 pmd {
