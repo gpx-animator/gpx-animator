@@ -6,62 +6,32 @@
 
 ### New features
 
-#### Realtime preview
-
-When you start the rendering, a new window will open automatically and show you a preview of your video. The preview is updated once a second. You can close the window and if you don't like this new feature, you can disable it in the settings.
-
-#### Notifications
-
-When the rendering finishes, either successful or with an error, you will now hear a sound and see a notification from your OS. 
-
-#### Map data update
-
-GPX Animator can provide you with an extensive list of maps that you can use as background for your animations. This list is now loaded from the Internet and you can update it at any time independent of a release.
-
-### Enhancements
-
-#### Waypoint font
-
-You can now configure a separate font for the text of waypoints. If you don't configure a font, the generic font configured will be used. If you don't specify that one either, the standard font will be used.
-
-#### Read speed from GPX file
-
-If your GPX file contains speed data, GPX Animator will use the speed values from your file instead of calculating the speed by distance and time on its own. The speed values provided by your GPS recording device is usually more accurate than a calculation afterwards.
-
-#### Usability improvements
-
-* All important features in the menu are now accessible via hotkeys.
-* Recently opened files can be accessed via hotkeys.
-* All dialogs can be closed using the `Esc` key.
-* License information can be found in the `Help` menu.
-
-#### Changelog formatting
-
-To provide you more information about all new and updated things in every new version of GPX Animator, we have introduced this new format to present you all important changes. Do you like the more detailed changelog? Please send your opinion to [support@gpx-animator.app](mailto:support@gpx-animator.app). We would love to read your feedback!
+* Realtime preview while rendering is in progress (can be disabled)
+* System notifications when rendering stops or finishes
+* Map data update over the air
+* Specify a separate font for waypoints (optional)
+* Read speed from GPX file (if present) for more acurate speed data
+* All important features in the menu are now accessible via hotkeys
+* Recently opened files can be accessed via hotkeys
+* All dialogs can be closed using the `Esc` key
+* License information can be found in the `Help` menu
+* New plugin support for extending GPX Animator easily
 
 ### Fixed bugs
 
-#### Cropped photos
-
-If the videos are higher than wider (vertical videos), added photos could be accidentally cropped. This is now fixed and all photos should fit perfectly in the video frame size. Regardless of whether the video or photo is oriented horizontally or vertically.
+* Accidentally cropping of photos
+* Crazy path information with dots in filenames
+* Fixed a bunch of (possible) `NullPointerException`s
 
 ### Maintenance
 
-#### Plugin support
+* Replaced the end of life [Xuggler](http://www.xuggle.com/xuggler/status) library with [JavaCV](https://github.com/bytedeco/javacv)
 
-To clean up the rendering process, we added plugin support. Now it is much easier to add new features to the track animation. If you want to extend the GPX Animator rendering process, please have a look at the [RendererPlugin](https://github.com/zdila/gpx-animator/blob/master/src/main/java/app/gpx_animator/core/renderer/plugins/RendererPlugin.java) interface.
-
-#### Xuggler end of life
-
-GPX Animator used the [Xuggler](http://www.xuggle.com/xuggler/status) library to create the MP4 files. Xuggler is end of life and was not actively maintained since 2012. For GPX Animator, Xuggler was a risk because bugs and security issued were not fixed anymore. We have replaced Xuggler with [JavaCV](https://github.com/bytedeco/javacv), which is actively maintained, open source, and supports a lot of platforms and codecs.
-
-#### Broken maps
-
-Again in this release, we have removed or fixed more broken maps. Sometimes, the map provider changes the URL, adds a paywall, or just discontinues the service. If you find a broken map in the background map dropdown box, please [create an issue on GitHub](https://github.com/zdila/gpx-animator/issues/new/choose) or email us at [support@gpx-animator.app](mailto:support@gpx-animator.app), so we can fix it in the next version of GPX Animator.
+---
 
 ## Version 1.6.1
 
-Release date: work in progress 🚧
+Release date: 2021-03-14
 
 * Fixing date time parsing error when time zone information is missing
 * Fixing date from the 1970s when forced point time interval option was set
@@ -69,6 +39,8 @@ Release date: work in progress 🚧
 * Fixing negative total time crashing the rendering process
 * Accepting uppercase file endings of GPX and PNG files
 * Adding trim options to command line help
+
+---
 
 ## Version 1.6.0
 
@@ -103,6 +75,8 @@ Release date: 2021-01-09
 * Removing 8 broken background maps
 * Up to 15 % faster rendering
 
+---
+
 ## Version 1.5.2
 
 Release date: 2020-08-21
@@ -115,6 +89,8 @@ Release date: 2020-08-21
 * Automatic repair of broken files produced by Sigma Rox 12 bicycle computer
 * Show correct version number when using a saved file from an older version
 
+---
+
 ## Version 1.5.1
 
 Release date: 2020-08-07
@@ -123,6 +99,8 @@ Release date: 2020-08-07
 * Fixing a bug that does not load the photos directory from saved files
 * Fixing a bug that broke the command line use since v1.4
 * Fixing a bug that shows an old status message on the progress bar
+
+---
 
 ## Version 1.5
 
@@ -156,6 +134,8 @@ Release date: 2020-07-03
 * Using logging instead direct console output
 * Internationalizing the codebase for easier translation
 
+---
+
 ## Version 1.4
 
 Release date: 2019-12-20
@@ -176,11 +156,15 @@ Release date: 2019-12-20
 * fixed time offset problem with negative time offset values
 * fixed a lot of minor issues
 
+---
+
 ## Version 1.3.1
 
 Release date: 2018-07-31
 
 * fixed some issues and added compatibility for Java 9+
+
+---
 
 ## Version 1.3.0
 
@@ -188,11 +172,15 @@ Release date: 2015-11-22
 
 * configurable bounding box
 
+---
+
 ## Version 1.2.4
 
 Release date: 2015-11-02
 
 * fixed #18 (error saving configuration)
+
+---
 
 ## Version 1.2.3
 
@@ -203,12 +191,16 @@ Release date: 2015-08-23
 * updated maps
 * removed unused --debug option
 
+---
+
 ## Version 1.2.2
 
 Release date: 2015-01-18
 
 * fixed NPE when adding new track
 * preselect different color to newly added tracks
+
+---
 
 ## Version 1.2.1
 
@@ -218,12 +210,16 @@ Release date: 2015-01-11
 * remember directory in file dialogs
 * store relative paths in project XML file
 
+---
+
 ## Version 1.2.0
 
 Release date: 2014-02-03
 
 * preparation for interactive map view configuration
 * fixed bug in computing video dimensions
+
+---
 
 ## Version 1.1.0
 
@@ -237,6 +233,8 @@ Release date: 2013-06-24
 * fixed alpha channel interpolation for tail
 * fixed parsing of GPX dates with milliseconds
 
+---
+
 ## Version 1.0.0
 
 Release date: 2013-03-23
@@ -245,11 +243,15 @@ Release date: 2013-03-23
 * direct video rendering support
 * minor rendering improvements
 
+---
+
 ## Version 0.8
 
 Release date: 2013-02-09
 
 * added waypoint support
+
+---
 
 ## Version 0.7
 
@@ -257,6 +259,8 @@ Release date: 2013-02-05
 
 * added support for forced time intervals of GPS points
 * configurable flashback color and duration
+
+---
 
 ## Version 0.6
 
@@ -266,6 +270,8 @@ Release date: 2013-02-04
 * added track offset support (per track)
 * skipping idle video frames
 
+---
+
 ## Version 0.5
 
 Release date: 2013-02-03
@@ -273,6 +279,8 @@ Release date: 2013-02-03
 * outlining texts
 * improved user experience ;-)
 * fixing some indexed PNG background map tiles
+
+---
 
 ## Version 0.4
 
@@ -282,11 +290,15 @@ Release date: 2013-02-03
 * track multisegment support
 * direct color specification
 
+---
+
 ## Version 0.3
 
 Release date: 2013-02-03
 
 * background map support
+
+---
 
 ## Version 0.2
 
@@ -298,6 +310,8 @@ Release date: 2013-02-02
 * multitrack support
 * improved tail highlighting - now based on time
 * customizable tail length
+
+---
 
 ## Version 0.1
 
