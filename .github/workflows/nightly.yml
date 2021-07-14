@@ -24,7 +24,7 @@ jobs:
 
       - uses: actions/setup-java@v1
         with:
-          java-version: '15'
+          java-version: '16'
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
