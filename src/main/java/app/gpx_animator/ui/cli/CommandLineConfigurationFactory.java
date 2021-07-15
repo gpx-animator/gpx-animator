@@ -334,29 +334,24 @@ public final class CommandLineConfigurationFactory {
     }
 
     private void normalizeTrimGpxStart() {
-        final var size = inputGpxList.size();
-        final var size2 = trimGpxStartList.size();
-        if (size2 == 0) {
-            for (var i = 0; i < size; i++) {
-                trimGpxStartList.add(0L);
-            }
-        } else if (size2 < size) {
-            for (var i = size2; i < size; i++) {
-                trimGpxStartList.add(trimGpxStartList.get(i - size2));
-            }
-        }
+        normalizeTrimGpx(inputGpxList, trimGpxStartList);
     }
 
     private void normalizeTrimGpxEnd() {
+        normalizeTrimGpx(inputGpxList, trimGpxEndList);
+    }
+
+    private static void normalizeTrimGpx(@NotNull final List<String> inputGpxList,
+                                         @NotNull final List<Long> trimGpxList) {
         final var size = inputGpxList.size();
-        final var size2 = trimGpxEndList.size();
+        final var size2 = trimGpxList.size();
         if (size2 == 0) {
             for (var i = 0; i < size; i++) {
-                trimGpxEndList.add(0L);
+                trimGpxList.add(0L);
             }
         } else if (size2 < size) {
             for (var i = size2; i < size; i++) {
-                trimGpxEndList.add(trimGpxEndList.get(i - size2));
+                trimGpxList.add(trimGpxList.get(i - size2));
             }
         }
     }
