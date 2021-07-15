@@ -23,7 +23,15 @@ import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.util.MapUtil;
+
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
@@ -740,6 +748,14 @@ abstract class GeneralSettingsPanel extends JPanel {
                 });
         attributionTextArea.setComponentPopupMenu(attributionPopupMenu);
         scrollPane.setViewportView(attributionTextArea);
+        attributionTextArea.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(@Nullable final FocusEvent event) {
+                super.focusLost(event);
+                SwingUtilities.invokeLater(() ->
+                        checkAttributionMandatory(attributionLocationComboBox.getSelectedItem(), tmsUrlTemplateComboBox.getSelectedItem()));
+            }
+        });
 
         final var lblVisibility = new JLabel(resourceBundle.getString("ui.panel.generalsettings.visibility.label"));
         final var gbcLabelVisibility = new GridBagConstraints();
@@ -1047,6 +1063,11 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcAttributionPositioning.gridx = 1;
         gbcAttributionPositioning.gridy = 31;
         add(attributionLocationComboBox, gbcAttributionPositioning);
+        attributionLocationComboBox.addItemListener(listener -> {
+            if (listener.getStateChange() == ItemEvent.SELECTED) {
+                SwingUtilities.invokeLater(() -> checkAttributionMandatory(listener.getItem(), tmsUrlTemplateComboBox.getSelectedItem()));
+            }
+        });
 
         final var lblAttributionMargin = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionMargin.label"));
         final var gbcAttributionLabelMargin = new GridBagConstraints();
@@ -1189,6 +1210,29 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(speedUnitComboBox, gbcSpeedUnit);
     }
 
+    private void checkAttributionMandatory(@Nullable final Object positionObject, @Nullable final Object mapTemplateObject) {
+        if (mapTemplateObject instanceof MapTemplate mapTemplate && mapTemplate.attributionTextMandatory()) {
+            var showDialog = false;
+
+            if (positionObject instanceof Position position && position.equals(Position.HIDDEN)) {
+                attributionLocationComboBox.setSelectedItem(Configuration.DEFAULT_ATTRIBUTION_POSITION);
+                showDialog = true;
+            }
+
+            if (!attributionTextArea.getText().contains("%MAP_ATTRIBUTION%")) {
+                attributionTextArea.setText(attributionTextArea.getText().trim().concat("\n%MAP_ATTRIBUTION%"));
+                showDialog = true;
+            }
+
+            if (showDialog) {
+                JOptionPane.showMessageDialog(MainFrame.getInstance(),
+                        resourceBundle.getString("ui.mainframe.dialog.message.attribution.mandatory"),
+                        resourceBundle.getString("ui.mainframe.dialog.title.warning"),
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
     public void updateMaps(@NotNull final List<MapTemplate> newMapTemplateList) {
         mapTemplateList = newMapTemplateList;
         tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<>(mapTemplateList.toArray(new MapTemplate[0])));
@@ -1266,7 +1310,14 @@ abstract class GeneralSettingsPanel extends JPanel {
                 }
             }
             tmsUrlTemplateComboBox.setSelectedItem(tmsUrlTemplate);
+            tmsUrlTemplateComboBox.addItemListener(listener -> {
+                if (listener.getStateChange() == ItemEvent.SELECTED) {
+                    SwingUtilities.invokeLater(() -> checkAttributionMandatory(attributionLocationComboBox.getSelectedItem(), listener.getItem()));
+                }
+            });
         }
+        SwingUtilities.invokeLater(() ->
+                checkAttributionMandatory(attributionLocationComboBox.getSelectedItem(), tmsUrlTemplateComboBox.getSelectedItem()));
 
         attributionTextArea.setText(c.getAttribution());
         preDrawTrackCheckBox.setSelected(c.isPreDrawTrack());

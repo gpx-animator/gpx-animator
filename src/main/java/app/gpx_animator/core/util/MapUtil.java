@@ -17,8 +17,11 @@ package app.gpx_animator.core.util;
 
 import app.gpx_animator.core.data.MapTemplate;
 import app.gpx_animator.core.preferences.Preferences;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -107,8 +110,19 @@ public final class MapUtil {
                     private String name;
                     private String url;
                     private String attributionText;
+                    private boolean attributionTextMandatory = false;
                     private Integer maxZoom;
                     private String countryCode = "";
+
+                    @Override
+                    public void startElement(@Nullable final String uri,
+                                             @Nullable final String localName,
+                                             @Nullable final String qName,
+                                             @Nullable final Attributes attributes) {
+                        if (qName != null && qName.equals("attribution-text")) {
+                            attributionTextMandatory = attributes != null && Boolean.parseBoolean(attributes.getValue("mandatory"));
+                        }
+                    }
 
                     @Override
                     @SuppressWarnings({
@@ -117,7 +131,9 @@ public final class MapUtil {
                             "PMD.NullAssignment"               // inside the parser element handling this is acceptable
                     })
                     @SuppressFBWarnings(value = "SF_SWITCH_NO_DEFAULT", justification = "Every other case can be ignored!") //NON-NLS NON-NLS
-                    public void endElement(final String uri, final String localName, @NonNls final String qName) {
+                    public void endElement(@Nullable final String uri,
+                                           @Nullable final String localName,
+                                           @NotNull @NonNls final String qName) {
                         switch (qName) {
                             case "id" -> id = sb.toString().trim();
                             case "name" -> name = sb.toString().trim();
@@ -126,8 +142,9 @@ public final class MapUtil {
                             case "max-zoom" -> maxZoom = Integer.parseInt(sb.toString().trim());
                             case "country-code" -> countryCode = sb.toString().trim();
                             case "entry" -> {
-                                labeledItems.add(new MapTemplate(id, name, url, attributionText, maxZoom, countryCode));
+                                labeledItems.add(new MapTemplate(id, name, url, attributionText, attributionTextMandatory, maxZoom, countryCode));
                                 id = null; name = null; url = null; attributionText = null; maxZoom = null; countryCode = "";
+                                attributionTextMandatory = false;
                             }
                         }
                         sb.setLength(0);

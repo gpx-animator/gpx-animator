@@ -19,6 +19,7 @@ public record MapTemplate(String id,
                           String name,
                           String url,
                           String attributionText,
+                          boolean attributionTextMandatory,
                           Integer maxZoom,
                           String countryCode) {
     @Override

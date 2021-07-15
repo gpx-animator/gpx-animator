@@ -61,7 +61,7 @@ public final class Main {
             UIMode.setMode(UIMode.EXPERT);
             EventQueue.invokeLater(() -> {
                 try {
-                    final var frame = new MainFrame();
+                    final var frame = MainFrame.getInstance();
                     frame.setVisible(true);
                     frame.setConfiguration(configuration);
                 } catch (final Exception e) {
@@ -83,5 +83,4 @@ public final class Main {
             });
         }
     }
-
 }

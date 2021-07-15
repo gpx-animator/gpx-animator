@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum Position {
 
     HIDDEN,
@@ -39,11 +41,11 @@ public enum Position {
         return resourceBundle.getString("position.".concat(name().toLowerCase(Locale.getDefault())));
     }
 
-    public static Position parse(final String p) {
+    public static Position parse(@NotNull final String p) {
         return Position.valueOf(p.replace(' ', '_').toUpperCase(Locale.getDefault()));
     }
 
-    public static void fillComboBox(final JComboBox<Position> comboBox) {
+    public static void fillComboBox(@NotNull final JComboBox<Position> comboBox) {
         Arrays.stream(values()).forEach(comboBox::addItem);
     }
 

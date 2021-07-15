@@ -17,6 +17,7 @@
 * License information can be found in the `Help` menu
 * New plugin support for extending GPX Animator easily
 * Delay the start of the animation (keep first frame)
+* Force mandatory map attributions (if needed)
 
 ### Fixed bugs
 

@@ -48,6 +48,7 @@ public final class Configuration {
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
+    public static final Position DEFAULT_ATTRIBUTION_POSITION = Position.BOTTOM_LEFT;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
@@ -90,7 +91,7 @@ public final class Configuration {
     private File output;
 
     private String attribution;
-    private Position attributionPosition = Position.BOTTOM_LEFT;
+    private Position attributionPosition = DEFAULT_ATTRIBUTION_POSITION;
     private int attributionMargin = DEFAULT_MARGIN;
     private Position informationPosition = Position.BOTTOM_RIGHT;
     private int informationMargin = DEFAULT_MARGIN;

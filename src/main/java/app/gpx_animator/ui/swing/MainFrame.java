@@ -29,9 +29,6 @@ import app.gpx_animator.core.util.Notification;
 import app.gpx_animator.core.util.Sound;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import java.awt.Cursor;
-
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +52,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -114,8 +112,16 @@ public final class MainFrame extends JFrame {
     private transient File file;
     private transient boolean changed;
 
+    private static final class InstanceHolder {
+        static final MainFrame INSTANCE = new MainFrame();
+    }
+
+    public static MainFrame getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
-    public MainFrame() {
+    private MainFrame() {
         Notification.init();
 
         final var addTrackActionListener = new TrackActionListener(MainFrame.this, resourceBundle);
