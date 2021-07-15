@@ -24,13 +24,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.Serial;
-import java.util.ResourceBundle;
-import javax.swing.WindowConstants;
 
 public final class PreviewDialog extends JDialog {
 
@@ -38,12 +37,12 @@ public final class PreviewDialog extends JDialog {
     private static final long serialVersionUID = 3102552837955393556L;
 
     private final transient PreviewPlugin plugin;
-    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
     private final transient ImageIcon imageIcon = new ImageIcon();
 
     public PreviewDialog(@NonNull final PreviewPlugin plugin, @NonNull final BufferedImage image) {
         super();
         this.plugin = plugin;
+        final var resourceBundle = Preferences.getResourceBundle();
         setTitle(resourceBundle.getString("ui.dialog.preview.title"));
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         updatePreview(image);

@@ -17,6 +17,9 @@ package app.gpx_animator.core.util;
 
 import app.gpx_animator.core.Constants;
 import edu.umd.cs.findbugs.annotations.NonNull;
+
+import java.io.FileNotFoundException;
+
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +54,12 @@ public enum Notification {
     public static void init() {
         try {
             final var systemTray = SystemTray.getSystemTray();
-            final var image = new ImageIcon(Notification.class.getResource("/icon_128.png")).getImage(); //NON-NLS
+            final var fileName = "/icon_128.png";
+            final var url = Notification.class.getResource(fileName);
+            if (url == null) {
+                throw new FileNotFoundException("System tray icon file '%s' not found!".formatted(fileName));
+            }
+            final var image = new ImageIcon(url).getImage(); //NON-NLS
             trayIcon = new TrayIcon(image, Constants.APPNAME_VERSION);
             trayIcon.setImageAutoSize(true);
             systemTray.add(trayIcon);

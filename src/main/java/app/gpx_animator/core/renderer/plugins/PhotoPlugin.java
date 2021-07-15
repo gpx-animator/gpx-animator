@@ -53,6 +53,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
+@SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class PhotoPlugin implements RendererPlugin {
 
     @NonNls
@@ -117,7 +118,7 @@ public final class PhotoPlugin implements RendererPlugin {
                 return Arrays.stream(files)
                         .map(this::toPhoto)
                         .filter(this::validatePhotoTime)
-                        .collect(groupingBy(Photo::getEpochSeconds));
+                        .collect(groupingBy(Photo::epochSeconds));
             } else {
                 return new HashMap<>();
             }
@@ -148,7 +149,7 @@ public final class PhotoPlugin implements RendererPlugin {
     }
 
     private boolean validatePhotoTime(@NonNull final Photo photo) {
-        if (photo.getEpochSeconds() > 0) {
+        if (photo.epochSeconds() > 0) {
             return true;
         }
         LOGGER.warn("Ignoring photo '{}', because it has no timestamp.", photo);
@@ -190,7 +191,7 @@ public final class PhotoPlugin implements RendererPlugin {
     }
 
     private void renderPhoto(@NonNull final Photo photo, @NonNull final BufferedImage frameImage) {
-        final var filename = photo.getFile().getName();
+        final var filename = photo.file().getName();
         context.setProgress1(0, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
 
         final var photoImage = readPhoto(photo, frameImage.getWidth() - 20, frameImage.getHeight() - 20);
@@ -222,7 +223,7 @@ public final class PhotoPlugin implements RendererPlugin {
 
     private BufferedImage readPhoto(@NonNull final Photo photo, final int width, final int height) {
         try {
-            final var image = ImageIO.read(photo.getFile());
+            final var image = ImageIO.read(photo.file());
             final var scaledWidth = Math.round(width * 0.8f);
             final var scaledHeight = Math.round(height * 0.8f);
             final var scaledImage = RenderUtil.scaleImage(image, scaledWidth, scaledHeight);

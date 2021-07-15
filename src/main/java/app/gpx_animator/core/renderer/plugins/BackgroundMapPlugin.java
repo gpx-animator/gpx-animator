@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 public final class BackgroundMapPlugin implements RendererPlugin {
 
     @SuppressWarnings({"RegExpAnonymousGroup", "RegExpRedundantEscape"})
-    // This regex is tested and I don't want to rewrite it which may potentionally break it.
+    // This regex is tested, and I don't want to rewrite it which may potentionally break it.
     private static final Pattern SWITCH_PATTERN = Pattern.compile("\\{switch:([^}]*)\\}");
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();

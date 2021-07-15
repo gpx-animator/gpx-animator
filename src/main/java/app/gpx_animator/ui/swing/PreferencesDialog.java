@@ -39,7 +39,7 @@ public class PreferencesDialog extends EscapeDialog {
     private static final long serialVersionUID = -8767146323054030406L;
 
     public PreferencesDialog(final JFrame owner) {
-        super(owner, true);
+        super(owner);
 
         final var resourceBundle = Preferences.getResourceBundle();
 

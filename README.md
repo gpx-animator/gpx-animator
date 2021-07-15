@@ -25,7 +25,7 @@ This example takes GPX file `input.gpx` as input, uses Google Maps as background
 
 ```bash
 java -jar ./build/libs/gpx-animator-1.6.0-SNAPSHOT-all.jar
-	  --tms-url-template 'http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={zoom}'
+	  --tms-url-template 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={zoom}'
 	  --background-map-visibility 1.0
 	  --viewport-height 640 --viewport-width 640
 	  --total-time 120000

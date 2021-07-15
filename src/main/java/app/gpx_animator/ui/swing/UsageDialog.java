@@ -41,7 +41,7 @@ public class UsageDialog extends EscapeDialog {
      * Create the dialog.
      */
     public UsageDialog(final JFrame owner) {
-        super(owner, true);
+        super(owner);
 
         final var resourceBundle = Preferences.getResourceBundle();
 

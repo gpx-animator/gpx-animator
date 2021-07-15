@@ -72,11 +72,7 @@ class DurationFormatter extends JFormattedTextField.AbstractFormatter {
     }
 
     private boolean isValid(final Object value) {
-        var isValid = true;
-        if (value == null) {
-            isValid = false;
-        }
-        return isValid;
+        return value != null;
     }
 
     private String getDurationAsText(final long duration) {

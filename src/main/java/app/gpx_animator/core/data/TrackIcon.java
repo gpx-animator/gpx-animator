@@ -19,6 +19,7 @@ import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NonNls;
@@ -39,20 +40,21 @@ public final class TrackIcon {
     @NonNls
     private static final String RESOURCE_BUNDLE_TRACKICON_PREFIX = "trackicon.icon.";
 
-    private static List<TrackIcon> trackIcons = null;
+    private static volatile List<TrackIcon> trackIcons = null;
 
     @SuppressFBWarnings(value = "DC_DOUBLECHECK", justification = "Before and after synchronization") //NON-NLS
     public static Vector<TrackIcon> getAllTrackIcons() {
         if (trackIcons == null) {
             synchronized (TrackIcon.class) {
                 if (trackIcons == null) {
-                    trackIcons = new Vector<>();
+                    final var tmpTrackIcons = new ArrayList<TrackIcon>();
                     for (final var key : KEYS) {
-                        trackIcons.add(new TrackIcon(key, RESOURCE_BUNDLE.getString(RESOURCE_BUNDLE_TRACKICON_PREFIX.concat(key))));
+                        tmpTrackIcons.add(new TrackIcon(key, RESOURCE_BUNDLE.getString(RESOURCE_BUNDLE_TRACKICON_PREFIX.concat(key))));
                     }
                     final var collator = Collator.getInstance();
-                    trackIcons.sort((a, b) -> collator.compare(a.name, b.name));
-                    trackIcons.add(0, new TrackIcon("", ""));
+                    tmpTrackIcons.sort((a, b) -> collator.compare(a.name, b.name));
+                    tmpTrackIcons.add(0, new TrackIcon("", ""));
+                    trackIcons = List.copyOf(tmpTrackIcons);
                 }
             }
         }

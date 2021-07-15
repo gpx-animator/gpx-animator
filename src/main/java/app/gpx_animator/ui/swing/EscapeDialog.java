@@ -38,8 +38,8 @@ abstract class EscapeDialog extends JDialog {
     @Serial
     private static final long serialVersionUID = 126544226951191103L;
 
-    EscapeDialog(@NonNull final JFrame owner, final boolean modal) {
-        super(owner, modal);
+    EscapeDialog(@NonNull final JFrame owner) {
+        super(owner, true);
     }
 
     @Override

@@ -102,7 +102,7 @@ public class MarkdownDialog extends EscapeDialog {
                           @NonNls final String filename,
                           final Map<String, String> variables,
                           final int width, final int height) {
-        super(owner, true);
+        super(owner);
         this.filename = filename;
         this.variables = Map.copyOf(variables);
         setTitle(title);

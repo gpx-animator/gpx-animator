@@ -36,12 +36,16 @@ public enum Sound {
         new Thread(() -> {
             final var filename = String.format(SOUND_RESOURCES, name().toLowerCase(Locale.getDefault()));
             final var url = getClass().getResource(filename);
-            try (var audioInputStream = AudioSystem.getAudioInputStream(url)) {
-                final var clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
-            } catch (final Exception e) {
-                LOGGER.error("Unable to play sound: %s".formatted(filename), e);
+            if (url != null) {
+                try (var audioInputStream = AudioSystem.getAudioInputStream(url)) {
+                    final var clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+                    clip.start();
+                } catch (final Exception e) {
+                    LOGGER.error("Unable to play sound: {}", filename, e);
+                }
+            } else {
+                LOGGER.error("Sound file not found: {}", filename);
             }
         }).start();
     }

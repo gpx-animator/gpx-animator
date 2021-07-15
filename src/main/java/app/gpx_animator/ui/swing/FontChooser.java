@@ -461,6 +461,7 @@ public final class FontChooser extends JComponent {
         }
     }
 
+    @SuppressWarnings("ClassCanBeRecord") // in my opinion this should not be a record
     static class ListSearchTextFieldDocumentHandler implements DocumentListener {
 
         private final transient JList<String> targetList;

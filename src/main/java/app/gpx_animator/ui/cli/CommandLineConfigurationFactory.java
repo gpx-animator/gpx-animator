@@ -68,7 +68,7 @@ public final class CommandLineConfigurationFactory {
     private final Configuration configuration;
 
 
-    @SuppressWarnings({"checkstyle:MethodLength", "ConstantConditions"}) // Is it worth investing time refactoring this class?
+    @SuppressWarnings({"checkstyle:MethodLength"}) // Is it worth investing time refactoring this class?
     public CommandLineConfigurationFactory(final String... args) throws UserException {
         final var resourceBundle = Preferences.getResourceBundle();
 

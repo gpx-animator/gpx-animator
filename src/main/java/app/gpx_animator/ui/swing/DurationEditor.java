@@ -38,11 +38,9 @@ public class DurationEditor extends DefaultEditor {
 
         ftf.addCaretListener(e -> {
             final var model = spinner.getModel();
-            if (!(model instanceof DurationSpinnerModel)) {
+            if (!(model instanceof final DurationSpinnerModel dsm)) {
                 return;
             }
-
-            final var dsm = (DurationSpinnerModel) model;
 
             // special hack to select number
             if (!ftf.isValid()) {

@@ -113,6 +113,7 @@ public interface RendererPlugin {
      * @param marker  the track point marking the actual position // TODO get the marker based on the frame number
      * @throws UserException error to be shown to the user
      */
+    @SuppressWarnings("RedundantThrows") // implementations throw this exception
     default void renderFrame(int frame, @Nullable Point2D marker, @NonNull BufferedImage image) throws UserException { }
 
     /**
@@ -120,6 +121,7 @@ public interface RendererPlugin {
      *
      * @throws UserException error to be shown to the user
      */
+    @SuppressWarnings("RedundantThrows") // implementations throw this exception
     default void renderingFinished() throws UserException { }
 
     /**
@@ -127,5 +129,6 @@ public interface RendererPlugin {
      *
      * @throws UserException error to be shown to the user
      */
+    @SuppressWarnings("RedundantThrows") // implementations throw this exception
     default void renderingCanceled() throws UserException { }
 }

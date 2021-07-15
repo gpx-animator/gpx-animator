@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 
 import static javax.management.timer.Timer.ONE_SECOND;
 
+@SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class PreviewPlugin implements RendererPlugin {
 
     private transient PreviewDialog preview;
@@ -40,7 +41,8 @@ public final class PreviewPlugin implements RendererPlugin {
     private transient boolean enabled = UIMode.getMode() != UIMode.CLI && Preferences.isPreviewEnabled();
     private transient long lastUpdate = 0;
 
-    public PreviewPlugin(@NonNull final Configuration configuration) { }
+    // all renderer plugins need this constructor
+    public PreviewPlugin(@SuppressWarnings("unused") @NonNull final Configuration configuration) { }
 
     @Override
     public int getOrder() {
