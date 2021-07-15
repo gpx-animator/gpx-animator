@@ -392,7 +392,7 @@ public final class Renderer {
             final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
             final var pointLists = gch.getPointLists();
-            if (pointLists.isEmpty()) {
+            if (pointLists.isEmpty() || pointLists.stream().mapToInt(List::size).sum() == 0) {
                 throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
             }
             for (final var latLonList : pointLists) {
@@ -438,6 +438,10 @@ public final class Renderer {
     }
 
     private void mergeConnectedSpans(final List<Long[]> spanList, final TreeMap<Long, Point2D> timePointMap) {
+        if (timePointMap.isEmpty()) {
+            return;
+        }
+
         long t0 = timePointMap.firstKey();
         var t1 = timePointMap.lastKey() + cfg.getTailDuration();
 
