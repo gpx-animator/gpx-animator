@@ -96,34 +96,10 @@ task installGitHooks(type: Copy) {
 }
 
 test {
-    useJUnitPlatform {
-        excludeTags "it", "nightly"
-    }
+    useJUnitPlatform { }
     maxParallelForks = 4
     minHeapSize = "1G"
     maxHeapSize = "2G"
-    dependsOn 'createVersionFile'
-}
-
-task it(type: Test) {
-    useJUnitPlatform {
-        includeTags "it"
-    }
-    maxParallelForks = 4
-    minHeapSize = "1G"
-    maxHeapSize = "2G"
-    shouldRunAfter test
-    dependsOn 'createVersionFile'
-}
-
-task nightly(type: Test) {
-    useJUnitPlatform {
-        includeTags "nightly"
-    }
-    maxParallelForks = 4
-    minHeapSize = "1G"
-    maxHeapSize = "2G"
-    shouldRunAfter test
     dependsOn 'createVersionFile'
 }
 

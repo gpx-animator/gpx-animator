@@ -1,7 +1,6 @@
 package app.gpx_animator;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,7 +13,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Tag("nightly")
 public final class MissingTranslationsTest {
 
     private static final transient Properties EN = new Properties();
