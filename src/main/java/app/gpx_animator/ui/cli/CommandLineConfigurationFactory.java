@@ -28,6 +28,7 @@ import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -192,10 +193,9 @@ public final class CommandLineConfigurationFactory {
                                 pw.println(Constants.APPNAME_VERSION);
                                 pw.print("(");
                                 pw.print(checkVersion(resourceBundle));
-                                pw.print(")");
+                                pw.print(")\n");
                                 pw.flush();
                             }
-
                             exit();
                         }
                         default -> throw new AssertionError();
@@ -361,7 +361,7 @@ public final class CommandLineConfigurationFactory {
         }
     }
 
-    private static String checkVersion(final ResourceBundle resourceBundle) {
+    private static String checkVersion(@NotNull final ResourceBundle resourceBundle) {
         final var currentVersion = new DefaultArtifactVersion(Constants.VERSION.replace("-SNAPSHOT", ""));
 
         try {
@@ -379,9 +379,9 @@ public final class CommandLineConfigurationFactory {
             return updatesVersion.compareTo(currentVersion) <= 0
                     ? resourceBundle.getString("version.check.latest")
                     : String.format(resourceBundle.getString("version.check.newer"), updatesVersion);
-        } catch (ParserConfigurationException | SAXException e) {
+        } catch (final ParserConfigurationException | SAXException e) {
             return resourceBundle.getString("version.check.error.xml");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return resourceBundle.getString("version.check.error.network");
         }
     }
