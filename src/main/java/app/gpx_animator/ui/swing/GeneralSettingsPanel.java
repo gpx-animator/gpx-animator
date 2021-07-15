@@ -1250,7 +1250,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         keepFirstFrameSpinner.setValue(c.getKeepFirstFrame());
         keepLastFrameSpinner.setValue(c.getKeepLastFrame());
         backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
-        photosDirectorySelector.setFilename(c.getPhotoDirectory());
+        photosDirectorySelector.setFilename(c.getPhotoDirectory() != null ? c.getPhotoDirectory().toString() : "");
         photoTimeSpinner.setValue(c.getPhotoTime());
         photoAnimationDurationSpinner.setValue(c.getPhotoAnimationDuration());
 
@@ -1338,7 +1338,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .waypointFont(waypointFontSelector.getSelectedFont())
                 .waypointSize((Double) waypointSizeSpinner.getValue())
                 .logo(new File(logoFileSelector.getFilename()))
-                .photoDirectory(photosDirectorySelector.getFilename())
+                .photoDirectory(new File(photosDirectorySelector.getFilename()))
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
                 .attribution(attribution)

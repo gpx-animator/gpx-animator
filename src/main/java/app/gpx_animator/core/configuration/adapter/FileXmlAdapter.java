@@ -30,6 +30,9 @@ public final class FileXmlAdapter extends XmlAdapter<String, File> {
 
     @Override
     public File unmarshal(final String string) {
+        if (string == null || string.isBlank()) {
+            return null;
+        }
         return base != null
                 ? base.resolve(string).normalize().toFile()
                 : new File(string);
@@ -45,7 +48,8 @@ public final class FileXmlAdapter extends XmlAdapter<String, File> {
     private String relativize(final Path path) {
         final var root = base.getRoot();
         if (root != null && root.equals(path.getRoot())) {
-            return base.relativize(path).toString();
+            final var dir = base.relativize(path).toString();
+            return dir.isBlank() ? "." : dir;
         }
         return path.toString();
     }

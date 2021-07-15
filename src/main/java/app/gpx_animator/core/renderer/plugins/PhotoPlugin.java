@@ -102,28 +102,28 @@ public final class PhotoPlugin implements RendererPlugin {
         this.context = renderingContext;
     }
 
-    private Map<Long, List<Photo>> loadPhotos(@Nullable final String dirname) {
-        if (dirname == null || dirname.isBlank()) {
+    private Map<Long, List<Photo>> loadPhotos(@Nullable final File directory) {
+        if (directory == null) {
             return new HashMap<>();
-        } else {
-            final var directory = new File(dirname);
-            if (directory.isDirectory()) {
-                final var files = directory.listFiles((dir, name) -> {
-                    final var lowerCaseName = name.toLowerCase(Locale.getDefault());
-                    return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png"); //NON-NLS
-                });
-                if (files != null) {
-                    return Arrays.stream(files)
-                            .map(this::toPhoto)
-                            .filter(this::validatePhotoTime)
-                            .collect(groupingBy(Photo::getEpochSeconds));
-                } else {
-                    return new HashMap<>();
-                }
+        } else if (!directory.exists()) {
+            LOGGER.error("Photo directory '{}' does not exist!", directory);
+            return new HashMap<>();
+        } else if (directory.isDirectory()) {
+            final var files = directory.listFiles((dir, name) -> {
+                final var lowerCaseName = name.toLowerCase(Locale.getDefault());
+                return lowerCaseName.endsWith(".jpg") || lowerCaseName.endsWith(".jpeg") || lowerCaseName.endsWith(".png"); //NON-NLS
+            });
+            if (files != null) {
+                return Arrays.stream(files)
+                        .map(this::toPhoto)
+                        .filter(this::validatePhotoTime)
+                        .collect(groupingBy(Photo::getEpochSeconds));
             } else {
-                LOGGER.error("'{}' is not a directory!", directory);
                 return new HashMap<>();
             }
+        } else {
+            LOGGER.error("'{}' is not a directory!", directory);
+            return new HashMap<>();
         }
     }
 

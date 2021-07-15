@@ -116,7 +116,8 @@ public final class Configuration {
     private Position logoPosition = Position.TOP_LEFT;
     private int logoMargin = DEFAULT_MARGIN;
 
-    private String photoDirectory;
+    @XmlJavaTypeAdapter(FileXmlAdapter.class)
+    private File photoDirectory;
     private Long photoTime;
     private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
 
@@ -148,7 +149,7 @@ public final class Configuration {
             final Position attributionPosition, final int attributionMargin,
             final Position informationPosition, final int informationMargin,
             final Position commentPosition, final int commentMargin,
-            final String photoDirectory, final Long photoTime, final Long photoAnimationDuration,
+            final File photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final Long previewLength,
             final List<TrackConfiguration> trackConfigurationList) {
 
@@ -373,7 +374,7 @@ public final class Configuration {
         return commentMargin;
     }
 
-    public String getPhotoDirectory() {
+    public File getPhotoDirectory() {
         return photoDirectory;
     }
 
@@ -462,7 +463,7 @@ public final class Configuration {
         private int informationMargin = DEFAULT_MARGIN;
         private Position commentPosition = Position.BOTTOM_CENTER;
         private int commentMargin = DEFAULT_MARGIN;
-        private String photoDirectory;
+        private File photoDirectory;
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
         private SpeedUnit speedUnit = SpeedUnit.KMH;
@@ -695,7 +696,7 @@ public final class Configuration {
             return this;
         }
 
-        public Builder photoDirectory(final String photoDirectory) {
+        public Builder photoDirectory(final File photoDirectory) {
             this.photoDirectory = photoDirectory;
             return this;
         }

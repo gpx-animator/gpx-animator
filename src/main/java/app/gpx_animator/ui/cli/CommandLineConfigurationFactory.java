@@ -156,7 +156,7 @@ public final class CommandLineConfigurationFactory {
                         case LOGO -> cfg.logo(new File(args[++i]));
                         case LOGO_POSITION -> cfg.logoPosition(Position.parse(args[++i]));
                         case LOGO_MARGIN -> cfg.logoMargin(Integer.parseInt(args[++i]));
-                        case PHOTO_DIR -> cfg.photoDirectory(args[++i]);
+                        case PHOTO_DIR -> cfg.photoDirectory(new File(args[++i]));
                         case PHOTO_TIME -> cfg.photoTime(Long.parseLong(args[++i]));
                         case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
                         case PREVIEW_LENGTH -> cfg.previewLength(Long.parseLong(args[++i]));
