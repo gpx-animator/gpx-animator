@@ -76,6 +76,7 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
+    @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File backgroundImage;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
