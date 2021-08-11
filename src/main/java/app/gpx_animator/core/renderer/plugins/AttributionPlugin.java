@@ -42,7 +42,7 @@ public final class AttributionPlugin extends TextRenderer implements RendererPlu
         attribution = configuration.getAttribution()
                 .replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION)
                 .replace("%MAP_ATTRIBUTION%", mapAttribution);
-        position = configuration.getAttributionPosition();
+        position = attribution.isBlank() ? Position.HIDDEN : configuration.getAttributionPosition();
         margin = configuration.getAttributionMargin();
     }
 
