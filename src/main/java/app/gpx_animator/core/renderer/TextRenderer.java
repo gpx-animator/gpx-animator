@@ -55,10 +55,13 @@ public abstract class TextRenderer extends ImageRenderer {
     }
 
     private int calculateTextWidth(@NonNull final String text) {
-        return Arrays.stream(text.split("\n"))
+        final var lines = text.split("\n");
+        return Arrays.stream(lines)
+                .map(String::trim)
                 .mapToInt(fontMetrics::stringWidth)
                 .max()
-                .orElseThrow();
+                .orElseThrow()
+                + lines.length;
     }
 
     private int calculateTextHeight(@NonNull final String text) {
@@ -92,7 +95,7 @@ public abstract class TextRenderer extends ImageRenderer {
         for (final var line : trimmedText.split("\n")) {
             lineNum++;
             var trimmedLine = line.trim();
-            var xPosition = calculateHorizontalPosition(alignment, trimmedLine, image.getWidth());
+            var xPosition = calculateHorizontalPosition(alignment, trimmedLine, width, lineNum);
             var yPosition = calculateVerticalPosition(lineNum, lineHeight);
 
             final var textLayout = new TextLayout(trimmedLine, font, fontRenderContext);
@@ -109,11 +112,11 @@ public abstract class TextRenderer extends ImageRenderer {
         renderImage(image, position, margin, targetImage);
     }
 
-    private int calculateHorizontalPosition(@NonNull final TextAlignment alignment, @NonNull final String line, final int width) {
+    private int calculateHorizontalPosition(@NonNull final TextAlignment alignment, @NonNull final String line, final int width, final int lineNum) {
         return switch (alignment) {
             case LEFT -> 0;
-            case CENTER -> (width - ANTI_ALIAS_COMPENSATION - fontMetrics.stringWidth(line)) / 2;
-            case RIGHT -> width - ANTI_ALIAS_COMPENSATION - fontMetrics.stringWidth(line);
+            case CENTER -> (width - ANTI_ALIAS_COMPENSATION - fontMetrics.stringWidth(line) - lineNum + 1) / 2;
+            case RIGHT -> width - ANTI_ALIAS_COMPENSATION - fontMetrics.stringWidth(line) - lineNum + 1;
         };
     }
 

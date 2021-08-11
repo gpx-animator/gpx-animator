@@ -26,6 +26,7 @@
 * Incorrect handling of keep last frame option
 * Incorrect handling of photo directory in saved configurations
 * Incorrect handling of background image in saved configurations
+* Fixed oblique right text alignment
 * Fixed `NoSuchElementException` when loading empty GPX files
 * Fixed a bunch of (possible) `NullPointerException`s
 
