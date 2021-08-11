@@ -24,6 +24,7 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -34,10 +35,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.HyperlinkEvent;
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serial;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -119,6 +123,7 @@ public class MarkdownDialog extends EscapeDialog {
         textPane.setContentType("text/html");
         textPane.setText(parseVariables());
         textPane.setCaretPosition(0);
+        textPane.addHyperlinkListener(this::handleLinkClicked);
 
         final var scrollPane = new JScrollPane(textPane,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -133,6 +138,17 @@ public class MarkdownDialog extends EscapeDialog {
                 .add(scrollPane).xy(1, 1)
                 .addBar(closeButton).xy(1, 3, CellConstraints.RIGHT, CellConstraints.FILL)
                 .build();
+    }
+
+    private void handleLinkClicked(@NotNull final HyperlinkEvent event) {
+        if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)
+                && Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(event.getURL().toURI());
+            } catch (final IOException | URISyntaxException e) {
+                new ErrorDialog(MainFrame.getInstance(), e.getLocalizedMessage(), e);
+            }
+        }
     }
 
     private void closeDialog() {

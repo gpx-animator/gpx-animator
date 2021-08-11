@@ -28,6 +28,7 @@
 * Incorrect handling of background image in saved configurations
 * Fixed oblique right text alignment
 * Fixed incorrect path handling when saving a configuration
+* Fixed links in dialogs not opening the browser
 * Fixed `NoSuchElementException` when loading empty GPX files
 * Fixed a bunch of (possible) `NullPointerException`s
 
