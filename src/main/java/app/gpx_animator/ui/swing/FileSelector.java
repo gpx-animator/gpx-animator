@@ -150,4 +150,9 @@ public abstract class FileSelector extends JPanel {
         OPEN, SAVE
     }
 
+    public final File getFile() {
+        final var filename = getFilename();
+        return filename == null || filename.isEmpty() ? null : new File(filename);
+    }
+
 }

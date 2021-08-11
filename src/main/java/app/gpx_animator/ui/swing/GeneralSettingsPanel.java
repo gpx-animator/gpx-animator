@@ -60,7 +60,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.Serial;
 import java.util.List;
 import java.util.Locale;
@@ -1380,16 +1379,16 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .preDrawTrack(preDrawTrackCheckBox.isSelected())
                 .skipIdle(skipIdleCheckBox.isSelected())
                 .backgroundColor(backgroundColorSelector.getColor())
-                .backgroundImage(new File(backgroundImageSelector.getFilename()))
+                .backgroundImage(backgroundImageSelector.getFile())
                 .flashbackColor(flashbackColorSelector.getColor())
                 .flashbackDuration((Long) flashbackDurationSpinner.getValue())
-                .output(new File(outputFileSelector.getFilename()))
+                .output(outputFileSelector.getFile())
                 .font(fontSelector.getSelectedFont())
                 .markerSize((Double) markerSizeSpinner.getValue())
                 .waypointFont(waypointFontSelector.getSelectedFont())
                 .waypointSize((Double) waypointSizeSpinner.getValue())
-                .logo(new File(logoFileSelector.getFilename()))
-                .photoDirectory(new File(photosDirectorySelector.getFilename()))
+                .logo(logoFileSelector.getFile())
+                .photoDirectory(photosDirectorySelector.getFile())
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
                 .attribution(attribution)
