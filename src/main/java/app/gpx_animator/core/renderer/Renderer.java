@@ -280,7 +280,7 @@ public final class Renderer {
 
     private int calculateSpeedupAndReturnFrames(@NonNull final List<RendererPlugin> plugins) throws UserException {
         final var totalTime = cfg.getTotalTime() == null ? 0 : cfg.getTotalTime();
-        final var tailDuration = cfg.getTailDuration();
+        final var tailDuration = cfg.isTailColorFadeout() ? cfg.getTailDuration() : 0;
         final var fps = cfg.getFps();
 
         if (totalTime == 0) {
@@ -443,7 +443,7 @@ public final class Renderer {
         }
 
         long t0 = timePointMap.firstKey();
-        var t1 = timePointMap.lastKey() + cfg.getTailDuration();
+        var t1 = timePointMap.lastKey() + (cfg.isTailColorFadeout() ? cfg.getTailDuration() : 0);
 
         for (final var iter = spanList.iterator(); iter.hasNext();) {
             final var span = iter.next();
@@ -777,6 +777,9 @@ public final class Renderer {
                         prevPoint = entry.getValue();
                     }
                 } else {
+                    if (!cfg.isTailColorFadeout() && toTime == maxTime) {
+                        continue;
+                    }
                     for (final var entry : timePointMap.subMap(toTime - backTime, true, toTime, true).entrySet()) {
                         if (prevPoint != null) {
                             var drawSegment = false;

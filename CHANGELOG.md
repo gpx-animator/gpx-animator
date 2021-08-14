@@ -18,6 +18,7 @@
 * New plugin support for extending GPX Animator easily
 * Delay the start of the animation (keep first frame)
 * Force mandatory map attributions (if needed)
+* Disable tail color fadeout on request
 
 ### Fixed bugs
 

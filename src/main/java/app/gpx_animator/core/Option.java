@@ -37,6 +37,7 @@ public enum Option {
     LINE_WIDTH("line-width"),
     TAIL_DURATION("tail-duration"),
     TAIL_COLOR("tail-color"),
+    TAIL_COLOR_FADEOUT("tail-color-fadeout"),
     FPS("fps"),
     MARKER_SIZE("marker-size"),
     WAYPOINT_SIZE("waypoint-size"),

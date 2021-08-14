@@ -67,6 +67,7 @@ public final class Configuration {
     private long tailDuration;
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color tailColor;
+    private boolean tailColorFadeout;
     private double fps;
     private Long totalTime;
 
@@ -140,8 +141,8 @@ public final class Configuration {
     private Configuration(
             final int margin, final Integer width, final Integer height, final Integer zoom,
             final Integer viewportWidth, final Integer viewportHeight, final Integer viewportInertia,
-            final Double speedup, final long tailDuration, final Color tailColor, final double fps, final Long totalTime,
-            final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
+            final Double speedup, final long tailDuration, final Color tailColor, final boolean tailColorFadeout, final double fps,
+            final Long totalTime, final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
             final Color backgroundColor, final File backgroundImage, final Color flashbackColor, final Long flashbackDuration,
             final boolean preDrawTrack, final Long keepFirstFrame, final Long keepLastFrame, final File output, final String attribution,
             final SpeedUnit speedUnit, final Font font, final Double markerSize, final Font waypointFont, final Double waypointSize,
@@ -164,6 +165,7 @@ public final class Configuration {
         this.speedup = speedup;
         this.tailDuration = tailDuration;
         this.tailColor = tailColor;
+        this.tailColorFadeout = tailColorFadeout;
         this.fps = fps;
         this.totalTime = totalTime;
         this.backgroundMapVisibility = backgroundMapVisibility;
@@ -249,6 +251,10 @@ public final class Configuration {
 
     public Color getTailColor() {
         return tailColor;
+    }
+
+    public boolean isTailColorFadeout() {
+        return tailColorFadeout;
     }
 
     public double getFps() {
@@ -433,6 +439,7 @@ public final class Configuration {
         private Double speedup = 1000.0;
         private long tailDuration = 3600000;
         private Color tailColor = Color.BLACK;
+        private boolean tailColorFadeout = true;
         private double fps = 30.0;
         private Long totalTime;
         private float backgroundMapVisibility = 0.5f;
@@ -475,7 +482,7 @@ public final class Configuration {
             return new Configuration(
                     margin, width, height, zoom,
                     viewportWidth, viewportHeight, viewportInertia,
-                    speedup, tailDuration, tailColor, fps, totalTime,
+                    speedup, tailDuration, tailColor, tailColorFadeout, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate,
                     skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
                     preDrawTrack, keepFirstFrame, keepLastFrame, output, attribution, speedUnit,
@@ -539,6 +546,11 @@ public final class Configuration {
 
         public Builder tailColor(final Color tailColor) {
             this.tailColor = tailColor;
+            return this;
+        }
+
+        public Builder tailColorFadeout(final boolean tailColorFadeout) {
+            this.tailColorFadeout = tailColorFadeout;
             return this;
         }
 
