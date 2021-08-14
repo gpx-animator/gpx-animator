@@ -35,8 +35,10 @@
 
 ### Maintenance
 
-* Replaced the end of life [Xuggler](http://www.xuggle.com/xuggler/status) library with [JavaCV](https://github.com/bytedeco/javacv)
 * Improve some German translations
+* Replaced the end of life [Xuggler](http://www.xuggle.com/xuggler/status) library with [JavaCV](https://github.com/bytedeco/javacv)
+* Updating Java to v16
+* Switching to Zulu JDK in preparation for native Apple M1 support
 
 ---
 
