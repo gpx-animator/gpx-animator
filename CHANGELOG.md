@@ -35,6 +35,7 @@
 ### Maintenance
 
 * Replaced the end of life [Xuggler](http://www.xuggle.com/xuggler/status) library with [JavaCV](https://github.com/bytedeco/javacv)
+* Improve some German translations
 
 ---
 
