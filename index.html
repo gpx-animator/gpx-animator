@@ -81,21 +81,17 @@
         <h2 id="roadmap">Roadmap</h2>
 
         <p>
-            We are working on version 1.7 of GPX Animator. Our plan is to implement the following new features:
+            Here is a small preview of the new features planned for the next versions of GPX Animator:
         </p>
 
         <ul>
             <li>Redesign the user interface (we know, it's really awful now)</li>
-            <li>Showing a video preview while rendering is in progress <span title="done">✔️</span></li>
-            <li>More accurate display of the speed</li>
-            <li>cleaning up the list of background maps <span title="work in progress">👷</span></li>
-            <li>Playing a sound and/or using OS notifications when rendering finishes <span title="done">✔️</span></li>
-            <li>Specify a separate font and size for waypoints</li>
             <li>Visually set the zoom and bounding boxes</li>
             <li>Add background music to the video file</li>
             <li>Easier photo selection</li>
             <li>Make the content of the information box configurable</li>
             <li>Smooth line drawing between two points</li>
+            <li>Support of H265 video codec</li>
         </ul>
 
         <p>
@@ -108,38 +104,46 @@
         <h3>Latest Stable Version</h3>
 
         <p>
-            It is recommended, to download the latest stable version. As of today, this is v1.6.1, released on March 14th, 2021.
+            It is recommended, to download the latest stable version. As of today, this is v1.7.0, released on August 14th, 2021.
             These are the most important changes:
         </p>
 
         <ul>
-            <li>Fixing date time parsing error when time zone information is missing</li>
-            <li>Fixing date from the 1970s when forced point time interval option was set</li>
-            <li>Fixing waypoints do not require a time anymore</li>
-            <li>Fixing negative total time crashing the rendering process</li>
-            <li>Accepting uppercase file endings of GPX and PNG files</li>
-            <li>Adding trim options to command line help</li>
+            <li>Realtime preview while rendering is in progress (can be disabled)</li>
+            <li>System notifications when rendering stops or finishes</li>
+            <li>Map data update over the air</li>
+            <li>Specify a separate font for waypoints (optional)</li>
+            <li>Read speed from GPX file (if present) for more acurate speed data</li>
+            <li>All important features in the menu are now accessible via hotkeys</li>
+            <li>Recently opened files can be accessed via hotkeys</li>
+            <li>All dialogs can be closed using the Esc key</li>
+            <li>License information can be found in the Help menu</li>
+            <li>New plugin support for extending GPX Animator easily</li>
+            <li>Delay the start of the animation (keep first frame)</li>
+            <li>Force mandatory map attributions (if needed)</li>
+            <li>Disable tail color fadeout on request</li>
+            <li>Fixed a lot of bugs</li>
         </ul>
 
         <p>
-            <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_6_1.exe"
-               download="gpx-animator_windows-x64_1_6_1.exe">
+            <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_7_0.exe"
+               download="gpx-animator_windows-x64_1_7_0.exe">
                 <button><em class="fa fa-windows"></em> Windows (64 Bit)</button>
             </a>
-            <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_6_1.exe"
-               download="gpx-animator_windows-x32_1_6_1.exe">
+            <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_7_0.exe"
+               download="gpx-animator_windows-x32_1_7_0.exe">
                 <button><em class="fa fa-windows"></em> Windows (32 Bit)</button>
             </a><br/>
-            <a href="https://download.gpx-animator.app/gpx-animator_macos_1_6_1.dmg"
-               download="gpx-animator_macos_1_6_1.dmg">
+            <a href="https://download.gpx-animator.app/gpx-animator_macos_1_7_0.dmg"
+               download="gpx-animator_macos_1_7_0.dmg">
                 <button><em class="fa fa-apple"></em> macOS (Intel)</button>
             </a>
-            <a href="https://download.gpx-animator.app/gpx-animator_unix_1_6_1.sh"
-               download="gpx-animator_unix_1_6_1.sh">
+            <a href="https://download.gpx-animator.app/gpx-animator_unix_1_7_0.sh"
+               download="gpx-animator_unix_1_7_0.sh">
                 <button><em class="fa fa-linux"></em> Linux</button>
             </a><br/>
-            <a href="https://download.gpx-animator.app/gpx-animator-1.6.1-all.jar"
-               download="gpx-animator-1.6.1-all.jar">
+            <a href="https://download.gpx-animator.app/gpx-animator-1.7.0-all.jar"
+               download="gpx-animator-1.7.0-all.jar">
                 <button><em class="fa fa-download"></em> Java Archive</button>
             </a>
         </p>
@@ -153,11 +157,9 @@
 
         <p>
             <strong>Apple Silicon (M1):</strong> The macOS Intel binary of GPX Animator runs fine on Apple Silicon (M1
-            processor) using the Rosetta 2 compatibility layer. You can use the Java Archive together with a Java Runtime
-            for the M1 ARM processor to run GPX Animator natively on Apple Silicon. But be warned, the Java Runtime for
-            the M1 ARM processor is work in progress and reported to be unstable! Once Java for the M1 ARM processor is
-            declared stable (probably with version 16, which will be available in March 2021), we will provide a macOS ARM
-            binary of GPX Animator. Until then we recommend using the macOS Intel binary of GPX Animator with Rosetta 2.
+            processor) using the Rosetta 2 compatibility layer. We will hopefully support the Apple M1 processor natively
+            soon. Work on this is ongoing, but we are dependent on third party vendors. Until then, we recommend using
+            the macOS Intel binary of GPX Animator with Rosetta 2.
         </p>
 
         <h2 id="important">Important Information</h2>
@@ -197,13 +199,13 @@
         <p>GPX Animator needs at least Java 15 or newer! We suggest to use <a href="https://adoptopenjdk.net/" target="_blank" title="AdoptOpenJDK project website">AdoptOpenJDK</a>, but any other distribution should work, too.</p>
 
         <p>For default GUI run:</p>
-        <pre><code>java -jar gpx-animator-1.6.1-all.jar</code></pre>
+        <pre><code>java -jar gpx-animator-1.7.0-all.jar</code></pre>
 
         <p>For program help run:</p>
-        <pre><code>java -jar gpx-animator-1.6.1-all.jar --help</code></pre>
+        <pre><code>java -jar gpx-animator-1.7.0-all.jar --help</code></pre>
 
         <p>For direct rendering run:</p>
-        <pre><code>java -jar gpx-animator-1.6.1-all.jar --input track.gpx</code></pre>
+        <pre><code>java -jar gpx-animator-1.7.0-all.jar --input track.gpx</code></pre>
 
         <h4>Command line parameters</h4>
 
@@ -246,6 +248,10 @@
             <dd>this help</dd>
             <dt><strong>--input &lt;input&gt;</strong></dt>
             <dd>input GPX filename; can be specified multiple times if multiple tracks are provided</dd>
+            <dt><strong>--trim-gpx-start &lt;trim-gpx-start&gt;</strong></dt>
+            <dd>trim the start of the GPX file in milliseconds</dd>
+            <dt><strong>--trim-gpx-end &lt;trim-gpx-end&gt;</strong></dt>
+            <dd>trim the end of the GPX file in milliseconds</dd>
             <dt><strong>--information-position &lt;information-position&gt;</strong></dt>
             <dd>sets position for the information to be placed on the animation; default bottom right</dd>
             <dt><strong>--information-margin &lt;information-margin&gt;</strong></dt>
@@ -262,6 +268,10 @@
             <dd>allows you to set an icon file for a track; can be specified multiple times if multiple tracks are provided</dd>
             <dt><strong>--track-icon-mirror &lt;mirrorTrackIcon&gt;</strong></dt>
             <dd>mirror the track icon horizontally; can be specified multiple times if multiple tracks are provided; default false</dd>
+            <dt><strong>--keep-first-frame &lt;keep-first-frame&gt;</strong></dt>
+            <dd>time to repeat the first rendered frame in milliseconds; complementary to total time</dd>
+            <dt><strong>--keep-last-frame &lt;keep-last-frame&gt;</strong></dt>
+            <dd>time to repeat the last rendered frame in milliseconds; complementary to total time</dd>
             <dt><strong>--label &lt;label&gt;</strong></dt>
             <dd>text displayed next to marker; can be specified multiple times if multiple tracks are provided</dd>
             <dt><strong>--line-width &lt;width&gt;</strong></dt>
@@ -304,6 +314,8 @@
             <dd>highlighted tail length in real time milliseconds; default 3600000</dd>
             <dt><strong>--tail-color &lt;tail-color&gt;</strong></dt>
             <dd>highlighted tail color; default java.awt.Color[r=0,g=0,b=0]</dd>
+            <dt><strong>--tail-color-fadeout &lt;tail-color-fadeout&gt;</strong></dt>
+            <dd>fade out highlighted tail color at the end of the animation; default true</dd>
             <dt><strong>--time-offset &lt;milliseconds&gt;</strong></dt>
             <dd>time offset for track in milliseconds; can be specified multiple times if multiple tracks are provided</dd>
             <dt><strong>--tms-url-template &lt;tms-url-template&gt;</strong></dt>
@@ -330,21 +342,23 @@
             <dt><strong>--zoom &lt;zoom&gt;</strong></dt>
             <dd>map zoom typically from 1 to 18; if not specified and TMS URL Template (Background Map) is specified then it is computed from width
             </dd>
+            <dt><strong>--version</strong></dt>
+            <dd>prints the version and exits</dd>
         </dl>
 
         <h2 id="faq">FAQ</h2>
         <h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
         <p>
-            Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.6.1-all.jar</code>.
+            Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.7.0-all.jar</code>.
             If the problem persists, try higher value or check if your GPX trace doesn't cover too big area.
             If it does then try to specify lower zoom, width and/or height.
         </p>
 
         <h3>Does it run on Linux, Windows, WhateverOS?</h3>
-        <p>Application will run on any platform where you can run Java.</p>
+        <p>GPX Animator will run on any platform where you can run Java.</p>
 
         <h3>My GPX is missing point timestamps</h3>
-        <p>No problem. Add --forced-point-time-interval option.</p>
+        <p>No problem. Add <code>--forced-point-time-interval</code> option.</p>
 
         <h3>Video is very short or long</h3>
         <p>Fine-tune speedup or specify exact total time in seconds.</p>
@@ -358,26 +372,9 @@
             support, use the following command line to set the scaling factor
             accordingly:
         </p>
-        <pre><code>GDK_SCALE=2 java -jar gpx-animator-1.6.1-all.jar</code></pre>
-
-        <h3>Error While Rendering - Invalid frame size (0x0)</h3>
-        <p>
-            A GPX file is like a container and can contain a lot of different
-            information. GPX Animator needs track data to work properly. If
-            you get this error message, it is likely that your file does not
-            contain a track. Maybe it contains just waypoints and no track
-            information. The next version of GPX Animator will show a much
-            better error message (The GPX file "foobar.gpx" does not contain
-            valid track data!).
-        </p>
+        <pre><code>GDK_SCALE=2 java -jar gpx-animator-1.7.0-all.jar</code></pre>
 
         <h3>Where do I enter the API key?</h3>
-        <p>
-            The maps in the dropdown box usually do not require an API key.
-            If this changes, please report the map using the
-            <a href="https://github.com/zdila/gpx-animator/issues">GitHub Issue Tracker</a>
-            (highly preferred) or write us at support<span>@</span>gpx-animator.app.
-        </p>
         <p>
             If you want to use an own map provider which requires an API key,
             please take a look at the documentation of your map provider.
