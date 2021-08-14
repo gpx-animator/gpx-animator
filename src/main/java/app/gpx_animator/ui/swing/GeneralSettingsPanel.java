@@ -273,6 +273,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         }
         final var widthHeightButton = new JButton(resourceBundle.getString("ui.panel.generalsettings.widthheight.button"));
         widthHeightButton.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(final MouseEvent e) {
                 widthHeightPopup.show(e.getComponent(), e.getX(), e.getY());
             }
@@ -347,6 +348,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         }
         final var viewportWidthHeightButton = new JButton(resourceBundle.getString("ui.panel.generalsettings.widthheight.button"));
         viewportWidthHeightButton.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(final MouseEvent e) {
                 viewportWidthHeightPopup.show(e.getComponent(), e.getX(), e.getY());
             }
@@ -718,10 +720,8 @@ abstract class GeneralSettingsPanel extends JPanel {
             var maxZoom = 18;
 
             final var item = event.getItem();
-            if (item instanceof final MapTemplate mapTemplate) {
-                if (mapTemplate.maxZoom() != null) {
-                    maxZoom = mapTemplate.maxZoom();
-                }
+            if (item instanceof final MapTemplate mapTemplate && mapTemplate.maxZoom() != null) {
+                maxZoom = mapTemplate.maxZoom();
             }
 
             ((EmptyNullSpinnerModel) zoomSpinner.getModel()).setMaximum(maxZoom);
