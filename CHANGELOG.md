@@ -2,13 +2,13 @@
 
 ## Version 1.7.0
 
-**Release date: work in progress** 🚧
+**Release date: 2021-08-14**
 
 ### New features
 
 * Realtime preview while rendering is in progress (can be disabled)
 * System notifications when rendering stops or finishes
-* Map data update over the air
+* Map data update over the air (manually via `File` menu)
 * Specify a separate font for waypoints (optional)
 * Read speed from GPX file (if present) for more acurate speed data
 * All important features in the menu are now accessible via hotkeys

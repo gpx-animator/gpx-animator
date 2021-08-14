@@ -84,7 +84,7 @@ public final class Help {
         w.writeOptionHelp(Option.SPEEDUP, "speedup", false, cfg.getSpeedup()); //NON-NLS
         w.writeOptionHelp(Option.TAIL_DURATION, "time", false, cfg.getTailDuration()); //NON-NLS
         w.writeOptionHelp(Option.TAIL_COLOR, "tail-color", false, cfg.getTailColor()); //NON-NLS
-        w.writeOptionHelp(Option.TAIL_COLOR_FADEOUT, "tail-color-fadeout", false, cfg.isTailColorFadeout()); //NON-NLS
+        w.writeOptionHelp(Option.TAIL_COLOR_FADEOUT, "tail-color-fadeout", false, true); //NON-NLS
         w.writeOptionHelp(Option.TIME_OFFSET, "milliseconds", true, tc.getTimeOffset()); //NON-NLS
         w.writeOptionHelp(Option.TMS_URL_TEMPLATE, "tms-url-template", false, cfg.getTmsUrlTemplate()); //NON-NLS
         w.writeOptionHelp(Option.TOTAL_TIME, "time", false, cfg.getTotalTime()); //NON-NLS
