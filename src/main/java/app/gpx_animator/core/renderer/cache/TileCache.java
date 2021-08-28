@@ -98,7 +98,7 @@ public final class TileCache {
     private static BufferedImage unCachedGetTile(final String url, final String userAgent) throws UserException {
         BufferedImage mapTile;
 
-        if (userAgent != null) {
+        if (!userAgent.isBlank()) {
             System.setProperty("http.agent", userAgent);
         } else {
             System.setProperty("http.agent", String.format("%s %s on %s %s (%s)", //NON-NLS
