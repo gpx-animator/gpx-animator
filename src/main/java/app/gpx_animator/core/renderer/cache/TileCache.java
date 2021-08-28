@@ -78,32 +78,36 @@ public final class TileCache {
         }
     }
 
-    public static BufferedImage getTile(final String url, final String tileCacheDir, final Long tileCacheTimeLimit) throws UserException {
+    public static BufferedImage getTile(final String url, final String userAgent, final String tileCacheDir, final Long tileCacheTimeLimit)
+        throws UserException {
 
         BufferedImage image;
 
         if (cachingEnabled(tileCacheDir)) {
             try {
-                image = cachedGetTile(url, tileCacheDir, tileCacheTimeLimit);
+                image = cachedGetTile(url, userAgent, tileCacheDir, tileCacheTimeLimit);
             } catch (final UserException e) {
-                image = unCachedGetTile(url);
+                image = unCachedGetTile(url, userAgent);
             }
         } else {
-            image = unCachedGetTile(url);
+            image = unCachedGetTile(url, userAgent);
         }
         return image;
     }
 
-    private static BufferedImage unCachedGetTile(final String url) throws UserException {
+    private static BufferedImage unCachedGetTile(final String url, final String userAgent) throws UserException {
         BufferedImage mapTile;
 
-        final var userAgent = String.format("%s %s on %s %s (%s)", //NON-NLS
-                Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH);
-        System.setProperty("http.agent", userAgent);
+        if (userAgent != null) {
+            System.setProperty("http.agent", userAgent);
+        } else {
+            System.setProperty("http.agent", String.format("%s %s on %s %s (%s)", //NON-NLS
+            Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH));
+        }
         try {
             mapTile = ImageIO.read(new URL(url));
         } catch (final IOException e) {
-            throw new UserException("error getting tile ".concat(url), e);
+            throw new UserException(String.format("error getting tile %s: %s", url, e.getCause()), e);
         }
         if (mapTile == null) {
             throw new UserException("could not get tile ".concat(url));
@@ -112,7 +116,8 @@ public final class TileCache {
         return mapTile;
     }
 
-    private static BufferedImage cachedGetTile(final String url, final String tileCacheDir, final Long tileCacheTimeLimit) throws UserException {
+    private static BufferedImage cachedGetTile(final String url, final String userAgent, final String tileCacheDir,
+        final Long tileCacheTimeLimit) throws UserException {
         BufferedImage mapTile = null;
         final var filename = hashName(url).concat(CACHED_FILE_EXTENSION);
         final var path = tileCacheDir.concat(File.separator).concat(filename);
@@ -143,7 +148,7 @@ public final class TileCache {
         // tile from the server and then write it into our cache.
         //
         if (mapTile == null) {          // Map tile doesn't exist or we could not read it
-            mapTile = unCachedGetTile(url);
+            mapTile = unCachedGetTile(url, userAgent);
             try {
                 ImageIO.write(mapTile, CACHED_FILE_TYPE, cacheFile);
             } catch (final IOException e) {

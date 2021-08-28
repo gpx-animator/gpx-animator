@@ -54,6 +54,7 @@ public enum Option {
     FONT("font"),
     WAYPOINT_FONT("waypoint-font"),
     TMS_URL_TEMPLATE("tms-url-template"),
+    TMS_USER_AGENT("tms-user-agent"),
     ATTRIBUTION("attribution"),
     BACKGROUND_MAP_VISIBILITY("background-map-visibility"),
     TOTAL_TIME("total-time"),
