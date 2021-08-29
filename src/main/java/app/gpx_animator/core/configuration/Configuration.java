@@ -73,6 +73,7 @@ public final class Configuration {
 
     private float backgroundMapVisibility;
     private String tmsUrlTemplate;
+    private String tmsUserAgent;
 
     private boolean skipIdle;
 
@@ -142,7 +143,7 @@ public final class Configuration {
             final int margin, final Integer width, final Integer height, final Integer zoom,
             final Integer viewportWidth, final Integer viewportHeight, final Integer viewportInertia,
             final Double speedup, final long tailDuration, final Color tailColor, final boolean tailColorFadeout, final double fps,
-            final Long totalTime, final float backgroundMapVisibility, final String tmsUrlTemplate, final boolean skipIdle,
+            final Long totalTime, final float backgroundMapVisibility, final String tmsUrlTemplate, final String tmsUserAgent, final boolean skipIdle,
             final Color backgroundColor, final File backgroundImage, final Color flashbackColor, final Long flashbackDuration,
             final boolean preDrawTrack, final Long keepFirstFrame, final Long keepLastFrame, final File output, final String attribution,
             final SpeedUnit speedUnit, final Font font, final Double markerSize, final Font waypointFont, final Double waypointSize,
@@ -170,6 +171,7 @@ public final class Configuration {
         this.totalTime = totalTime;
         this.backgroundMapVisibility = backgroundMapVisibility;
         this.tmsUrlTemplate = tmsUrlTemplate;
+        this.tmsUserAgent = tmsUserAgent;
         this.skipIdle = skipIdle;
         this.preDrawTrack = preDrawTrack;
         this.backgroundColor = backgroundColor;
@@ -271,6 +273,10 @@ public final class Configuration {
 
     public String getTmsUrlTemplate() {
         return tmsUrlTemplate;
+    }
+
+    public String getTmsUserAgent() {
+        return tmsUserAgent;
     }
 
     public boolean isSkipIdle() {
@@ -444,6 +450,7 @@ public final class Configuration {
         private Long totalTime;
         private float backgroundMapVisibility = 0.5f;
         private String tmsUrlTemplate = "";
+        private String tmsUserAgent = "";
         private boolean skipIdle = true;
         private boolean preDrawTrack = false;
         private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
@@ -483,7 +490,7 @@ public final class Configuration {
                     margin, width, height, zoom,
                     viewportWidth, viewportHeight, viewportInertia,
                     speedup, tailDuration, tailColor, tailColorFadeout, fps, totalTime,
-                    backgroundMapVisibility, tmsUrlTemplate,
+                    backgroundMapVisibility, tmsUrlTemplate, tmsUserAgent,
                     skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
                     preDrawTrack, keepFirstFrame, keepLastFrame, output, attribution, speedUnit,
                     font, markerSize, waypointFont, waypointSize,
@@ -571,6 +578,11 @@ public final class Configuration {
 
         public Builder tmsUrlTemplate(final String tmsUrlTemplate) {
             this.tmsUrlTemplate = tmsUrlTemplate;
+            return this;
+        }
+
+        public Builder tmsUserAgent(final String tmsUserAgent) {
+            this.tmsUserAgent = tmsUserAgent;
             return this;
         }
 
