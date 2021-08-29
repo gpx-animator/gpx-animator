@@ -59,8 +59,11 @@ public final class TileCache {
     // If either check fails, log a warning rather than delete the file.
     //
     public static void ageCache() {
+        ageCache(Preferences.getTileCacheTimeLimit());
+    }
+
+    private static void ageCache(final long tileCacheTimeLimit) {
         final var tileCacheDir = Preferences.getTileCacheDir();
-        final var tileCacheTimeLimit = Preferences.getTileCacheTimeLimit();
         if (cachingEnabled(tileCacheDir)) {
             // Remove any cached tiles that are too old
             final var cacheDir = new File(tileCacheDir);
@@ -76,6 +79,26 @@ public final class TileCache {
                 }
             }
         }
+    }
+
+    public static void clear() {
+        ageCache(-1);
+    }
+
+    public static long getSize() {
+        final var tileCacheDir = Preferences.getTileCacheDir();
+        final var cacheDir = new File(tileCacheDir);
+        final var files = cacheDir.listFiles();
+        var size = 0L;
+        if (files != null) {
+            for (var cacheEntry : files) {
+                final var cacheFilename = cacheEntry.getName();
+                if ((cacheFilename.length() == 74) && (cacheFilename.endsWith(CACHED_FILE_EXTENSION))) {
+                    size += cacheEntry.length();
+                }
+            }
+        }
+        return size;
     }
 
     public static BufferedImage getTile(final String url, final String userAgent, final String tileCacheDir, final Long tileCacheTimeLimit)

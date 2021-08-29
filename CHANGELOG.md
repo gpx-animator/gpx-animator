@@ -6,6 +6,7 @@
 
 ### New features
 
+* Delete cached map tiles in preferences dialog
 * New configuration option to specify the user agent when accessing the TMS servers
 
 ## Version 1.7.0

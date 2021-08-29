@@ -16,6 +16,8 @@
 package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.core.preferences.Preferences;
+import app.gpx_animator.core.renderer.cache.TileCache;
+import app.gpx_animator.core.util.FormatUtil;
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 
@@ -24,6 +26,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SwingUtilities;
@@ -61,6 +64,24 @@ public class PreferencesDialog extends EscapeDialog {
         tileCacheTimeLimitSpinner.setModel(new DurationSpinnerModel());
         tileCacheTimeLimitSpinner.setEditor(new DurationEditor(tileCacheTimeLimitSpinner));
 
+        final var tileCacheSize = TileCache.getSize();
+        final var tileCacheSizeLabel = new JLabel(FormatUtil.readableFileSize(tileCacheSize));
+        final var tileCacheDeleteButton = new JButton(resourceBundle.getString("ui.dialog.preferences.cachesize.delete"));
+        tileCacheDeleteButton.setEnabled(tileCacheSize > 0);
+        tileCacheDeleteButton.addActionListener(event -> {
+            tileCacheDeleteButton.setEnabled(false);
+            new Thread(() -> {
+                TileCache.clear();
+                SwingUtilities.invokeLater(() -> tileCacheSizeLabel.setText("0"));
+            }).start();
+        });
+        final var tileCacheSizePanel = FormBuilder.create()
+                .columns("left:p, 5dlu, p")
+                .rows("p")
+                .add(tileCacheSizeLabel).xy(1, 1)
+                .add(tileCacheDeleteButton).xy(3, 1)
+                .build();
+
         final var trackColorPanel = new JPanel(new BorderLayout());
         final var trackColorRandom = new JCheckBox(resourceBundle.getString("ui.dialog.preferences.track.color.random"));
         final var trackColorSelector = new ColorSelector();
@@ -94,24 +115,26 @@ public class PreferencesDialog extends EscapeDialog {
         setContentPane(FormBuilder.create()
                 .padding(new EmptyBorder(20, 20, 20, 20))
                 .columns("right:p, 5dlu, fill:[200dlu, pref]") //NON-NLS
-                .rows("p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 10dlu, p") //NON-NLS
+                .rows("p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 5dlu, p, 10dlu, p") //NON-NLS
 
                 .addSeparator(resourceBundle.getString("ui.dialog.preferences.cache.separator")).xyw(1, 1, 3)
                 .add(resourceBundle.getString("ui.dialog.preferences.cachepath.label")).xy(1, 3)
                 .add(tileCachePathSelector).xy(3, 3)
                 .add(resourceBundle.getString("ui.dialog.preferences.cachetimelimit.label")).xy(1, 5)
                 .add(tileCacheTimeLimitSpinner).xy(3, 5)
+                .add(resourceBundle.getString("ui.dialog.preferences.cachesize.label")).xy(1, 7)
+                .add(tileCacheSizePanel).xy(3, 7)
 
-                .addSeparator(resourceBundle.getString("ui.dialog.preferences.track")).xyw(1, 7, 3)
-                .add(resourceBundle.getString("ui.dialog.preferences.track.color")).xy(1, 9)
-                .add(trackColorPanel).xy(3, 9)
+                .addSeparator(resourceBundle.getString("ui.dialog.preferences.track")).xyw(1, 9, 3)
+                .add(resourceBundle.getString("ui.dialog.preferences.track.color")).xy(1, 11)
+                .add(trackColorPanel).xy(3, 11)
 
-                .addSeparator(resourceBundle.getString("ui.dialog.preferences.rendering")).xyw(1, 11, 3)
-                .add(resourceBundle.getString("ui.dialog.preferences.rendering.enablepreview")).xy(1, 13)
-                .add(enablePreview).xy(3, 13)
+                .addSeparator(resourceBundle.getString("ui.dialog.preferences.rendering")).xyw(1, 13, 3)
+                .add(resourceBundle.getString("ui.dialog.preferences.rendering.enablepreview")).xy(1, 15)
+                .add(enablePreview).xy(3, 15)
 
-                .addSeparator("").xyw(1, 15, 3)
-                .addBar(cancelButton, saveButton).xyw(1, 17, 3, CellConstraints.RIGHT, CellConstraints.FILL)
+                .addSeparator("").xyw(1, 17, 3)
+                .addBar(cancelButton, saveButton).xyw(1, 19, 3, CellConstraints.RIGHT, CellConstraints.FILL)
                 .build());
 
         tileCachePathSelector.setFilename(Preferences.getTileCacheDir());
