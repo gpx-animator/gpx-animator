@@ -23,17 +23,6 @@ import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.util.MapUtil;
-
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,22 +34,30 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
@@ -133,18 +130,22 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
-        mapTemplateList = MapUtil.readMaps();
+        var rowCounter = 0;
+        final var maxRows = 42;
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final var gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths  = new int[]    {91,  100, 0,  0};
         gridBagLayout.columnWeights = new double[] {0.0, 1.0, 0.0, Double.MIN_VALUE};
-        gridBagLayout.rowHeights    = new int[]    {20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,
-                20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
-        gridBagLayout.rowWeights    = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gridBagLayout.rowHeights = new int[maxRows + 1];
+        gridBagLayout.rowWeights = new double[maxRows + 1];
+        for (int i = 0; i < maxRows; i++) {
+            gridBagLayout.rowHeights[i] = 20;
+            gridBagLayout.rowWeights[i] = 0.0;
+        }
+        gridBagLayout.rowHeights[maxRows] = 0;
+        gridBagLayout.rowWeights[maxRows] = Double.MIN_VALUE;
         setLayout(gridBagLayout);
-        var rowCounter = 0;
 
         final var lblOutput = new JLabel(resourceBundle.getString("ui.panel.generalsettings.output.label"));
         final var gbcLabelOutput = new GridBagConstraints();
@@ -711,6 +712,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelTmsUrlTemplate.gridy = ++rowCounter;
         add(lblTmsUrlTemplate, gbcLabelTmsUrlTemplate);
 
+        mapTemplateList = MapUtil.readMaps();
         tmsUrlTemplateComboBox = new JComboBox<>();
         tmsUrlTemplateComboBox.setToolTipText(Option.TMS_URL_TEMPLATE.getHelp());
         tmsUrlTemplateComboBox.setEditable(true);
@@ -1271,6 +1273,12 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcSpeedUnit.gridx = 1;
         gbcSpeedUnit.gridy = rowCounter;
         add(speedUnitComboBox, gbcSpeedUnit);
+
+        rowCounter++; // increment rowCounter before check, because it started at index 0
+        if (rowCounter != maxRows) {
+            throw new IllegalStateException(
+                    String.format("Ui development error: row count mismatch (expected: %d, actual: %d)", maxRows, rowCounter));
+        }
     }
 
     private void checkAttributionMandatory(@Nullable final Object positionObject, @Nullable final Object mapTemplateObject) {
