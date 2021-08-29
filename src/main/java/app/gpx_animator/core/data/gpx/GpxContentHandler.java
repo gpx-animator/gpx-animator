@@ -108,7 +108,7 @@ public final class GpxContentHandler extends DefaultHandler {
             waypointList.add(new Waypoint(lat, lon, time, name));
         } else if (isEqual(ELEM_TIME, qName)) {
             final var dateTime = parseDateTime(sb.toString());
-            time = dateTime.toInstant().toEpochMilli();
+            time = dateTime != null ? dateTime.toInstant().toEpochMilli() : 0;
             sb = null;
         } else if (isEqual(ELEM_SPEED, qName)) {
             if (!sb.isEmpty()) {
@@ -137,9 +137,9 @@ public final class GpxContentHandler extends DefaultHandler {
             return LocalDateTime.parse(sb.toString()).atZone(ZoneId.systemDefault());
         } catch (final DateTimeParseException ignored) { }
 
-        LOGGER.error("Unable to parse date and time from string '{}'", sb.toString());
+        LOGGER.error("Unable to parse date and time from string '{}'", sb);
         throw new RuntimeException(
-                new UserException(resourceBundle.getString("gpxparser.error.datetimeformat").formatted(sb.toString())));
+                new UserException(resourceBundle.getString("gpxparser.error.datetimeformat").formatted(sb)));
     }
 
 

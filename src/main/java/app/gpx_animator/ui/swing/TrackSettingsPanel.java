@@ -54,18 +54,18 @@ abstract class TrackSettingsPanel extends JPanel {
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient JTextArea labelTextField;
-    private final transient JSpinner forcedPointTimeIntervalSpinner;
-    private final transient JSpinner timeOffsetSpinner;
-    private final transient JSpinner lineWidthSpinner;
-    private final transient ColorSelector colorSelector;
-    private final transient ColorSelector preDrawColorSelector;
-    private final transient FileSelector inputGpxFileSelector;
-    private final transient JSpinner trimGpxStartSpinner;
-    private final transient JSpinner trimGpxEndSpinner;
-    private final transient JComboBox<TrackIcon> trackIconComboBox;
-    private final transient FileSelector inputIconFileSelector;
-    private final transient JCheckBox mirrorIconCheckBox;
+    private final JTextArea labelTextField;
+    private final JSpinner forcedPointTimeIntervalSpinner;
+    private final JSpinner timeOffsetSpinner;
+    private final JSpinner lineWidthSpinner;
+    private final ColorSelector colorSelector;
+    private final ColorSelector preDrawColorSelector;
+    private final FileSelector inputGpxFileSelector;
+    private final JSpinner trimGpxStartSpinner;
+    private final JSpinner trimGpxEndSpinner;
+    private final JComboBox<TrackIcon> trackIconComboBox;
+    private final FileSelector inputIconFileSelector;
+    private final JCheckBox mirrorIconCheckBox;
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     TrackSettingsPanel() {

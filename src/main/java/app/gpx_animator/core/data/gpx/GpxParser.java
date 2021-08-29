@@ -16,6 +16,9 @@
 package app.gpx_animator.core.data.gpx;
 
 import app.gpx_animator.core.UserException;
+
+import javax.xml.XMLConstants;
+
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,7 +40,11 @@ public final class GpxParser {
     public static void parseGpx(final File inputGpx, final GpxContentHandler dh) throws UserException {
         final SAXParser saxParser;
         try {
-            saxParser = SAXParserFactory.newInstance().newSAXParser();
+            final var factory = SAXParserFactory.newInstance();
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            saxParser = factory.newSAXParser();
+            saxParser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            saxParser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
         } catch (final ParserConfigurationException | SAXException e) {
             throw new RuntimeException("can't create XML parser", e);
         }

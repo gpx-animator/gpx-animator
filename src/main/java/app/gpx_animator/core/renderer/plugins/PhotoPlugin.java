@@ -26,6 +26,7 @@ import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.exif.ExifDirectoryBase;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -49,7 +50,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -67,17 +67,17 @@ public final class PhotoPlugin implements RendererPlugin {
         SYSTEM_ZONE_OFFSET = dateTime.format(formatter);
     }
 
-    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient double fps;
-    private final transient long photoTime;
-    private final transient long photoAnimationDuration;
+    private final double fps;
+    private final long photoTime;
+    private final long photoAnimationDuration;
 
-    private final transient Map<Long, List<Photo>> remainingPhotos;
+    private final Map<Long, List<Photo>> remainingPhotos;
 
-    private transient Metadata metadata;
-    private transient FrameWriter frameWriter;
-    private transient RenderingContext context;
+    private Metadata metadata;
+    private FrameWriter frameWriter;
+    private RenderingContext context;
 
     public PhotoPlugin(@NonNull final Configuration configuration) {
         this.fps = configuration.getFps();
@@ -137,7 +137,7 @@ public final class PhotoPlugin implements RendererPlugin {
             final var imageMetadata = ImageMetadataReader.readMetadata(file);
             final var directory = imageMetadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
             final var zoneOffset = directory.getString(36881) != null ? directory.getString(36881) : SYSTEM_ZONE_OFFSET;
-            final var dateTimeString = directory.getString(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)
+            final var dateTimeString = directory.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
                     .concat(" ").concat(zoneOffset.replace(":", ""));
             final var zonedDateTime = ZonedDateTime.parse(dateTimeString,
                     DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x")); //NON-NLS
@@ -180,11 +180,12 @@ public final class PhotoPlugin implements RendererPlugin {
         final var time = RenderUtil.getTime(frame, metadata.minTime(), fps, metadata.speedup());
         final var keys = remainingPhotos.keySet().stream()
                 .filter(timeOfPhoto -> time >= timeOfPhoto)
-                .collect(Collectors.toList());
+                .toList();
         if (!keys.isEmpty()) {
             keys.stream()
                     .map(remainingPhotos::get)
-                    .flatMap(List::stream).collect(Collectors.toList())
+                    .flatMap(List::stream)
+                    .toList()
                     .forEach(photo -> renderPhoto(photo, bi));
             keys.forEach(remainingPhotos::remove);
         }

@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class MissingTranslationsTest {
 
-    private static final transient Properties EN = new Properties();
-    private static final transient Properties DE = new Properties();
-    private static transient Set<String> allKeys;
+    private static final Properties EN = new Properties();
+    private static final Properties DE = new Properties();
+    private static Set<String> allKeys;
 
     @BeforeAll
     public static void beforeAllTests() throws IOException {
@@ -30,7 +30,7 @@ public final class MissingTranslationsTest {
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
-    public void checkBundle(final Properties bundle, final String code) {
+    private void checkBundle(final Properties bundle, final String code) {
         assertEquals(List.of(), allKeys.stream()
                 .filter(key -> bundle.get(key) == null)
                 .collect(Collectors.toList()),
@@ -38,12 +38,12 @@ public final class MissingTranslationsTest {
     }
 
     @Test
-    public void english() {
+    void english() {
         checkBundle(EN, "en");
     }
 
     @Test
-    public void german() {
+    void german() {
         checkBundle(DE, "de");
     }
 

@@ -18,6 +18,11 @@ package app.gpx_animator.ui.swing;
 import app.gpx_animator.core.preferences.Preferences;
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
+
+import javax.swing.ScrollPaneConstants;
+
+import javax.swing.WindowConstants;
+
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JButton;
@@ -44,15 +49,15 @@ public class ErrorDialog extends JDialog {
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient String message;
-    private final transient String stackTrace;
+    private final String message;
+    private final String stackTrace;
 
     public ErrorDialog(final JFrame owner, final String message, final Exception exception) {
         super(owner, true);
         this.message = message;
         this.stackTrace = getStackTrace(exception);
         setTitle(resourceBundle.getString("ui.dialog.error.title"));
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setContentPane(buildContent());
         pack();
         setLocationRelativeTo(owner);
@@ -78,7 +83,7 @@ public class ErrorDialog extends JDialog {
         textPane.setCaretPosition(0);
 
         final var scrollPane = new JScrollPane(textPane,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         final var copyButton = new JButton(resourceBundle.getString("ui.dialog.error.button.copy"));
         copyButton.addActionListener(e -> SwingUtilities.invokeLater(this::copyMessage));

@@ -29,9 +29,9 @@ import java.awt.image.BufferedImage;
 @SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class AttributionPlugin extends TextRenderer implements RendererPlugin {
 
-    private final transient String attribution;
-    private final transient Position position;
-    private final transient int margin;
+    private final String attribution;
+    private final Position position;
+    private final int margin;
 
     public AttributionPlugin(@NonNull final Configuration configuration) {
         super(configuration.getFont());

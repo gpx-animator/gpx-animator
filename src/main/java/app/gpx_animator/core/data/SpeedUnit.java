@@ -34,11 +34,11 @@ public enum SpeedUnit {
     MIN_MI("min/mi", kmh -> 3600 / (kmh * 0.62137119223733) / 60),
     KNOTS("kn", kmh -> kmh * 0.53995680346039);
 
-    private final transient String abbreviation;
+    private final String abbreviation;
 
-    private final transient Calculation calculation;
+    private final Calculation calculation;
 
-    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     public static void fillComboBox(final JComboBox<SpeedUnit> comboBox) {
         Arrays.stream(values()).forEach(comboBox::addItem);

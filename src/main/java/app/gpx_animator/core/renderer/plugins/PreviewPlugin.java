@@ -33,13 +33,13 @@ import static javax.management.timer.Timer.ONE_SECOND;
 @SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class PreviewPlugin implements RendererPlugin {
 
-    private transient PreviewDialog preview;
+    private PreviewDialog preview;
 
-    private transient int width;
-    private transient int height;
+    private int width;
+    private int height;
 
-    private transient boolean enabled = UIMode.getMode() != UIMode.CLI && Preferences.isPreviewEnabled();
-    private transient long lastUpdate = 0;
+    private boolean enabled = UIMode.getMode() != UIMode.CLI && Preferences.isPreviewEnabled();
+    private long lastUpdate = 0;
 
     // all renderer plugins need this constructor
     public PreviewPlugin(@SuppressWarnings("unused") @NonNull final Configuration configuration) { }

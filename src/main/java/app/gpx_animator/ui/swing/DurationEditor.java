@@ -19,7 +19,7 @@ import app.gpx_animator.ui.swing.DurationSpinnerModel.Field;
 
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
-import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultFormatterFactory;
 import java.io.Serial;
@@ -85,7 +85,7 @@ public class DurationEditor extends DefaultEditor {
         ftf.setEditable(true);
         ftf.setFormatterFactory(new DefaultFormatterFactory(new DurationFormatter()));
 
-        ftf.setHorizontalAlignment(JTextField.RIGHT);
+        ftf.setHorizontalAlignment(SwingConstants.RIGHT);
     }
 
 }

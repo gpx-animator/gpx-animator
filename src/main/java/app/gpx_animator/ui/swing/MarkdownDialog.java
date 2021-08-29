@@ -28,12 +28,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import java.awt.Desktop;
@@ -93,8 +94,8 @@ public class MarkdownDialog extends EscapeDialog {
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient String filename;
-    private final transient Map<String, String> variables;
+    private final String filename;
+    private final Map<String, String> variables;
 
     public MarkdownDialog(final JFrame owner, final String title,
                           @NonNls final String filename,
@@ -110,7 +111,7 @@ public class MarkdownDialog extends EscapeDialog {
         this.filename = filename;
         this.variables = Map.copyOf(variables);
         setTitle(title);
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setContentPane(buildContent());
         setSize(width, height);
         setLocationRelativeTo(owner);
@@ -126,7 +127,7 @@ public class MarkdownDialog extends EscapeDialog {
         textPane.addHyperlinkListener(this::handleLinkClicked);
 
         final var scrollPane = new JScrollPane(textPane,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         final var closeButton = new JButton(resourceBundle.getString("ui.dialog.markdown.button.close"));
         closeButton.addActionListener(e -> SwingUtilities.invokeLater(this::closeDialog));

@@ -26,13 +26,13 @@ public final class EmptyNullSpinnerModel extends AbstractSpinnerModel {
     @Serial
     private static final long serialVersionUID = -7525679442817416995L;
 
-    private final transient boolean zeroEmpty;
-    private final transient Number stepSize;
-    private final transient Number minimum;
-    private transient Number maximum;
-    private final transient int fractions;
-    private final transient double fractionValue;
-    private transient Number value;
+    private final boolean zeroEmpty;
+    private final Number stepSize;
+    private final Number minimum;
+    private Number maximum;
+    private final int fractions;
+    private final double fractionValue;
+    private Number value;
     private transient Object object = new Object();
 
 

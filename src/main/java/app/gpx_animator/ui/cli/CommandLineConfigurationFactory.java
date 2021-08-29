@@ -27,6 +27,9 @@ import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import javax.xml.XMLConstants;
+
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Element;
@@ -362,6 +365,9 @@ public final class CommandLineConfigurationFactory {
 
         try {
             final var dbf = DocumentBuilderFactory.newInstance();
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             final var db = dbf.newDocumentBuilder();
             final var doc = db.parse(new URL(Constants.UPDATES_URL).openStream());
             doc.getDocumentElement().normalize();

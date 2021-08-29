@@ -28,10 +28,10 @@ import java.awt.image.BufferedImage;
 @SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class CommentPlugin extends TextRenderer implements RendererPlugin {
 
-    private final transient Position position;
-    private final transient int margin;
+    private final Position position;
+    private final int margin;
 
-    private transient String lastComment;
+    private String lastComment;
 
     public CommentPlugin(@NonNull final Configuration configuration) {
         super(configuration.getFont());

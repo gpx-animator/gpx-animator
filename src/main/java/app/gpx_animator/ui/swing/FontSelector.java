@@ -40,9 +40,9 @@ public final class FontSelector extends JPanel {
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient JTextField fontTextField;
+    private final JTextField fontTextField;
 
-    private transient Font font;
+    private Font selectedFont;
 
     public FontSelector() {
 
@@ -61,7 +61,7 @@ public final class FontSelector extends JPanel {
         final var btnSelectFontButton = new JButton(resourceBundle.getString("ui.dialog.fontselector.button.selectfont"));
         btnSelectFontButton.addActionListener(e -> {
             final var fontChooser = new FontChooser();
-            if (font != null) {
+            if (selectedFont != null) {
                 fontChooser.setSelectedFont(getSelectedFont());
             }
             if (fontChooser.showDialog(FontSelector.this) == FontChooser.OK_OPTION) {
@@ -74,11 +74,11 @@ public final class FontSelector extends JPanel {
     }
 
     public Font getSelectedFont() {
-        return font;
+        return selectedFont;
     }
 
     public void setSelectedFont(@Nullable final Font selectedFont) {
-        this.font = selectedFont;
+        this.selectedFont = selectedFont;
         if (selectedFont == null) {
             fontTextField.setText("");
         } else {

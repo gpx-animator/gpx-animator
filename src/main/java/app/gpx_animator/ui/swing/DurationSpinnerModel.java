@@ -26,7 +26,7 @@ public final class DurationSpinnerModel extends AbstractSpinnerModel {
     @Serial
     private static final long serialVersionUID = 7220186634453532297L;
 
-    private transient Long duration;
+    private Long duration;
     private Field field = Field.SECOND;
 
     @Override

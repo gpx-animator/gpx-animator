@@ -37,7 +37,7 @@ public final class PreviewDialog extends JDialog {
     private static final long serialVersionUID = 3102552837955393556L;
 
     private final transient PreviewPlugin plugin;
-    private final transient ImageIcon imageIcon = new ImageIcon();
+    private final ImageIcon imageIcon = new ImageIcon();
 
     public PreviewDialog(@NonNull final PreviewPlugin plugin, @NonNull final BufferedImage image) {
         super();

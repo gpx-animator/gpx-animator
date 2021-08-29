@@ -18,6 +18,9 @@ package app.gpx_animator.core.renderer.cache;
 import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.preferences.Preferences;
+
+import java.nio.file.Files;
+
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +39,8 @@ public final class TileCache {
 
     @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(TileCache.class);
+
+    private static final String DELETE_ERROR = "Can't delete tile cache file: {}";
 
     private TileCache() throws InstantiationException {
         throw new InstantiationException("TileCache is a utility class which can't be instantiated!");
@@ -158,9 +163,10 @@ public final class TileCache {
                 // remove the file we could not read.
 
                 LOGGER.error("Error: Failed to read cached tile {} ({})", url, path, e);
-                if (cacheFile.exists() && !cacheFile.delete()) {
-                    //noinspection DuplicateStringLiteralInspection
-                    LOGGER.error("Can't delete tile cache file: {}", cacheFile);
+                try {
+                    Files.deleteIfExists(cacheFile.toPath());
+                } catch (final IOException ex) {
+                    LOGGER.error(DELETE_ERROR, cacheFile, ex);
                 }
             }
         }
@@ -218,9 +224,10 @@ public final class TileCache {
         final var fileDate = new Date(cacheFile.lastModified());
         var msBetweenDates = new Date().getTime() - fileDate.getTime();
         if ((msBetweenDates) > tileCacheTimeLimit) {
-            if (cacheFile.exists() && !cacheFile.delete()) {
-                //noinspection DuplicateStringLiteralInspection
-                LOGGER.error("Can't delete tile cache file: {}", cacheFile);
+            try {
+                Files.deleteIfExists(cacheFile.toPath());
+            } catch (final IOException e) {
+                LOGGER.error(DELETE_ERROR, cacheFile, e);
             }
         }
     }

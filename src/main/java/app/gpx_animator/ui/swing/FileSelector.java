@@ -38,16 +38,16 @@ public abstract class FileSelector extends JPanel {
     @Serial
     private static final long serialVersionUID = 3157365691996396016L;
 
-    private final transient JTextField fileTextField;
+    private final JTextField fileTextField;
 
-    private final transient JButton btnNewButton;
+    private final JButton btnNewButton;
 
-    private transient JFileChooser fileChooser;
+    private JFileChooser fileChooser;
 
     /**
      * Create the panel.
      */
-    public FileSelector(final int fileSelectionMode) {
+    protected FileSelector(final int fileSelectionMode) {
         final var resourceBundle = Preferences.getResourceBundle();
 
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));

@@ -18,6 +18,11 @@ package app.gpx_animator.ui.swing;
 import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.NonNull;
+
+import javax.swing.ScrollPaneConstants;
+
+import javax.swing.SwingConstants;
+
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,25 +103,25 @@ public final class FontChooser extends JComponent {
             "22", "24", "26", "28", "36", "48", "72" };
 
     // instance variables
-    private transient int dialogResultValue = ERROR_OPTION;
+    private int dialogResultValue = ERROR_OPTION;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient String[] fontSizeStrings;
+    private final String[] fontSizeStrings;
 
-    private transient String[] fontStyleNames = null;
-    private transient String[] fontFamilyNames = null;
-    private transient JTextField fontFamilyTextField = null;
-    private transient JTextField fontStyleTextField = null;
-    private transient JTextField fontSizeTextField = null;
-    private transient JList<String> fontNameList = null;
-    private transient JList<String> fontStyleList = null;
-    private transient JList<String> fontSizeList = null;
-    private transient JPanel fontNamePanel = null;
-    private transient JPanel fontStylePanel = null;
-    private transient JPanel fontSizePanel = null;
-    private transient JPanel samplePanel = null;
-    private transient JTextField sampleText = null;
+    private String[] fontStyleNames = null;
+    private String[] fontFamilyNames = null;
+    private JTextField fontFamilyTextField = null;
+    private JTextField fontStyleTextField = null;
+    private JTextField fontSizeTextField = null;
+    private JList<String> fontNameList = null;
+    private JList<String> fontStyleList = null;
+    private JList<String> fontSizeList = null;
+    private JPanel fontNamePanel = null;
+    private JPanel fontStylePanel = null;
+    private JPanel fontSizePanel = null;
+    private JPanel samplePanel = null;
+    private JTextField sampleText = null;
 
     /**
      * Constructs a <code>FontChooser</code> object.
@@ -385,7 +390,7 @@ public final class FontChooser extends JComponent {
 
     class ListSelectionHandler implements ListSelectionListener {
 
-        private final transient JTextComponent textComponent;
+        private final JTextComponent textComponent;
 
         ListSelectionHandler(final JTextComponent textComponent) {
             this.textComponent = textComponent;
@@ -411,7 +416,7 @@ public final class FontChooser extends JComponent {
 
     class TextFieldFocusHandlerForTextSelection extends FocusAdapter {
 
-        private final transient JTextComponent textComponent;
+        private final JTextComponent textComponent;
 
         TextFieldFocusHandlerForTextSelection(final JTextComponent textComponent) {
             this.textComponent = textComponent;
@@ -431,7 +436,7 @@ public final class FontChooser extends JComponent {
 
     static class TextFieldKeyHandlerForListSelectionUpDown extends KeyAdapter {
 
-        private final transient JList<String> targetList;
+        private final JList<String> targetList;
 
         TextFieldKeyHandlerForListSelectionUpDown(final JList<String> list) {
             this.targetList = list;
@@ -464,7 +469,7 @@ public final class FontChooser extends JComponent {
     @SuppressWarnings("ClassCanBeRecord") // in my opinion this should not be a record
     static class ListSearchTextFieldDocumentHandler implements DocumentListener {
 
-        private final transient JList<String> targetList;
+        private final JList<String> targetList;
 
         ListSearchTextFieldDocumentHandler(final JList<String> targetList) {
             this.targetList = targetList;
@@ -502,17 +507,15 @@ public final class FontChooser extends JComponent {
                 targetList.ensureIndexIsVisible(index);
 
                 final var matchedName = targetList.getModel().getElementAt(index);
-                if (newValue.equalsIgnoreCase(matchedName)) {
-                    if (index != targetList.getSelectedIndex()) {
-                        SwingUtilities.invokeLater(new ListSelector(index));
-                    }
+                if (newValue.equalsIgnoreCase(matchedName) && index != targetList.getSelectedIndex()) {
+                    SwingUtilities.invokeLater(new ListSelector(index));
                 }
             }
         }
 
         public class ListSelector implements Runnable {
 
-            private final transient int index;
+            private final int index;
 
             ListSelector(final int index) {
                 this.index = index;
@@ -530,7 +533,7 @@ public final class FontChooser extends JComponent {
         protected static final String ACTION_NAME = "OK";
         @Serial
         private static final long serialVersionUID = 2309978224812073950L;
-        private final transient JDialog dialog;
+        private final JDialog dialog;
 
         protected DialogOKAction(final JDialog dialog) {
             this.dialog = dialog;
@@ -551,7 +554,7 @@ public final class FontChooser extends JComponent {
         protected static final String ACTION_NAME = "Cancel";
         @Serial
         private static final long serialVersionUID = -5080686015935861376L;
-        private final transient JDialog dialog;
+        private final JDialog dialog;
 
         protected DialogCancelAction(final JDialog dialog) {
             this.dialog = dialog;
@@ -616,7 +619,7 @@ public final class FontChooser extends JComponent {
 
             final var scrollPane = new JScrollPane(getFontFamilyList());
             scrollPane.getVerticalScrollBar().setFocusable(false);
-            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
             final var p = new JPanel();
             p.setLayout(new BorderLayout());
@@ -624,8 +627,8 @@ public final class FontChooser extends JComponent {
             p.add(scrollPane, BorderLayout.CENTER);
 
             final var label = new JLabel(resourceBundle.getString("ui.dialog.fontchooser.label.fontname"));
-            label.setHorizontalAlignment(JLabel.LEFT);
-            label.setHorizontalTextPosition(JLabel.LEFT);
+            label.setHorizontalAlignment(SwingConstants.LEFT);
+            label.setHorizontalTextPosition(SwingConstants.LEFT);
             label.setLabelFor(getFontFamilyTextField());
             label.setDisplayedMnemonic('F');
 
@@ -645,7 +648,7 @@ public final class FontChooser extends JComponent {
 
             final var scrollPane = new JScrollPane(getFontStyleList());
             scrollPane.getVerticalScrollBar().setFocusable(false);
-            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
             final var p = new JPanel();
             p.setLayout(new BorderLayout());
@@ -653,8 +656,8 @@ public final class FontChooser extends JComponent {
             p.add(scrollPane, BorderLayout.CENTER);
 
             final var label = new JLabel(resourceBundle.getString("ui.dialog.fontchooser.label.fontstyle"));
-            label.setHorizontalAlignment(JLabel.LEFT);
-            label.setHorizontalTextPosition(JLabel.LEFT);
+            label.setHorizontalAlignment(SwingConstants.LEFT);
+            label.setHorizontalTextPosition(SwingConstants.LEFT);
             label.setLabelFor(getFontStyleTextField());
             label.setDisplayedMnemonic('Y');
 
@@ -673,7 +676,7 @@ public final class FontChooser extends JComponent {
 
             final var scrollPane = new JScrollPane(getFontSizeList());
             scrollPane.getVerticalScrollBar().setFocusable(false);
-            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
             final var p = new JPanel();
             p.setLayout(new BorderLayout());
@@ -681,8 +684,8 @@ public final class FontChooser extends JComponent {
             p.add(scrollPane, BorderLayout.CENTER);
 
             final var label = new JLabel(resourceBundle.getString("ui.dialog.fontchooser.label.fontsize"));
-            label.setHorizontalAlignment(JLabel.LEFT);
-            label.setHorizontalTextPosition(JLabel.LEFT);
+            label.setHorizontalAlignment(SwingConstants.LEFT);
+            label.setHorizontalTextPosition(SwingConstants.LEFT);
             label.setLabelFor(getFontSizeTextField());
             label.setDisplayedMnemonic('S');
 

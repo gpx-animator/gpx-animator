@@ -19,6 +19,9 @@ import app.gpx_animator.core.data.MapTemplate;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import javax.xml.XMLConstants;
+
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.xml.sax.Attributes;
@@ -95,7 +98,10 @@ public final class MapUtil {
         final var factory = SAXParserFactory.newInstance();
         final SAXParser saxParser;
         try {
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             saxParser = factory.newSAXParser();
+            saxParser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            saxParser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
         } catch (final ParserConfigurationException | SAXException e) {
             throw new RuntimeException(e);
         }

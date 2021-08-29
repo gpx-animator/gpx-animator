@@ -23,13 +23,13 @@ import com.jgoodies.forms.layout.CellConstraints;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.io.Serial;
@@ -47,7 +47,7 @@ public class PreferencesDialog extends EscapeDialog {
         final var resourceBundle = Preferences.getResourceBundle();
 
         setTitle(resourceBundle.getString("ui.dialog.preferences.title"));
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         final var tileCachePathSelector = new FileSelector(DIRECTORIES_ONLY) {
             @Serial
@@ -88,7 +88,7 @@ public class PreferencesDialog extends EscapeDialog {
         trackColorRandom.setSelected(Preferences.getTrackColorRandom());
         trackColorSelector.setColor(Preferences.getTrackColorDefault());
         trackColorSelector.setEnabled(!Preferences.getTrackColorRandom());
-        trackColorRandom.addActionListener((event) -> trackColorSelector.setEnabled(!trackColorRandom.isSelected()));
+        trackColorRandom.addActionListener(event -> trackColorSelector.setEnabled(!trackColorRandom.isSelected()));
         trackColorPanel.add(trackColorRandom, BorderLayout.LINE_START);
         trackColorPanel.add(trackColorSelector, BorderLayout.CENTER);
 

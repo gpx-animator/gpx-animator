@@ -29,6 +29,11 @@ import app.gpx_animator.core.util.Notification;
 import app.gpx_animator.core.util.Sound;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import javax.swing.SwingConstants;
+
+import javax.swing.WindowConstants;
+
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,21 +101,21 @@ public final class MainFrame extends JFrame {
     private static final int FIXED_TABS = 1;
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
-    private final transient String unsavedMessage = resourceBundle.getString("ui.mainframe.dialog.message.unsaved.continue");
-    private final transient String warningTitle = resourceBundle.getString("ui.mainframe.dialog.title.warning");
-    private final transient String errorTitle = resourceBundle.getString("ui.mainframe.dialog.title.error");
+    private final String unsavedMessage = resourceBundle.getString("ui.mainframe.dialog.message.unsaved.continue");
+    private final String warningTitle = resourceBundle.getString("ui.mainframe.dialog.title.warning");
+    private final String errorTitle = resourceBundle.getString("ui.mainframe.dialog.title.error");
 
-    private final transient File defaultConfigFile = new File(Preferences.getConfigurationDir()
+    private final File defaultConfigFile = new File(Preferences.getConfigurationDir()
             + Preferences.FILE_SEPARATOR + "defaultConfig.ga.xml");
-    private final transient JTabbedPane tabbedPane;
-    private final transient JButton renderButton;
-    private final transient JMenu openRecent;
-    private final transient JFileChooser fileChooser = new JFileChooser();
-    private final transient GeneralSettingsPanel generalSettingsPanel;
+    private final JTabbedPane tabbedPane;
+    private final JButton renderButton;
+    private final JMenu openRecent;
+    private final JFileChooser fileChooser = new JFileChooser();
+    private final GeneralSettingsPanel generalSettingsPanel;
 
     private transient SwingWorker<Void, String> swingWorker;
-    private transient File file;
-    private transient boolean changed;
+    private File file;
+    private boolean changed;
 
     private static final class InstanceHolder {
         static final MainFrame INSTANCE = new MainFrame();
@@ -146,7 +151,7 @@ public final class MainFrame extends JFrame {
                         new ImageIcon(requireNonNull(getClass().getResource("/icon_32.png"))).getImage() //NON-NLS
                 )
         );
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setBounds(100, 100, 800, 750);
 
         final var menuBar = new JMenuBar();
@@ -342,7 +347,7 @@ public final class MainFrame extends JFrame {
         gblContentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
         contentPane.setLayout(gblContentPane);
 
-        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane = new JTabbedPane(SwingConstants.TOP);
         final var gbcTabbedPane = new GridBagConstraints();
         gbcTabbedPane.insets = new Insets(0, 0, 5, 0);
         gbcTabbedPane.fill = GridBagConstraints.BOTH;
@@ -794,15 +799,15 @@ public final class MainFrame extends JFrame {
     @SuppressFBWarnings(value = "DMI_RANDOM_USED_ONLY_ONCE", justification = "we need just ONE random number ONCE")
     static class TrackActionListener implements ActionListener {
 
-        private final transient MainFrame mainFrame;
-        private final transient ResourceBundle resourceBundle;
+        private final MainFrame mainFrame;
+        private final ResourceBundle resourceBundle;
 
         TrackActionListener(@NotNull final MainFrame mainFrame, @NotNull final ResourceBundle resourceBundle) {
             this.mainFrame = mainFrame;
             this.resourceBundle = resourceBundle;
         }
 
-        private transient float hue = new Random().nextFloat();
+        private float hue = new Random().nextFloat();
 
         @Override
         public void actionPerformed(final ActionEvent e) {
@@ -839,9 +844,9 @@ public final class MainFrame extends JFrame {
 
     static class MapLoader extends SwingWorker<List<MapTemplate>, Void> {
 
-        private final transient MainFrame mainFrame;
-        private final transient GeneralSettingsPanel generalSettingsPanel;
-        private final transient ResourceBundle resourceBundle;
+        private final MainFrame mainFrame;
+        private final GeneralSettingsPanel generalSettingsPanel;
+        private final ResourceBundle resourceBundle;
 
         MapLoader(@NotNull final MainFrame mainFrame,
                          @NotNull final GeneralSettingsPanel generalSettingsPanel,

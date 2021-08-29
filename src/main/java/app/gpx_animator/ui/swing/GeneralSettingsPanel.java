@@ -75,56 +75,58 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = -2024548578211891192L;
+    public static final String PLACEHOLDER_MAP_ATTRIBUTION = "%MAP_ATTRIBUTION%";
+    public static final String PLACEHOLDER_APPNAME_VERSION = "%APPNAME_VERSION%";
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient FileSelector outputFileSelector;
-    private final transient JSpinner widthSpinner;
-    private final transient JSpinner heightSpinner;
-    private final transient JSpinner viewportWidthSpinner;
-    private final transient JSpinner viewportHeightSpinner;
-    private final transient JSpinner viewportInertiaSpinner;
-    private final transient JSpinner zoomSpinner;
-    private final transient JSpinner marginSpinner;
-    private final transient JSpinner logoMarginSpinner;
-    private final transient JSpinner attributionMarginSpinner;
-    private final transient JSpinner informationMarginSpinner;
-    private final transient JSpinner commentMarginSpinner;
-    private final transient JSpinner speedupSpinner;
-    private final transient JSpinner markerSizeSpinner;
-    private final transient JSpinner waypointSizeSpinner;
-    private final transient ColorSelector tailColorSelector;
-    private final transient JCheckBox tailColorFadeoutCheckBox;
-    private final transient JSpinner tailDurationSpinner;
-    private final transient JSpinner fpsSpinner;
-    private final transient JComboBox<MapTemplate> tmsUrlTemplateComboBox;
-    private final transient JTextField tmsUserAgent;
-    private final transient JComboBox<SpeedUnit> speedUnitComboBox;
-    private final transient JSlider backgroundMapVisibilitySlider;
-    private final transient FontSelector fontSelector;
-    private final transient FontSelector waypointFontSelector;
-    private final transient JComboBox<Position> logoLocationComboBox;
-    private final transient JComboBox<Position> attributionLocationComboBox;
-    private final transient JComboBox<Position> informationLocationComboBox;
-    private final transient JComboBox<Position> commentLocationComboBox;
-    private final transient JCheckBox skipIdleCheckBox;
-    private final transient JCheckBox preDrawTrackCheckBox;
-    private final transient ColorSelector backgroundColorSelector;
-    private final transient FileSelector backgroundImageSelector;
-    private final transient ColorSelector flashbackColorSelector;
-    private final transient JSpinner flashbackDurationSpinner;
-    private final transient JSpinner keepFirstFrameSpinner;
-    private final transient JSpinner keepLastFrameSpinner;
-    private final transient JSpinner totalTimeSpinner;
-    private final transient FileSelector logoFileSelector;
-    private final transient FileSelector photosDirectorySelector;
-    private final transient JSpinner photoTimeSpinner;
-    private final transient JSpinner photoAnimationDurationSpinner;
-    private final transient JTextArea attributionTextArea;
-    private final transient JSpinner maxLatSpinner;
-    private final transient JSpinner minLonSpinner;
-    private final transient JSpinner maxLonSpinner;
-    private final transient JSpinner minLatSpinner;
+    private final FileSelector outputFileSelector;
+    private final JSpinner widthSpinner;
+    private final JSpinner heightSpinner;
+    private final JSpinner viewportWidthSpinner;
+    private final JSpinner viewportHeightSpinner;
+    private final JSpinner viewportInertiaSpinner;
+    private final JSpinner zoomSpinner;
+    private final JSpinner marginSpinner;
+    private final JSpinner logoMarginSpinner;
+    private final JSpinner attributionMarginSpinner;
+    private final JSpinner informationMarginSpinner;
+    private final JSpinner commentMarginSpinner;
+    private final JSpinner speedupSpinner;
+    private final JSpinner markerSizeSpinner;
+    private final JSpinner waypointSizeSpinner;
+    private final ColorSelector tailColorSelector;
+    private final JCheckBox tailColorFadeoutCheckBox;
+    private final JSpinner tailDurationSpinner;
+    private final JSpinner fpsSpinner;
+    private final JComboBox<MapTemplate> tmsUrlTemplateComboBox;
+    private final JTextField tmsUserAgent;
+    private final JComboBox<SpeedUnit> speedUnitComboBox;
+    private final JSlider backgroundMapVisibilitySlider;
+    private final FontSelector fontSelector;
+    private final FontSelector waypointFontSelector;
+    private final JComboBox<Position> logoLocationComboBox;
+    private final JComboBox<Position> attributionLocationComboBox;
+    private final JComboBox<Position> informationLocationComboBox;
+    private final JComboBox<Position> commentLocationComboBox;
+    private final JCheckBox skipIdleCheckBox;
+    private final JCheckBox preDrawTrackCheckBox;
+    private final ColorSelector backgroundColorSelector;
+    private final FileSelector backgroundImageSelector;
+    private final ColorSelector flashbackColorSelector;
+    private final JSpinner flashbackDurationSpinner;
+    private final JSpinner keepFirstFrameSpinner;
+    private final JSpinner keepLastFrameSpinner;
+    private final JSpinner totalTimeSpinner;
+    private final FileSelector logoFileSelector;
+    private final FileSelector photosDirectorySelector;
+    private final JSpinner photoTimeSpinner;
+    private final JSpinner photoAnimationDurationSpinner;
+    private final JTextArea attributionTextArea;
+    private final JSpinner maxLatSpinner;
+    private final JSpinner minLonSpinner;
+    private final JSpinner maxLonSpinner;
+    private final JSpinner minLatSpinner;
 
     private transient List<MapTemplate> mapTemplateList;
 
@@ -788,7 +790,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         attributionTextArea = new JTextArea();
         attributionTextArea.setToolTipText(Option.ATTRIBUTION.getHelp());
         final var attributionPopupMenu = new JPopupMenu();
-        Map.of("%APPNAME_VERSION%", "application name and version", "%MAP_ATTRIBUTION%", "map attribution text")
+        Map.of(PLACEHOLDER_APPNAME_VERSION, "application name and version", PLACEHOLDER_MAP_ATTRIBUTION, "map attribution text")
                 .forEach((variable, title) -> {
                     final var menuItem = new JMenuItem("insert %s".formatted(title));
                     menuItem.addActionListener(l -> {
@@ -1290,8 +1292,8 @@ abstract class GeneralSettingsPanel extends JPanel {
                 showDialog = true;
             }
 
-            if (!attributionTextArea.getText().contains("%MAP_ATTRIBUTION%")) {
-                attributionTextArea.setText(attributionTextArea.getText().trim().concat("\n%MAP_ATTRIBUTION%"));
+            if (!attributionTextArea.getText().contains(PLACEHOLDER_MAP_ATTRIBUTION)) {
+                attributionTextArea.setText(attributionTextArea.getText().trim().concat("\n").concat(PLACEHOLDER_MAP_ATTRIBUTION));
                 showDialog = true;
             }
 
@@ -1480,8 +1482,8 @@ abstract class GeneralSettingsPanel extends JPanel {
         }
 
         return attributionTextArea.getText()
-                .replace("%APPNAME_VERSION%", Constants.APPNAME_VERSION)  //NON-NLS
-                .replace("%MAP_ATTRIBUTION%", //NON-NLS
+                .replace(PLACEHOLDER_APPNAME_VERSION, Constants.APPNAME_VERSION)  //NON-NLS
+                .replace(PLACEHOLDER_MAP_ATTRIBUTION, //NON-NLS
                         tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).attributionText() != null
                                 ? ((MapTemplate) tmsItem).attributionText() : "")
                 .trim();

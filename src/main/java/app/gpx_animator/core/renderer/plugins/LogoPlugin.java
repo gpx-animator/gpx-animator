@@ -30,9 +30,9 @@ import java.io.IOException;
 @SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class LogoPlugin extends ImageRenderer implements RendererPlugin {
 
-    private final transient BufferedImage logo;
-    private final transient Position position;
-    private final transient int margin;
+    private final BufferedImage logo;
+    private final Position position;
+    private final int margin;
 
     public LogoPlugin(@NonNull final Configuration configuration) throws UserException {
         position = configuration.getLogoPosition();

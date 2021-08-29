@@ -34,20 +34,20 @@ import java.util.Map;
 @SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class InformationPlugin extends TextRenderer implements RendererPlugin {
 
-    private final transient DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
+    private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
-    private final transient Position position;
-    private final transient int margin;
-    private final transient double fps;
-    private final transient SpeedUnit speedUnit;
-    private final transient boolean showDateTime;
+    private final Position position;
+    private final int margin;
+    private final double fps;
+    private final SpeedUnit speedUnit;
+    private final boolean showDateTime;
 
-    private transient long minTime;
-    private transient double speedup;
-    private transient int frames;
+    private long minTime;
+    private double speedup;
+    private int frames;
 
-    private final transient Map<Integer, Double> speedValues = new HashMap<>();
-    private transient GpxPoint lastSpeedPoint = null;
+    private final Map<Integer, Double> speedValues = new HashMap<>();
+    private GpxPoint lastSpeedPoint = null;
 
     public InformationPlugin(@NonNull final Configuration configuration) {
         super(configuration.getFont());
@@ -82,7 +82,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
         final var dateString = showDateTime ? dateFormat.format(time) : "";
         final var latLongString = getLatLonString(marker);
         final var speedString = getSpeedString(marker, time, frame);
-        final var text = "%s\n%s\n%s".formatted(speedString, latLongString, dateString).trim();
+        final var text = "%s%n%s%n%s".formatted(speedString, latLongString, dateString).trim();
         renderText(text, position, margin, image);
     }
 
@@ -117,7 +117,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
         speedValues.put(frame, speed);
 
         final var deleteBefore = frame - (Math.round(fps)); // 1 second
-        speedValues.keySet().removeIf((f) -> f < deleteBefore);
+        speedValues.keySet().removeIf(f -> f < deleteBefore);
 
         return speedUnit.convertSpeed(Math.round(speedValues.values().stream().mapToDouble(Double::doubleValue).average().orElse(0)));
     }
@@ -130,7 +130,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
 
         final double speed;
         if (distance > 0 && point.getTime() > timeout) {
-            speed = Math.round((3_600 * distance) / timeDiff);
+            speed = timeDiff > 0 ? Math.round((3_600 * distance) / timeDiff) : 0;
         } else {
             speed = 0;
         }

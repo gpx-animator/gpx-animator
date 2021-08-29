@@ -20,9 +20,9 @@ import java.util.regex.Matcher;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("it")
-public final class CommandLineIT {
+final class CommandLineIT {
 
-    private transient MemoryAppender memoryAppender = null;
+    private MemoryAppender memoryAppender = null;
 
     private String checkFileSeparator(@SuppressWarnings("SameParameterValue") final String path) {
         return System.getProperty("os.name").toLowerCase(Locale.getDefault()).startsWith("windows")
@@ -52,7 +52,7 @@ public final class CommandLineIT {
     }
 
     @Test
-    public void testBasicCommandLine() throws Exception {
+    void testBasicCommandLine() throws Exception {
         final var outputFile = getTemporaryOutputFile();
         final var args = new String[] {
                 "--input", checkFileSeparator("./src/test/resources/gpx/bikeride.gpx"),

@@ -39,10 +39,10 @@ public abstract class TextRenderer extends ImageRenderer {
     private static final float STRIKE_WIDTH = 3f;
     private static final Stroke STROKE = new BasicStroke(STRIKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
-    private final transient Font font;
-    private final transient FontMetrics fontMetrics;
+    private final Font font;
+    private final FontMetrics fontMetrics;
 
-    public TextRenderer(@NonNull final Font font) {
+    protected TextRenderer(@NonNull final Font font) {
         this.font = font;
         this.fontMetrics = getFontMetrics();
     }

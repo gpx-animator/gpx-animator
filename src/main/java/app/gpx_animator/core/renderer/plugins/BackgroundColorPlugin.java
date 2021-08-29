@@ -26,7 +26,7 @@ import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 @SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class BackgroundColorPlugin implements RendererPlugin {
 
-    private final transient Color backgroundColor;
+    private final Color backgroundColor;
 
     public BackgroundColorPlugin(@NonNull final Configuration configuration) {
         this.backgroundColor = configuration.getBackgroundColor();

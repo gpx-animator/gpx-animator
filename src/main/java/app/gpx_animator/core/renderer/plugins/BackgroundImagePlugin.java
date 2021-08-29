@@ -29,7 +29,7 @@ import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 @SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class BackgroundImagePlugin implements RendererPlugin {
 
-    private final transient BufferedImage backgroundImage;
+    private final BufferedImage backgroundImage;
 
     public BackgroundImagePlugin(@NonNull final Configuration configuration) throws UserException {
         final var file = configuration.getBackgroundImage();

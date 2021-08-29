@@ -21,6 +21,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 
 import java.awt.geom.Point2D;
 import java.io.Serial;
+import java.util.Objects;
 
 public final class GpxPoint extends Point2D.Double {
 
@@ -48,5 +49,37 @@ public final class GpxPoint extends Point2D.Double {
 
     public java.lang.Double getSpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        GpxPoint gpxPoint = (GpxPoint) o;
+
+        if (time != gpxPoint.time) {
+            return false;
+        }
+        if (!latLon.equals(gpxPoint.latLon)) {
+            return false;
+        }
+        return Objects.equals(speed, gpxPoint.speed);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + latLon.hashCode();
+        result = 31 * result + (int) (time ^ (time >>> 32));
+        result = 31 * result + (speed != null ? speed.hashCode() : 0);
+        return result;
     }
 }

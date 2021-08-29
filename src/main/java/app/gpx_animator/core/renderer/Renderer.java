@@ -132,8 +132,8 @@ public final class Renderer {
 
         calculateMinMaxValues(userSpecifiedWidth, width, scale);
 
-        timePointMapListList.forEach((timePointMapList) -> timePointMapList
-                            .forEach((timePointMap) -> translateCoordinatesToZeroZero(scale, timePointMap)));
+        timePointMapListList.forEach(timePointMapList -> timePointMapList
+                            .forEach(timePointMap -> translateCoordinatesToZeroZero(scale, timePointMap)));
         translateCoordinatesToZeroZero(scale, wpMap);
 
         final var frameFilePattern = cfg.getOutput().toString();
@@ -341,22 +341,22 @@ public final class Renderer {
             recentMarkersXSum -= m.getX();
             recentMarkersYSum -= m.getY();
         }
-        final var xAvg = recentMarkersXSum / (double) this.recentMarkers.size();
-        final var yAvg = recentMarkersYSum / (double) this.recentMarkers.size();
+        final var xAvg = recentMarkersXSum / this.recentMarkers.size();
+        final var yAvg = recentMarkersYSum / this.recentMarkers.size();
 
         // top-left (x,y) coords of viewport with boundaries protected
-        var x = xAvg - (double) viewportWidth / 2.0;
-        var y = yAvg - (double) viewportHeight / 2.0;
+        var x = xAvg - viewportWidth / 2.0;
+        var y = yAvg - viewportHeight / 2.0;
         if (x < 0) {
             x = 0;
         } else if ((x + viewportWidth) > realWidth) {
-            x = realWidth - viewportWidth;
+            x = (double) realWidth - viewportWidth;
         }
 
         if (y < 0) {
             y = 0;
         } else if ((y + viewportHeight) > realHeight) {
-            y = realHeight - viewportHeight;
+            y = (double) realHeight - viewportHeight;
         }
         return bi.getSubimage((int) x, (int) y, viewportWidth, viewportHeight);
     }
@@ -520,7 +520,7 @@ public final class Renderer {
                 plugin.renderFrame(frames, marker, bi);
             }
 
-            final var fps = Double.valueOf(cfg.getFps()).longValue();
+            final var fps = Math.round(cfg.getFps());
             final var stillFrames = keepFrame / 1_000 * fps;
             for (long stillFrame = 0; stillFrame < stillFrames; stillFrame++) {
                 final var pct = (int) (100.0 * stillFrame / stillFrames);
@@ -622,10 +622,10 @@ public final class Renderer {
             }
 
             final Point2D point;
-            if (latLon instanceof Waypoint) {
+            if (latLon instanceof Waypoint waypoint) {
                 final var namedPoint = new NamedPoint();
                 namedPoint.setLocation(x, y);
-                namedPoint.setName(((Waypoint) latLon).getName());
+                namedPoint.setName(waypoint.getName());
                 point = namedPoint;
             } else {
                 point = new GpxPoint(x, y, latLon, time, latLon.getSpeed());

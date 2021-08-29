@@ -50,7 +50,7 @@ public final class Configuration {
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
     public static final Position DEFAULT_ATTRIBUTION_POSITION = Position.BOTTOM_LEFT;
 
-    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private int margin = DEFAULT_MARGIN;
     private Integer width;

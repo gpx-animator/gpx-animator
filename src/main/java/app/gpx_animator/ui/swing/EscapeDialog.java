@@ -37,6 +37,7 @@ abstract class EscapeDialog extends JDialog {
 
     @Serial
     private static final long serialVersionUID = 126544226951191103L;
+    public static final String ESCAPE_KEY = "ESCAPE";
 
     EscapeDialog(@NonNull final JFrame owner) {
         super(owner, true);
@@ -47,17 +48,18 @@ abstract class EscapeDialog extends JDialog {
         getContentPane().add(contentPane);
     }
 
+    @Override
     protected final JRootPane createRootPane() {
         final var rootPane = new JRootPane();
-        final var stroke = KeyStroke.getKeyStroke("ESCAPE");
+        final var stroke = KeyStroke.getKeyStroke(ESCAPE_KEY);
         final var actionListener = new AbstractAction() {
             public void actionPerformed(@Nullable final ActionEvent actionEvent) {
                 setVisible(false);
             }
         };
         final var inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        inputMap.put(stroke, "ESCAPE");
-        rootPane.getActionMap().put("ESCAPE", actionListener);
+        inputMap.put(stroke, ESCAPE_KEY);
+        rootPane.getActionMap().put(ESCAPE_KEY, actionListener);
 
         return rootPane;
     }

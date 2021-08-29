@@ -34,7 +34,7 @@ public enum Position {
     BOTTOM_CENTER,
     BOTTOM_RIGHT;
 
-    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     @Override
     public String toString() {

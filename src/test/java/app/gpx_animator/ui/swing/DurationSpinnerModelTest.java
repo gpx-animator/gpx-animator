@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class DurationSpinnerModelTest {
+final class DurationSpinnerModelTest {
 
     private static Stream<Arguments> generateGetterSetterTestData() {
         return Stream.of(
@@ -25,7 +25,7 @@ public final class DurationSpinnerModelTest {
 
     @ParameterizedTest
     @MethodSource("generateGetterSetterTestData") //NON-NLS
-    public void testValue(final Long value) {
+    void testValue(final Long value) {
         final var testee = new DurationSpinnerModel();
         testee.setValue(value);
         assertEquals(value, testee.getValue());
@@ -33,14 +33,14 @@ public final class DurationSpinnerModelTest {
 
     @ParameterizedTest
     @EnumSource(DurationSpinnerModel.Field.class)
-    public void testField(final DurationSpinnerModel.Field field) {
+    void testField(final DurationSpinnerModel.Field field) {
         final var testee = new DurationSpinnerModel();
         testee.setField(field);
         assertEquals(field, testee.getField());
     }
 
     @Test
-    public void testFromUnit() {
+    void testFromUnit() {
         assertEquals(DurationSpinnerModel.Field.MILLISECOND, DurationSpinnerModel.Field.fromUnit("ms")); //NON-NLS
     }
 }

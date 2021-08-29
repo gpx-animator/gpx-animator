@@ -87,7 +87,7 @@ public final class Preferences {
         return Arrays.stream(PREFS.get(RECENT_FILES, "").split(","))
                 .map(File::new)
                 .filter(File::exists)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static void addRecentFile(final File file) {
@@ -112,7 +112,7 @@ public final class Preferences {
 
     public static long getTileCacheTimeLimit() {
         return PREFS.getLong(TILE_CACHE_TIME_LIMIT,
-                24 * 60 * 60 * 1_000); // 24 hours
+                (long) 24 * 60 * 60 * 1_000); // 24 hours
     }
 
     public static void setTileCacheTimeLimit(final long tileCacheTimeLimit) {

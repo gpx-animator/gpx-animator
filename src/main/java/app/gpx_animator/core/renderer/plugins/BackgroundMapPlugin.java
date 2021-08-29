@@ -38,19 +38,19 @@ public final class BackgroundMapPlugin implements RendererPlugin {
     // This regex is tested, and I don't want to rewrite it which may potentionally break it.
     private static final Pattern SWITCH_PATTERN = Pattern.compile("\\{switch:([^}]*)\\}");
 
-    private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final transient String tmsUrlTemplate;
-    private final transient String tmsUserAgent;
-    private final transient float backgroundMapVisibility;
+    private final String tmsUrlTemplate;
+    private final String tmsUserAgent;
+    private final float backgroundMapVisibility;
 
-    private transient Integer zoom;
-    private transient double minX;
-    private transient double maxX;
-    private transient double minY;
-    private transient double maxY;
+    private Integer zoom;
+    private double minX;
+    private double maxX;
+    private double minY;
+    private double maxY;
 
-    private transient RenderingContext context;
+    private RenderingContext context;
 
     public BackgroundMapPlugin(@NonNull final Configuration configuration) {
         tmsUrlTemplate = configuration.getTmsUrlTemplate();
