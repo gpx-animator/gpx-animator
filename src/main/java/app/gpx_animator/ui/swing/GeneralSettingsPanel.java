@@ -28,7 +28,11 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -97,6 +101,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient JSpinner tailDurationSpinner;
     private final transient JSpinner fpsSpinner;
     private final transient JComboBox<MapTemplate> tmsUrlTemplateComboBox;
+    private final transient JTextField tmsUserAgent;
     private final transient JComboBox<SpeedUnit> speedUnitComboBox;
     private final transient JSlider backgroundMapVisibilitySlider;
     private final transient FontSelector fontSelector;
@@ -134,9 +139,9 @@ abstract class GeneralSettingsPanel extends JPanel {
         final var gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths  = new int[]    {91,  100, 0,  0};
         gridBagLayout.columnWeights = new double[] {0.0, 1.0, 0.0, Double.MIN_VALUE};
-        gridBagLayout.rowHeights    = new int[]    {14,  20,  20,  20,  20,  20,  14,  20,  20,  20,  20,  20,  20,  20,  20,  50,  45,  20,  21,
-                23,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
-        gridBagLayout.rowWeights    = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        gridBagLayout.rowHeights    = new int[]    {20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,
+                20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  20,  0};
+        gridBagLayout.rowWeights    = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         setLayout(gridBagLayout);
         var rowCounter = 0;
@@ -733,6 +738,34 @@ abstract class GeneralSettingsPanel extends JPanel {
             }
         });
 
+        final var lblTmsUserAgent = new JLabel(resourceBundle.getString("ui.panel.generalsettings.useragent.label"));
+        final var gbcLabelTmsUserAgent = new GridBagConstraints();
+        gbcLabelTmsUserAgent.anchor = GridBagConstraints.LINE_END;
+        gbcLabelTmsUserAgent.insets = new Insets(0, 0, 5, 5);
+        gbcLabelTmsUserAgent.gridx = 0;
+        gbcLabelTmsUserAgent.gridy = ++rowCounter;
+        add(lblTmsUserAgent, gbcLabelTmsUserAgent);
+
+        tmsUserAgent = new JTextField();
+        tmsUserAgent.setToolTipText(Option.TMS_USER_AGENT.getHelp());
+        final var gbcTmsUserAgent = new GridBagConstraints();
+        gbcTmsUserAgent.fill = GridBagConstraints.HORIZONTAL;
+        gbcTmsUserAgent.insets = new Insets(0, 0, 5, 0);
+        gbcTmsUserAgent.gridx = 1;
+        gbcTmsUserAgent.gridy = rowCounter;
+        add(tmsUserAgent, gbcTmsUserAgent);
+        tmsUserAgent.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+            public void removeUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+            public void insertUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+        });
+
         final var lblAttribution = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attribution.label"));
         final var gbcLabelAttribution = new GridBagConstraints();
         gbcLabelAttribution.anchor = GridBagConstraints.LINE_END;
@@ -773,6 +806,17 @@ abstract class GeneralSettingsPanel extends JPanel {
                 super.focusLost(event);
                 SwingUtilities.invokeLater(() ->
                         checkAttributionMandatory(attributionLocationComboBox.getSelectedItem(), tmsUrlTemplateComboBox.getSelectedItem()));
+            }
+        });
+        attributionTextArea.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+            public void removeUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+            public void insertUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
             }
         });
 
@@ -1335,10 +1379,13 @@ abstract class GeneralSettingsPanel extends JPanel {
                 }
             });
         }
+
+        tmsUserAgent.setText(c.getTmsUserAgent());
+
+        attributionTextArea.setText(c.getAttribution());
         SwingUtilities.invokeLater(() ->
                 checkAttributionMandatory(attributionLocationComboBox.getSelectedItem(), tmsUrlTemplateComboBox.getSelectedItem()));
 
-        attributionTextArea.setText(c.getAttribution());
         preDrawTrackCheckBox.setSelected(c.isPreDrawTrack());
         skipIdleCheckBox.setSelected(c.isSkipIdle());
         if (c.getTailColor() != null) { // old saved files may not include this setting
@@ -1395,6 +1442,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .keepLastFrame((Long) keepLastFrameSpinner.getValue())
                 .backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f)
                 .tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isBlank() ? null : tmsUrlTemplate) // NOPMD -- null = not set
+                .tmsUserAgent((tmsUserAgent.getText()))
                 .logoPosition((Position) logoLocationComboBox.getSelectedItem())
                 .informationPosition((Position) informationLocationComboBox.getSelectedItem())
                 .commentPosition((Position) commentLocationComboBox.getSelectedItem())

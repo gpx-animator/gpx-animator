@@ -4,6 +4,10 @@
 
 **Release date: work in progress 🚧**
 
+### New features
+
+* New configuration option to specify the user agent when accessing the TMS servers
+
 ## Version 1.7.0
 
 **Release date: 2021-08-14**
