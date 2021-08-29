@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.8.0
+
+**Release date: work in progress 🚧**
+
 ## Version 1.7.0
 
 **Release date: 2021-08-14**
