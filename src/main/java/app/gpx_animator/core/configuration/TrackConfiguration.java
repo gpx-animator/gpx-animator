@@ -19,10 +19,10 @@ import app.gpx_animator.core.configuration.adapter.ColorXmlAdapter;
 import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
 import app.gpx_animator.core.configuration.adapter.TrackIconXmlAdapter;
 import app.gpx_animator.core.data.TrackIcon;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.Color;
 import java.io.File;
 

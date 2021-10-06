@@ -23,13 +23,13 @@ import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.preferences.Preferences;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
@@ -49,8 +49,6 @@ public final class Configuration {
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
     public static final Position DEFAULT_ATTRIBUTION_POSITION = Position.BOTTOM_LEFT;
-
-    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private int margin = DEFAULT_MARGIN;
     private Integer width;
@@ -412,6 +410,7 @@ public final class Configuration {
     }
 
     public Configuration validate() throws UserException {
+        final var resourceBundle = Preferences.getResourceBundle();
         final var errors = new ArrayList<String>();
 
         if (getMinLat() != null && getMaxLat() == null || getMaxLat() != null && getMinLat() == null) {

@@ -16,9 +16,9 @@
 package app.gpx_animator.core.configuration.adapter;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import org.jetbrains.annotations.Nullable;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.awt.Font;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable

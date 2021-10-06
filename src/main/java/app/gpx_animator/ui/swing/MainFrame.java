@@ -29,11 +29,8 @@ import app.gpx_animator.core.util.Notification;
 import app.gpx_animator.core.util.Sound;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import javax.swing.SwingConstants;
-
-import javax.swing.WindowConstants;
-
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,12 +47,12 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;

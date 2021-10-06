@@ -16,8 +16,7 @@
 package app.gpx_animator.core.configuration.adapter;
 
 import app.gpx_animator.core.data.TrackIcon;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 public final class TrackIconXmlAdapter extends XmlAdapter<String, TrackIcon> {
 

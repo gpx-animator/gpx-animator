@@ -15,7 +15,8 @@
  */
 package app.gpx_animator.core.configuration.adapter;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+
 import java.io.File;
 import java.nio.file.Path;
 
