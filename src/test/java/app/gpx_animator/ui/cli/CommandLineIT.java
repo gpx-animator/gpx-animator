@@ -8,7 +8,6 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +18,6 @@ import java.util.regex.Matcher;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("it")
 final class CommandLineIT {
 
     private MemoryAppender memoryAppender = null;
