@@ -28,8 +28,8 @@ version = '1.8.0-SNAPSHOT'
 group = 'app.gpx-animator'
 
 mainClassName = 'app.gpx_animator.Main'
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
