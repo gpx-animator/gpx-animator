@@ -26,4 +26,4 @@ jobs:
       if: failure()
       with:
         name: testreport
-        path: /home/runner/work/gpx-animator/gpx-animator/build/reports/tests/test/index.html
+        path: /home/runner/work/gpx-animator/gpx-animator/build/reports/tests/test/
