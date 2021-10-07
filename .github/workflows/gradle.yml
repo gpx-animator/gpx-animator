@@ -23,6 +23,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assemble
     - uses: actions/upload-artifact@v2
+      if: failure()
       with:
         name: testreport
         path: /home/runner/work/gpx-animator/gpx-animator/build/reports/tests/test/index.html
