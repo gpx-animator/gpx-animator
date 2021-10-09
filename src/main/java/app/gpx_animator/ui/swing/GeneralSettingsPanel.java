@@ -770,60 +770,6 @@ abstract class GeneralSettingsPanel extends JPanel {
             }
         });
 
-        final var lblAttribution = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attribution.label"));
-        final var gbcLabelAttribution = new GridBagConstraints();
-        gbcLabelAttribution.anchor = GridBagConstraints.LINE_END;
-        gbcLabelAttribution.insets = new Insets(0, 0, 5, 5);
-        gbcLabelAttribution.gridx = 0;
-        gbcLabelAttribution.gridy = ++rowCounter;
-        add(lblAttribution, gbcLabelAttribution);
-
-        final var scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(new Dimension(3, 50));
-        final var gbcScrollPane = new GridBagConstraints();
-        gbcScrollPane.fill = GridBagConstraints.BOTH;
-        gbcScrollPane.insets = new Insets(0, 0, 5, 0);
-        gbcScrollPane.gridx = 1;
-        gbcScrollPane.gridy = rowCounter;
-        add(scrollPane, gbcScrollPane);
-
-        attributionTextArea = new JTextArea();
-        attributionTextArea.setToolTipText(Option.ATTRIBUTION.getHelp());
-        final var attributionPopupMenu = new JPopupMenu();
-        Map.of(PLACEHOLDER_APPNAME_VERSION, "application name and version", PLACEHOLDER_MAP_ATTRIBUTION, "map attribution text")
-                .forEach((variable, title) -> {
-                    final var menuItem = new JMenuItem("insert %s".formatted(title));
-                    menuItem.addActionListener(l -> {
-                        if (attributionTextArea.getSelectedText() != null) {
-                            attributionTextArea.replaceSelection(variable);
-                        } else {
-                            attributionTextArea.insert(variable, attributionTextArea.getCaretPosition());
-                        }
-                    });
-                    attributionPopupMenu.add(menuItem);
-                });
-        attributionTextArea.setComponentPopupMenu(attributionPopupMenu);
-        scrollPane.setViewportView(attributionTextArea);
-        attributionTextArea.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(@Nullable final FocusEvent event) {
-                super.focusLost(event);
-                SwingUtilities.invokeLater(() ->
-                        checkAttributionMandatory(attributionLocationComboBox.getSelectedItem(), tmsUrlTemplateComboBox.getSelectedItem()));
-            }
-        });
-        attributionTextArea.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(@Nullable final DocumentEvent e) {
-                configurationChanged();
-            }
-            public void removeUpdate(@Nullable final DocumentEvent e) {
-                configurationChanged();
-            }
-            public void insertUpdate(@Nullable final DocumentEvent e) {
-                configurationChanged();
-            }
-        });
-
         final var lblVisibility = new JLabel(resourceBundle.getString("ui.panel.generalsettings.visibility.label"));
         final var gbcLabelVisibility = new GridBagConstraints();
         gbcLabelVisibility.anchor = GridBagConstraints.LINE_END;
@@ -1114,22 +1060,76 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(logoMarginSpinner, gbcLogoMarginSpinner);
         logoMarginSpinner.addChangeListener(changeListener);
 
-        final var lblAttriPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionPosition.label"));
+        final var lblAttribution = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attribution.label"));
+        final var gbcLabelAttribution = new GridBagConstraints();
+        gbcLabelAttribution.anchor = GridBagConstraints.LINE_END;
+        gbcLabelAttribution.insets = new Insets(0, 0, 5, 5);
+        gbcLabelAttribution.gridx = 0;
+        gbcLabelAttribution.gridy = ++rowCounter;
+        add(lblAttribution, gbcLabelAttribution);
+
+        final var scrollPane = new JScrollPane();
+        scrollPane.setPreferredSize(new Dimension(3, 50));
+        final var gbcScrollPane = new GridBagConstraints();
+        gbcScrollPane.fill = GridBagConstraints.BOTH;
+        gbcScrollPane.insets = new Insets(0, 0, 5, 0);
+        gbcScrollPane.gridx = 1;
+        gbcScrollPane.gridy = rowCounter;
+        add(scrollPane, gbcScrollPane);
+
+        attributionTextArea = new JTextArea();
+        attributionTextArea.setToolTipText(Option.ATTRIBUTION.getHelp());
+        final var attributionPopupMenu = new JPopupMenu();
+        Map.of(PLACEHOLDER_APPNAME_VERSION, "application name and version", PLACEHOLDER_MAP_ATTRIBUTION, "map attribution text")
+                .forEach((variable, title) -> {
+                    final var menuItem = new JMenuItem("insert %s".formatted(title));
+                    menuItem.addActionListener(l -> {
+                        if (attributionTextArea.getSelectedText() != null) {
+                            attributionTextArea.replaceSelection(variable);
+                        } else {
+                            attributionTextArea.insert(variable, attributionTextArea.getCaretPosition());
+                        }
+                    });
+                    attributionPopupMenu.add(menuItem);
+                });
+        attributionTextArea.setComponentPopupMenu(attributionPopupMenu);
+        scrollPane.setViewportView(attributionTextArea);
+        attributionTextArea.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(@Nullable final FocusEvent event) {
+                super.focusLost(event);
+                SwingUtilities.invokeLater(() ->
+                        checkAttributionMandatory(attributionLocationComboBox.getSelectedItem(), tmsUrlTemplateComboBox.getSelectedItem()));
+            }
+        });
+        attributionTextArea.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+            public void removeUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+            public void insertUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+        });
+
+        final var lblAttributionPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.attributionPosition.label"));
         final var gbcLabelAttributionPosition = new GridBagConstraints();
         gbcLabelAttributionPosition.anchor = GridBagConstraints.LINE_END;
         gbcLabelAttributionPosition.insets = new Insets(0, 0, 5, 5);
         gbcLabelAttributionPosition.gridx = 0;
         gbcLabelAttributionPosition.gridy = ++rowCounter;
-        add(lblAttriPosition, gbcLabelAttributionPosition);
+        add(lblAttributionPosition, gbcLabelAttributionPosition);
 
         attributionLocationComboBox = new JComboBox<>();
         attributionLocationComboBox.setToolTipText(Option.ATTRIBUTION_POSITION.getHelp());
         Position.fillComboBox(attributionLocationComboBox);
-        final var gbcAttributionPositioning = new GridBagConstraints();
-        gbcAttributionPositioning.fill = GridBagConstraints.HORIZONTAL;
-        gbcAttributionPositioning.gridx = 1;
-        gbcAttributionPositioning.gridy = rowCounter;
-        add(attributionLocationComboBox, gbcAttributionPositioning);
+        final var gbcAttributionPosition = new GridBagConstraints();
+        gbcAttributionPosition.fill = GridBagConstraints.HORIZONTAL;
+        gbcAttributionPosition.gridx = 1;
+        gbcAttributionPosition.gridy = rowCounter;
+        add(attributionLocationComboBox, gbcAttributionPosition);
         attributionLocationComboBox.addItemListener(listener -> {
             if (listener.getStateChange() == ItemEvent.SELECTED) {
                 SwingUtilities.invokeLater(() -> checkAttributionMandatory(listener.getItem(), tmsUrlTemplateComboBox.getSelectedItem()));
