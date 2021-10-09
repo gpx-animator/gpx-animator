@@ -6,6 +6,7 @@
 
 ### New features
 
+* Support for MPEG-H Part2/HEVC (H.265) codec
 * Make the content of the information box configurable
 * Show the time left when rendering the video
 * Delete cached map tiles in preferences dialog
