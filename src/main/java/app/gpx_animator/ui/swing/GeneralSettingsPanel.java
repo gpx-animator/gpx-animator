@@ -1423,7 +1423,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     public void buildConfiguration(final Configuration.Builder builder, final boolean replacePlaceholders) {
         final var tailDuration = (Long) tailDurationSpinner.getValue();
         final var tmsItem = tmsUrlTemplateComboBox.getSelectedItem();
-        final var tmsUrlTemplate = tmsItem instanceof MapTemplate ? ((MapTemplate) tmsItem).url() : (String) tmsItem;
+        final var tmsUrlTemplate = tmsItem instanceof MapTemplate mapTemplate ? mapTemplate.url() : (String) tmsItem;
         final var attribution = generateAttributionText(replacePlaceholders, tmsItem);
         final var speedUnit = (SpeedUnit) speedUnitComboBox.getSelectedItem();
 
@@ -1484,7 +1484,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         return attributionTextArea.getText()
                 .replace(PLACEHOLDER_APPNAME_VERSION, Constants.APPNAME_VERSION)  //NON-NLS
                 .replace(PLACEHOLDER_MAP_ATTRIBUTION, //NON-NLS
-                        tmsItem instanceof MapTemplate && ((MapTemplate) tmsItem).attributionText() != null
+                        tmsItem instanceof MapTemplate mapTemplate && mapTemplate.attributionText() != null
                                 ? ((MapTemplate) tmsItem).attributionText() : "")
                 .trim();
     }
