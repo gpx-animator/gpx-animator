@@ -34,6 +34,9 @@ import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+
+import java.util.Objects;
+
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -217,7 +220,7 @@ public final class Renderer {
         }
     }
 
-    @SuppressWarnings("ParameterNumber") // TODO refactoring in progress
+    @SuppressWarnings({ "ParameterNumber", "java:S107", "java:S3776" }) // TODO refactoring in progress
     private void renderFrames(@NonNull final List<RendererPlugin> plugins, @NonNull final BufferedImage bi,
                               final int realWidth, final int realHeight, final int viewportWidth, final int viewportHeight,
                               @NonNull final FrameWriter frameWriter, final int frames,
@@ -847,6 +850,29 @@ public final class Renderer {
 
         public void setName(final String name) {
             this.name = name;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            if (!super.equals(o)) {
+                return false;
+            }
+
+            final var that = (NamedPoint) o;
+            return Objects.equals(name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = super.hashCode();
+            result = 31 * result + (name != null ? name.hashCode() : 0);
+            return result;
         }
     }
 
