@@ -21,6 +21,7 @@ import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.data.MapTemplate;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
+import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.util.MapUtil;
 import org.jetbrains.annotations.NotNull;
@@ -84,6 +85,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final FileSelector outputFileSelector;
+    private final JComboBox<VideoCodec> videoCodecComboBox;
     private final JSpinner widthSpinner;
     private final JSpinner heightSpinner;
     private final JSpinner viewportWidthSpinner;
@@ -137,7 +139,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
         var rowCounter = 0;
-        final var maxRows = 43;
+        final var maxRows = 44;
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final var gridBagLayout = new GridBagLayout();
@@ -163,7 +165,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         outputFileSelector = new FileSelector(FILES_ONLY) {
             @Serial
-            private static final long serialVersionUID = 7372002778976603239L;
+            private static final long serialVersionUID = 8455327808503061600L;
 
             @Override
             protected Type configure(final JFileChooser outputFileChooser) {
@@ -172,7 +174,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
                         resourceBundle.getString("ui.panel.generalsettings.output.format.png"), "png")); //NON-NLS
                 outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-                        resourceBundle.getString("ui.panel.generalsettings.output.format.h264"), "mp4", "mov", "mkv")); //NON-NLS
+                        resourceBundle.getString("ui.panel.generalsettings.output.format.h264_h265"), "mp4", "mov", "mkv")); //NON-NLS
                 return Type.SAVE;
             }
 
@@ -199,6 +201,23 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         final PropertyChangeListener propertyChangeListener = evt -> configurationChanged();
         outputFileSelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
+
+        final var lblVideoCodec = new JLabel(resourceBundle.getString("ui.panel.generalsettings.videocodec.label"));
+        final var gbcLabelVideoCodec = new GridBagConstraints();
+        gbcLabelVideoCodec.anchor = GridBagConstraints.LINE_END;
+        gbcLabelVideoCodec.insets = new Insets(0, 0, 5, 5);
+        gbcLabelVideoCodec.gridx = 0;
+        gbcLabelVideoCodec.gridy = ++rowCounter;
+        add(lblVideoCodec, gbcLabelVideoCodec);
+
+        videoCodecComboBox = new JComboBox<>();
+        videoCodecComboBox.setToolTipText(Option.VIDEO_CODEC.getHelp());
+        VideoCodec.fillComboBox(videoCodecComboBox);
+        final var gbcVideoCodec = new GridBagConstraints();
+        gbcVideoCodec.fill = GridBagConstraints.HORIZONTAL;
+        gbcVideoCodec.gridx = 1;
+        gbcVideoCodec.gridy = rowCounter;
+        add(videoCodecComboBox, gbcVideoCodec);
 
         final var lblWidthHeight = new JLabel(resourceBundle.getString("ui.panel.generalsettings.widthheight.label"));
         final var gbcLabelWidthHeight = new GridBagConstraints();
@@ -1444,6 +1463,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         }
         tailColorFadeoutCheckBox.setSelected(c.isTailColorFadeout());
         outputFileSelector.setFilename(c.getOutput().toString());
+        videoCodecComboBox.setSelectedItem(c.getVideoCodec() != null ? c.getVideoCodec() : VideoCodec.H264);
         logoFileSelector.setFilename(c.getLogo() != null ? c.getLogo().toString() : "");
         fontSelector.setSelectedFont(c.getFont());
         markerSizeSpinner.setValue(c.getMarkerSize());
@@ -1504,6 +1524,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .flashbackColor(flashbackColorSelector.getColor())
                 .flashbackDuration((Long) flashbackDurationSpinner.getValue())
                 .output(outputFileSelector.getFile())
+                .videoCodec((VideoCodec) videoCodecComboBox.getSelectedItem())
                 .font(fontSelector.getSelectedFont())
                 .markerSize((Double) markerSizeSpinner.getValue())
                 .waypointFont(waypointFontSelector.getSelectedFont())

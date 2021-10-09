@@ -26,6 +26,7 @@ public enum Option {
     GUI("gui"),
     INPUT("input"),
     OUTPUT("output"),
+    VIDEO_CODEC("video-codec"),
     LABEL("label"),
     COLOR("color"),
     MARGIN("margin"),

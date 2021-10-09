@@ -16,19 +16,17 @@
 package app.gpx_animator.core.renderer.framewriter;
 
 import app.gpx_animator.core.UserException;
+import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.NonNull;
-
-import java.util.ResourceBundle;
-
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.FrameRecorder;
 import org.bytedeco.javacv.Java2DFrameConverter;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ResourceBundle;
 
-import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_H264;
 import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_NONE;
 import static org.bytedeco.ffmpeg.global.avutil.AV_PIX_FMT_YUV420P;
 
@@ -39,7 +37,8 @@ public final class VideoFrameWriter implements FrameWriter {
     private final Java2DFrameConverter frameConverter;
     private final FrameRecorder recorder;
 
-    public VideoFrameWriter(@NonNull final File file, final double fps, final int width, final int height) throws UserException {
+    public VideoFrameWriter(@NonNull final File file, @NonNull final VideoCodec videoCodec,
+                            final double fps, final int width, final int height) throws UserException {
         frameConverter = new Java2DFrameConverter();
 
         try {
@@ -50,7 +49,7 @@ public final class VideoFrameWriter implements FrameWriter {
 
         recorder.setFormat("matroska"); // mp4 doesn't support streaming
         recorder.setAudioCodec(AV_CODEC_ID_NONE);
-        recorder.setVideoCodec(AV_CODEC_ID_H264);
+        recorder.setVideoCodec(videoCodec.getCodecId());
         recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
         recorder.setFormat("mp4");
         recorder.setVideoOption("crf", "24"); // recorder.setVideoQuality(24); -> crashes on systems with comma as decimal separator

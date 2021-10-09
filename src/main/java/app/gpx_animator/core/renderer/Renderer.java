@@ -159,7 +159,7 @@ public final class Renderer {
 
         final var frameWriter = toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
-                : new VideoFrameWriter(cfg.getOutput(), cfg.getFps(), viewportWidth, viewportHeight);
+                : new VideoFrameWriter(cfg.getOutput(), cfg.getVideoCodec(), cfg.getFps(), viewportWidth, viewportHeight);
 
         final var bi = createBufferedImage(realWidth, realHeight, zoom);
 

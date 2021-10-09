@@ -22,6 +22,7 @@ import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
 import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
+import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -44,10 +45,12 @@ import java.util.stream.Collectors;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable, it uses XML transformation
 public final class Configuration {
 
+    private static final VideoCodec DEFAULT_VIDEO_CODEC = VideoCodec.H264;
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
     private static final String DEFAULT_INFORMATION = "%SPEED%\n%LATLON%\n%DATETIME%";
+    private static final SpeedUnit DEFAULT_SPEED_UNIT = SpeedUnit.KMH;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
     public static final Position DEFAULT_ATTRIBUTION_POSITION = Position.BOTTOM_LEFT;
 
@@ -90,6 +93,7 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File output;
+    private VideoCodec videoCodec;
 
     private String attribution;
     private Position attributionPosition = DEFAULT_ATTRIBUTION_POSITION;
@@ -138,7 +142,7 @@ public final class Configuration {
     private Configuration() {
     }
 
-    @SuppressWarnings("checkstyle:ParameterNumber")
+    @SuppressWarnings({"checkstyle:ParameterNumber", "java:S107"})
     private Configuration(
             final int margin, final Integer width, final Integer height, final Integer zoom,
             final Integer viewportWidth, final Integer viewportHeight, final Integer viewportInertia,
@@ -146,9 +150,9 @@ public final class Configuration {
             final Long totalTime, final float backgroundMapVisibility, final String tmsUrlTemplate, final String tmsUserAgent,
             final boolean skipIdle, final Color backgroundColor, final File backgroundImage, final Color flashbackColor,
             final Long flashbackDuration, final boolean preDrawTrack, final Long keepFirstFrame, final Long keepLastFrame, final File output,
-            final String attribution, final String information, final SpeedUnit speedUnit, final Font font, final Double markerSize,
-            final Font waypointFont, final Double waypointSize, final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
-            final File logo, final Position logoPosition, final int logoMargin,
+            final VideoCodec videoCodec, final String attribution, final String information, final SpeedUnit speedUnit, final Font font,
+            final Double markerSize, final Font waypointFont, final Double waypointSize, final Double minLon, final Double maxLon,
+            final Double minLat, final Double maxLat, final File logo, final Position logoPosition, final int logoMargin,
             final Position attributionPosition, final int attributionMargin,
             final Position informationPosition, final int informationMargin,
             final Position commentPosition, final int commentMargin,
@@ -181,6 +185,7 @@ public final class Configuration {
         this.keepFirstFrame = keepFirstFrame;
         this.keepLastFrame = keepLastFrame;
         this.output = output;
+        this.videoCodec = videoCodec;
         this.attribution = attribution;
         this.information = information;
         this.font = font;
@@ -314,6 +319,10 @@ public final class Configuration {
 
     public File getOutput() {
         return output;
+    }
+
+    public VideoCodec getVideoCodec() {
+        return videoCodec;
     }
 
     public String getAttribution() {
@@ -466,6 +475,7 @@ public final class Configuration {
         private Long keepFirstFrame;
         private Long keepLastFrame;
         private File output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
+        private VideoCodec videoCodec = DEFAULT_VIDEO_CODEC;
         private Font font;
         private Double markerSize = 8.0;
         private Font waypointFont;
@@ -488,7 +498,7 @@ public final class Configuration {
         private File photoDirectory;
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
-        private SpeedUnit speedUnit = SpeedUnit.KMH;
+        private SpeedUnit speedUnit = DEFAULT_SPEED_UNIT;
         private Long previewLength;
 
 
@@ -499,7 +509,7 @@ public final class Configuration {
                     speedup, tailDuration, tailColor, tailColorFadeout, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate, tmsUserAgent,
                     skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
-                    preDrawTrack, keepFirstFrame, keepLastFrame, output, attribution, information,
+                    preDrawTrack, keepFirstFrame, keepLastFrame, output, videoCodec, attribution, information,
                     speedUnit, font, markerSize, waypointFont, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, logoPosition, logoMargin,
@@ -635,6 +645,11 @@ public final class Configuration {
 
         public Builder output(final File output) {
             this.output = output;
+            return this;
+        }
+
+        public Builder videoCodec(final VideoCodec videoCodec) {
+            this.videoCodec = videoCodec;
             return this;
         }
 
