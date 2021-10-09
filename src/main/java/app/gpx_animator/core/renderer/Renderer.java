@@ -53,6 +53,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -172,7 +173,7 @@ public final class Renderer {
 
         drawBackground(plugins, bi);
         preDrawTracks(bi, frames);
-        renderFrames(plugins, bi, realWidth, realHeight, viewportWidth, viewportHeight, frameWriter, frames, spanList, wpMap, rc);
+        renderFrames(plugins, bi, realWidth, realHeight, viewportWidth, viewportHeight, frameWriter, frames, spanList, wpMap, rc, renderStartTime);
 
         frameWriter.close();
 
@@ -221,7 +222,8 @@ public final class Renderer {
                               final int realWidth, final int realHeight, final int viewportWidth, final int viewportHeight,
                               @NonNull final FrameWriter frameWriter, final int frames,
                               @NonNull final List<Long[]> spanList, @NonNull final TreeMap<Long, Point2D> wpMap,
-                              @NonNull final RenderingContext rc) throws UserException {
+                              @NonNull final RenderingContext rc, @NonNull final LocalDateTime renderStartTime) throws UserException {
+        final var remainingTimeCalculator = new RemainingTimeCalculator(renderStartTime, frames);
         final var stopAfterFrame = cfg.getPreviewLength() == null ? Long.MAX_VALUE : cfg.getPreviewLength() * cfg.getFps() / 1_000;
         BufferedImage lastRenderedFrame = null;
         var skip = -1f;
@@ -249,7 +251,8 @@ public final class Renderer {
             }
 
             final var pct = (int) (100.0 * frame / frames);
-            rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.frame"), frame, frames));
+            rc.setProgress1(pct, String.format(resourceBundle.getString("renderer.progress.frame"),
+                    frame, frames, remainingTimeCalculator.getSecondsLeft(frame)));
 
             paint(bi, frame, 0, null, false);
             final var bi2 = Utils.deepCopy(bi);
@@ -847,4 +850,32 @@ public final class Renderer {
         }
     }
 
+    private static class RemainingTimeCalculator {
+
+        private final NumberFormat numberFormat;
+        private final LocalDateTime renderStartTime;
+        private final long frames;
+
+        private long lastRuntime;
+        private String lastResult;
+
+        RemainingTimeCalculator(@NonNull final LocalDateTime renderStartTime, final long frames) {
+            this.numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+            this.renderStartTime = renderStartTime;
+            this.frames = frames;
+        }
+
+        private String getSecondsLeft(final int frame) {
+            final var runtime = ChronoUnit.SECONDS.between(renderStartTime, LocalDateTime.now());
+            if (runtime > lastRuntime) {
+                lastRuntime = runtime;
+                final var fps = runtime > 10 ? frame / runtime : 0; // 10 seconds warmup
+                final var secondsLeft = fps > 0 ? (frames - frame) / fps : -1;
+                lastResult = secondsLeft == -1 ? "?" : numberFormat.format(secondsLeft);
+            }
+            return lastResult;
+        }
+
+
+    }
 }
