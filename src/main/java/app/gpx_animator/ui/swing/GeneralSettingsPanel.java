@@ -173,18 +173,6 @@ abstract class GeneralSettingsPanel extends JPanel {
                         resourceBundle.getString("ui.panel.generalsettings.output.format.png"), "png")); //NON-NLS
                 outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
                         resourceBundle.getString("ui.panel.generalsettings.output.format.h264"), "mp4", "mov", "mkv")); //NON-NLS
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-                        resourceBundle.getString("ui.panel.generalsettings.output.format.mpeg1"), "mpg")); //NON-NLS
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-                        resourceBundle.getString("ui.panel.generalsettings.output.format.mpeg4"), "avi")); //NON-NLS
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-                        resourceBundle.getString("ui.panel.generalsettings.output.format.msmpeg4"), "wmv", "asf")); //NON-NLS
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-                        resourceBundle.getString("ui.panel.generalsettings.output.format.theora"), "ogv")); //NON-NLS
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-                        resourceBundle.getString("ui.panel.generalsettings.output.format.flv"), "flv")); //NON-NLS
-                outputFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-                        resourceBundle.getString("ui.panel.generalsettings.output.format.rv10"), "rm")); //NON-NLS
                 return Type.SAVE;
             }
 
