@@ -754,7 +754,8 @@ public final class Renderer {
             final var trackConfiguration = trackConfigurationList.get(i++);
 
             for (final var timePointMap : timePointMapList) {
-                g2.setStroke(new BasicStroke(trackConfiguration.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                final var lineWidth = isPreDrawTrack ? trackConfiguration.getPreDrawLineWidth() : trackConfiguration.getLineWidth();
+                g2.setStroke(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
                 final var toTime = timePointMap.floorKey(time);
 

@@ -30,7 +30,9 @@ import java.io.File;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable, it uses XML transformation
 public final class TrackConfiguration {
 
-    public static final Color DEFAULT_PREDRAW_TRACK_COLOR = Color.lightGray;
+    public static final Color DEFAULT_PRE_DRAW_TRACK_COLOR = Color.lightGray;
+    public static final float DEFAULT_PRE_DRAW_LINE_WIDTH = 2f;
+    public static final float DEFAULT_LINE_WIDTH = 2f;
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File inputGpx;
@@ -41,13 +43,14 @@ public final class TrackConfiguration {
     private Color color;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    private Color preDrawTrackColor = DEFAULT_PREDRAW_TRACK_COLOR;
+    private Color preDrawTrackColor = DEFAULT_PRE_DRAW_TRACK_COLOR;
 
     private Long timeOffset;
     private Long forcedPointInterval;
     private Long trimGpxStart;
     private Long trimGpxEnd;
     private float lineWidth;
+    private float preDrawLineWidth = DEFAULT_PRE_DRAW_LINE_WIDTH;
     private File inputIcon;
     private boolean mirrorTrackIcon;
 
@@ -59,10 +62,10 @@ public final class TrackConfiguration {
     }
 
 
-    @SuppressWarnings("checkstyle:ParameterNumber")
+    @SuppressWarnings({ "checkstyle:ParameterNumber", "java:S107" })
     private TrackConfiguration(final File inputGpx, final String label, final Color color, final Color preDrawTrackColor, final Long timeOffset,
                                final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth,
-                               final TrackIcon trackIcon, final File inputIcon, final boolean mirrorTrackIcon) {
+                               final float preDrawLineWidth, final TrackIcon trackIcon, final File inputIcon, final boolean mirrorTrackIcon) {
         this.inputGpx = inputGpx;
         this.label = label;
         this.color = color;
@@ -72,6 +75,7 @@ public final class TrackConfiguration {
         this.trimGpxStart = trimGpxStart;
         this.trimGpxEnd = trimGpxEnd;
         this.lineWidth = lineWidth;
+        this.preDrawLineWidth = preDrawLineWidth;
         this.trackIcon = trackIcon;
         this.inputIcon = inputIcon;
         this.mirrorTrackIcon = mirrorTrackIcon;
@@ -129,6 +133,10 @@ public final class TrackConfiguration {
         return lineWidth;
     }
 
+    public float getPreDrawLineWidth() {
+        return preDrawLineWidth;
+    }
+
     @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField", "UnusedReturnValue"}) // This is okay for the builder pattern
     public static final class Builder {
 
@@ -136,13 +144,14 @@ public final class TrackConfiguration {
         private String label;
 
         private Color color = Color.BLUE;
-        private Color preDrawTrackColor = DEFAULT_PREDRAW_TRACK_COLOR;
+        private Color preDrawTrackColor = DEFAULT_PRE_DRAW_TRACK_COLOR;
 
         private Long timeOffset;
         private Long forcedPointInterval;
         private Long trimGpxStart;
         private Long trimGpxEnd;
-        private float lineWidth = 2f;
+        private float lineWidth = DEFAULT_LINE_WIDTH;
+        private float preDrawLineWidth = DEFAULT_PRE_DRAW_LINE_WIDTH;
         private TrackIcon trackIcon = null;
         private File inputIcon;
         private boolean mirrorTrackIcon = false;
@@ -154,8 +163,8 @@ public final class TrackConfiguration {
 
         public TrackConfiguration build() {
             return new TrackConfiguration(
-                inputGpx, label, color, preDrawTrackColor, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, trackIcon, inputIcon,
-                    mirrorTrackIcon
+                inputGpx, label, color, preDrawTrackColor, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, preDrawLineWidth,
+                    trackIcon, inputIcon, mirrorTrackIcon
             );
         }
 
@@ -209,6 +218,11 @@ public final class TrackConfiguration {
 
         public Builder lineWidth(final float lineWidth) {
             this.lineWidth = lineWidth;
+            return this;
+        }
+
+        public Builder preDrawLineWidth(final float preDrawLineWidth) {
+            this.preDrawLineWidth = preDrawLineWidth;
             return this;
         }
 

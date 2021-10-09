@@ -36,6 +36,7 @@ public enum Option {
     FORCED_POINT_TIME_INTERVAL("forced-point-time-interval"),
     SPEEDUP("speedup"),
     LINE_WIDTH("line-width"),
+    PRE_DRAW_LINE_WIDTH("pre-draw-line-width"),
     TAIL_DURATION("tail-duration"),
     TAIL_COLOR("tail-color"),
     TAIL_COLOR_FADEOUT("tail-color-fadeout"),

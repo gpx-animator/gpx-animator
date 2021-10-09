@@ -58,6 +58,7 @@ abstract class TrackSettingsPanel extends JPanel {
     private final JSpinner forcedPointTimeIntervalSpinner;
     private final JSpinner timeOffsetSpinner;
     private final JSpinner lineWidthSpinner;
+    private final JSpinner preDrawLineWidthSpinner;
     private final ColorSelector colorSelector;
     private final ColorSelector preDrawColorSelector;
     private final FileSelector inputGpxFileSelector;
@@ -197,6 +198,24 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcLineWidthSpinner.gridx = 1;
         gbcLineWidthSpinner.gridy = rowCounter;
         add(lineWidthSpinner, gbcLineWidthSpinner);
+
+        final var lblPreDrawLineWidth = new JLabel(resourceBundle.getString("ui.panel.tracksettings.predrawlinewidth.label"));
+        final var gbcLabelPreDrawLineWidth = new GridBagConstraints();
+        gbcLabelPreDrawLineWidth.insets = new Insets(0, 0, 5, 5);
+        gbcLabelPreDrawLineWidth.anchor = GridBagConstraints.LINE_END;
+        gbcLabelPreDrawLineWidth.gridx = 0;
+        gbcLabelPreDrawLineWidth.gridy = ++rowCounter;
+        add(lblPreDrawLineWidth, gbcLabelPreDrawLineWidth);
+
+        preDrawLineWidthSpinner = new JSpinner();
+        preDrawLineWidthSpinner.setToolTipText(Option.PRE_DRAW_LINE_WIDTH.getHelp());
+        preDrawLineWidthSpinner.setModel(new SpinnerNumberModel(0f, 0f, null, 0.5f));
+        final var gbcPreDrawLineWidthSpinner = new GridBagConstraints();
+        gbcPreDrawLineWidthSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcPreDrawLineWidthSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcPreDrawLineWidthSpinner.gridx = 1;
+        gbcPreDrawLineWidthSpinner.gridy = rowCounter;
+        add(preDrawLineWidthSpinner, gbcPreDrawLineWidthSpinner);
 
         final var lblTimeOffset = new JLabel(resourceBundle.getString("ui.panel.tracksettings.timeoffset.label"));
         final var gbcLabelTimeOffset = new GridBagConstraints();
@@ -374,6 +393,7 @@ abstract class TrackSettingsPanel extends JPanel {
         final ChangeListener changeListener = e -> configurationChanged();
 
         lineWidthSpinner.addChangeListener(changeListener);
+        preDrawLineWidthSpinner.addChangeListener(changeListener);
         timeOffsetSpinner.addChangeListener(changeListener);
         forcedPointTimeIntervalSpinner.addChangeListener(changeListener);
         trimGpxStartSpinner.addChangeListener(changeListener);
@@ -443,6 +463,7 @@ abstract class TrackSettingsPanel extends JPanel {
         b.color(colorSelector.getColor());
         b.preDrawTrackColor(preDrawColorSelector.getColor());
         b.lineWidth((Float) lineWidthSpinner.getValue());
+        b.preDrawLineWidth((Float) preDrawLineWidthSpinner.getValue());
         b.forcedPointInterval((Long) forcedPointTimeIntervalSpinner.getValue());
         b.timeOffset((Long) timeOffsetSpinner.getValue());
         b.trimGpxStart((Long) trimGpxStartSpinner.getValue());
@@ -460,6 +481,7 @@ abstract class TrackSettingsPanel extends JPanel {
         colorSelector.setColor(c.getColor());
         preDrawColorSelector.setColor(c.getPreDrawTrackColor());
         lineWidthSpinner.setValue(c.getLineWidth());
+        preDrawLineWidthSpinner.setValue(c.getPreDrawLineWidth());
         forcedPointTimeIntervalSpinner.setValue(c.getForcedPointInterval());
         timeOffsetSpinner.setValue(c.getTimeOffset());
         trimGpxStartSpinner.setValue(c.getTrimGpxStart());

@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static app.gpx_animator.core.configuration.TrackConfiguration.DEFAULT_PREDRAW_TRACK_COLOR;
+import static app.gpx_animator.core.configuration.TrackConfiguration.DEFAULT_PRE_DRAW_TRACK_COLOR;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {
@@ -272,7 +272,7 @@ public final class CommandLineConfigurationFactory {
         final var size2 = preDrawTrackColorList.size();
         if (size2 == 0) {
             for (var i = 0; i < size; i++) {
-                preDrawTrackColorList.add(DEFAULT_PREDRAW_TRACK_COLOR);
+                preDrawTrackColorList.add(DEFAULT_PRE_DRAW_TRACK_COLOR);
             }
         } else if (size2 < size) {
             for (var i = size2; i < size; i++) {
