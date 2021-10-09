@@ -993,25 +993,6 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(keepLastFrameSpinner, gbcKeepLastFrameSpinner);
         keepLastFrameSpinner.addChangeListener(changeListener);
 
-        final var lblLogo = new JLabel(resourceBundle.getString("ui.panel.generalsettings.logo.label"));
-        final var gbcLabelLogo = new GridBagConstraints();
-        gbcLabelLogo.anchor = GridBagConstraints.LINE_END;
-        gbcLabelLogo.insets = new Insets(0, 0, 5, 5);
-        gbcLabelLogo.gridx = 0;
-        gbcLabelLogo.gridy = ++rowCounter;
-        add(lblLogo, gbcLabelLogo);
-
-        logoFileSelector = createImageFileSelector();
-        logoFileSelector.setToolTipText(Option.LOGO.getHelp());
-        final var gbcLogoFileSelector = new GridBagConstraints();
-        gbcLogoFileSelector.fill = GridBagConstraints.BOTH;
-        gbcLogoFileSelector.insets = new Insets(0, 0, 5, 0);
-        gbcLogoFileSelector.gridx = 1;
-        gbcLogoFileSelector.gridy = rowCounter;
-        add(logoFileSelector, gbcLogoFileSelector);
-
-        logoFileSelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
-
         final var lblPhotosDirectorySelector = new JLabel(resourceBundle.getString("ui.panel.generalsettings.photodirectory.label"));
         final var gbcLabelPhotosDirectorySelector = new GridBagConstraints();
         gbcLabelPhotosDirectorySelector.anchor = GridBagConstraints.LINE_END;
@@ -1077,6 +1058,25 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcPhotoAnimationDurationSpinner.gridy = rowCounter;
         add(photoAnimationDurationSpinner, gbcPhotoAnimationDurationSpinner);
         photoAnimationDurationSpinner.addChangeListener(changeListener);
+
+        final var lblLogo = new JLabel(resourceBundle.getString("ui.panel.generalsettings.logo.label"));
+        final var gbcLabelLogo = new GridBagConstraints();
+        gbcLabelLogo.anchor = GridBagConstraints.LINE_END;
+        gbcLabelLogo.insets = new Insets(0, 0, 5, 5);
+        gbcLabelLogo.gridx = 0;
+        gbcLabelLogo.gridy = ++rowCounter;
+        add(lblLogo, gbcLabelLogo);
+
+        logoFileSelector = createImageFileSelector();
+        logoFileSelector.setToolTipText(Option.LOGO.getHelp());
+        final var gbcLogoFileSelector = new GridBagConstraints();
+        gbcLogoFileSelector.fill = GridBagConstraints.BOTH;
+        gbcLogoFileSelector.insets = new Insets(0, 0, 5, 0);
+        gbcLogoFileSelector.gridx = 1;
+        gbcLogoFileSelector.gridy = rowCounter;
+        add(logoFileSelector, gbcLogoFileSelector);
+
+        logoFileSelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
 
         final var lblLogoPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.logoPosition.label"));
         final var gbcLabelLogoPosition = new GridBagConstraints();
