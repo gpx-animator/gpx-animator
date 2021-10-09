@@ -25,7 +25,7 @@
 * System notifications when rendering stops or finishes
 * Map data update over the air (manually via `File` menu)
 * Specify a separate font for waypoints (optional)
-* Read speed from GPX file (if present) for more acurate speed data
+* Read speed from GPX file (if present) for more accurate speed data
 * All important features in the menu are now accessible via hotkeys
 * Recently opened files can be accessed via hotkeys
 * All dialogs can be closed using the `Esc` key
@@ -91,9 +91,9 @@ Release date: 2021-01-09
 * Adding support for choosing an external PNG file as a track icon
 * Track icons can now be mirrored to match the general direction
 * Adding font selection for the text in the animation
-* Margin for track, logo, attribution and informations can be set separately
-* Positions of logo, attribution, and informations are now configurable
-* Logo, attribution, and informations can now hidden
+* Margin for track, logo, attribution and information can be set separately
+* Positions of logo, attribution, and information are now configurable
+* Logo, attribution, and information can now be hidden
 * Adding support for background images (including transparency in PNG files)
 * Adding support for track point comments in GPX files
 * Fixing error in video frame size calculation with user specified bounding box
@@ -124,7 +124,7 @@ Release date: 2020-08-21
 Release date: 2020-08-07
 
 * Fixing a bug that prevents photos from being shown in the animation
-* Fixing a bug that does not load the photos directory from saved files
+* Fixing a bug that does not load the photos' directory from saved files
 * Fixing a bug that broke the command line use since v1.4
 * Fixing a bug that shows an old status message on the progress bar
 
@@ -315,7 +315,7 @@ Release date: 2013-02-03
 Release date: 2013-02-03
 
 * indicate inactive locations
-* track multisegment support
+* track multi-segment support
 * direct color specification
 
 ---
@@ -335,7 +335,7 @@ Release date: 2013-02-02
 * configurable hues
 * more parameters to configure
 * marker labels
-* multitrack support
+* multi-track support
 * improved tail highlighting - now based on time
 * customizable tail length
 
