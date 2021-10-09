@@ -77,6 +77,9 @@ abstract class GeneralSettingsPanel extends JPanel {
     private static final long serialVersionUID = -2024548578211891192L;
     public static final String PLACEHOLDER_MAP_ATTRIBUTION = "%MAP_ATTRIBUTION%";
     public static final String PLACEHOLDER_APPNAME_VERSION = "%APPNAME_VERSION%";
+    public static final String PLACEHOLDER_SPEED = "%SPEED%";
+    public static final String PLACEHOLDER_LATLON = "%LATLON%";
+    public static final String PLACEHOLDER_DATETIME = "%DATETIME%";
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
@@ -123,6 +126,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final JSpinner photoTimeSpinner;
     private final JSpinner photoAnimationDurationSpinner;
     private final JTextArea attributionTextArea;
+    private final JTextArea informationTextArea;
     private final JSpinner maxLatSpinner;
     private final JSpinner minLonSpinner;
     private final JSpinner maxLonSpinner;
@@ -133,7 +137,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
         var rowCounter = 0;
-        final var maxRows = 42;
+        final var maxRows = 43;
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final var gridBagLayout = new GridBagLayout();
@@ -1068,14 +1072,14 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelAttribution.gridy = ++rowCounter;
         add(lblAttribution, gbcLabelAttribution);
 
-        final var scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(new Dimension(3, 50));
-        final var gbcScrollPane = new GridBagConstraints();
-        gbcScrollPane.fill = GridBagConstraints.BOTH;
-        gbcScrollPane.insets = new Insets(0, 0, 5, 0);
-        gbcScrollPane.gridx = 1;
-        gbcScrollPane.gridy = rowCounter;
-        add(scrollPane, gbcScrollPane);
+        final var scrollPaneAttribution = new JScrollPane();
+        scrollPaneAttribution.setPreferredSize(new Dimension(3, 50));
+        final var gbcScrollPaneAttribution = new GridBagConstraints();
+        gbcScrollPaneAttribution.fill = GridBagConstraints.BOTH;
+        gbcScrollPaneAttribution.insets = new Insets(0, 0, 5, 0);
+        gbcScrollPaneAttribution.gridx = 1;
+        gbcScrollPaneAttribution.gridy = rowCounter;
+        add(scrollPaneAttribution, gbcScrollPaneAttribution);
 
         attributionTextArea = new JTextArea();
         attributionTextArea.setToolTipText(Option.ATTRIBUTION.getHelp());
@@ -1093,7 +1097,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                     attributionPopupMenu.add(menuItem);
                 });
         attributionTextArea.setComponentPopupMenu(attributionPopupMenu);
-        scrollPane.setViewportView(attributionTextArea);
+        scrollPaneAttribution.setViewportView(attributionTextArea);
         attributionTextArea.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(@Nullable final FocusEvent event) {
@@ -1154,6 +1158,54 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcAttributionMarginSpinner.gridy = rowCounter;
         add(attributionMarginSpinner, gbcAttributionMarginSpinner);
         attributionMarginSpinner.addChangeListener(changeListener);
+
+        final var lblInformation = new JLabel(resourceBundle.getString("ui.panel.generalsettings.information.label"));
+        final var gbcLabelInformation = new GridBagConstraints();
+        gbcLabelInformation.anchor = GridBagConstraints.LINE_END;
+        gbcLabelInformation.insets = new Insets(0, 0, 5, 5);
+        gbcLabelInformation.gridx = 0;
+        gbcLabelInformation.gridy = ++rowCounter;
+        add(lblInformation, gbcLabelInformation);
+
+        final var scrollPaneInformation = new JScrollPane();
+        scrollPaneInformation.setPreferredSize(new Dimension(3, 50));
+        final var gbcScrollPaneInformation = new GridBagConstraints();
+        gbcScrollPaneInformation.fill = GridBagConstraints.BOTH;
+        gbcScrollPaneInformation.insets = new Insets(0, 0, 5, 0);
+        gbcScrollPaneInformation.gridx = 1;
+        gbcScrollPaneInformation.gridy = rowCounter;
+        add(scrollPaneInformation, gbcScrollPaneInformation);
+
+        informationTextArea = new JTextArea();
+        informationTextArea.setToolTipText(Option.INFORMATION.getHelp());
+        final var informationPopupMenu = new JPopupMenu();
+        Map.of(PLACEHOLDER_SPEED, "speed",
+               PLACEHOLDER_LATLON, "latitude & longitude",
+               PLACEHOLDER_DATETIME, "date & time")
+                .forEach((variable, title) -> {
+                    final var menuItem = new JMenuItem("insert %s".formatted(title));
+                    menuItem.addActionListener(l -> {
+                        if (informationTextArea.getSelectedText() != null) {
+                            informationTextArea.replaceSelection(variable);
+                        } else {
+                            informationTextArea.insert(variable, informationTextArea.getCaretPosition());
+                        }
+                    });
+                    informationPopupMenu.add(menuItem);
+                });
+        informationTextArea.setComponentPopupMenu(informationPopupMenu);
+        scrollPaneInformation.setViewportView(informationTextArea);
+        informationTextArea.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+            public void removeUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+            public void insertUpdate(@Nullable final DocumentEvent e) {
+                configurationChanged();
+            }
+        });
 
         final var lblInformationPosition = new JLabel(resourceBundle.getString("ui.panel.generalsettings.informationPosition.label"));
         final var gbcLabelInfoPosition = new GridBagConstraints();
@@ -1392,6 +1444,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         tmsUserAgent.setText(c.getTmsUserAgent());
 
+        informationTextArea.setText(c.getInformation());
         attributionTextArea.setText(c.getAttribution());
         SwingUtilities.invokeLater(() ->
                 checkAttributionMandatory(attributionLocationComboBox.getSelectedItem(), tmsUrlTemplateComboBox.getSelectedItem()));
@@ -1471,6 +1524,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .photoDirectory(photosDirectorySelector.getFile())
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
+                .information(informationTextArea.getText())
                 .attribution(attribution)
                 .attributionPosition((Position) attributionLocationComboBox.getSelectedItem())
                 .speedUnit(speedUnit);

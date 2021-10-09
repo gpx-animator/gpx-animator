@@ -36,6 +36,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
 
     private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
+    private final String information;
     private final Position position;
     private final int margin;
     private final double fps;
@@ -51,6 +52,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
 
     public InformationPlugin(@NonNull final Configuration configuration) {
         super(configuration.getFont());
+        this.information = configuration.getInformation();
         this.position = configuration.getInformationPosition();
         this.margin = configuration.getInformationMargin();
         this.fps = configuration.getFps();
@@ -79,10 +81,16 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
         }
 
         final var time = RenderUtil.getTime(frame, minTime, fps, speedup);
-        final var dateString = showDateTime ? dateFormat.format(time) : "";
+        final var dateTimeString = showDateTime ? dateFormat.format(time) : "";
         final var latLongString = getLatLonString(marker);
         final var speedString = getSpeedString(marker, time, frame);
-        final var text = "%s%n%s%n%s".formatted(speedString, latLongString, dateString).trim();
+
+        final var text = information
+                .replace("%SPEED%", speedString)
+                .replace("%LATLON%", latLongString)
+                .replace("%DATETIME%", dateTimeString);
+
+
         renderText(text, position, margin, image);
     }
 

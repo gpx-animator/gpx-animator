@@ -47,6 +47,7 @@ public final class Configuration {
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
+    private static final String DEFAULT_INFORMATION = "%SPEED%\n%LATLON%\n%DATETIME%";
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
     public static final Position DEFAULT_ATTRIBUTION_POSITION = Position.BOTTOM_LEFT;
 
@@ -93,6 +94,7 @@ public final class Configuration {
     private String attribution;
     private Position attributionPosition = DEFAULT_ATTRIBUTION_POSITION;
     private int attributionMargin = DEFAULT_MARGIN;
+    private String information = DEFAULT_INFORMATION;
     private Position informationPosition = Position.BOTTOM_RIGHT;
     private int informationMargin = DEFAULT_MARGIN;
     private Position commentPosition = Position.BOTTOM_CENTER;
@@ -141,11 +143,11 @@ public final class Configuration {
             final int margin, final Integer width, final Integer height, final Integer zoom,
             final Integer viewportWidth, final Integer viewportHeight, final Integer viewportInertia,
             final Double speedup, final long tailDuration, final Color tailColor, final boolean tailColorFadeout, final double fps,
-            final Long totalTime, final float backgroundMapVisibility, final String tmsUrlTemplate, final String tmsUserAgent, final boolean skipIdle,
-            final Color backgroundColor, final File backgroundImage, final Color flashbackColor, final Long flashbackDuration,
-            final boolean preDrawTrack, final Long keepFirstFrame, final Long keepLastFrame, final File output, final String attribution,
-            final SpeedUnit speedUnit, final Font font, final Double markerSize, final Font waypointFont, final Double waypointSize,
-            final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
+            final Long totalTime, final float backgroundMapVisibility, final String tmsUrlTemplate, final String tmsUserAgent,
+            final boolean skipIdle, final Color backgroundColor, final File backgroundImage, final Color flashbackColor,
+            final Long flashbackDuration, final boolean preDrawTrack, final Long keepFirstFrame, final Long keepLastFrame, final File output,
+            final String attribution, final String information, final SpeedUnit speedUnit, final Font font, final Double markerSize,
+            final Font waypointFont, final Double waypointSize, final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
             final File logo, final Position logoPosition, final int logoMargin,
             final Position attributionPosition, final int attributionMargin,
             final Position informationPosition, final int informationMargin,
@@ -180,6 +182,7 @@ public final class Configuration {
         this.keepLastFrame = keepLastFrame;
         this.output = output;
         this.attribution = attribution;
+        this.information = information;
         this.font = font;
         this.markerSize = markerSize;
         this.waypointFont = waypointFont;
@@ -315,6 +318,10 @@ public final class Configuration {
 
     public String getAttribution() {
         return attribution;
+    }
+
+    public String getInformation() {
+        return information;
     }
 
     public Font getFont() {
@@ -459,7 +466,6 @@ public final class Configuration {
         private Long keepFirstFrame;
         private Long keepLastFrame;
         private File output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
-        private String attribution = resourceBundle.getString("configuration.attribution");
         private Font font;
         private Double markerSize = 8.0;
         private Font waypointFont;
@@ -471,8 +477,10 @@ public final class Configuration {
         private File logo;
         private Position logoPosition = Position.TOP_LEFT;
         private int logoMargin = DEFAULT_MARGIN;
+        private String attribution = resourceBundle.getString("configuration.attribution");
         private Position attributionPosition = Position.BOTTOM_LEFT;
         private int attributionMargin = DEFAULT_MARGIN;
+        private String information = DEFAULT_INFORMATION;
         private Position informationPosition = Position.BOTTOM_RIGHT;
         private int informationMargin = DEFAULT_MARGIN;
         private Position commentPosition = Position.BOTTOM_CENTER;
@@ -491,8 +499,8 @@ public final class Configuration {
                     speedup, tailDuration, tailColor, tailColorFadeout, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate, tmsUserAgent,
                     skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
-                    preDrawTrack, keepFirstFrame, keepLastFrame, output, attribution, speedUnit,
-                    font, markerSize, waypointFont, waypointSize,
+                    preDrawTrack, keepFirstFrame, keepLastFrame, output, attribution, information,
+                    speedUnit, font, markerSize, waypointFont, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, logoPosition, logoMargin,
                     attributionPosition, attributionMargin,
@@ -632,6 +640,11 @@ public final class Configuration {
 
         public Builder attribution(final String attribution) {
             this.attribution = attribution;
+            return this;
+        }
+
+        public Builder information(final String information) {
+            this.information = information;
             return this;
         }
 
