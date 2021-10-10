@@ -33,6 +33,8 @@ import static javax.management.timer.Timer.ONE_SECOND;
 @SuppressWarnings("unused") // Plugins are loaded using reflection
 public final class PreviewPlugin implements RendererPlugin {
 
+    private final Configuration configuration;
+
     private PreviewDialog preview;
 
     private int width;
@@ -42,7 +44,9 @@ public final class PreviewPlugin implements RendererPlugin {
     private long lastUpdate = 0;
 
     // all renderer plugins need this constructor
-    public PreviewPlugin(@SuppressWarnings("unused") @NonNull final Configuration configuration) { }
+    public PreviewPlugin(@NonNull final Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     @Override
     public int getOrder() {
@@ -51,7 +55,7 @@ public final class PreviewPlugin implements RendererPlugin {
 
     @Override
     public void renderFrame(final int frame, @Nullable final Point2D marker, @NotNull final BufferedImage image) {
-        if (!enabled) {
+        if (!enabled && !configuration.isPreview()) {
             return;
         }
 
@@ -78,7 +82,7 @@ public final class PreviewPlugin implements RendererPlugin {
 
     @Override
     public void renderingFinished() {
-        if (preview != null) {
+        if (preview != null && !configuration.isPreview()) {
             preview.closeDialog();
         }
     }

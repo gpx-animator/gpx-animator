@@ -105,6 +105,7 @@ public final class MainFrame extends JFrame {
     private final File defaultConfigFile = new File(Preferences.getConfigurationDir()
             + Preferences.FILE_SEPARATOR + "defaultConfig.ga.xml");
     private final JTabbedPane tabbedPane;
+    private final JButton previewButton;
     private final JButton renderButton;
     private final JMenu openRecent;
     private final JFileChooser fileChooser = new JFileChooser();
@@ -378,7 +379,7 @@ public final class MainFrame extends JFrame {
         final var gblPanel = new GridBagLayout();
         gblPanel.columnWidths = new int[]{174, 49, 0, 32, 0};
         gblPanel.rowHeights = new int[]{27, 0};
-        gblPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gblPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         gblPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
         panel.setLayout(gblPanel);
 
@@ -401,15 +402,25 @@ public final class MainFrame extends JFrame {
         panel.add(addTrackButton, gbcAddTrackButton);
         addTrackButton.addActionListener(addTrackActionListener);
 
+        previewButton = new JButton(resourceBundle.getString("ui.mainframe.button.preview"));
+        previewButton.setEnabled(false);
+        final var gbcPreviewButton = new GridBagConstraints();
+        gbcPreviewButton.anchor = GridBagConstraints.FIRST_LINE_START;
+        gbcPreviewButton.insets = new Insets(0, 0, 0, 5);
+        gbcPreviewButton.gridx = 3;
+        gbcPreviewButton.gridy = 0;
+        panel.add(previewButton, gbcPreviewButton);
+        previewButton.addActionListener(e -> render(progressBar, true));
+
         //noinspection DuplicateStringLiteralInspection
         renderButton = new JButton(resourceBundle.getString("ui.mainframe.button.render"));
         renderButton.setEnabled(false);
         final var gbcRenderButton = new GridBagConstraints();
         gbcRenderButton.anchor = GridBagConstraints.FIRST_LINE_START;
-        gbcRenderButton.gridx = 3;
+        gbcRenderButton.gridx = 5;
         gbcRenderButton.gridy = 0;
         panel.add(renderButton, gbcRenderButton);
-        renderButton.addActionListener(e -> render(progressBar));
+        renderButton.addActionListener(e -> render(progressBar, false));
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -431,14 +442,14 @@ public final class MainFrame extends JFrame {
         SwingUtilities.invokeLater(this::showChangelogOnce);
     }
 
-    private void render(@NonNull final JProgressBar progressBar) {
+    private void render(@NonNull final JProgressBar progressBar, final boolean preview) {
         if (swingWorker != null) {
             swingWorker.cancel(false);
             return;
         }
 
-        final var cfg = createConfiguration(true, true);
-        if (cfg.getOutput().exists()) {
+        final var cfg = createConfiguration(true, true, preview);
+        if (cfg.getOutput().exists() && !cfg.isPreview()) {
             final var message = String.format(
                     resourceBundle.getString("ui.mainframe.dialog.message.overwrite"), cfg.getOutput());
             final var result = JOptionPane.showConfirmDialog(MainFrame.this,
@@ -484,14 +495,16 @@ public final class MainFrame extends JFrame {
 
                 try {
                     get();
-                    final var title = resourceBundle.getString("ui.mainframe.dialog.finished.title");
-                    final var message = resourceBundle.getString("ui.mainframe.dialog.finished.message");
-                    if (Notification.isSupported()) {
-                        Notification.INFO.show(title, message);
-                    } else {
-                        Sound.SUCCESS.play();
+                    if (!cfg.isPreview()) {
+                        final var title = resourceBundle.getString("ui.mainframe.dialog.finished.title");
+                        final var message = resourceBundle.getString("ui.mainframe.dialog.finished.message");
+                        if (Notification.isSupported()) {
+                            Notification.INFO.show(title, message);
+                        } else {
+                            Sound.SUCCESS.play();
+                        }
+                        JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.INFORMATION_MESSAGE);
                     }
-                    JOptionPane.showMessageDialog(MainFrame.this, message, title, JOptionPane.INFORMATION_MESSAGE);
                 } catch (final InterruptedException e) {
                     final var title = resourceBundle.getString("ui.mainframe.dialog.interrupted.title");
                     final var message = resourceBundle.getString("ui.mainframe.dialog.interrupted.message");
@@ -560,8 +573,9 @@ public final class MainFrame extends JFrame {
         }
     }
 
-    public Configuration createConfiguration(final boolean includeTracks, final boolean replacePlaceholders) {
-        final var builder = Configuration.createBuilder();
+    public Configuration createConfiguration(final boolean includeTracks, final boolean replacePlaceholders, final boolean preview) {
+        final var builder = Configuration.createBuilder()
+                .preview(preview);
 
         generalSettingsPanel.buildConfiguration(builder, replacePlaceholders);
 
@@ -670,6 +684,7 @@ public final class MainFrame extends JFrame {
         trackSettingsPanel.setConfiguration(tc);
 
         renderButton.setEnabled(true);
+        previewButton.setEnabled(true);
 
         setChanged(true);
     }
@@ -677,6 +692,7 @@ public final class MainFrame extends JFrame {
     private void afterRemove() {
         if (tabbedPane.getTabCount() == 1) { // NOPMD -- Ignore magic number literal
             renderButton.setEnabled(false);
+            previewButton.setEnabled(false);
         }
         setChanged(true);
     }
@@ -702,7 +718,7 @@ public final class MainFrame extends JFrame {
                 final var jaxbContext = JAXBContext.newInstance(Configuration.class);
                 final var marshaller = jaxbContext.createMarshaller();
                 marshaller.setAdapter(new FileXmlAdapter(fileToSave.getParentFile()));
-                marshaller.marshal(createConfiguration(true, false), fileToSave);
+                marshaller.marshal(createConfiguration(true, false, false), fileToSave);
                 MainFrame.this.file = fileToSave;
                 setChanged(false);
                 addRecentFile(fileToSave);
@@ -723,7 +739,7 @@ public final class MainFrame extends JFrame {
                 final var jaxbContext = JAXBContext.newInstance(Configuration.class);
                 final var marshaller = jaxbContext.createMarshaller();
                 marshaller.setAdapter(new FileXmlAdapter(null));
-                marshaller.marshal(createConfiguration(false, false), defaultConfigFile);
+                marshaller.marshal(createConfiguration(false, false, false), defaultConfigFile);
             } catch (final JAXBException e) {
                 throw new UserException(e.getMessage(), e);
             }

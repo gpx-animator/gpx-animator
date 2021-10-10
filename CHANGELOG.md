@@ -7,6 +7,7 @@
 ### New features
 
 * Support for MPEG-H Part2/HEVC (H.265) codec
+* Preview the rendering of the map
 * Make the content of the information box configurable
 * Show the time left when rendering the video
 * Configure the width of the pre-draw line 

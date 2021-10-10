@@ -29,6 +29,7 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import java.awt.Color;
@@ -130,6 +131,9 @@ public final class Configuration {
 
     private SpeedUnit speedUnit;
 
+    @XmlTransient
+    private boolean preview = false;
+    @XmlTransient
     private Long previewLength;
 
     @XmlElementWrapper
@@ -157,7 +161,7 @@ public final class Configuration {
             final Position informationPosition, final int informationMargin,
             final Position commentPosition, final int commentMargin,
             final File photoDirectory, final Long photoTime, final Long photoAnimationDuration,
-            final Long previewLength,
+            final boolean preview, final Long previewLength,
             final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
@@ -210,6 +214,7 @@ public final class Configuration {
         this.photoTime = photoTime;
         this.photoAnimationDuration = photoAnimationDuration;
         this.speedUnit = speedUnit;
+        this.preview = preview;
         this.previewLength = previewLength;
     }
 
@@ -413,6 +418,10 @@ public final class Configuration {
         return photoAnimationDuration;
     }
 
+    public boolean isPreview() {
+        return preview;
+    }
+
     public Long getPreviewLength() {
         return previewLength;
     }
@@ -499,6 +508,7 @@ public final class Configuration {
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
         private SpeedUnit speedUnit = DEFAULT_SPEED_UNIT;
+        private boolean preview = false;
         private Long previewLength;
 
 
@@ -517,7 +527,7 @@ public final class Configuration {
                     informationPosition, informationMargin,
                     commentPosition, commentMargin,
                     photoDirectory, photoTime, photoAnimationDuration,
-                    previewLength,
+                    preview, previewLength,
                     Collections.unmodifiableList(trackConfigurationList)
             );
         }
@@ -770,6 +780,11 @@ public final class Configuration {
 
         public Builder speedUnit(final SpeedUnit speedUnit) {
             this.speedUnit = speedUnit;
+            return this;
+        }
+
+        public Builder preview(final boolean preview) {
+            this.preview = preview;
             return this;
         }
 

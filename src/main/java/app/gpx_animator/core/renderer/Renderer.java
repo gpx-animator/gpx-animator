@@ -27,6 +27,7 @@ import app.gpx_animator.core.data.gpx.GpxPoint;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.framewriter.FileFrameWriter;
 import app.gpx_animator.core.renderer.framewriter.FrameWriter;
+import app.gpx_animator.core.renderer.framewriter.NullFrameWriter;
 import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
 import app.gpx_animator.core.renderer.plugins.RendererPlugin;
 import app.gpx_animator.core.util.PluginUtil;
@@ -160,7 +161,7 @@ public final class Renderer {
 
         LOGGER.info("{} x {}; {} x {}; {}", realWidth, realHeight, viewportWidth, viewportHeight, scale);
 
-        final var frameWriter = toImages
+        final var frameWriter = cfg.isPreview() ? new NullFrameWriter() : toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
                 : new VideoFrameWriter(cfg.getOutput(), cfg.getVideoCodec(), cfg.getFps(), viewportWidth, viewportHeight);
 
@@ -185,10 +186,12 @@ public final class Renderer {
 
         if (!rc.isCancelled1()) {
             rc.setProgress1(100, "Finished in %d seconds".formatted(runtimeSeconds)); // TODO i18n
-            if (toImages) {
-                LOGGER.info("Done in {} seconds. Images written to {}", runtimeSeconds, frameFilePattern);
-            } else {
-                LOGGER.info("Done in {} seconds. Movie written to {}", runtimeSeconds, cfg.getOutput());
+            if (!cfg.isPreview()) {
+                if (toImages) {
+                    LOGGER.info("Done in {} seconds. Images written to {}", runtimeSeconds, frameFilePattern);
+                } else {
+                    LOGGER.info("Done in {} seconds. Movie written to {}", runtimeSeconds, cfg.getOutput());
+                }
             }
             for (final var plugin : plugins) {
                 plugin.renderingFinished();
@@ -227,7 +230,9 @@ public final class Renderer {
                               @NonNull final List<Long[]> spanList, @NonNull final TreeMap<Long, Point2D> wpMap,
                               @NonNull final RenderingContext rc, @NonNull final LocalDateTime renderStartTime) throws UserException {
         final var remainingTimeCalculator = new RemainingTimeCalculator(renderStartTime, frames);
-        final var stopAfterFrame = cfg.getPreviewLength() == null ? Long.MAX_VALUE : cfg.getPreviewLength() * cfg.getFps() / 1_000;
+        final var stopAfterFrame = cfg.getPreviewLength() == null
+                ? cfg.isPreview() ? 1 : Long.MAX_VALUE
+                : cfg.getPreviewLength() * cfg.getFps() / 1_000;
         BufferedImage lastRenderedFrame = null;
         var skip = -1f;
         for (var frame = 1; frame <= frames; frame++) {
