@@ -41,6 +41,9 @@ public enum Constants {
 
     public static final String UPDATES_URL = "https://download.gpx-animator.app/updates.xml";
 
+    public static final String USER_AGENT = String.format("%s %s on %s %s (%s)", //NON-NLS
+            Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH);
+
     private static String loadVersionString() {
         final var stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("version.txt");
         assert stream != null : "Version file is missing!";

@@ -129,8 +129,7 @@ public final class TileCache {
         if (!userAgent.isBlank()) {
             System.setProperty("http.agent", userAgent);
         } else {
-            System.setProperty("http.agent", String.format("%s %s on %s %s (%s)", //NON-NLS
-            Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH));
+            System.setProperty("http.agent", Constants.USER_AGENT);
         }
         try {
             mapTile = ImageIO.read(new URL(url));

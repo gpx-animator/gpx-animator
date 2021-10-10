@@ -42,7 +42,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -105,7 +104,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final JSpinner tailDurationSpinner;
     private final JSpinner fpsSpinner;
     private final JComboBox<MapTemplate> tmsUrlTemplateComboBox;
-    private final JTextField tmsUserAgent;
+    private final JPlaceholderTextField tmsUserAgent;
     private final JComboBox<SpeedUnit> speedUnitComboBox;
     private final JSlider backgroundMapVisibilitySlider;
     private final FontSelector fontSelector;
@@ -761,8 +760,9 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelTmsUserAgent.gridy = ++rowCounter;
         add(lblTmsUserAgent, gbcLabelTmsUserAgent);
 
-        tmsUserAgent = new JTextField();
+        tmsUserAgent = new JPlaceholderTextField();
         tmsUserAgent.setToolTipText(Option.TMS_USER_AGENT.getHelp());
+        tmsUserAgent.setPlaceholder(Constants.USER_AGENT);
         final var gbcTmsUserAgent = new GridBagConstraints();
         gbcTmsUserAgent.fill = GridBagConstraints.HORIZONTAL;
         gbcTmsUserAgent.insets = new Insets(0, 0, 5, 0);
