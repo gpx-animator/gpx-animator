@@ -11,7 +11,7 @@
 * Show the time left when rendering the video
 * Configure the width of the pre-draw line 
 * Delete cached map tiles in preferences dialog
-* New configuration option to specify the user agent when accessing the TMS servers
+* New configuration option to specify the user agent when downloading map data
 
 ---
 
