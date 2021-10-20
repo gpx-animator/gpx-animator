@@ -106,8 +106,13 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     public String getSpeedString(final Point2D point, final long time, final int frame) {
         if (point instanceof GpxPoint gpxPoint) {
             final var speed = calculateSpeedForDisplay(gpxPoint, time, frame);
-            final var format = speed > 10 ? "%.0f %s" : "%.1f %s"; // with 1 decimal below 10, no decimals 10 and above
-            return format.formatted(speed, speedUnit.getAbbreviation());
+            if (speedUnit.displayMinutes()) {
+                final var format = "%d:%02d %s";
+                return format.formatted((int) speed, (int) ((speed - (int) speed) * 60), speedUnit.getAbbreviation()); // Display minutes and seconds
+            } else {
+                final var format = speed > 10 ? "%.0f %s" : "%.1f %s"; // with 1 decimal below 10, no decimals 10 and above
+                return format.formatted(speed, speedUnit.getAbbreviation());
+            }
         } else {
             return "";
         }

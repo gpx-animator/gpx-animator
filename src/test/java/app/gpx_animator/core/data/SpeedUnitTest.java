@@ -32,6 +32,15 @@ class SpeedUnitTest {
     }
 
     @Test
+    void testMinutesPer500Meter() {
+        assertEquals(300, SpeedUnit.MIN_500M.convertSpeed(0.1), 0.05);
+        assertEquals(30, SpeedUnit.MIN_500M.convertSpeed(1), 0.05);
+        assertEquals(5.65, SpeedUnit.MIN_500M.convertSpeed(5.3), 0.05);
+        assertEquals(3.03, SpeedUnit.MIN_500M.convertSpeed(9.9), 0.05);
+        assertEquals(0.25, SpeedUnit.MIN_500M.convertSpeed(123.4), 0.05);
+    }
+
+    @Test
     void testMinutesPerMile() {
         assertEquals(965.6, SpeedUnit.MIN_MI.convertSpeed(0.1), 0.05);
         assertEquals(96.6, SpeedUnit.MIN_MI.convertSpeed(1), 0.05);

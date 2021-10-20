@@ -27,16 +27,19 @@ interface Calculation {
 }
 
 public enum SpeedUnit {
-    MPS("mps", kmh -> kmh * 0.277778),
-    KMH("km/h", kmh -> kmh),
-    MPH("mph", kmh -> kmh * 0.62137119223733),
-    MIN_KM("min/km", kmh -> 3600 / kmh / 60),
-    MIN_MI("min/mi", kmh -> 3600 / (kmh * 0.62137119223733) / 60),
-    KNOTS("kn", kmh -> kmh * 0.53995680346039);
+    MPS("mps", kmh -> kmh * 0.277778, false),
+    KMH("km/h", kmh -> kmh, false),
+    MPH("mph", kmh -> kmh * 0.62137119223733, false),
+    MIN_KM("min/km", kmh -> 3600 / kmh / 60, true),
+    MIN_500M("/500m", kmh -> 3600 / kmh / 60 / 2, true),
+    MIN_MI("min/mi", kmh -> 3600 / (kmh * 0.62137119223733) / 60, true),
+    KNOTS("kn", kmh -> kmh * 0.53995680346039, false);
 
     private final String abbreviation;
 
     private final Calculation calculation;
+
+    private final boolean displayMinutes;
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
@@ -50,9 +53,10 @@ public enum SpeedUnit {
      * @param abbreviation the abbreviation of the speed unit
      * @param calculation how to calculate the speed, based on KMH
      */
-    SpeedUnit(final String abbreviation, final Calculation calculation) {
+    SpeedUnit(final String abbreviation, final Calculation calculation, final boolean displayMinutes) {
         this.abbreviation = abbreviation;
         this.calculation = calculation;
+        this.displayMinutes = displayMinutes;
     }
 
     @Override
@@ -62,6 +66,10 @@ public enum SpeedUnit {
 
     public String getAbbreviation() {
         return abbreviation;
+    }
+
+    public boolean displayMinutes() {
+        return displayMinutes;
     }
 
     public double convertSpeed(final double speed) {
