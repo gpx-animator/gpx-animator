@@ -31,6 +31,7 @@ public enum SpeedUnit {
     KMH("km/h", kmh -> kmh, false),
     MPH("mph", kmh -> kmh * 0.62137119223733, false),
     MIN_KM("min/km", kmh -> 3600 / kmh / 60, true),
+    MIN_500M("/500m", kmh -> 3600 / kmh / 60 / 2, true),
     MIN_MI("min/mi", kmh -> 3600 / (kmh * 0.62137119223733) / 60, true),
     KNOTS("kn", kmh -> kmh * 0.53995680346039, false);
 
