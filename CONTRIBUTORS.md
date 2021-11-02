@@ -15,6 +15,7 @@ In alphabetical order:
 * [n76](https://github.com/n76)
 * [poorlymac](https://github.com/poorlymac)
 * [SirCremefresh](https://github.com/SirCremefresh)
+* [szolnokit](https://github.com/szolnokit)
 * [thomergil](https://github.com/thomergil)
 * [zdila](https://github.com/zdila)
 

@@ -124,6 +124,7 @@ public final class CommandLineConfigurationFactory {
                             forcedPointIntervalList.add(s1.isEmpty() ? null : Long.valueOf(s1)); // NOPMD -- null = not set
                         }
                         case FPS -> cfg.fps(Double.parseDouble(args[++i]));
+                        case GPS_TIMEOUT -> cfg.gpsTimeout(Long.parseLong(args[++i]));
                         case GUI -> {
                             if (GraphicsEnvironment.isHeadless()) {
                                 throw new UserException(resourceBundle.getString("cli.error.graphics"));

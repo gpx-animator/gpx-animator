@@ -23,6 +23,7 @@ import app.gpx_animator.core.renderer.Metadata;
 import app.gpx_animator.core.renderer.TextRenderer;
 import app.gpx_animator.core.util.RenderUtil;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.geom.Point2D;
@@ -46,6 +47,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     private long minTime;
     private double speedup;
     private int frames;
+    private long gpsTimeout;
 
     private final Map<Integer, Double> speedValues = new HashMap<>();
     private GpxPoint lastSpeedPoint = null;
@@ -57,6 +59,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
         this.margin = configuration.getInformationMargin();
         this.fps = configuration.getFps();
         this.speedUnit = configuration.getSpeedUnit();
+        this.gpsTimeout = configuration.getGpsTimeout();
         this.showDateTime = configuration.getTrackConfigurationList().stream()
                 .noneMatch(tc -> tc.getForcedPointInterval() != null);
     }
@@ -85,12 +88,30 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
         final var latLongString = getLatLonString(marker);
         final var speedString = getSpeedString(marker, time, frame);
 
+        final var gpsTime = getTime(marker);    //TODO --Get strings from resource
+        var gpsDateTimeString = "Unknown";
+        var gpsDiffTime = 0L;
+        var gpsDiffTimeString = "";
+        var gpsStatus = false;
+        var gpsLostTimeString = "";
+        var gpsStatusString = "NOTIME";           //TODO --Get strings from resource
+        if (gpsTime > 0) {
+            gpsDiffTime = time - gpsTime;
+            gpsDateTimeString = dateFormat.format(gpsTime);
+            gpsDiffTimeString = DurationFormatUtils.formatDuration(gpsDiffTime, "+H:mm:ss");
+            gpsStatus = gpsTimeout <= 0 || gpsDiffTime < gpsTimeout;
+            gpsLostTimeString = gpsStatus ? "" : gpsDiffTimeString;
+            gpsStatusString = gpsStatus ? "OK" : "LOST";      //TODO --Get strings from resource
+        }
+
         final var text = information
-                .replace("%SPEED%", speedString)
-                .replace("%LATLON%", latLongString)
-                .replace("%DATETIME%", dateTimeString);
-
-
+                .replace("%SPEED%", speedString)                    // Speed
+                .replace("%LATLON%", latLongString)                 // (last) GPS postion
+                .replace("%DATETIME%", dateTimeString)              // Frame (real) time
+                .replace("%GPSDATETIME%", gpsDateTimeString)        // (last) GPS position time
+                .replace("%GPSDIFFTIME%", gpsDiffTimeString)        // Difference between frame time and last GPS time
+                .replace("%GPSLOSTTIME%", gpsLostTimeString)        // Difference between frame time and last GPS time if GSP LOST
+                .replace("%GPSSTATUS%", gpsStatusString);           // GPS status only [OK/LOST]
         renderText(text, position, margin, image);
     }
 
@@ -118,6 +139,13 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
         }
     }
 
+    private long getTime(@NonNull final Point2D point) {
+        if (point instanceof GpxPoint gpxPoint) {
+            return gpxPoint.getTime();
+        } else {
+            return 0;
+        }
+    }
 
     private double calculateSpeedForDisplay(final GpxPoint point, final long time, final int frame) {
         if (frame == frames) {

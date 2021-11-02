@@ -31,7 +31,7 @@ public final class Help {
         throw new InstantiationException("Help is a Utility class and can't be instantiated!");
     }
 
-    @SuppressWarnings("DuplicateStringLiteralInspection")
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public static void printHelp(final OptionHelpWriter w) {
         final var resourceBundle = Preferences.getResourceBundle();
 
@@ -52,10 +52,11 @@ public final class Help {
         w.writeOptionHelp(Option.FPS, "fps", false, cfg.getFps()); //NON-NLS
         w.writeOptionHelp(Option.GUI, "gui", false, resourceBundle.getString("help.option.gui.default"));
         w.writeOptionHelp(Option.HEIGHT, "height", false, cfg.getHeight()); //NON-NLS
-        w.writeOptionHelp(Option.HELP, "help", false, null);
+        w.writeOptionHelp(Option.HELP, "help", false, null); //TODO --help-info-vars
         w.writeOptionHelp(Option.INPUT, "input", true, tc.getInputGpx()); //NON-NLS
         w.writeOptionHelp(Option.TRIM_GPX_START, "trim-gpx-start", true, tc.getTrimGpxStart()); //NON-NLS
         w.writeOptionHelp(Option.TRIM_GPX_END, "trim-gpx-end", true, tc.getTrimGpxEnd()); //NON-NLS
+        w.writeOptionHelp(Option.INFORMATION, "text", false, cfg.getInformation()); //NON-NLS
         w.writeOptionHelp(Option.INFORMATION_POSITION, "information-position", false, cfg.getInformationPosition());
         w.writeOptionHelp(Option.INFORMATION_MARGIN, "information-margin", false, cfg.getInformationMargin()); //NON-NLS
         w.writeOptionHelp(Option.COMMENT_POSITION, "comment-position", false, cfg.getCommentPosition());
@@ -94,8 +95,9 @@ public final class Help {
         w.writeOptionHelp(Option.VIEWPORT_HEIGHT, "viewport-height", false, cfg.getViewportHeight()); //NON-NLS
         w.writeOptionHelp(Option.VIEWPORT_INERTIA, "viewport-inertia", false, cfg.getViewportInertia()); //NON-NLS
         w.writeOptionHelp(Option.WAYPOINT_SIZE, "size", false, cfg.getWaypointSize()); //NON-NLS
-        w.writeOptionHelp(Option.WIDTH, "width", false, "(800)"); // TODO cfg.getWidth() NON-NLS
+        w.writeOptionHelp(Option.WIDTH, "width", false, cfg.getWidth()); //NON-NLS
         w.writeOptionHelp(Option.ZOOM, "zoom", false, cfg.getZoom()); //NON-NLS
+        w.writeOptionHelp(Option.GPS_TIMEOUT, "milliseconds", false, cfg.getGpsTimeout()); //NON-NLS
         w.writeOptionHelp(Option.VERSION, "version", false, null); //NON-NLS
     }
 
