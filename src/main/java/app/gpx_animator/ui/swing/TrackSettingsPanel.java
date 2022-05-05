@@ -20,7 +20,15 @@ import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.preferences.Preferences;
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.Serial;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -36,14 +44,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.Serial;
-import java.util.ResourceBundle;
 
 import static javax.swing.JFileChooser.FILES_ONLY;
 
@@ -331,7 +331,7 @@ abstract class TrackSettingsPanel extends JPanel {
             }
         };
 
-        inputIconFileSelector.setToolTipText(Option.INPUT.getHelp());
+        inputIconFileSelector.setToolTipText(Option.TRACK_ICON_FILE.getHelp());
         lblIcon.setLabelFor(inputIconFileSelector);
         final var gbcInputIconFileSelector = new GridBagConstraints();
         gbcInputIconFileSelector.insets = new Insets(0, 0, 5, 0);
