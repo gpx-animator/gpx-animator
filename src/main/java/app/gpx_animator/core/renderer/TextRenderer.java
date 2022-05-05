@@ -95,6 +95,9 @@ public abstract class TextRenderer extends ImageRenderer {
         for (final var line : trimmedText.split("\n")) {
             lineNum++;
             var trimmedLine = line.trim();
+            if (trimmedLine.isEmpty()) {
+                continue;
+            }
             var xPosition = calculateHorizontalPosition(alignment, trimmedLine, width, lineNum);
             var yPosition = calculateVerticalPosition(lineNum, lineHeight);
 
