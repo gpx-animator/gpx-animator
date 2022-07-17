@@ -50,10 +50,11 @@ public final class Configuration {
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
-    private static final String DEFAULT_INFORMATION = "%SPEED%\n%LATLON%\n%DATETIME%";
+    private static final String DEFAULT_INFORMATION = "%SPEED%\n[%GPSSTATUS%%GPSLOSTTIME%] %LATLON%\n%DATETIME%";
     private static final SpeedUnit DEFAULT_SPEED_UNIT = SpeedUnit.KMH;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
     public static final Position DEFAULT_ATTRIBUTION_POSITION = Position.BOTTOM_LEFT;
+    public static final long DEFAULT_GPS_TIMEOUT = 60000L;
 
     private int margin = DEFAULT_MARGIN;
     private Integer width;
@@ -135,6 +136,7 @@ public final class Configuration {
     private boolean preview = false;
     @XmlTransient
     private Long previewLength;
+    private long gpsTimeout = DEFAULT_GPS_TIMEOUT;
 
     @XmlElementWrapper
     @XmlElement(name = "trackConfiguration") //NON-NLS
@@ -162,6 +164,7 @@ public final class Configuration {
             final Position commentPosition, final int commentMargin,
             final File photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final boolean preview, final Long previewLength,
+            final long gpsTimeout,
             final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
@@ -216,6 +219,7 @@ public final class Configuration {
         this.speedUnit = speedUnit;
         this.preview = preview;
         this.previewLength = previewLength;
+        this.gpsTimeout = gpsTimeout;
     }
 
     public static Builder createBuilder() {
@@ -426,6 +430,10 @@ public final class Configuration {
         return previewLength;
     }
 
+    public long getGpsTimeout() {
+        return gpsTimeout;
+    }
+
     public List<TrackConfiguration> getTrackConfigurationList() {
         return Collections.unmodifiableList(trackConfigurationList);
     }
@@ -510,6 +518,7 @@ public final class Configuration {
         private SpeedUnit speedUnit = DEFAULT_SPEED_UNIT;
         private boolean preview = false;
         private Long previewLength;
+        private long gpsTimeout = DEFAULT_GPS_TIMEOUT;
 
 
         public Configuration build() {
@@ -528,6 +537,7 @@ public final class Configuration {
                     commentPosition, commentMargin,
                     photoDirectory, photoTime, photoAnimationDuration,
                     preview, previewLength,
+                    gpsTimeout,
                     Collections.unmodifiableList(trackConfigurationList)
             );
         }
@@ -790,6 +800,11 @@ public final class Configuration {
 
         public Builder previewLength(final Long previewLength) {
             this.previewLength = previewLength;
+            return this;
+        }
+
+        public Builder gpsTimeout(final long gpsTimeout) {
+            this.gpsTimeout = gpsTimeout;
             return this;
         }
     }

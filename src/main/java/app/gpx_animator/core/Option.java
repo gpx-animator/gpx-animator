@@ -89,6 +89,7 @@ public enum Option {
     TRACK_ICON_MIRROR("track-icon-mirror"),
     SPEED_UNIT("speed-unit"),
     PREVIEW_LENGTH("preview-length"),
+    GPS_TIMEOUT("gps-timeout"),
     VERSION("version");
 
     private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();

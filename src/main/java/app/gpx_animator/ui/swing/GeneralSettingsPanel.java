@@ -132,13 +132,14 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final JSpinner minLonSpinner;
     private final JSpinner maxLonSpinner;
     private final JSpinner minLatSpinner;
+    private final JSpinner gpsTimeoutSpinner;
 
     private transient List<MapTemplate> mapTemplateList;
 
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
     GeneralSettingsPanel() {
         var rowCounter = 0;
-        final var maxRows = 44;
+        final var maxRows = 45;
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final var gridBagLayout = new GridBagLayout();
@@ -1335,6 +1336,26 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcSpeedUnit.gridy = rowCounter;
         add(speedUnitComboBox, gbcSpeedUnit);
 
+        final var lblGpsTimeout = new JLabel(resourceBundle.getString("ui.panel.generalsettings.gpstimeout.label"));
+        final var gbcLabelGpsTimeout = new GridBagConstraints();
+        gbcLabelGpsTimeout.anchor = GridBagConstraints.LINE_END;
+        gbcLabelGpsTimeout.insets = new Insets(0, 0, 5, 5);
+        gbcLabelGpsTimeout.gridx = 0;
+        gbcLabelGpsTimeout.gridy = ++rowCounter;
+        add(lblGpsTimeout, gbcLabelGpsTimeout);
+
+        gpsTimeoutSpinner = new JSpinner();
+        gpsTimeoutSpinner.setToolTipText(Option.GPS_TIMEOUT.getHelp());
+        gpsTimeoutSpinner.setModel(new DurationSpinnerModel());
+        gpsTimeoutSpinner.setEditor(new DurationEditor(gpsTimeoutSpinner));
+        final var gbcGpsTimeoutSpinner = new GridBagConstraints();
+        gbcGpsTimeoutSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcGpsTimeoutSpinner.insets = new Insets(0, 0, 5, 0);
+        gbcGpsTimeoutSpinner.gridx = 1;
+        gbcGpsTimeoutSpinner.gridy = rowCounter;
+        add(gpsTimeoutSpinner, gbcGpsTimeoutSpinner);
+        gpsTimeoutSpinner.addChangeListener(changeListener);
+
         rowCounter++; // increment rowCounter before check, because it started at index 0
         if (rowCounter != maxRows) {
             throw new IllegalStateException(
@@ -1478,6 +1499,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         informationLocationComboBox.setSelectedItem(c.getInformationPosition() != null ? c.getInformationPosition() : Position.BOTTOM_RIGHT);
         commentLocationComboBox.setSelectedItem(c.getCommentPosition() != null ? c.getCommentPosition() : Position.BOTTOM_CENTER);
         speedUnitComboBox.setSelectedItem(c.getSpeedUnit() != null ? c.getSpeedUnit() : SpeedUnit.KMH);
+        gpsTimeoutSpinner.setValue(c.getGpsTimeout());
     }
 
 
@@ -1536,7 +1558,8 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .information(informationTextArea.getText())
                 .attribution(attribution)
                 .attributionPosition((Position) attributionLocationComboBox.getSelectedItem())
-                .speedUnit(speedUnit);
+                .speedUnit(speedUnit)
+                .gpsTimeout((Long) gpsTimeoutSpinner.getValue());
     }
 
     private String generateAttributionText(final boolean replacePlaceholders, final Object tmsItem) {
