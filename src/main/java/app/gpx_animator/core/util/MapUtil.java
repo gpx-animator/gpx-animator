@@ -114,6 +114,7 @@ public final class MapUtil {
                     private final StringBuilder sb = new StringBuilder();
                     private String id;
                     private String name;
+                    private String type;
                     private String url;
                     private String attributionText;
                     private boolean attributionTextMandatory = false;
@@ -143,13 +144,17 @@ public final class MapUtil {
                         switch (qName) {
                             case "id" -> id = sb.toString().trim();
                             case "name" -> name = sb.toString().trim();
+                            case "type" -> type = sb.toString().trim();
                             case "url" -> url = sb.toString().trim();
                             case "attribution-text" -> attributionText = sb.toString().trim();
                             case "max-zoom" -> maxZoom = Integer.parseInt(sb.toString().trim());
                             case "country-code" -> countryCode = sb.toString().trim();
                             case "entry" -> {
-                                labeledItems.add(new MapTemplate(id, name, url, attributionText, attributionTextMandatory, maxZoom, countryCode));
-                                id = null; name = null; url = null; attributionText = null; maxZoom = null; countryCode = "";
+                                if ("tms".equalsIgnoreCase(type)) {
+                                    labeledItems.add(new MapTemplate(id, name, type, url, attributionText, attributionTextMandatory, maxZoom,
+                                            countryCode));
+                                }
+                                id = null; name = null; type = null; url = null; attributionText = null; maxZoom = null; countryCode = "";
                                 attributionTextMandatory = false;
                             }
                         }

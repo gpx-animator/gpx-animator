@@ -17,6 +17,7 @@ package app.gpx_animator.core.data;
 
 public record MapTemplate(String id,
                           String name,
+                          String type,
                           String url,
                           String attributionText,
                           boolean attributionTextMandatory,
