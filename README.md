@@ -12,19 +12,19 @@ More information and downloadable executables can be found at https://gpx-animat
 
 ```
 # help
-java -jar gpx-animator-x.y.z.jar --help
+java -jar gpx-animator-x.y.z-all.jar --help
 
 # create movie with default settings
-java -jar gpx-animator-x.y.z.jar --input track.gpx
+java -jar gpx-animator-x.y.z-all.jar --input track.gpx
 ```
-(where *x.y.z* refers to the version of the jar you built or downloaded)
+(where `x.y.z` refers to the version of the jar you built or downloaded)
 
 ## Advanced command line example
 
 This example takes GPX file `input.gpx` as input, uses Google Maps as background map, makes the background non-transparent, makes the map movable by placing a 640x640 viewport over the map, forces the video to be 120000ms (2 minutes) long, makes the dot trail 10000ms (10 seconds) long, pre-draws the full track in grey (RGB color code #808080), hides the attribution overlay, and places the default information (lat/lng, speed, time) overlay at the bottom left. Output is stored in `movie.mp4`.
 
 ```bash
-java -jar ./build/libs/gpx-animator-1.6.0-SNAPSHOT-all.jar
+java -jar ./build/libs/gpx-animator-x.y.z-all.jar
 	  --tms-url-template 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={zoom}'
 	  --background-map-visibility 1.0
 	  --viewport-height 640 --viewport-width 640
@@ -36,6 +36,7 @@ java -jar ./build/libs/gpx-animator-1.6.0-SNAPSHOT-all.jar
 	  --input input.gpx
 	  --output movie.mp4
 ```
+(where `x.y.z` refers to the version of the jar you built or downloaded)
 
 
 ## Contributors
