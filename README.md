@@ -38,7 +38,6 @@ java -jar ./build/libs/gpx-animator-x.y.z-all.jar
 ```
 (where `x.y.z` refers to the version of the jar you built or downloaded)
 
-
 ## Contributors
 
 Special thanks for all the people who had helped this project so far! Please take a look at the [CONTRIBUTORS](CONTRIBUTORS.md) file for a complete list of all contributors.
@@ -60,7 +59,6 @@ You can open this project in a preconfigured Gitpod online IDE based on Theia (V
 There is a public Slack channel for GPX Animator available, which is hosted by the [Java User Group Switzerland](https://www.jug.ch/). If you are not already a member of this workspace, you can request a free invitation link with your email address (and nothing more) here: [Join Slack Workspace.](http://slack.jug.ch/)
 
 After you have entered the Slack Workspace, join the #gpx-animator channel.
-
 
 ## Build
 
@@ -102,20 +100,6 @@ To run tests in `src/test/`:
 ```
 ./gradlew test
 ```
-
-## Features
-
-* supports multiple GPX tracks with multiple track segments
-* skipping idle parts
-* configurable color, label, width and time offset per track
-* configurable video size, fps and speedup or total video time
-* background map from any public TMS server
-* optional attribution and/or information block overlay
-* moving map
-
-## Tutorials
-
-- [GPS Tracks Animation mit "GPX Animator" (Marcus Bersheim)](https://www.youtube.com/watch?v=AtcBVrbB6bg) :de:
 
 ## Related projects
 
