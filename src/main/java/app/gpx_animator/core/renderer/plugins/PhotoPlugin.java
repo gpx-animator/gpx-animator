@@ -26,7 +26,9 @@ import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifDirectoryBase;
+import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -116,7 +118,7 @@ public final class PhotoPlugin implements RendererPlugin {
             });
             if (files != null) {
                 return Arrays.stream(files)
-                        .map(this::toPhoto)
+                        .map(PhotoPlugin::toPhoto)
                         .filter(this::validatePhotoTime)
                         .collect(groupingBy(Photo::epochSeconds));
             } else {
@@ -128,24 +130,36 @@ public final class PhotoPlugin implements RendererPlugin {
         }
     }
 
-    private Photo toPhoto(@NonNull final File file) {
-        return new Photo(timeOfPhotoInMilliSeconds(file), file);
-    }
-
-    private Long timeOfPhotoInMilliSeconds(@NonNull final File file) {
+    static Photo toPhoto(@NonNull final File file) {
         try {
-            final var imageMetadata = ImageMetadataReader.readMetadata(file);
-            final var directory = imageMetadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
-            final var zoneOffset = directory.getString(36881) != null ? directory.getString(36881) : SYSTEM_ZONE_OFFSET;
-            final var dateTimeString = directory.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
-                    .concat(" ").concat(zoneOffset.replace(":", ""));
-            final var zonedDateTime = ZonedDateTime.parse(dateTimeString,
-                    DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x")); //NON-NLS
-            return zonedDateTime.toEpochSecond() * 1_000;
+            final var metadata = ImageMetadataReader.readMetadata(file);
+            final var orientation = getOrientation(metadata);
+            return new Photo(timeOfPhotoInMilliSeconds(metadata), file, orientation);
         } catch (ImageProcessingException | IOException | NullPointerException e) { // NOPMD -- NPEs can happen quite often in image metadata handling
             LOGGER.error("Error processing file '{}'!", file.getAbsoluteFile(), e);
-            return 0L;
+            return new Photo(0L, file, 1);
         }
+    }
+
+    private static int getOrientation(@NonNull final com.drew.metadata.Metadata metadata) {
+        try {
+            final var directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+            return directory.getInt(ExifDirectoryBase.TAG_ORIENTATION);
+        } catch (MetadataException e) {
+            return 1;
+        }
+    }
+
+    private static Long timeOfPhotoInMilliSeconds(@NonNull final com.drew.metadata.Metadata metadata) {
+        final var directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
+        final var zoneOffset = directory.getString(ExifDirectoryBase.TAG_TIME_ZONE_ORIGINAL) != null
+                ? directory.getString(ExifDirectoryBase.TAG_TIME_ZONE_ORIGINAL)
+                : SYSTEM_ZONE_OFFSET;
+        final var dateTimeString = directory.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
+                .concat(" ").concat(zoneOffset.replace(":", ""));
+        final var zonedDateTime = ZonedDateTime.parse(dateTimeString,
+                DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x")); //NON-NLS
+        return zonedDateTime.toEpochSecond() * 1_000;
     }
 
     private boolean validatePhotoTime(@NonNull final Photo photo) {
@@ -228,7 +242,8 @@ public final class PhotoPlugin implements RendererPlugin {
             final var scaledWidth = Math.round(width * 0.8f);
             final var scaledHeight = Math.round(height * 0.8f);
             final var scaledImage = RenderUtil.scaleImage(image, scaledWidth, scaledHeight);
-            final var borderedImage = addBorder(scaledImage);
+            final var rotatedImage = RenderUtil.rotateImage(scaledImage, photo.orientation());
+            final var borderedImage = addBorder(rotatedImage);
             borderedImage.flush();
             return borderedImage;
         } catch (final IOException e) {

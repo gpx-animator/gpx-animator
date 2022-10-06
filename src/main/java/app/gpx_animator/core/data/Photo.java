@@ -17,4 +17,4 @@ package app.gpx_animator.core.data;
 
 import java.io.File;
 
-public record Photo(Long epochSeconds, File file) { }
+public record Photo(Long epochSeconds, File file, int orientation) { }
