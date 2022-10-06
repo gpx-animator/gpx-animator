@@ -62,4 +62,26 @@ public final class RenderUtil {
         return image;
     }
 
+    public static BufferedImage rotateImage(@NonNull final BufferedImage photoImage, final int orientation) {
+        return switch (orientation) {
+            default -> photoImage;
+            case 2 -> Scalr.rotate(photoImage, Scalr.Rotation.FLIP_VERT);
+            case 3 -> Scalr.rotate(photoImage, Scalr.Rotation.CW_180);
+            case 4 -> {
+                BufferedImage rotated = Scalr.rotate(photoImage, Scalr.Rotation.CW_180);
+                yield Scalr.rotate(rotated, Scalr.Rotation.FLIP_VERT);
+            }
+            case 5 -> Scalr.rotate(photoImage, Scalr.Rotation.CW_90);
+            case 6 -> {
+                BufferedImage rotated = Scalr.rotate(photoImage, Scalr.Rotation.CW_90);
+                yield Scalr.rotate(rotated, Scalr.Rotation.FLIP_VERT);
+            }
+            case 7 -> Scalr.rotate(photoImage, Scalr.Rotation.CW_270);
+            case 8 -> {
+                BufferedImage rotated = Scalr.rotate(photoImage, Scalr.Rotation.CW_270);
+                yield Scalr.rotate(rotated, Scalr.Rotation.FLIP_VERT);
+            }
+        };
+    }
+
 }

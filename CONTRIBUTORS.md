@@ -14,6 +14,7 @@ In alphabetical order:
 * [mundry](https://github.com/mundry)
 * [n76](https://github.com/n76)
 * [poorlymac](https://github.com/poorlymac)
+* [scordio](https://github.com/scordio)
 * [SirCremefresh](https://github.com/SirCremefresh)
 * [szolnokit](https://github.com/szolnokit)
 * [thomergil](https://github.com/thomergil)
