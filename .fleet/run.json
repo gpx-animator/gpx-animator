@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "name": "run gpx-animator",
+      "type": "gradle",
+      "tasks": [
+        "run"
+      ]
+    }
+  ]
+}
