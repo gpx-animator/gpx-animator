@@ -145,7 +145,7 @@ public final class PhotoPlugin implements RendererPlugin {
         try {
             final var directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
             return directory.getInt(ExifDirectoryBase.TAG_ORIENTATION);
-        } catch (MetadataException e) {
+        } catch (final MetadataException e) {
             return 1;
         }
     }
