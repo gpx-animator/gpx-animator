@@ -300,11 +300,11 @@ public final class MainFrame extends JFrame {
                 } else if (os.contains("win")) { //NON-NLS
 
                     // this doesn't support showing urls in the form of "page.html#nameLink"
-                    rt.exec("rundll32 url.dll,FileProtocolHandler ".concat(url)); //NON-NLS
+                    rt.exec(new String[] { "rundll32", "url.dll,FileProtocolHandler", url }); //NON-NLS
 
                 } else if (os.contains("mac")) { //NON-NLS
 
-                    rt.exec("open ".concat(url)); //NON-NLS
+                    rt.exec(new String[] { "open", url }); //NON-NLS
 
                 } else if (os.contains("nix") || os.contains("nux")) { //NON-NLS
 
