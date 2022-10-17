@@ -15,6 +15,9 @@
 # VS Code project files
 /.vscode
 
+# Gradle temporary files
+/.gradle
+
 # OS files
 .DS_Store
 $RECYCLE.BIN
