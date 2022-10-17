@@ -46,13 +46,13 @@ Special thanks for all the people who had helped this project so far! Please tak
 
 ### Good First Issues
 
-For your first contribution to this repository, you can take a look at the issues listed here: [Good first issue](https://github.com/zdila/gpx-animator/contribute).
+For your first contribution to this repository, you can take a look at the issues listed here: [Good first issue](https://github.com/gpx-animator/gpx-animator/contribute).
 
 ### Gitpod Online IDE
 
 You can open this project in a preconfigured Gitpod online IDE based on Theia (Visual Studio Code) and edit, run, test, debug and commit directly from your browser.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/zdila/gpx-animator)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/gpx-animator/gpx-animator)
 
 ### Slack Channel
 

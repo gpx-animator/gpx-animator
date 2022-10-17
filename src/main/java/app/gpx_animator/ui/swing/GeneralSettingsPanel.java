@@ -136,7 +136,7 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     private transient List<MapTemplate> mapTemplateList;
 
-    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
+    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/gpx-animator/gpx-animator/issues/60
     GeneralSettingsPanel() {
         var rowCounter = 0;
         final var maxRows = 45;
