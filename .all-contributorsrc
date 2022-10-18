@@ -94,6 +94,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "answerquest",
+      "name": "Nikhil VJ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9089552?v=4",
+      "profile": "https://nikhilvj.co.in/",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
