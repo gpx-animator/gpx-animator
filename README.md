@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-23-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -79,6 +79,7 @@ Special thanks for all the people who had helped this project so far:
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://blog.mrtrustor.net/"><img src="https://avatars.githubusercontent.com/u/2864678?v=4?s=100" width="100px;" alt="Théo Chamley"/><br /><sub><b>Théo Chamley</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=MrTrustor" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/triskaidekafeliks"><img src="https://avatars.githubusercontent.com/u/19534176?v=4?s=100" width="100px;" alt="triskaidekafeliks"/><br /><sub><b>triskaidekafeliks</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=triskaidekafeliks" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>
