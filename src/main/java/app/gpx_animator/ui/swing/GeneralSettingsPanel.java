@@ -75,11 +75,16 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = -2024548578211891192L;
+
     public static final String PLACEHOLDER_MAP_ATTRIBUTION = "%MAP_ATTRIBUTION%";
     public static final String PLACEHOLDER_APPNAME_VERSION = "%APPNAME_VERSION%";
     public static final String PLACEHOLDER_SPEED = "%SPEED%";
-    public static final String PLACEHOLDER_LATLON = "%LATLON%";
     public static final String PLACEHOLDER_DATETIME = "%DATETIME%";
+    public static final String PLACEHOLDER_LATLON = "%LATLON%";
+    public static final String PLACEHOLDER_GPSSTATUS = "%GPSSTATUS%";
+    public static final String PLACEHOLDER_GPSDATETIME = "%GPSDATETIME%";
+    public static final String PLACEHOLDER_GPSDIFFTIME = "%GPSDIFFTIME%";
+    public static final String PLACEHOLDER_GPSLOSTTIME = "%GPSLOSTTIME%";
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
@@ -1188,8 +1193,12 @@ abstract class GeneralSettingsPanel extends JPanel {
         informationTextArea.setToolTipText(Option.INFORMATION.getHelp());
         final var informationPopupMenu = new JPopupMenu();
         Map.of(PLACEHOLDER_SPEED, "speed",
+               PLACEHOLDER_DATETIME, "date & time",
                PLACEHOLDER_LATLON, "latitude & longitude",
-               PLACEHOLDER_DATETIME, "date & time")
+               PLACEHOLDER_GPSSTATUS, "gps status",
+               PLACEHOLDER_GPSDATETIME, "gps date time",
+               PLACEHOLDER_GPSDIFFTIME, "gps diff time",
+               PLACEHOLDER_GPSLOSTTIME, "gps lost time")
                 .forEach((variable, title) -> {
                     final var menuItem = new JMenuItem("insert %s".formatted(title));
                     menuItem.addActionListener(l -> {
