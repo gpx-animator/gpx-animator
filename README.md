@@ -43,7 +43,8 @@ java -jar ./build/libs/gpx-animator-x.y.z-all.jar
 
 ## Contributors
 
-Special thanks for all the people who had helped this project so far! Please take a look at the [CONTRIBUTORS](CONTRIBUTORS.md) file for a complete list of all contributors.
+Special thanks for all the people who had helped this project so far:
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
