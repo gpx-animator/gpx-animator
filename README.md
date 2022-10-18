@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -56,6 +56,7 @@ Special thanks for all the people who had helped this project so far:
       <td align="center" valign="top" width="14.28%"><a href="http://retiredtechie.fitchfamily.org/"><img src="https://avatars.githubusercontent.com/u/4681938?v=4?s=100" width="100px;" alt="n76"/><br /><sub><b>n76</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=n76" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/markus-schmidlin"><img src="https://avatars.githubusercontent.com/u/13030829?v=4?s=100" width="100px;" alt="Markus Schmidlin"/><br /><sub><b>Markus Schmidlin</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=markus-schmidlin" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/martinfrancois"><img src="https://avatars.githubusercontent.com/u/14319020?v=4?s=100" width="100px;" alt="François Martin"/><br /><sub><b>François Martin</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=martinfrancois" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/maebli"><img src="https://avatars.githubusercontent.com/u/1138612?v=4?s=100" width="100px;" alt="Maebli"/><br /><sub><b>Maebli</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=maebli" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>
