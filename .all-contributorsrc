@@ -204,6 +204,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "MrTrustor",
+      "name": "Théo Chamley",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2864678?v=4",
+      "profile": "http://blog.mrtrustor.net/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

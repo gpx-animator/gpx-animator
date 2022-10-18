@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -76,6 +76,9 @@ Special thanks for all the people who had helped this project so far:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/fwieringen"><img src="https://avatars.githubusercontent.com/u/4232879?v=4?s=100" width="100px;" alt="Friso van Wieringen"/><br /><sub><b>Friso van Wieringen</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/issues?q=author%3Afwieringen" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://thomer.com/"><img src="https://avatars.githubusercontent.com/u/1020105?v=4?s=100" width="100px;" alt="Thomer Gil"/><br /><sub><b>Thomer Gil</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/issues?q=author%3Athomergil" title="Bug reports">🐛</a> <a href="https://github.com/gpx-animator/gpx-animator/commits?author=thomergil" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mundry"><img src="https://avatars.githubusercontent.com/u/1453314?v=4?s=100" width="100px;" alt="mundry"/><br /><sub><b>mundry</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=mundry" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://blog.mrtrustor.net/"><img src="https://avatars.githubusercontent.com/u/2864678?v=4?s=100" width="100px;" alt="Théo Chamley"/><br /><sub><b>Théo Chamley</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=MrTrustor" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>
