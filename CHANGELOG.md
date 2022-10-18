@@ -24,6 +24,7 @@
 
 ### Notes
 * GPX Animator has a new home: [https://github.com/gpx-animator/gpx-animator](https://github.com/gpx-animator/gpx-animator)
+* The GitHub repository now uses the [All Contributors](https://allcontributors.org/) bot and CLI
 
 ---
 
