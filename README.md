@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-30-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-31-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -89,6 +89,7 @@ Special thanks for all these wunderful people who had helped this project so far
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://rifter.org/"><img src="https://avatars.githubusercontent.com/u/27846815?v=4?s=100" width="100px;" alt="Stefan Weißwange"/><br /><sub><b>Stefan Weißwange</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/issues?q=author%3Astefanweisswange" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/scordio"><img src="https://avatars.githubusercontent.com/u/26772046?v=4?s=100" width="100px;" alt="Stefano Cordio"/><br /><sub><b>Stefano Cordio</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=scordio" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Interactiondesigner"><img src="https://avatars.githubusercontent.com/u/17220369?v=4?s=100" width="100px;" alt="Interactiondesigner"/><br /><sub><b>Interactiondesigner</b></sub></a><br /><a href="#design-Interactiondesigner" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>
