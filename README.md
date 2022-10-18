@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -67,6 +67,9 @@ Special thanks for all the people who had helped this project so far:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SirCremefresh"><img src="https://avatars.githubusercontent.com/u/20863779?v=4?s=100" width="100px;" alt="Donato Wolfisberg"/><br /><sub><b>Donato Wolfisberg</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=SirCremefresh" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/galz10"><img src="https://avatars.githubusercontent.com/u/38544478?v=4?s=100" width="100px;" alt="Gal Zahavi"/><br /><sub><b>Gal Zahavi</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=galz10" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/poorlymac"><img src="https://avatars.githubusercontent.com/u/16620846?v=4?s=100" width="100px;" alt="poorlymac"/><br /><sub><b>poorlymac</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=poorlymac" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/antonio-barber-67273bba/"><img src="https://avatars.githubusercontent.com/u/21110513?v=4?s=100" width="100px;" alt="Antonio D Barber"/><br /><sub><b>Antonio D Barber</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=abarber7" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>
