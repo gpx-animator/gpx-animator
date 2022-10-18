@@ -1,9 +1,13 @@
 {
+  "projectName": "gpx-animator",
+  "projectOwner": "gpx-animator",
+  "repoType": "github",
+  "repoHost": "https://github.com",
   "files": [
     "README.md"
   ],
   "imageSize": 100,
-  "commit": false,
+  "commit": true,
   "commitConvention": "gitmoji",
   "contributors": [
     {
@@ -12,16 +16,10 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/1254039?v=4",
       "profile": "https://fihlon.swiss/",
       "contributions": [
-        "projectManagement",
-        "ideas",
-        "code"
+        "projectManagement"
       ]
     }
   ],
   "contributorsPerLine": 7,
-  "skipCi": true,
-  "repoType": "github",
-  "repoHost": "https://github.com",
-  "projectName": "gpx-animator",
-  "projectOwner": "gpx-animator"
+  "linkToUsage": true
 }
