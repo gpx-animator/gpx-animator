@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-18-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -72,6 +72,7 @@ Special thanks for all the people who had helped this project so far:
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/antonio-barber-67273bba/"><img src="https://avatars.githubusercontent.com/u/21110513?v=4?s=100" width="100px;" alt="Antonio D Barber"/><br /><sub><b>Antonio D Barber</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=abarber7" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/herrwusel"><img src="https://avatars.githubusercontent.com/u/8242787?v=4?s=100" width="100px;" alt="herrwusel"/><br /><sub><b>herrwusel</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/issues?q=author%3Aherrwusel" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/rammmiro"><img src="https://avatars.githubusercontent.com/u/32325306?v=4?s=100" width="100px;" alt="Ramiro Martínez Pinilla"/><br /><sub><b>Ramiro Martínez Pinilla</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/issues?q=author%3Arammmiro" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.futurewater.nl/"><img src="https://avatars.githubusercontent.com/u/12559676?v=4?s=100" width="100px;" alt="Peter Droogers"/><br /><sub><b>Peter Droogers</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/issues?q=author%3Apdroogers" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
   <tfoot>
