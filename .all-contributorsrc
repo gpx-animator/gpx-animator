@@ -49,6 +49,15 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "n76",
+      "name": "n76",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4681938?v=4",
+      "profile": "http://retiredtechie.fitchfamily.org/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
