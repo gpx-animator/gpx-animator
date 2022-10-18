@@ -149,6 +149,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "herrwusel",
+      "name": "herrwusel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8242787?v=4",
+      "profile": "https://github.com/herrwusel",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
