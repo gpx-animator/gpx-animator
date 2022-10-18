@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="9.0.4" transformSequenceNumber="9">
+<install4j version="10.0.3" transformSequenceNumber="10">
   <directoryPresets config="/Users/mcpringle/IdeaProjects/gpx-animator/build/libs/gpx-animator-1.8.0-all.jar" />
   <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.8.0" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="17" javaMaxVersion="17">
     <jreBundles jdkProviderId="Zulu" release="17/17.0.0" />
   </application>
-  <files keepModificationTimes="true" missingFilesStrategy="error" preserveSymlinks="false">
+  <files keepModificationTimes="true" missingFilesStrategy="error">
     <mountPoints>
       <mountPoint id="58" />
     </mountPoints>
@@ -751,8 +751,8 @@ file.getParent() != null || (file.getName().endsWith(".app") &amp;&amp; director
   </installerGui>
   <mediaSets>
     <unixInstaller name="Unix Installer" id="60" />
-    <windows name="Windows 64 Bit" id="62" />
-    <windows name="Windows 32 Bit" id="63" jreBitType="32" />
+    <windows name="Windows 64 Bit" id="62" architecture="64" />
+    <windows name="Windows 32 Bit" id="63" architecture="32" />
     <macosArchive name="macOS Single Bundle Archive" id="246" launcherId="59">
       <topLevelFiles>
         <symlink name="Applications" target="/Applications" />
