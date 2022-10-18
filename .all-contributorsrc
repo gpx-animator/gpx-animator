@@ -20,6 +20,15 @@
         "ideas",
         "code"
       ]
+    },
+    {
+      "login": "zdila",
+      "name": "Martin Ždila",
+      "avatar_url": "https://avatars.githubusercontent.com/u/636095?v=4",
+      "profile": "https://github.com/zdila",
+      "contributions": [
+        "projectManagement"
+      ]
     }
   ],
   "contributorsPerLine": 7,
