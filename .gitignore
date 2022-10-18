@@ -7,6 +7,9 @@
 /out
 /target
 
+# Yarn/Node/NPM
+/node_modules
+
 # Eclipse project file
 /.settings
 /.classpath
