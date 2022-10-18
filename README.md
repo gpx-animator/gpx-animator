@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -63,6 +63,7 @@ Special thanks for all the people who had helped this project so far:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/bat-bloke"><img src="https://avatars.githubusercontent.com/u/57795480?v=4?s=100" width="100px;" alt="Andy Oakey"/><br /><sub><b>Andy Oakey</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=bat-bloke" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/fgaignat"><img src="https://avatars.githubusercontent.com/u/23083528?v=4?s=100" width="100px;" alt="fgaignat"/><br /><sub><b>fgaignat</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=fgaignat" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/charlysog"><img src="https://avatars.githubusercontent.com/u/63605339?v=4?s=100" width="100px;" alt="charlysog"/><br /><sub><b>charlysog</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/issues?q=author%3Acharlysog" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/waschulte"><img src="https://avatars.githubusercontent.com/u/59023045?v=4?s=100" width="100px;" alt="waschulte"/><br /><sub><b>waschulte</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/issues?q=author%3Awaschulte" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
   <tfoot>
