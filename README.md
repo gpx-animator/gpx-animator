@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -58,6 +58,9 @@ Special thanks for all the people who had helped this project so far:
       <td align="center" valign="top" width="14.28%"><a href="http://retiredtechie.fitchfamily.org/"><img src="https://avatars.githubusercontent.com/u/4681938?v=4?s=100" width="100px;" alt="n76"/><br /><sub><b>n76</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=n76" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SirCremefresh"><img src="https://avatars.githubusercontent.com/u/20863779?v=4?s=100" width="100px;" alt="Donato Wolfisberg"/><br /><sub><b>Donato Wolfisberg</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=SirCremefresh" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://thomer.com/"><img src="https://avatars.githubusercontent.com/u/1020105?v=4?s=100" width="100px;" alt="Thomer Gil"/><br /><sub><b>Thomer Gil</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=thomergil" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/markus-schmidlin"><img src="https://avatars.githubusercontent.com/u/13030829?v=4?s=100" width="100px;" alt="Markus Schmidlin"/><br /><sub><b>Markus Schmidlin</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=markus-schmidlin" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>

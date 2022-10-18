@@ -76,6 +76,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "markus-schmidlin",
+      "name": "Markus Schmidlin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13030829?v=4",
+      "profile": "https://github.com/markus-schmidlin",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
