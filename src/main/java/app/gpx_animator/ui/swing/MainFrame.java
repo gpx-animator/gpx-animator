@@ -123,7 +123,7 @@ public final class MainFrame extends JFrame {
         return InstanceHolder.INSTANCE;
     }
 
-    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
+    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/gpx-animator/gpx-animator/issues/60
     private MainFrame() {
         Notification.init();
 

@@ -68,7 +68,7 @@ abstract class TrackSettingsPanel extends JPanel {
     private final FileSelector inputIconFileSelector;
     private final JCheckBox mirrorIconCheckBox;
 
-    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/zdila/gpx-animator/issues/60
+    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/gpx-animator/gpx-animator/issues/60
     TrackSettingsPanel() {
         setBounds(100, 100, 595, 419);
         setBorder(new EmptyBorder(5, 5, 5, 5));
