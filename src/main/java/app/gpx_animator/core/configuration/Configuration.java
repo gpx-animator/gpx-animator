@@ -50,7 +50,7 @@ public final class Configuration {
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
-    private static final String DEFAULT_INFORMATION = "%SPEED%\n[%GPSSTATUS%%GPSLOSTTIME%] %LATLON%\n%DATETIME%";
+    private static final String DEFAULT_INFORMATION = "%SPEED%\n%LATLON%\n%DATETIME%";
     private static final SpeedUnit DEFAULT_SPEED_UNIT = SpeedUnit.KMH;
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
     public static final Position DEFAULT_ATTRIBUTION_POSITION = Position.BOTTOM_LEFT;
