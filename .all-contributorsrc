@@ -33,24 +33,6 @@
       ]
     },
     {
-      "login": "abarber7",
-      "name": "Antonio D Barber",
-      "avatar_url": "https://avatars.githubusercontent.com/u/21110513?v=4",
-      "profile": "https://www.linkedin.com/in/antonio-barber-67273bba/",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
-      "login": "bat-bloke",
-      "name": "Andy Oakey",
-      "avatar_url": "https://avatars.githubusercontent.com/u/57795480?v=4",
-      "profile": "https://github.com/bat-bloke",
-      "contributions": [
-        "infra"
-      ]
-    },
-    {
       "login": "n76",
       "name": "n76",
       "avatar_url": "https://avatars.githubusercontent.com/u/4681938?v=4",
@@ -60,28 +42,19 @@
       ]
     },
     {
-      "login": "SirCremefresh",
-      "name": "Donato Wolfisberg",
-      "avatar_url": "https://avatars.githubusercontent.com/u/20863779?v=4",
-      "profile": "https://github.com/SirCremefresh",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
-      "login": "thomergil",
-      "name": "Thomer Gil",
-      "avatar_url": "https://avatars.githubusercontent.com/u/1020105?v=4",
-      "profile": "http://thomer.com/",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
       "login": "markus-schmidlin",
       "name": "Markus Schmidlin",
       "avatar_url": "https://avatars.githubusercontent.com/u/13030829?v=4",
       "profile": "https://github.com/markus-schmidlin",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "martinfrancois",
+      "name": "François Martin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14319020?v=4",
+      "profile": "https://github.com/martinfrancois",
       "contributions": [
         "code"
       ]
