@@ -1,0 +1,28 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "McPringle",
+      "name": "Marcus Fihlon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1254039?v=4",
+      "profile": "https://fihlon.swiss/",
+      "contributions": [
+        "projectManagement",
+        "ideas",
+        "bug",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "gpx-animator",
+  "projectOwner": "gpx-animator"
+}
