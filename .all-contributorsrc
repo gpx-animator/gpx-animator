@@ -222,6 +222,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "krugerk",
+      "name": "krugerk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4656811?v=4",
+      "profile": "https://github.com/krugerk",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
