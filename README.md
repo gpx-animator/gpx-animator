@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -53,6 +53,7 @@ Special thanks for all the people who had helped this project so far:
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://fihlon.swiss/"><img src="https://avatars.githubusercontent.com/u/1254039?v=4?s=100" width="100px;" alt="Marcus Fihlon"/><br /><sub><b>Marcus Fihlon</b></sub></a><br /><a href="#projectManagement-McPringle" title="Project Management">📆</a> <a href="#ideas-McPringle" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/gpx-animator/gpx-animator/commits?author=McPringle" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/zdila"><img src="https://avatars.githubusercontent.com/u/636095?v=4?s=100" width="100px;" alt="Martin Ždila"/><br /><sub><b>Martin Ždila</b></sub></a><br /><a href="#projectManagement-zdila" title="Project Management">📆</a> <a href="#ideas-zdila" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/gpx-animator/gpx-animator/commits?author=zdila" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/antonio-barber-67273bba/"><img src="https://avatars.githubusercontent.com/u/21110513?v=4?s=100" width="100px;" alt="Antonio D Barber"/><br /><sub><b>Antonio D Barber</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=abarber7" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>

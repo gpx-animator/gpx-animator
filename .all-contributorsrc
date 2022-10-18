@@ -31,6 +31,15 @@
         "ideas",
         "code"
       ]
+    },
+    {
+      "login": "abarber7",
+      "name": "Antonio D Barber",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21110513?v=4",
+      "profile": "https://www.linkedin.com/in/antonio-barber-67273bba/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
