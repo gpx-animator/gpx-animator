@@ -4,14 +4,21 @@
 
 In alphabetical order:
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+* [abarber7](https://github.com/abarber7)
+* [bat-bloke](https://github.com/bat-bloke)
+* [fgaignat](https://github.com/fgaignat)
+* [heroichornet](https://github.com/heroichornet)
+* [markus-schmidlin](https://github.com/markus-schmidlin)
+* [McPringle](https://github.com/McPringle)
+* [MrTrustor](https://github.com/MrTrustor)
+* [mundry](https://github.com/mundry)
+* [n76](https://github.com/n76)
+* [poorlymac](https://github.com/poorlymac)
+* [scordio](https://github.com/scordio)
+* [SirCremefresh](https://github.com/SirCremefresh)
+* [szolnokit](https://github.com/szolnokit)
+* [thomergil](https://github.com/thomergil)
+* [zdila](https://github.com/zdila)
 
 ## I would like to join this list. How can I help the project?
 
