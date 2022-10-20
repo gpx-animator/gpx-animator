@@ -1398,6 +1398,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     public void updateMaps(@NotNull final List<MapTemplate> newMapTemplateList) {
         mapTemplateList = newMapTemplateList;
         tmsUrlTemplateComboBox.setModel(new DefaultComboBoxModel<>(mapTemplateList.toArray(new MapTemplate[0])));
+        tmsUrlTemplateComboBox.setSelectedItem(null);
     }
 
     private FileSelector createImageFileSelector() {
