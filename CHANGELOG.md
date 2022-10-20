@@ -21,6 +21,7 @@
 
 * Filter unsupported map types (now all shown maps should work)
 * Photos are now displayed correctly oriented based on their metadata
+* No more automatically selecting Cambodia map after map update
 
 ### Notes
 * GPX Animator has a new home: [https://github.com/gpx-animator/gpx-animator](https://github.com/gpx-animator/gpx-animator)
