@@ -33,6 +33,7 @@ import app.gpx_animator.core.renderer.plugins.RendererPlugin;
 import app.gpx_animator.core.util.PluginUtil;
 import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
+import app.gpx_animator.core.util.LinearInterpolation;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
@@ -100,6 +101,8 @@ public final class Renderer {
 
     private double speedup;
 
+    private ArrayList<LinearInterpolation> interpolators = new ArrayList<LinearInterpolation>();
+
     public Renderer(final Configuration cfg) throws UserException {
         this.cfg = cfg.validate();
         this.recentMarkers = new LinkedList<>();
@@ -138,7 +141,10 @@ public final class Renderer {
         calculateMinMaxValues(userSpecifiedWidth, width, scale);
 
         timePointMapListList.forEach(timePointMapList -> timePointMapList
-                            .forEach(timePointMap -> translateCoordinatesToZeroZero(scale, timePointMap)));
+                            .forEach(timePointMap -> {
+          translateCoordinatesToZeroZero(scale, timePointMap);
+          interpolators.add(new LinearInterpolation(timePointMap));
+        }));
         translateCoordinatesToZeroZero(scale, wpMap);
 
         final var frameFilePattern = cfg.getOutput().toString();
@@ -755,10 +761,12 @@ public final class Renderer {
         final var trackConfigurationList = cfg.getTrackConfigurationList();
 
         var i = 0;
+        var trackIdx = 0;
         for (final var timePointMapList : timePointMapListList) {
             final var trackConfiguration = trackConfigurationList.get(i++);
 
             for (final var timePointMap : timePointMapList) {
+                var interpolator = interpolators.get(trackIdx++);
                 final var lineWidth = isPreDrawTrack ? trackConfiguration.getPreDrawLineWidth() : trackConfiguration.getLineWidth();
                 g2.setStroke(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
@@ -772,17 +780,14 @@ public final class Renderer {
 
                 if (backTime == 0) {
                     final var prevTime = getTime(frame - 1);
-                    var fromTime = timePointMap.floorKey(prevTime);
-                    if (fromTime == null) {
-                        // try ceiling because we may be at beginning
-                        fromTime = timePointMap.ceilingKey(prevTime);
-                    }
-                    if (fromTime == null) {
+
+                    var intervalMap = extractInterval(timePointMap, prevTime, time, interpolator);
+                    if (intervalMap.isEmpty()) {
                         continue;
                     }
 
                     g2.setPaint(trackConfiguration.getColor());
-                    for (final var entry : timePointMap.subMap(fromTime, true, toTime, true).entrySet()) {
+                    for (final var entry : intervalMap.entrySet()) {
                         if (prevPoint != null) {
                             g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
                         }
@@ -792,7 +797,8 @@ public final class Renderer {
                     if (!cfg.isTailColorFadeout() && toTime == maxTime) {
                         continue;
                     }
-                    for (final var entry : timePointMap.subMap(toTime - backTime, true, toTime, true).entrySet()) {
+                    var intervalMap = extractInterval(timePointMap, time - backTime, time, interpolator);
+                    for (final var entry : intervalMap.entrySet()) {
                         if (prevPoint != null) {
                             var drawSegment = false;
                             if (isPreDrawTrack) {
@@ -815,6 +821,21 @@ public final class Renderer {
                 }
             }
         }
+    }
+
+    private TreeMap<Long, Point2D> extractInterval(
+        final TreeMap<Long, Point2D> map, final long startTime, final long endTime, final LinearInterpolation interpolator
+    ) {
+        var intervalMap = new TreeMap<Long, Point2D>(map.subMap(startTime, true, endTime, true));
+        var firstPoint = interpolator.getPointAtTime(startTime);
+        if (firstPoint != null) {
+            intervalMap.put(startTime, firstPoint);
+        }
+        var lastPoint = interpolator.getPointAtTime(endTime);
+        if (lastPoint != null) {
+            intervalMap.put(endTime, lastPoint);
+        }
+        return intervalMap;
     }
 
     private long getTime(final int frame) {
