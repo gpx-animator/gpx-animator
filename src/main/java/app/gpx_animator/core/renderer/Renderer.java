@@ -669,17 +669,23 @@ public final class Renderer {
         final var trackConfigurationList = cfg.getTrackConfigurationList();
 
         var i = 0;
+        var trackIdx = 0;
         outer:
         for (final var timePointMapList : timePointMapListList) {
             final var trackConfiguration = trackConfigurationList.get(i++);
             for (final var timePointMap : timePointMapList) {
+                final var interpolator = interpolators.get(trackIdx++);
                 final var ceilingEntry = timePointMap.ceilingEntry(t2);
-                final var floorEntry = timePointMap.floorEntry(t2);
-                if (floorEntry == null) {
-                    continue;
+                point = interpolator.getPointAtTime(t2);
+                if (point == null) {
+                    final var floorEntry = timePointMap.floorEntry(t2);
+                    if (floorEntry == null) {
+                        continue;
+                    } else {
+                        point = floorEntry.getValue();
+                    }
                 }
 
-                point = floorEntry.getValue();
                 g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 
                 final var trackIcon = trackConfiguration.getTrackIcon();
