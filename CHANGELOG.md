@@ -16,6 +16,7 @@
 * New speed unit (/500m)
 * Time per distance speed units now display as m:ss
 * GPS status with timeout (OK/LOST)
+* Smooth line drawing between track points
 
 ### Fixed bugs
 
