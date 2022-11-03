@@ -364,8 +364,6 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcMirrorIconCheckBox.gridy = rowCounter;
         add(travelMirrorCheckBox, gbcMirrorIconCheckBox);
 
-        // TODO Too much copy
-
         trackEndIconComboBox = new JComboBox<>(TrackIcon.getAllTrackIcons());
         trackEndIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
         trackEndIconComboBox.setEditable(false);
