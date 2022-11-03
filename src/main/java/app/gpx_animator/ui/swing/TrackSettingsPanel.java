@@ -20,15 +20,6 @@ import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.preferences.Preferences;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.Serial;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -44,6 +35,16 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ItemListener;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.Serial;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import static javax.swing.JFileChooser.FILES_ONLY;
 
@@ -64,19 +65,24 @@ abstract class TrackSettingsPanel extends JPanel {
     private final FileSelector inputGpxFileSelector;
     private final JSpinner trimGpxStartSpinner;
     private final JSpinner trimGpxEndSpinner;
-    private final JComboBox<TrackIcon> trackIconComboBox;
-    private final FileSelector inputIconFileSelector;
-    private final JCheckBox mirrorIconCheckBox;
+    private final JComboBox<TrackIcon> travelIconComboBox;
+    private final FileSelector travelIconFileSelector;
+    private final JCheckBox travelMirrorCheckBox;
 
-    @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/gpx-animator/gpx-animator/issues/60
+    private final JComboBox<TrackIcon> trackEndIconComboBox;
+    private final FileSelector trackEndIconFileSelector;
+    private final JCheckBox trackEndMirrorCheckBox;
+
+    @SuppressWarnings("checkstyle:MethodLength")
+        // TODO Refactor when doing the redesign task https://github.com/gpx-animator/gpx-animator/issues/60
     TrackSettingsPanel() {
         setBounds(100, 100, 595, 419);
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final var gblContentPane = new GridBagLayout();
-        gblContentPane.columnWidths = new int[]     {0,   0,   0};
-        gblContentPane.columnWeights = new double[] {0.0, 1.0, Double.MIN_VALUE};
-        gblContentPane.rowHeights = new int[]       {0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0};
-        gblContentPane.rowWeights = new double[]    {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+        gblContentPane.columnWidths = new int[]{0, 0, 0};
+        gblContentPane.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+        gblContentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        gblContentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
         setLayout(gblContentPane);
         var rowCounter = 0;
 
@@ -293,24 +299,24 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcTrimGpxEndSpinner.gridy = rowCounter;
         add(trimGpxEndSpinner, gbcTrimGpxEndSpinner);
 
-        trackIconComboBox = new JComboBox<>(TrackIcon.getAllTrackIcons());
-        trackIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
-        trackIconComboBox.setEditable(false);
+        travelIconComboBox = new JComboBox<>(TrackIcon.getAllTrackIcons());
+        travelIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
+        travelIconComboBox.setEditable(false);
         final var gbcTrackIconComboBox = new GridBagConstraints();
         gbcTrackIconComboBox.fill = GridBagConstraints.HORIZONTAL;
         gbcTrackIconComboBox.insets = new Insets(0, 0, 5, 0);
         gbcTrackIconComboBox.gridx = 1;
         gbcTrackIconComboBox.gridy = ++rowCounter;
-        add(trackIconComboBox, gbcTrackIconComboBox);
-        trackIconComboBox.setPreferredSize(new Dimension(10, trackIconComboBox.getPreferredSize().height));
+        add(travelIconComboBox, gbcTrackIconComboBox);
+        travelIconComboBox.setPreferredSize(new Dimension(10, travelIconComboBox.getPreferredSize().height));
 
-        final var lblEnableIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.label"));
-        final var gbcLabelEnableIcon = new GridBagConstraints();
-        gbcLabelEnableIcon.anchor = GridBagConstraints.LINE_END;
-        gbcLabelEnableIcon.insets = new Insets(0, 0, 5, 5);
-        gbcLabelEnableIcon.gridx = 0;
-        gbcLabelEnableIcon.gridy = rowCounter;
-        add(lblEnableIcon, gbcLabelEnableIcon);
+        final var lblSelectTravelIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.label"));
+        final var gbcSelectTravelIcon = new GridBagConstraints();
+        gbcSelectTravelIcon.anchor = GridBagConstraints.LINE_END;
+        gbcSelectTravelIcon.insets = new Insets(0, 0, 5, 5);
+        gbcSelectTravelIcon.gridx = 0;
+        gbcSelectTravelIcon.gridy = rowCounter;
+        add(lblSelectTravelIcon, gbcSelectTravelIcon);
 
         final var lblIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.iconfile.label"));
         final var gbcLabelIcon = new GridBagConstraints();
@@ -320,7 +326,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcLabelIcon.gridy = ++rowCounter;
         add(lblIcon, gbcLabelIcon);
 
-        inputIconFileSelector = new FileSelector(FILES_ONLY) {
+        travelIconFileSelector = new FileSelector(FILES_ONLY) {
             @Serial
             private static final long serialVersionUID = -7085193817022374995L;
 
@@ -331,14 +337,14 @@ abstract class TrackSettingsPanel extends JPanel {
             }
         };
 
-        inputIconFileSelector.setToolTipText(Option.TRACK_ICON_FILE.getHelp());
-        lblIcon.setLabelFor(inputIconFileSelector);
+        travelIconFileSelector.setToolTipText(Option.TRACK_ICON_FILE.getHelp());
+        lblIcon.setLabelFor(travelIconFileSelector);
         final var gbcInputIconFileSelector = new GridBagConstraints();
         gbcInputIconFileSelector.insets = new Insets(0, 0, 5, 0);
         gbcInputIconFileSelector.fill = GridBagConstraints.BOTH;
         gbcInputIconFileSelector.gridx = 1;
         gbcInputIconFileSelector.gridy = rowCounter;
-        add(inputIconFileSelector, gbcInputIconFileSelector);
+        add(travelIconFileSelector, gbcInputIconFileSelector);
 
         final var lblMirrorIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.mirror.label"));
         final var gbcLabelMirrorIcon = new GridBagConstraints();
@@ -348,14 +354,82 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcLabelMirrorIcon.gridy = ++rowCounter;
         add(lblMirrorIcon, gbcLabelMirrorIcon);
 
-        mirrorIconCheckBox = new JCheckBox("");
-        mirrorIconCheckBox.setToolTipText(Option.TRACK_ICON_MIRROR.getHelp());
+        travelMirrorCheckBox = new JCheckBox("");
+        travelMirrorCheckBox.setToolTipText(Option.TRACK_ICON_MIRROR.getHelp());
         final var gbcMirrorIconCheckBox = new GridBagConstraints();
         gbcMirrorIconCheckBox.fill = GridBagConstraints.HORIZONTAL;
         gbcMirrorIconCheckBox.insets = new Insets(0, 0, 5, 5);
         gbcMirrorIconCheckBox.gridx = 1;
         gbcMirrorIconCheckBox.gridy = rowCounter;
-        add(mirrorIconCheckBox, gbcMirrorIconCheckBox);
+        add(travelMirrorCheckBox, gbcMirrorIconCheckBox);
+
+        // TODO Too much copy
+        // TODO Update Labels
+        // TODO Extend Configuration
+
+        trackEndIconComboBox = new JComboBox<>(TrackIcon.getAllTrackIcons());
+        trackEndIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
+        trackEndIconComboBox.setEditable(false);
+        final var gbcTrackEndIconComboBox = new GridBagConstraints();
+        gbcTrackEndIconComboBox.fill = GridBagConstraints.HORIZONTAL;
+        gbcTrackEndIconComboBox.insets = new Insets(0, 0, 5, 0);
+        gbcTrackEndIconComboBox.gridx = 1;
+        gbcTrackEndIconComboBox.gridy = ++rowCounter;
+        add(trackEndIconComboBox, gbcTrackEndIconComboBox);
+        trackEndIconComboBox.setPreferredSize(new Dimension(10, trackEndIconComboBox.getPreferredSize().height));
+
+        final var lblSelectTrackEndIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.label"));
+        final var gbcSelectTravelEndIcon = new GridBagConstraints();
+        gbcSelectTravelEndIcon.anchor = GridBagConstraints.LINE_END;
+        gbcSelectTravelEndIcon.insets = new Insets(0, 0, 5, 5);
+        gbcSelectTravelEndIcon.gridx = 0;
+        gbcSelectTravelEndIcon.gridy = rowCounter;
+        add(lblSelectTrackEndIcon, gbcSelectTravelEndIcon);
+
+        final var lblIconEnd = new JLabel(resourceBundle.getString("ui.panel.tracksettings.iconfile.label"));
+        final var gbcLabelEndIcon = new GridBagConstraints();
+        gbcLabelEndIcon.insets = new Insets(0, 0, 5, 5);
+        gbcLabelEndIcon.anchor = GridBagConstraints.LINE_END;
+        gbcLabelEndIcon.gridx = 0;
+        gbcLabelEndIcon.gridy = ++rowCounter;
+        add(lblIconEnd, gbcLabelEndIcon);
+
+        trackEndIconFileSelector = new FileSelector(FILES_ONLY) {
+            @Serial
+            private static final long serialVersionUID = -7085193817022374995L;
+
+            @Override
+            protected Type configure(final JFileChooser iconFileChooser) {
+                configureIconFileChooser(resourceBundle, iconFileChooser);
+                return Type.OPEN;
+            }
+        };
+
+        trackEndIconFileSelector.setToolTipText(Option.TRACK_ICON_FILE.getHelp());
+        lblIconEnd.setLabelFor(trackEndIconFileSelector);
+        final var gbcTrackEndIconFileSelector = new GridBagConstraints();
+        gbcTrackEndIconFileSelector.insets = new Insets(0, 0, 5, 0);
+        gbcTrackEndIconFileSelector.fill = GridBagConstraints.BOTH;
+        gbcTrackEndIconFileSelector.gridx = 1;
+        gbcTrackEndIconFileSelector.gridy = rowCounter;
+        add(trackEndIconFileSelector, gbcTrackEndIconFileSelector);
+
+        final var lblMirrorITrackEndIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.mirror.label"));
+        final var gbcLabelMirrorTrackEndIcon = new GridBagConstraints();
+        gbcLabelMirrorTrackEndIcon.anchor = GridBagConstraints.LINE_END;
+        gbcLabelMirrorTrackEndIcon.insets = new Insets(0, 0, 5, 5);
+        gbcLabelMirrorTrackEndIcon.gridx = 0;
+        gbcLabelMirrorTrackEndIcon.gridy = ++rowCounter;
+        add(lblMirrorITrackEndIcon, gbcLabelMirrorTrackEndIcon);
+
+        trackEndMirrorCheckBox = new JCheckBox("");
+        trackEndMirrorCheckBox.setToolTipText(Option.TRACK_ICON_MIRROR.getHelp());
+        final var gbcMirrorIconTrackEndCheckBox = new GridBagConstraints();
+        gbcMirrorIconTrackEndCheckBox.fill = GridBagConstraints.HORIZONTAL;
+        gbcMirrorIconTrackEndCheckBox.insets = new Insets(0, 0, 5, 5);
+        gbcMirrorIconTrackEndCheckBox.gridx = 1;
+        gbcMirrorIconTrackEndCheckBox.gridy = rowCounter;
+        add(trackEndMirrorCheckBox, gbcMirrorIconTrackEndCheckBox);
 
         final var btnRemoveButton = new JButton(resourceBundle.getString("ui.panel.tracksettings.button.remove"));
         btnRemoveButton.addActionListener(e -> remove());
@@ -391,6 +465,7 @@ abstract class TrackSettingsPanel extends JPanel {
         preDrawColorSelector.addPropertyChangeListener(ColorSelector.PROPERTY_COLOR, propertyChangeListener);
 
         final ChangeListener changeListener = e -> configurationChanged();
+        final ItemListener itemListener = e -> configurationChanged();
 
         lineWidthSpinner.addChangeListener(changeListener);
         preDrawLineWidthSpinner.addChangeListener(changeListener);
@@ -398,8 +473,10 @@ abstract class TrackSettingsPanel extends JPanel {
         forcedPointTimeIntervalSpinner.addChangeListener(changeListener);
         trimGpxStartSpinner.addChangeListener(changeListener);
         trimGpxEndSpinner.addChangeListener(changeListener);
-        trackIconComboBox.addItemListener(e -> configurationChanged());
-        mirrorIconCheckBox.addChangeListener(changeListener);
+        travelIconComboBox.addItemListener(itemListener);
+        travelMirrorCheckBox.addChangeListener(changeListener);
+        trackEndIconComboBox.addItemListener(itemListener);
+        trackEndMirrorCheckBox.addChangeListener(changeListener);
     }
 
     public static void configureGpxFileChooser(final ResourceBundle resourceBundle, final JFileChooser fileChooser) {
@@ -458,19 +535,22 @@ abstract class TrackSettingsPanel extends JPanel {
     public TrackConfiguration createConfiguration() {
         final var b = TrackConfiguration.createBuilder();
 
-        b.inputGpx(new File(inputGpxFileSelector.getFilename()));
-        b.label(labelTextField.getText());
-        b.color(colorSelector.getColor());
-        b.preDrawTrackColor(preDrawColorSelector.getColor());
-        b.lineWidth((Float) lineWidthSpinner.getValue());
-        b.preDrawLineWidth((Float) preDrawLineWidthSpinner.getValue());
-        b.forcedPointInterval((Long) forcedPointTimeIntervalSpinner.getValue());
-        b.timeOffset((Long) timeOffsetSpinner.getValue());
-        b.trimGpxStart((Long) trimGpxStartSpinner.getValue());
-        b.trimGpxEnd((Long) trimGpxEndSpinner.getValue());
-        b.trackIcon((TrackIcon) trackIconComboBox.getSelectedItem());
-        b.inputIcon(new File(inputIconFileSelector.getFilename()));
-        b.mirrorTrackIcon(mirrorIconCheckBox.isSelected());
+        b.inputGpx(new File(inputGpxFileSelector.getFilename()))
+                .label(labelTextField.getText())
+                .color(colorSelector.getColor())
+                .preDrawTrackColor(preDrawColorSelector.getColor())
+                .lineWidth((Float) lineWidthSpinner.getValue())
+                .preDrawLineWidth((Float) preDrawLineWidthSpinner.getValue())
+                .forcedPointInterval((Long) forcedPointTimeIntervalSpinner.getValue())
+                .timeOffset((Long) timeOffsetSpinner.getValue())
+                .trimGpxStart((Long) trimGpxStartSpinner.getValue())
+                .trimGpxEnd((Long) trimGpxEndSpinner.getValue())
+                .trackIcon((TrackIcon) travelIconComboBox.getSelectedItem())
+                .inputIcon(new File(travelIconFileSelector.getFilename()))
+                .mirrorTrackIcon(travelMirrorCheckBox.isSelected())
+                .trackIcon((TrackIcon) trackEndIconComboBox.getSelectedItem())
+                .inputIcon(new File(trackEndIconFileSelector.getFilename()))
+                .mirrorTrackIcon(trackEndMirrorCheckBox.isSelected());
         return b.build();
     }
 
@@ -486,9 +566,12 @@ abstract class TrackSettingsPanel extends JPanel {
         timeOffsetSpinner.setValue(c.getTimeOffset());
         trimGpxStartSpinner.setValue(c.getTrimGpxStart());
         trimGpxEndSpinner.setValue(c.getTrimGpxEnd());
-        trackIconComboBox.setSelectedItem(c.getTrackIcon());
-        inputIconFileSelector.setFilename(c.getInputIcon() == null ? null : c.getInputIcon().toString());
-        mirrorIconCheckBox.setSelected(c.isTrackIconMirrored());
+        travelIconComboBox.setSelectedItem(c.getTrackIcon());
+        travelIconFileSelector.setFilename(c.getInputIcon() == null ? null : c.getInputIcon().toString());
+        travelMirrorCheckBox.setSelected(c.isTrackIconMirrored());
+        trackEndIconComboBox.setSelectedItem(c.getTrackIcon());
+        trackEndIconFileSelector.setFilename(c.getInputIcon() == null ? null : c.getInputIcon().toString());
+        trackEndMirrorCheckBox.setSelected(c.isTrackIconMirrored());
         labelChanged(c.getLabel());
     }
 
