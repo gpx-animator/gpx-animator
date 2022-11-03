@@ -365,8 +365,6 @@ abstract class TrackSettingsPanel extends JPanel {
         add(travelMirrorCheckBox, gbcMirrorIconCheckBox);
 
         // TODO Too much copy
-        // TODO Update Labels
-        // TODO Extend Configuration
 
         trackEndIconComboBox = new JComboBox<>(TrackIcon.getAllTrackIcons());
         trackEndIconComboBox.setToolTipText(Option.TRACK_ICON.getHelp());
@@ -379,7 +377,7 @@ abstract class TrackSettingsPanel extends JPanel {
         add(trackEndIconComboBox, gbcTrackEndIconComboBox);
         trackEndIconComboBox.setPreferredSize(new Dimension(10, trackEndIconComboBox.getPreferredSize().height));
 
-        final var lblSelectTrackEndIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.label"));
+        final var lblSelectTrackEndIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.end.label"));
         final var gbcSelectTravelEndIcon = new GridBagConstraints();
         gbcSelectTravelEndIcon.anchor = GridBagConstraints.LINE_END;
         gbcSelectTravelEndIcon.insets = new Insets(0, 0, 5, 5);
@@ -415,7 +413,7 @@ abstract class TrackSettingsPanel extends JPanel {
         gbcTrackEndIconFileSelector.gridy = rowCounter;
         add(trackEndIconFileSelector, gbcTrackEndIconFileSelector);
 
-        final var lblMirrorITrackEndIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.mirror.label"));
+        final var lblMirrorITrackEndIcon = new JLabel(resourceBundle.getString("ui.panel.tracksettings.icon.end.mirror.label"));
         final var gbcLabelMirrorTrackEndIcon = new GridBagConstraints();
         gbcLabelMirrorTrackEndIcon.anchor = GridBagConstraints.LINE_END;
         gbcLabelMirrorTrackEndIcon.insets = new Insets(0, 0, 5, 5);
