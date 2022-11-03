@@ -549,9 +549,9 @@ abstract class TrackSettingsPanel extends JPanel {
                 .trackIcon((TrackIcon) travelIconComboBox.getSelectedItem())
                 .inputIcon(new File(travelIconFileSelector.getFilename()))
                 .mirrorTrackIcon(travelMirrorCheckBox.isSelected())
-                .trackIcon((TrackIcon) trackEndIconComboBox.getSelectedItem())
-                .inputIcon(new File(trackEndIconFileSelector.getFilename()))
-                .mirrorTrackIcon(trackEndMirrorCheckBox.isSelected());
+                .trackEndIcon((TrackIcon) trackEndIconComboBox.getSelectedItem())
+                .inputEndIcon(new File(trackEndIconFileSelector.getFilename()))
+                .mirrorTrackEndIcon(trackEndMirrorCheckBox.isSelected());
         return b.build();
     }
 
@@ -570,9 +570,9 @@ abstract class TrackSettingsPanel extends JPanel {
         travelIconComboBox.setSelectedItem(c.getTrackIcon());
         travelIconFileSelector.setFilename(c.getInputIcon() == null ? null : c.getInputIcon().toString());
         travelMirrorCheckBox.setSelected(c.isTrackIconMirrored());
-        trackEndIconComboBox.setSelectedItem(c.getTrackIcon());
-        trackEndIconFileSelector.setFilename(c.getInputIcon() == null ? null : c.getInputIcon().toString());
-        trackEndMirrorCheckBox.setSelected(c.isTrackIconMirrored());
+        trackEndIconComboBox.setSelectedItem(c.getTrackEndIcon());
+        trackEndIconFileSelector.setFilename(c.getInputEndIcon() == null ? null : c.getInputEndIcon().toString());
+        trackEndMirrorCheckBox.setSelected(c.isMirrorTrackEndIcon());
         labelChanged(c.getLabel());
     }
 
