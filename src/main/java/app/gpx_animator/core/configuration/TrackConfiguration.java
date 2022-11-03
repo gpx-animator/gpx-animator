@@ -268,17 +268,17 @@ public final class TrackConfiguration {
             return this;
         }
 
-        public Builder trackEndIcon(TrackIcon trackEndIcon) {
+        public Builder trackEndIcon(final TrackIcon trackEndIcon) {
             this.trackEndIcon = trackEndIcon;
             return this;
         }
 
-        public Builder inputEndIcon(File inputEndIcon) {
+        public Builder inputEndIcon(final File inputEndIcon) {
             this.inputEndIcon = inputEndIcon;
             return this;
         }
 
-        public Builder mirrorTrackEndIcon(boolean mirrorTrackEndIcon) {
+        public Builder mirrorTrackEndIcon(final boolean mirrorTrackEndIcon) {
             this.mirrorTrackEndIcon = mirrorTrackEndIcon;
             return this;
         }
