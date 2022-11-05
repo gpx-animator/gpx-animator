@@ -58,7 +58,7 @@ dependencies {
     implementation 'commons-io:commons-io:20030203.000550'
     implementation 'com.jgoodies:jgoodies-forms:1.9.0'
     implementation 'com.vladsch.flexmark:flexmark-all:0.62.2'
-    implementation 'org.reflections:reflections:0.10'
+    implementation 'org.reflections:reflections:0.10.2'
     implementation 'org.apache.maven:maven-artifact:3.8.6'
     testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.4.1'
     testImplementation 'com.github.romankh3:image-comparison:4.4.0'
