@@ -21,7 +21,7 @@ plugins {
     id 'pmd'
     id 'checkstyle'
     id 'java-library'
-    id 'org.bytedeco.gradle-javacpp-platform' version '1.5.5'
+    id 'org.bytedeco.gradle-javacpp-platform' version '1.5.8'
 }
 
 version = '1.8.0-SNAPSHOT'
