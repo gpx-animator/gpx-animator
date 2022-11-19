@@ -18,6 +18,7 @@ package app.gpx_animator.core.configuration;
 import app.gpx_animator.core.configuration.adapter.ColorXmlAdapter;
 import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
 import app.gpx_animator.core.configuration.adapter.TrackIconXmlAdapter;
+import app.gpx_animator.core.data.LatLon;
 import app.gpx_animator.core.data.TrackIcon;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -25,6 +26,8 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable, it uses XML transformation
@@ -64,6 +67,10 @@ public final class TrackConfiguration {
     private TrackIcon trackEndIcon;
 
 
+    private List<List<LatLon>> points;
+    private List<LatLon> wayPoints;
+
+
     @SuppressWarnings("unused") // Needed for JAXB deserialization from saved XML files
     private TrackConfiguration() {
     }
@@ -73,7 +80,8 @@ public final class TrackConfiguration {
     private TrackConfiguration(final File inputGpx, final String label, final Color color, final Color preDrawTrackColor, final Long timeOffset,
                                final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth,
                                final float preDrawLineWidth, final TrackIcon trackIcon, final File inputIcon, final boolean mirrorTrackIcon,
-                               final TrackIcon trackEndIcon, final File inputEndIcon, final boolean mirrorTrackEndIcon) {
+                               final TrackIcon trackEndIcon, final File inputEndIcon, final boolean mirrorTrackEndIcon,
+                               final List<List<LatLon>> points, final List<LatLon> wayPoints) {
         this.inputGpx = inputGpx;
         this.label = label;
         this.color = color;
@@ -90,6 +98,8 @@ public final class TrackConfiguration {
         this.inputEndIcon = inputEndIcon;
         this.mirrorTrackEndIcon = mirrorTrackEndIcon;
         this.trackEndIcon = trackEndIcon;
+        this.points = Collections.unmodifiableList(points);
+        this.wayPoints = Collections.unmodifiableList(wayPoints);
     }
 
     public static Builder createBuilder() {
@@ -160,6 +170,13 @@ public final class TrackConfiguration {
         return trackEndIcon;
     }
 
+    public List<List<LatLon>> getPoints() {
+        return Collections.unmodifiableList(points);
+    }
+
+    public List<LatLon> getWayPoints() {
+        return Collections.unmodifiableList(wayPoints);
+    }
 
     @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField", "UnusedReturnValue"}) // This is okay for the builder pattern
     public static final class Builder {
@@ -184,6 +201,9 @@ public final class TrackConfiguration {
         private File inputEndIcon;
         private boolean mirrorTrackEndIcon = false;
 
+        private List<List<LatLon>> points;
+        private List<LatLon> wayPoints;
+
         private Builder() {
         }
 
@@ -191,7 +211,7 @@ public final class TrackConfiguration {
         public TrackConfiguration build() {
             return new TrackConfiguration(
                     inputGpx, label, color, preDrawTrackColor, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, preDrawLineWidth,
-                    trackIcon, inputIcon, mirrorTrackIcon, trackEndIcon, inputEndIcon, mirrorTrackEndIcon
+                    trackIcon, inputIcon, mirrorTrackIcon, trackEndIcon, inputEndIcon, mirrorTrackEndIcon, points, wayPoints
             );
         }
 
@@ -280,6 +300,15 @@ public final class TrackConfiguration {
 
         public Builder mirrorTrackEndIcon(final boolean mirrorTrackEndIcon) {
             this.mirrorTrackEndIcon = mirrorTrackEndIcon;
+            return this;
+        }
+        public Builder points(final List<List<LatLon>> points) {
+            this.points = Collections.unmodifiableList(points);
+            return this;
+        }
+
+        public Builder wayPoints(final List<LatLon> wayPoints) {
+            this.wayPoints = Collections.unmodifiableList(wayPoints);
             return this;
         }
     }
