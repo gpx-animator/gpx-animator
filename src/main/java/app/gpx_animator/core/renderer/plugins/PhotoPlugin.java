@@ -130,6 +130,7 @@ public final class PhotoPlugin implements RendererPlugin {
         }
     }
 
+    @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
     static Photo toPhoto(@NonNull final File file) {
         try {
             final var metadata = ImageMetadataReader.readMetadata(file);

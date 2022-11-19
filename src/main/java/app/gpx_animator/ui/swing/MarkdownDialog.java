@@ -181,6 +181,7 @@ public class MarkdownDialog extends EscapeDialog {
         return html;
     }
 
+    @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
     private String readFileAsHTML() {
         try {
             final var md = readFileAsMarkdown();
