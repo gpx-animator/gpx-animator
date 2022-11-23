@@ -57,15 +57,23 @@ public final class TrackConfiguration {
     @XmlJavaTypeAdapter(TrackIconXmlAdapter.class)
     private TrackIcon trackIcon;
 
+    private File inputEndIcon;
+    private boolean mirrorTrackEndIcon;
+
+    @XmlJavaTypeAdapter(TrackIconXmlAdapter.class)
+    private TrackIcon trackEndIcon;
+
+
     @SuppressWarnings("unused") // Needed for JAXB deserialization from saved XML files
     private TrackConfiguration() {
     }
 
 
-    @SuppressWarnings({ "checkstyle:ParameterNumber", "java:S107" })
+    @SuppressWarnings({"checkstyle:ParameterNumber", "java:S107"})
     private TrackConfiguration(final File inputGpx, final String label, final Color color, final Color preDrawTrackColor, final Long timeOffset,
                                final Long forcedPointInterval, final Long trimGpxStart, final Long trimGpxEnd, final float lineWidth,
-                               final float preDrawLineWidth, final TrackIcon trackIcon, final File inputIcon, final boolean mirrorTrackIcon) {
+                               final float preDrawLineWidth, final TrackIcon trackIcon, final File inputIcon, final boolean mirrorTrackIcon,
+                               final TrackIcon trackEndIcon, final File inputEndIcon, final boolean mirrorTrackEndIcon) {
         this.inputGpx = inputGpx;
         this.label = label;
         this.color = color;
@@ -79,6 +87,9 @@ public final class TrackConfiguration {
         this.trackIcon = trackIcon;
         this.inputIcon = inputIcon;
         this.mirrorTrackIcon = mirrorTrackIcon;
+        this.inputEndIcon = inputEndIcon;
+        this.mirrorTrackEndIcon = mirrorTrackEndIcon;
+        this.trackEndIcon = trackEndIcon;
     }
 
     public static Builder createBuilder() {
@@ -137,6 +148,19 @@ public final class TrackConfiguration {
         return preDrawLineWidth;
     }
 
+    public File getInputEndIcon() {
+        return inputEndIcon;
+    }
+
+    public boolean isMirrorTrackEndIcon() {
+        return mirrorTrackEndIcon;
+    }
+
+    public TrackIcon getTrackEndIcon() {
+        return trackEndIcon;
+    }
+
+
     @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField", "UnusedReturnValue"}) // This is okay for the builder pattern
     public static final class Builder {
 
@@ -156,6 +180,9 @@ public final class TrackConfiguration {
         private File inputIcon;
         private boolean mirrorTrackIcon = false;
 
+        private TrackIcon trackEndIcon = null;
+        private File inputEndIcon;
+        private boolean mirrorTrackEndIcon = false;
 
         private Builder() {
         }
@@ -163,8 +190,8 @@ public final class TrackConfiguration {
 
         public TrackConfiguration build() {
             return new TrackConfiguration(
-                inputGpx, label, color, preDrawTrackColor, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, preDrawLineWidth,
-                    trackIcon, inputIcon, mirrorTrackIcon
+                    inputGpx, label, color, preDrawTrackColor, timeOffset, forcedPointInterval, trimGpxStart, trimGpxEnd, lineWidth, preDrawLineWidth,
+                    trackIcon, inputIcon, mirrorTrackIcon, trackEndIcon, inputEndIcon, mirrorTrackEndIcon
             );
         }
 
@@ -241,6 +268,20 @@ public final class TrackConfiguration {
             return this;
         }
 
+        public Builder trackEndIcon(final TrackIcon trackEndIcon) {
+            this.trackEndIcon = trackEndIcon;
+            return this;
+        }
+
+        public Builder inputEndIcon(final File inputEndIcon) {
+            this.inputEndIcon = inputEndIcon;
+            return this;
+        }
+
+        public Builder mirrorTrackEndIcon(final boolean mirrorTrackEndIcon) {
+            this.mirrorTrackEndIcon = mirrorTrackEndIcon;
+            return this;
+        }
     }
 
 }
