@@ -25,5 +25,5 @@ jobs:
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
-        name: testreport
-        path: /home/runner/work/gpx-animator/gpx-animator/build/reports/tests/test/
+        name: testreports
+        path: /home/runner/work/gpx-animator/gpx-animator/build/reports/
