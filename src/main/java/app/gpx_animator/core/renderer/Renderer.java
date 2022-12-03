@@ -21,6 +21,8 @@ import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.data.LatLon;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.data.Waypoint;
+import app.gpx_animator.core.data.gpx.GpxContentHandler;
+import app.gpx_animator.core.data.gpx.GpxParser;
 import app.gpx_animator.core.data.gpx.GpxPoint;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.framewriter.FileFrameWriter;
@@ -28,12 +30,15 @@ import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import app.gpx_animator.core.renderer.framewriter.NullFrameWriter;
 import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
 import app.gpx_animator.core.renderer.plugins.RendererPlugin;
-import app.gpx_animator.core.util.LinearInterpolation;
 import app.gpx_animator.core.util.PluginUtil;
 import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
+import app.gpx_animator.core.util.LinearInterpolation;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+
+import java.util.Objects;
+
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,8 +66,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
@@ -122,7 +125,7 @@ public final class Renderer {
         return new Color((int) r, (int) g, (int) b, (int) a);
     }
 
-    @SuppressWarnings({"checkstyle:InnerAssignment"}) // Checkstyle 8.37 can't handle the enhanced switch properly
+    @SuppressWarnings({ "checkstyle:InnerAssignment" }) // Checkstyle 8.37 can't handle the enhanced switch properly
     public void render(final RenderingContext rc) throws UserException {
         final var renderStartTime = LocalDateTime.now();
 
@@ -138,10 +141,10 @@ public final class Renderer {
         calculateMinMaxValues(userSpecifiedWidth, width, scale);
 
         timePointMapListList.forEach(timePointMapList -> timePointMapList
-                .forEach(timePointMap -> {
-                    translateCoordinatesToZeroZero(scale, timePointMap);
-                    interpolators.add(new LinearInterpolation(timePointMap));
-                }));
+                            .forEach(timePointMap -> {
+          translateCoordinatesToZeroZero(scale, timePointMap);
+          interpolators.add(new LinearInterpolation(timePointMap));
+        }));
         translateCoordinatesToZeroZero(scale, wpMap);
 
         final var frameFilePattern = cfg.getOutput().toString();
@@ -226,7 +229,7 @@ public final class Renderer {
         }
     }
 
-    @SuppressWarnings({"ParameterNumber", "java:S107", "java:S3776"}) // TODO refactoring in progress
+    @SuppressWarnings({ "ParameterNumber", "java:S107", "java:S3776" }) // TODO refactoring in progress
     private void renderFrames(@NonNull final List<RendererPlugin> plugins, @NonNull final BufferedImage bi,
                               final int realWidth, final int realHeight, final int viewportWidth, final int viewportHeight,
                               @NonNull final FrameWriter frameWriter, final int frames,
@@ -400,10 +403,12 @@ public final class Renderer {
             trackIndex++;
 
             final var inputGpxFile = trackConfiguration.getInputGpx();
+            final var gch = new GpxContentHandler();
+            GpxParser.parseGpx(inputGpxFile, gch);
 
             final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
-            final var pointLists = trackConfiguration.getPoints();
+            final var pointLists = gch.getPointLists();
             if (pointLists.isEmpty() || pointLists.stream().mapToInt(List::size).sum() == 0) {
                 throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
             }
@@ -413,7 +418,7 @@ public final class Renderer {
                 trimGpxData(timePointMap, trackConfiguration);
                 timePointMapList.add(timePointMap);
                 var oldestTimeAsDefaultForWaypoints = timePointMap.keySet().stream().min(Long::compareTo).orElse(Long.MIN_VALUE);
-                toTimePointMap(wpMap, trackIndex, trackConfiguration.getWayPoints(), oldestTimeAsDefaultForWaypoints);
+                toTimePointMap(wpMap, trackIndex, gch.getWaypointList(), oldestTimeAsDefaultForWaypoints);
                 mergeConnectedSpans(spanList, timePointMap);
             }
 
@@ -522,8 +527,8 @@ public final class Renderer {
     }
 
     private void keepFrame(@NonNull final List<RendererPlugin> plugins, @NonNull final RenderingContext rc,
-                           @NonNull final FrameWriter frameWriter, @Nullable final BufferedImage bi, final int frames,
-                           @NonNull final TreeMap<Long, Point2D> wpMap, @Nullable final Long keepFrame) throws UserException {
+                               @NonNull final FrameWriter frameWriter, @Nullable final BufferedImage bi, final int frames,
+                               @NonNull final TreeMap<Long, Point2D> wpMap, @Nullable final Long keepFrame) throws UserException {
         if (bi != null && keepFrame != null && keepFrame > 0) {
             drawWaypoints(bi, frames, wpMap);
             final var marker = drawMarker(bi, frames);
@@ -671,7 +676,7 @@ public final class Renderer {
             for (final var timePointMap : timePointMapList) {
                 final var interpolator = interpolators.get(trackIdx++);
                 final var ceilingEntry = timePointMap.ceilingEntry(t2);
-                point = Optional.ofNullable(interpolator.getPointAtTime(t2)).orElse(point);
+                point = interpolator.getPointAtTime(t2);
                 if (point == null) {
                     final var floorEntry = timePointMap.floorEntry(t2);
                     if (floorEntry == null) {
@@ -825,7 +830,7 @@ public final class Renderer {
     }
 
     private TreeMap<Long, Point2D> extractInterval(
-            final TreeMap<Long, Point2D> map, final long startTime, final long endTime, final LinearInterpolation interpolator
+        final TreeMap<Long, Point2D> map, final long startTime, final long endTime, final LinearInterpolation interpolator
     ) {
         var intervalMap = new TreeMap<Long, Point2D>(map.subMap(startTime, true, endTime, true));
         var firstPoint = interpolator.getPointAtTime(startTime);

@@ -22,22 +22,19 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
-import app.gpx_animator.core.data.LatLon;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.TrackIcon;
-import app.gpx_animator.core.data.gpx.GpxContentHandler;
-import app.gpx_animator.core.data.gpx.GpxParser;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import javax.xml.XMLConstants;
+
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.Color;
@@ -49,7 +46,6 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -57,7 +53,6 @@ import static app.gpx_animator.core.configuration.TrackConfiguration.DEFAULT_PRE
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class CommandLineConfigurationFactory {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommandLineConfigurationFactory.class);
 
     private final List<TrackIcon> trackIconList = new ArrayList<>();
     private final List<Boolean> mirrorTrackIconList = new ArrayList<>();
@@ -198,7 +193,6 @@ public final class CommandLineConfigurationFactory {
                         case WAYPOINT_SIZE -> cfg.waypointSize(Double.parseDouble(args[++i]));
                         case WIDTH -> cfg.width(Integer.parseInt(args[++i]));
                         case ZOOM -> cfg.zoom(Integer.parseInt(args[++i]));
-                        case SPLIT_MULTI_TRACKS -> cfg.splitMultiTracks(true);
                         case VERSION -> {
                             try (var pw = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8))) {
                                 pw.println(Constants.APPNAME_VERSION);
@@ -221,43 +215,18 @@ public final class CommandLineConfigurationFactory {
             }
         }
 
-        List<List<List<LatLon>>> allTracks = new ArrayList<>();
-        List<File> gpxFiles = new ArrayList<>();
-        List<List<LatLon>> allWaypoints = new ArrayList<>();
+        normalizeColors();
+        normalizePreDrawTrackColors();
+        normalizeLineWidths();
+        normalizeTrackIcons();
+        normalizeInputIcons();
+        normalizeMirrorTrackIcons();
+        normalizeTrimGpxStart();
+        normalizeTrimGpxEnd();
 
-        for (String gpx : inputGpxList) {
-            LOGGER.info("Input GPX #{} processing", gpx);
-            File inputGpx = new File(gpx);
-            final var gch = new GpxContentHandler();
-            GpxParser.parseGpx(inputGpx, gch);
-            var tracks = gch.getTracksLists();
-            var wayPoints = gch.getWaypointList();
-            if (cfg.isSplitMultiTracks()) {
-                allTracks.addAll(tracks);
-                gpxFiles.addAll(tracks.stream().map(it -> inputGpx).toList());
-                allWaypoints.addAll(tracks.stream().map(it -> wayPoints).toList());
-            } else {
-                allTracks.add(tracks.stream().flatMap(Collection::stream).toList());
-                gpxFiles.add(inputGpx);
-                allWaypoints.add(wayPoints);
-            }
-        }
-
-        normalizeColors(allTracks.size());
-        normalizePreDrawTrackColors(allTracks.size());
-        normalizeLineWidths(allTracks.size());
-        normalizeTrackIcons(allTracks.size());
-        normalizeInputIcons(allTracks.size());
-        normalizeMirrorTrackIcons(allTracks.size());
-        normalizeTrimGpxStart(allTracks.size());
-        normalizeTrimGpxEnd(allTracks.size());
-
-        for (int i = 0; i < allTracks.size(); i++) {
-            LOGGER.info("TRACK #{} processing", i);
+        for (int i = 0, n = inputGpxList.size(); i < n; i++) {
             final var tcb = TrackConfiguration.createBuilder();
-            tcb.inputGpx(gpxFiles.get(i));
-            tcb.points(allTracks.get(i));
-            tcb.wayPoints(allWaypoints.get(i));
+            tcb.inputGpx(new File(inputGpxList.get(i)));
             tcb.color(colorList.get(i));
             tcb.preDrawTrackColor(preDrawTrackColorList.get(i));
             tcb.lineWidth(lineWidthList.get(i));
@@ -285,101 +254,108 @@ public final class CommandLineConfigurationFactory {
         System.exit(0);
     }
 
-    private void normalizeColors(final int requiredSize) {
-        final var realSize = colorList.size();
-        if (realSize == 0) {
-            for (var i = 0; i < requiredSize; i++) {
-                colorList.add(Color.getHSBColor((float) i / requiredSize, 0.8f, 1f));
+    private void normalizeColors() {
+        final var size = inputGpxList.size();
+        final var size2 = colorList.size();
+        if (size2 == 0) {
+            for (var i = 0; i < size; i++) {
+                colorList.add(Color.getHSBColor((float) i / size, 0.8f, 1f));
             }
-        } else if (realSize < requiredSize) {
-            for (var i = realSize; i < requiredSize; i++) {
-                colorList.add(colorList.get(i - realSize));
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
+                colorList.add(colorList.get(i - size2));
             }
         }
     }
 
-    private void normalizePreDrawTrackColors(final int requiredSize) {
-        final var realSize = preDrawTrackColorList.size();
-        if (realSize == 0) {
-            for (var i = 0; i < requiredSize; i++) {
+    private void normalizePreDrawTrackColors() {
+        final var size = inputGpxList.size();
+        final var size2 = preDrawTrackColorList.size();
+        if (size2 == 0) {
+            for (var i = 0; i < size; i++) {
                 preDrawTrackColorList.add(DEFAULT_PRE_DRAW_TRACK_COLOR);
             }
-        } else if (realSize < requiredSize) {
-            for (var i = realSize; i < requiredSize; i++) {
-                preDrawTrackColorList.add(preDrawTrackColorList.get(i - realSize));
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
+                preDrawTrackColorList.add(preDrawTrackColorList.get(i - size2));
             }
         }
     }
 
-    private void normalizeLineWidths(final int requiredSize) {
-        final var realSize = lineWidthList.size();
-        if (realSize == 0) {
-            for (var i = 0; i < requiredSize; i++) {
+    private void normalizeLineWidths() {
+        final var size = inputGpxList.size();
+        final var size2 = lineWidthList.size();
+        if (size2 == 0) {
+            for (var i = 0; i < size; i++) {
                 lineWidthList.add(2f);
             }
-        } else if (realSize < requiredSize) {
-            for (var i = realSize; i < requiredSize; i++) {
-                lineWidthList.add(lineWidthList.get(i - realSize));
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
+                lineWidthList.add(lineWidthList.get(i - size2));
             }
         }
     }
 
-    private void normalizeTrackIcons(final int requiredSize) {
-        final var realSize = trackIconList.size();
-        if (realSize == 0) {
-            for (var i = 0; i < requiredSize; i++) {
+    private void normalizeTrackIcons() {
+        final var size = inputGpxList.size();
+        final var size2 = trackIconList.size();
+        if (size2 == 0) {
+            for (var i = 0; i < size; i++) {
                 trackIconList.add(new TrackIcon("", ""));
             }
-        } else if (realSize < requiredSize) {
-            for (var i = realSize; i < requiredSize; i++) {
-                trackIconList.add(trackIconList.get(i - realSize));
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
+                trackIconList.add(trackIconList.get(i - size2));
             }
         }
     }
 
-    private void normalizeInputIcons(final int requiredSize) {
-        final var realSize = inputIconList.size();
-        if (realSize == 0) {
-            for (var i = 0; i < requiredSize; i++) {
+    private void normalizeInputIcons() {
+        final var size = inputGpxList.size();
+        final var size2 = inputIconList.size();
+        if (size2 == 0) {
+            for (var i = 0; i < size; i++) {
                 inputIconList.add("dummy-input-icon");
             }
-        } else if (realSize < requiredSize) {
-            for (var i = realSize; i < requiredSize; i++) {
-                inputIconList.add(inputIconList.get(i - realSize));
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
+                inputIconList.add(inputIconList.get(i - size2));
             }
         }
     }
 
-    private void normalizeMirrorTrackIcons(final int requiredSize) {
-        final var realSize = mirrorTrackIconList.size();
-        if (realSize == 0) {
-            for (var i = 0; i < requiredSize; i++) {
+    private void normalizeMirrorTrackIcons() {
+        final var size = inputGpxList.size();
+        final var size2 = mirrorTrackIconList.size();
+        if (size2 == 0) {
+            for (var i = 0; i < size; i++) {
                 mirrorTrackIconList.add(false);
             }
-        } else if (realSize < requiredSize) {
-            for (var i = realSize; i < requiredSize; i++) {
-                mirrorTrackIconList.add(mirrorTrackIconList.get(i - realSize));
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
+                mirrorTrackIconList.add(mirrorTrackIconList.get(i - size2));
             }
         }
     }
 
-    private void normalizeTrimGpxStart(final int requiredSize) {
-        normalizeTrimGpx(requiredSize, trimGpxStartList);
+    private void normalizeTrimGpxStart() {
+        normalizeTrimGpx(inputGpxList, trimGpxStartList);
     }
 
-    private void normalizeTrimGpxEnd(final int requiredSize) {
-        normalizeTrimGpx(requiredSize, trimGpxEndList);
+    private void normalizeTrimGpxEnd() {
+        normalizeTrimGpx(inputGpxList, trimGpxEndList);
     }
 
-    private static void normalizeTrimGpx(final int requiredSize,
+    private static void normalizeTrimGpx(@NotNull final List<String> inputGpxList,
                                          @NotNull final List<Long> trimGpxList) {
+        final var size = inputGpxList.size();
         final var size2 = trimGpxList.size();
         if (size2 == 0) {
-            for (var i = 0; i < requiredSize; i++) {
+            for (var i = 0; i < size; i++) {
                 trimGpxList.add(0L);
             }
-        } else if (size2 < requiredSize) {
-            for (var i = size2; i < requiredSize; i++) {
+        } else if (size2 < size) {
+            for (var i = size2; i < size; i++) {
                 trimGpxList.add(trimGpxList.get(i - size2));
             }
         }
