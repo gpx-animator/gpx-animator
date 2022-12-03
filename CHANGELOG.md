@@ -17,6 +17,7 @@
 * Time per distance speed units now display as m:ss
 * GPS status with timeout (OK/LOST)
 * Smooth line drawing between track points
+* Support for multi-track GPX files
 
 ### Fixed bugs
 
