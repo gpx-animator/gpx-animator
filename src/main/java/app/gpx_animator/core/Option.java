@@ -90,7 +90,8 @@ public enum Option {
     SPEED_UNIT("speed-unit"),
     PREVIEW_LENGTH("preview-length"),
     GPS_TIMEOUT("gps-timeout"),
-    VERSION("version");
+    VERSION("version"),
+    SPLIT_MULTI_TRACKS("split-multi-tracks");
 
     private static final java.util.Map<String, Option> OPTION_MAP = new HashMap<>();
 
