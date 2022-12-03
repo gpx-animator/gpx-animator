@@ -142,7 +142,6 @@ public final class Configuration {
     @XmlElement(name = "trackConfiguration") //NON-NLS
     private List<TrackConfiguration> trackConfigurationList;
 
-    private boolean splitMultiTracks = false;
 
     // for JAXB
     @SuppressWarnings("unused")
@@ -166,8 +165,7 @@ public final class Configuration {
             final File photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final boolean preview, final Long previewLength,
             final long gpsTimeout,
-            final List<TrackConfiguration> trackConfigurationList,
-            final boolean splitMultiTracks) {
+            final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
         this.width = width;
@@ -222,7 +220,6 @@ public final class Configuration {
         this.preview = preview;
         this.previewLength = previewLength;
         this.gpsTimeout = gpsTimeout;
-        this.splitMultiTracks = splitMultiTracks;
     }
 
     public static Builder createBuilder() {
@@ -441,10 +438,6 @@ public final class Configuration {
         return Collections.unmodifiableList(trackConfigurationList);
     }
 
-    public boolean isSplitMultiTracks() {
-        return splitMultiTracks;
-    }
-
     private static File validateLogo(final File logo) {
         return logo != null && logo.isFile() ? logo : null;
     }
@@ -527,8 +520,6 @@ public final class Configuration {
         private Long previewLength;
         private long gpsTimeout = DEFAULT_GPS_TIMEOUT;
 
-        private boolean splitMultiTracks = false;
-
 
         public Configuration build() {
             return new Configuration(
@@ -547,8 +538,7 @@ public final class Configuration {
                     photoDirectory, photoTime, photoAnimationDuration,
                     preview, previewLength,
                     gpsTimeout,
-                    Collections.unmodifiableList(trackConfigurationList),
-                    splitMultiTracks
+                    Collections.unmodifiableList(trackConfigurationList)
             );
         }
 
@@ -816,15 +806,6 @@ public final class Configuration {
         public Builder gpsTimeout(final long gpsTimeout) {
             this.gpsTimeout = gpsTimeout;
             return this;
-        }
-
-        public Builder splitMultiTracks(final boolean splitMultiTracks) {
-            this.splitMultiTracks = splitMultiTracks;
-            return this;
-        }
-
-        public boolean isSplitMultiTracks() {
-            return this.splitMultiTracks;
         }
     }
 

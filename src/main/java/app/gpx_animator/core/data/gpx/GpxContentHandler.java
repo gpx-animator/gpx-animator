@@ -47,7 +47,6 @@ public final class GpxContentHandler extends DefaultHandler {
 
     private static final String ATTR_LON = "lon"; //NON-NLS
     private static final String ATTR_LAT = "lat"; //NON-NLS
-    private static final String ELEM_TRK = "trk"; //NON-NLS
     private static final String ELEM_TRKSEG = "trkseg"; //NON-NLS
     private static final String ELEM_TRKPT = "trkpt"; //NON-NLS
     private static final String ELEM_WPT = "wpt"; //NON-NLS
@@ -58,9 +57,7 @@ public final class GpxContentHandler extends DefaultHandler {
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final List<List<List<LatLon>>> timePointListListList = new ArrayList<>();
-
-    private List<List<LatLon>> timePointListList;
+    private final List<List<LatLon>> timePointListList = new ArrayList<>();
     private final List<LatLon> waypointList = new ArrayList<>();
     private List<LatLon> timePointList;
     private StringBuilder sb;
@@ -74,9 +71,7 @@ public final class GpxContentHandler extends DefaultHandler {
 
     @Override
     public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) {
-        if (isEqual(ELEM_TRK, qName)) {
-            timePointListList = new ArrayList<>();
-        } else if (isEqual(ELEM_TRKSEG, qName)) {
+        if (isEqual(ELEM_TRKSEG, qName)) {
             timePointList = new ArrayList<>();
         } else if (isEqual(ELEM_TRKPT, qName) || isEqual(ELEM_WPT, qName)) {
             lat = Double.parseDouble(attributes.getValue(ATTR_LAT));
@@ -101,10 +96,7 @@ public final class GpxContentHandler extends DefaultHandler {
     @Override
     @SuppressWarnings("PMD.NullAssignment") // XML parsing ending elements, it's okay here
     public void endElement(final String uri, final String localName, final String qName) {
-        if (isEqual(ELEM_TRK, qName)) {
-            timePointListListList.add(timePointListList);
-            timePointListList = null;
-        } else if (isEqual(ELEM_TRKSEG, qName)) {
+        if (isEqual(ELEM_TRKSEG, qName)) {
             timePointListList.add(timePointList);
             timePointList = null;
         } else if (isEqual(ELEM_TRKPT, qName)) {
@@ -139,13 +131,11 @@ public final class GpxContentHandler extends DefaultHandler {
 
         try {
             return ZonedDateTime.parse(sb.toString());
-        } catch (final DateTimeParseException ignored) {
-        }
+        } catch (final DateTimeParseException ignored) { }
 
         try {
             return LocalDateTime.parse(sb.toString()).atZone(ZoneId.systemDefault());
-        } catch (final DateTimeParseException ignored) {
-        }
+        } catch (final DateTimeParseException ignored) { }
 
         LOGGER.error("Unable to parse date and time from string '{}'", sb);
         throw new RuntimeException(
@@ -153,8 +143,8 @@ public final class GpxContentHandler extends DefaultHandler {
     }
 
 
-    public List<List<List<LatLon>>> getTracksLists() {
-        return Collections.unmodifiableList(timePointListListList);
+    public List<List<LatLon>> getPointLists() {
+        return Collections.unmodifiableList(timePointListList);
     }
 
 
