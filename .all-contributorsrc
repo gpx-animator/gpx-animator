@@ -297,6 +297,15 @@
       "contributions": [
         "design"
       ]
+    },
+    {
+      "login": "Melancholic",
+      "name": "Andrey N.",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2463361?v=4",
+      "profile": "https://github.com/Melancholic",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
