@@ -527,8 +527,8 @@ public final class Renderer {
     }
 
     private void keepFrame(@NonNull final List<RendererPlugin> plugins, @NonNull final RenderingContext rc,
-                           @NonNull final FrameWriter frameWriter, @Nullable final BufferedImage bi, final int frames,
-                           @NonNull final TreeMap<Long, Point2D> wpMap, @Nullable final Long keepFrame) throws UserException {
+                               @NonNull final FrameWriter frameWriter, @Nullable final BufferedImage bi, final int frames,
+                               @NonNull final TreeMap<Long, Point2D> wpMap, @Nullable final Long keepFrame) throws UserException {
         if (bi != null && keepFrame != null && keepFrame > 0) {
             drawWaypoints(bi, frames, wpMap);
             final var marker = drawMarker(bi, frames);
@@ -668,17 +668,22 @@ public final class Renderer {
         final var t2 = getTime(frame);
         final var trackConfigurationList = cfg.getTrackConfigurationList();
 
+        var i = 0;
         var trackIdx = 0;
         outer:
-        for (int i = 0; i < timePointMapListList.size(); i++) {
-            var timePointMapList = timePointMapListList.get(i);
-            final var trackConfiguration = trackConfigurationList.get(i);
+        for (final var timePointMapList : timePointMapListList) {
+            final var trackConfiguration = trackConfigurationList.get(i++);
             for (final var timePointMap : timePointMapList) {
                 final var interpolator = interpolators.get(trackIdx++);
                 final var ceilingEntry = timePointMap.ceilingEntry(t2);
                 point = interpolator.getPointAtTime(t2);
                 if (point == null) {
-                    continue;
+                    final var floorEntry = timePointMap.floorEntry(t2);
+                    if (floorEntry == null) {
+                        continue;
+                    } else {
+                        point = floorEntry.getValue();
+                    }
                 }
 
                 g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
