@@ -60,7 +60,7 @@ public final class DurationSpinnerModel extends AbstractSpinnerModel {
         this.field = field;
     }
 
-    @SuppressWarnings("PMD.MissingBreakInSwitch") // Calculations actions sum up from top to down
+    @SuppressWarnings({ "PMD.ImplicitSwitchFallThrough", "PMD.MissingBreakInSwitch" }) // Calculations actions sum up from top to bottom
     private long getDiffMs() {
         long add = 1;
         switch (field) {

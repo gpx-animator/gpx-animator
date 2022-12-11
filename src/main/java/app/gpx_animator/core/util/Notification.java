@@ -39,7 +39,7 @@ public enum Notification {
     private static final Logger LOGGER = LoggerFactory.getLogger(Notification.class);
 
     private static TrayIcon trayIcon;
-    private static boolean isSupported;
+    private static boolean thisPlatformSupportsNotifications;
 
     private final TrayIcon.MessageType type;
 
@@ -63,15 +63,15 @@ public enum Notification {
             trayIcon = new TrayIcon(image, Constants.APPNAME_VERSION);
             trayIcon.setImageAutoSize(true);
             systemTray.add(trayIcon);
-            isSupported = true;
+            thisPlatformSupportsNotifications = true;
         } catch (final Exception e) {
-            isSupported = false;
+            thisPlatformSupportsNotifications = false;
             LOGGER.warn("Notifications not supported on this platform!", e);
         }
     }
 
     public static boolean isSupported() {
-        return isSupported;
+        return thisPlatformSupportsNotifications;
     }
 
 }

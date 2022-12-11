@@ -68,7 +68,7 @@ public enum SpeedUnit {
         return abbreviation;
     }
 
-    public boolean displayMinutes() {
+    public boolean isDisplayMinutes() {
         return displayMinutes;
     }
 

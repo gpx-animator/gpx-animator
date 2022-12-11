@@ -47,7 +47,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     private long minTime;
     private double speedup;
     private int frames;
-    private long gpsTimeout;
+    private final long gpsTimeout;
 
     private final Map<Integer, Double> speedValues = new HashMap<>();
     private GpxPoint lastSpeedPoint = null;
@@ -127,7 +127,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     public String getSpeedString(final Point2D point, final long time, final int frame) {
         if (point instanceof GpxPoint gpxPoint) {
             final var speed = calculateSpeedForDisplay(gpxPoint, time, frame);
-            if (speedUnit.displayMinutes()) {
+            if (speedUnit.isDisplayMinutes()) {
                 final var format = "%d:%02d %s";
                 return format.formatted((int) speed, (int) ((speed - (int) speed) * 60), speedUnit.getAbbreviation()); // Display minutes and seconds
             } else {
