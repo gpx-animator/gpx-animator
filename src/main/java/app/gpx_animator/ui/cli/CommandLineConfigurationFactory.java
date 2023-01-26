@@ -176,6 +176,7 @@ public final class CommandLineConfigurationFactory {
                             cfg.tailColor(new Color(lvTailColor < Integer.MAX_VALUE
                                     ? (int) lvTailColor : (int) (0xffffffff00000000L | lvTailColor), true));
                         }
+                        case TAIL_COLOR_FADEOUT -> cfg.tailColorFadeout(Boolean.parseBoolean(args[++i]));
                         case TIME_OFFSET -> {
                             final var s2 = args[++i].trim();
                             timeOffsetList.add(s2.isEmpty() ? null : Long.valueOf(s2)); // NOPMD -- null = not set
