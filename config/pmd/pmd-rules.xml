@@ -7,7 +7,7 @@
     <description>Project specific PMD Ruleset</description>
 
     <rule ref="category/java/errorprone.xml">
-        <exclude name="BeanMembersShouldSerialize" />
         <exclude name="DataflowAnomalyAnalysis" />
+        <exclude name="NonSerializableClass" />
     </rule>
 </ruleset>
