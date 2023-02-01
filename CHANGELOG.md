@@ -6,6 +6,7 @@
 
 ### New features
 
+* Support for Apple Silicon (M1/M2) processors
 * Support for MPEG-H Part2/HEVC (H.265) codec
 * Preview the rendering of the map
 * Make the content of the information box configurable
