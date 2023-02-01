@@ -103,7 +103,7 @@ public final class Renderer {
 
     private ArrayList<LinearInterpolation> interpolators = new ArrayList<LinearInterpolation>();
 
-    public Renderer(final Configuration cfg) throws UserException {
+    public Renderer(@NonNull final Configuration cfg) throws UserException {
         this.cfg = cfg.validate();
         this.recentMarkers = new LinkedList<>();
     }
@@ -116,7 +116,9 @@ public final class Renderer {
         return Math.log(Math.tan(Math.PI / 4 + Math.toRadians(lat) / 2));
     }
 
-    private static Color blendTailColor(final Color tailColor, final Color trackColor, final float ratio) {
+    private static Color blendTailColor(@NonNull final Color tailColor,
+                                        @NonNull final Color trackColor,
+                                        final float ratio) {
         var r = ((double) (1 - ratio)) * tailColor.getRed() + (double) ratio * trackColor.getRed();
         var g = ((double) (1 - ratio)) * tailColor.getGreen() + (double) ratio * trackColor.getGreen();
         var b = ((double) (1 - ratio)) * tailColor.getBlue() + (double) ratio * trackColor.getBlue();
@@ -126,7 +128,7 @@ public final class Renderer {
     }
 
     @SuppressWarnings({ "checkstyle:InnerAssignment" }) // Checkstyle 8.37 can't handle the enhanced switch properly
-    public void render(final RenderingContext rc) throws UserException {
+    public void render(@NonNull final RenderingContext rc) throws UserException {
         final var renderStartTime = LocalDateTime.now();
 
         final List<Long[]> spanList = new ArrayList<>();
@@ -210,7 +212,9 @@ public final class Renderer {
         }
     }
 
-    private void calculateMinMaxValues(final boolean userSpecifiedWidth, final int width, final double scale) {
+    private void calculateMinMaxValues(final boolean userSpecifiedWidth,
+                                       final int width,
+                                       final double scale) {
         minX -= cfg.getMargin() / scale;
         maxX += cfg.getMargin() / scale;
         minY -= cfg.getMargin() / scale;
@@ -230,11 +234,18 @@ public final class Renderer {
     }
 
     @SuppressWarnings({ "ParameterNumber", "java:S107", "java:S3776" }) // TODO refactoring in progress
-    private void renderFrames(@NonNull final List<RendererPlugin> plugins, @NonNull final BufferedImage bi,
-                              final int realWidth, final int realHeight, final int viewportWidth, final int viewportHeight,
-                              @NonNull final FrameWriter frameWriter, final int frames,
-                              @NonNull final List<Long[]> spanList, @NonNull final TreeMap<Long, Point2D> wpMap,
-                              @NonNull final RenderingContext rc, @NonNull final LocalDateTime renderStartTime) throws UserException {
+    private void renderFrames(@NonNull final List<RendererPlugin> plugins,
+                              @NonNull final BufferedImage bi,
+                              final int realWidth,
+                              final int realHeight,
+                              final int viewportWidth,
+                              final int viewportHeight,
+                              @NonNull final FrameWriter frameWriter,
+                              final int frames,
+                              @NonNull final List<Long[]> spanList,
+                              @NonNull final TreeMap<Long, Point2D> wpMap,
+                              @NonNull final RenderingContext rc,
+                              @NonNull final LocalDateTime renderStartTime) throws UserException {
         final var remainingTimeCalculator = new RemainingTimeCalculator(renderStartTime, frames);
         final var stopAfterFrame = cfg.getPreviewLength() == null
                 ? cfg.isPreview() ? 1 : Long.MAX_VALUE
@@ -320,13 +331,16 @@ public final class Renderer {
         }
     }
 
-    private void preDrawTracks(@NonNull final BufferedImage bi, final int frames) {
+    private void preDrawTracks(@NonNull final BufferedImage bi,
+                               final int frames) {
         if (cfg.isPreDrawTrack()) {
             paint(bi, frames, getTime(frames) - getTime(0), null, true);
         }
     }
 
-    private BufferedImage createBufferedImage(final int width, final int height, @Nullable final Integer zoom) throws UserException {
+    private BufferedImage createBufferedImage(final int width,
+                                              final int height,
+                                              @Nullable final Integer zoom) throws UserException {
         try {
             return new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         } catch (final IllegalArgumentException | NegativeArraySizeException e) {
@@ -335,9 +349,12 @@ public final class Renderer {
         }
     }
 
-    private BufferedImage applyViewport(final BufferedImage bi, final Point2D marker,
-                                        final int realWidth, final int realHeight,
-                                        final int viewportWidth, final int viewportHeight) {
+    private BufferedImage applyViewport(@NonNull final BufferedImage bi,
+                                        @NonNull final Point2D marker,
+                                        final int realWidth,
+                                        final int realHeight,
+                                        final int viewportWidth,
+                                        final int viewportHeight) {
         if (viewportHeight == realHeight && viewportWidth == realWidth) {
             return bi;
         }
@@ -378,7 +395,8 @@ public final class Renderer {
         return bi.getSubimage((int) x, (int) y, viewportWidth, viewportHeight);
     }
 
-    private float renderFlashback(final float skip, final BufferedImage bi2) {
+    private float renderFlashback(final float skip,
+                                  @NonNull final BufferedImage bi2) {
         final var flashbackColor = cfg.getFlashbackColor();
         if (skip > 0f && flashbackColor.getAlpha() > 0 && cfg.getFlashbackDuration() != null && cfg.getFlashbackDuration() > 0) {
             final var g2 = (Graphics2D) bi2.getGraphics();
@@ -390,14 +408,16 @@ public final class Renderer {
         return skip;
     }
 
-    private void drawBackground(@NonNull final List<RendererPlugin> plugins, @NonNull final BufferedImage bi)
+    private void drawBackground(@NonNull final List<RendererPlugin> plugins,
+                                @NonNull final BufferedImage bi)
             throws UserException {
         for (final var plugin : plugins) {
             plugin.renderBackground(bi);
         }
     }
 
-    private void parseGPX(final List<Long[]> spanList, final TreeMap<Long, Point2D> wpMap) throws UserException {
+    private void parseGPX(@NonNull final List<Long[]> spanList,
+                          @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
         var trackIndex = -1;
         for (final var trackConfiguration : cfg.getTrackConfigurationList()) {
             trackIndex++;
@@ -427,7 +447,8 @@ public final class Renderer {
         }
     }
 
-    private int calculateRealHeight(final double scale, final boolean toImages) {
+    private int calculateRealHeight(final double scale,
+                                    final boolean toImages) {
         var realHeight = (int) Math.round(((maxY - minY) * scale));
         if (realHeight % 2 != 0 && cfg.getHeight() == null && !toImages) {
             realHeight++;
@@ -435,7 +456,9 @@ public final class Renderer {
         return realHeight;
     }
 
-    private int calculateRealWidth(final boolean userSpecifiedWidth, final double scale, final boolean toImages) {
+    private int calculateRealWidth(final boolean userSpecifiedWidth,
+                                   final double scale,
+                                   final boolean toImages) {
         var realWidth = (int) Math.round(((maxX - minX) * scale));
         if (realWidth % 2 != 0 && !userSpecifiedWidth && !toImages) {
             realWidth++;
@@ -443,7 +466,8 @@ public final class Renderer {
         return realWidth;
     }
 
-    private void translateCoordinatesToZeroZero(final double scale, final TreeMap<Long, Point2D> timePointMap) {
+    private void translateCoordinatesToZeroZero(final double scale,
+                                                @NonNull final TreeMap<Long, Point2D> timePointMap) {
         if (!timePointMap.isEmpty()) {
             maxTime = Math.max(maxTime, timePointMap.lastKey());
             minTime = Math.min(minTime, timePointMap.firstKey());
@@ -454,7 +478,8 @@ public final class Renderer {
         }
     }
 
-    private void mergeConnectedSpans(final List<Long[]> spanList, final TreeMap<Long, Point2D> timePointMap) {
+    private void mergeConnectedSpans(@NonNull final List<Long[]> spanList,
+                                     @NonNull final TreeMap<Long, Point2D> timePointMap) {
         if (timePointMap.isEmpty()) {
             return;
         }
@@ -484,7 +509,8 @@ public final class Renderer {
         spanList.add(new Long[]{t0, t1});
     }
 
-    private Integer calculateZoomFactor(final RenderingContext rc, final int width) {
+    private Integer calculateZoomFactor(@NonNull final RenderingContext rc,
+                                        final int width) {
         final Integer zoom;
 
         if (cfg.getTmsUrlTemplate() != null && cfg.getZoom() == null) {
@@ -505,13 +531,15 @@ public final class Renderer {
         return zoom;
     }
 
-    private double calculateScaleFactor(final int width, final Integer zoom) {
+    private double calculateScaleFactor(final int width,
+                                        final Integer zoom) {
         return zoom == null
                 ? (width - cfg.getMargin() * 2) / (maxX - minX)
                 : (128.0 * (1 << zoom)) / Math.PI;
     }
 
-    private void trimGpxData(final TreeMap<Long, Point2D> timePointMap, final TrackConfiguration trackConfiguration) {
+    private void trimGpxData(@NonNull final TreeMap<Long, Point2D> timePointMap,
+                             @NonNull final TrackConfiguration trackConfiguration) {
 
         final var trimGpxStart = trackConfiguration.getTrimGpxStart();
         if (trimGpxStart != null && trimGpxStart > 0 && timePointMap.size() > 0) {
@@ -526,9 +554,13 @@ public final class Renderer {
         }
     }
 
-    private void keepFrame(@NonNull final List<RendererPlugin> plugins, @NonNull final RenderingContext rc,
-                               @NonNull final FrameWriter frameWriter, @Nullable final BufferedImage bi, final int frames,
-                               @NonNull final TreeMap<Long, Point2D> wpMap, @Nullable final Long keepFrame) throws UserException {
+    private void keepFrame(@NonNull final List<RendererPlugin> plugins,
+                           @NonNull final RenderingContext rc,
+                           @NonNull final FrameWriter frameWriter,
+                           @Nullable final BufferedImage bi,
+                           final int frames,
+                           @NonNull final TreeMap<Long, Point2D> wpMap,
+                           @Nullable final Long keepFrame) throws UserException {
         if (bi != null && keepFrame != null && keepFrame > 0) {
             drawWaypoints(bi, frames, wpMap);
             final var marker = drawMarker(bi, frames);
@@ -550,7 +582,9 @@ public final class Renderer {
         }
     }
 
-    private void drawWaypoints(final BufferedImage bi, final int frame, final TreeMap<Long, Point2D> wpMap) {
+    private void drawWaypoints(@NonNull final BufferedImage bi,
+                               final int frame,
+                               @NonNull final TreeMap<Long, Point2D> wpMap) {
         final var waypointSize = cfg.getWaypointSize();
         if (waypointSize == null || waypointSize == 0.0 || wpMap.isEmpty()) {
             return;
@@ -575,11 +609,14 @@ public final class Renderer {
         }
     }
 
-    private Ellipse2D.Double createMarker(final Double size, final Point2D point) {
+    private Ellipse2D.Double createMarker(@NonNull final Double size,
+                                          @NonNull final Point2D point) {
         return new Ellipse2D.Double(point.getX() - size / 2.0, point.getY() - size / 2.0, size, size);
     }
 
-    private void toTimePointMap(@NonNull final TreeMap<Long, Point2D> timePointMap, final int trackIndex, @NonNull final List<LatLon> latLonList,
+    private void toTimePointMap(@NonNull final TreeMap<Long, Point2D> timePointMap,
+                                final int trackIndex,
+                                @NonNull final List<LatLon> latLonList,
                                 final long defaultTimeIfMissing) throws UserException {
         long forcedTime = 0;
 
@@ -657,7 +694,8 @@ public final class Renderer {
         }
     }
 
-    private Point2D drawMarker(final BufferedImage bi, final int frame) throws UserException {
+    private Point2D drawMarker(@NonNull final BufferedImage bi,
+                               final int frame) throws UserException {
         if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {
             return null;
         }
@@ -717,7 +755,8 @@ public final class Renderer {
         return point;
     }
 
-    private void drawSimpleCircleOnGraphics2D(final Point2D point, final Graphics2D g2) {
+    private void drawSimpleCircleOnGraphics2D(@NonNull final Point2D point,
+                                              @NonNull final Graphics2D g2) {
 
         final double markerSize = cfg.getMarkerSize();
 
@@ -728,19 +767,28 @@ public final class Renderer {
         g2.draw(marker);
     }
 
-    private void drawIconOnGraphics2D(final Point2D point, final Graphics2D g2, final TrackIcon trackIcon, final boolean mirrorTrackIcon)
+    private void drawIconOnGraphics2D(@NonNull final Point2D point,
+                                      @NonNull final Graphics2D g2,
+                                      @NonNull final TrackIcon trackIcon,
+                                      final boolean mirrorTrackIcon)
             throws IOException {
         final var trackIconImage = ImageIO.read(requireNonNull(getClass().getResource(trackIcon.getFilename())));
         drawImageOnGraphics2D(point, g2, trackIconImage, mirrorTrackIcon);
     }
 
-    private void drawIconFileOnGraphics2D(final Point2D point, final Graphics2D g2, final File trackIconFile, final boolean mirrorTrackIcon)
+    private void drawIconFileOnGraphics2D(@NonNull final Point2D point,
+                                          @NonNull final Graphics2D g2,
+                                          @NonNull final File trackIconFile,
+                                          final boolean mirrorTrackIcon)
             throws IOException {
         final var trackIconImage = ImageIO.read(trackIconFile);
         drawImageOnGraphics2D(point, g2, trackIconImage, mirrorTrackIcon);
     }
 
-    private void drawImageOnGraphics2D(final Point2D point, final Graphics2D g2, final BufferedImage trackIconImage, final boolean mirrorTrackIcon)
+    private void drawImageOnGraphics2D(@NonNull final Point2D point,
+                                       @NonNull final Graphics2D g2,
+                                       @NonNull final BufferedImage trackIconImage,
+                                       final boolean mirrorTrackIcon)
             throws IOException {
         var image = trackIconImage;
         final var at = new AffineTransform();
@@ -759,7 +807,11 @@ public final class Renderer {
         g2.drawImage(image, at, null);
     }
 
-    private void paint(final BufferedImage bi, final int frame, final long backTime, final Color overrideColor, final boolean isPreDrawTrack) {
+    private void paint(@NonNull final BufferedImage bi,
+                       final int frame,
+                       final long backTime,
+                       @NonNull final Color overrideColor,
+                       final boolean isPreDrawTrack) {
         final var g2 = getGraphics(bi);
 
         final var time = getTime(frame);
@@ -829,9 +881,10 @@ public final class Renderer {
         }
     }
 
-    private TreeMap<Long, Point2D> extractInterval(
-        final TreeMap<Long, Point2D> map, final long startTime, final long endTime, final LinearInterpolation interpolator
-    ) {
+    private TreeMap<Long, Point2D> extractInterval(@NonNull final TreeMap<Long, Point2D> map,
+                                                   final long startTime,
+                                                   final long endTime,
+                                                   @NonNull final LinearInterpolation interpolator) {
         var intervalMap = new TreeMap<Long, Point2D>(map.subMap(startTime, true, endTime, true));
         var firstPoint = interpolator.getPointAtTime(startTime);
         if (firstPoint != null) {
@@ -848,7 +901,11 @@ public final class Renderer {
         return RenderUtil.getTime(frame, minTime, cfg.getFps(), speedup);
     }
 
-    private void printText(@NonNull final Graphics2D g2, @Nullable final String text, final float x, final float y, @NonNull final Font font) {
+    private void printText(@NonNull final Graphics2D g2,
+                           @Nullable final String text,
+                           final float x,
+                           final float y,
+                           @NonNull final Font font) {
         final var frc = g2.getFontRenderContext();
         g2.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         final var height = g2.getFontMetrics(font).getHeight();
@@ -886,7 +943,7 @@ public final class Renderer {
         }
 
         @Override
-        public boolean equals(final Object o) {
+        public boolean equals(@Nullable final Object o) {
             if (this == o) {
                 return true;
             }
@@ -918,7 +975,8 @@ public final class Renderer {
         private long lastRuntime;
         private String lastResult;
 
-        RemainingTimeCalculator(@NonNull final LocalDateTime renderStartTime, final long frames) {
+        RemainingTimeCalculator(@NonNull final LocalDateTime renderStartTime,
+                                final long frames) {
             this.numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
             this.renderStartTime = renderStartTime;
             this.frames = frames;
