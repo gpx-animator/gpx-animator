@@ -13,7 +13,7 @@
 * Configure the width of the pre-draw line 
 * Delete cached map tiles in preferences dialog
 * New configuration option to specify the user agent when downloading map data
-* New speed unit (/500m)
+* New speed unit (min/500m)
 * Time per distance speed units now display as m:ss
 * GPS status with timeout (OK/LOST)
 * Smooth line drawing between track points
