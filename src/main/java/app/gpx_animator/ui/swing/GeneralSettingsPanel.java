@@ -768,7 +768,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcLabelApiKey.gridx = 0;
         gbcLabelApiKey.gridy = ++rowCounter;
         add(lblApiKey, gbcLabelApiKey);
-        
+
         tmsApiKey = new JTextField();
         tmsApiKey.setToolTipText(Option.TMS_USER_AGENT.getHelp());
         // tmsApiKey.setPlaceholder(Constants.USER_AGENT);
