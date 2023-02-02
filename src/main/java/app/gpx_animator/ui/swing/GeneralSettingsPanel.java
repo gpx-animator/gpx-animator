@@ -42,6 +42,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -109,6 +110,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final JSpinner tailDurationSpinner;
     private final JSpinner fpsSpinner;
     private final JComboBox<MapTemplate> tmsUrlTemplateComboBox;
+    private final JTextField tmsApiKey;
     private final JPlaceholderTextField tmsUserAgent;
     private final JComboBox<SpeedUnit> speedUnitComboBox;
     private final JSlider backgroundMapVisibilitySlider;
@@ -144,7 +146,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/gpx-animator/gpx-animator/issues/60
     GeneralSettingsPanel() {
         var rowCounter = 0;
-        final var maxRows = 45;
+        final var maxRows = 46;
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final var gridBagLayout = new GridBagLayout();
@@ -757,6 +759,25 @@ abstract class GeneralSettingsPanel extends JPanel {
                 zoomSpinner.setValue(maxZoom);
             }
         });
+
+        // include API-key
+        final var lblApiKey = new JLabel(resourceBundle.getString("ui.panel.generalsettings.apikey.label"));
+        final var gbcLabelApiKey = new GridBagConstraints();
+        gbcLabelApiKey.anchor = GridBagConstraints.LINE_END;
+        gbcLabelApiKey.insets = new Insets(0, 0, 5, 5);
+        gbcLabelApiKey.gridx = 0;
+        gbcLabelApiKey.gridy = ++rowCounter;
+        add(lblApiKey, gbcLabelApiKey);
+        
+        tmsApiKey = new JTextField();
+        tmsApiKey.setToolTipText(Option.TMS_USER_AGENT.getHelp());
+        // tmsApiKey.setPlaceholder(Constants.USER_AGENT);
+        final var gbcTmsApiKey = new GridBagConstraints();
+        gbcTmsApiKey.fill = GridBagConstraints.HORIZONTAL;
+        gbcTmsApiKey.insets = new Insets(0, 0, 5, 0);
+        gbcTmsApiKey.gridx = 1;
+        gbcTmsApiKey.gridy = rowCounter;
+        add(tmsApiKey, gbcTmsApiKey);
 
         final var lblTmsUserAgent = new JLabel(resourceBundle.getString("ui.panel.generalsettings.useragent.label"));
         final var gbcLabelTmsUserAgent = new GridBagConstraints();
@@ -1480,6 +1501,7 @@ abstract class GeneralSettingsPanel extends JPanel {
             });
         }
 
+        tmsApiKey.setText(c.getTmsApiKey());
         tmsUserAgent.setText(c.getTmsUserAgent());
 
         informationTextArea.setText(c.getInformation());
@@ -1545,6 +1567,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .keepLastFrame((Long) keepLastFrameSpinner.getValue())
                 .backgroundMapVisibility(backgroundMapVisibilitySlider.getValue() / 100f)
                 .tmsUrlTemplate(tmsUrlTemplate == null || tmsUrlTemplate.isBlank() ? null : tmsUrlTemplate) // NOPMD -- null = not set
+                .tmsApiKey((tmsApiKey.getText()))
                 .tmsUserAgent((tmsUserAgent.getText()))
                 .logoPosition((Position) logoLocationComboBox.getSelectedItem())
                 .informationPosition((Position) informationLocationComboBox.getSelectedItem())
