@@ -77,6 +77,7 @@ public final class Configuration {
 
     private float backgroundMapVisibility;
     private String tmsUrlTemplate;
+    private String tmsApiKey;
     private String tmsUserAgent;
 
     private boolean skipIdle;
@@ -153,7 +154,7 @@ public final class Configuration {
             final int margin, final Integer width, final Integer height, final Integer zoom,
             final Integer viewportWidth, final Integer viewportHeight, final Integer viewportInertia,
             final Double speedup, final long tailDuration, final Color tailColor, final boolean tailColorFadeout, final double fps,
-            final Long totalTime, final float backgroundMapVisibility, final String tmsUrlTemplate, final String tmsUserAgent,
+            final Long totalTime, final float backgroundMapVisibility, final String tmsUrlTemplate, final String tmsApiKey, final String tmsUserAgent,
             final boolean skipIdle, final Color backgroundColor, final File backgroundImage, final Color flashbackColor,
             final Long flashbackDuration, final boolean preDrawTrack, final Long keepFirstFrame, final Long keepLastFrame, final File output,
             final VideoCodec videoCodec, final String attribution, final String information, final SpeedUnit speedUnit, final Font font,
@@ -182,6 +183,7 @@ public final class Configuration {
         this.totalTime = totalTime;
         this.backgroundMapVisibility = backgroundMapVisibility;
         this.tmsUrlTemplate = tmsUrlTemplate;
+        this.tmsApiKey = tmsApiKey;
         this.tmsUserAgent = tmsUserAgent;
         this.skipIdle = skipIdle;
         this.preDrawTrack = preDrawTrack;
@@ -288,6 +290,10 @@ public final class Configuration {
 
     public String getTmsUrlTemplate() {
         return tmsUrlTemplate;
+    }
+
+    public String getTmsApiKey() {
+        return tmsApiKey;
     }
 
     public String getTmsUserAgent() {
@@ -482,6 +488,7 @@ public final class Configuration {
         private Long totalTime;
         private float backgroundMapVisibility = 0.5f;
         private String tmsUrlTemplate = "";
+        private String tmsApiKey = "";
         private String tmsUserAgent = "";
         private boolean skipIdle = true;
         private boolean preDrawTrack = false;
@@ -526,7 +533,7 @@ public final class Configuration {
                     margin, width, height, zoom,
                     viewportWidth, viewportHeight, viewportInertia,
                     speedup, tailDuration, tailColor, tailColorFadeout, fps, totalTime,
-                    backgroundMapVisibility, tmsUrlTemplate, tmsUserAgent,
+                    backgroundMapVisibility, tmsUrlTemplate, tmsApiKey, tmsUserAgent,
                     skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
                     preDrawTrack, keepFirstFrame, keepLastFrame, output, videoCodec, attribution, information,
                     speedUnit, font, markerSize, waypointFont, waypointSize,
@@ -615,6 +622,11 @@ public final class Configuration {
 
         public Builder tmsUrlTemplate(final String tmsUrlTemplate) {
             this.tmsUrlTemplate = tmsUrlTemplate;
+            return this;
+        }
+
+        public Builder tmsApiKey(final String tmsApiKey) {
+            this.tmsApiKey = tmsApiKey;
             return this;
         }
 

@@ -41,6 +41,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final String tmsUrlTemplate;
+    private final String tmsApiKey;
     private final String tmsUserAgent;
     private final float backgroundMapVisibility;
 
@@ -54,6 +55,7 @@ public final class BackgroundMapPlugin implements RendererPlugin {
 
     public BackgroundMapPlugin(@NonNull final Configuration configuration) {
         tmsUrlTemplate = configuration.getTmsUrlTemplate();
+        tmsApiKey = configuration.getTmsApiKey();
         tmsUserAgent = configuration.getTmsUserAgent();
         backgroundMapVisibility = configuration.getBackgroundMapVisibility();
     }
@@ -118,7 +120,8 @@ public final class BackgroundMapPlugin implements RendererPlugin {
                 var url = tmsUrlTemplate
                         .replace("{zoom}", Integer.toString(zoom)) //NON-NLS
                         .replace("{x}", Integer.toString(x)) //NON-NLS
-                        .replace("{y}", Integer.toString(y)); //NON-NLS
+                        .replace("{y}", Integer.toString(y)) //NON-NLS
+                        .replace("{apikey}", tmsApiKey); //NON-NLS
 
                 if (options != null) {
                     final var sb = new StringBuilder();
