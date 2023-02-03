@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-33-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-34-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -92,6 +92,7 @@ Special thanks for all these wunderful people who had helped this project so far
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Interactiondesigner"><img src="https://avatars.githubusercontent.com/u/17220369?v=4?s=100" width="100px;" alt="Interactiondesigner"/><br /><sub><b>Interactiondesigner</b></sub></a><br /><a href="#design-Interactiondesigner" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Melancholic"><img src="https://avatars.githubusercontent.com/u/2463361?v=4?s=100" width="100px;" alt="Andrey N."/><br /><sub><b>Andrey N.</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=Melancholic" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ky0n"><img src="https://avatars.githubusercontent.com/u/30866028?v=4?s=100" width="100px;" alt="Hendrik"/><br /><sub><b>Hendrik</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/issues?q=author%3Aky0n" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/FadriPestalozzi"><img src="https://avatars.githubusercontent.com/u/16454272?v=4?s=100" width="100px;" alt="FadriPestalozzi"/><br /><sub><b>FadriPestalozzi</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=FadriPestalozzi" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
