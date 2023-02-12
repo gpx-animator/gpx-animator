@@ -335,6 +335,14 @@ public final class MainFrame extends JFrame {
         changelogMenu.addActionListener(e -> SwingUtilities.invokeLater(this::showChangelog));
         mnHelp.add(changelogMenu);
 
+        final var logViewerMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.logViewer"));
+        logViewerMenu.addActionListener(e -> {
+            final var logViewerDialog = new LogViewerDialog(MainFrame.this);
+            logViewerDialog.setLocationRelativeTo(MainFrame.this);
+            logViewerDialog.setVisible(true);
+        });
+        mnHelp.add(logViewerMenu);
+
         final var contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
