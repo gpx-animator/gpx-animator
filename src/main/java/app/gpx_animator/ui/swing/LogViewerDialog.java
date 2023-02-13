@@ -50,10 +50,10 @@ public class LogViewerDialog extends EscapeDialog {
         contentPanel.add(scrollPlane);
 
         final var buttonPanel = new JPanel();
-        final var copyAllLogButton = new JButton("Copy all");
+        final var copyAllLogButton = new JButton(resourceBundle.getString("ui.dialog.logviewer.copyallbutton"));
         copyAllLogButton.addActionListener(e -> copyLog(lines));
         buttonPanel.add(copyAllLogButton);
-        final var copy50LogButton = new JButton("Copy 50 lines");
+        final var copy50LogButton = new JButton(resourceBundle.getString("ui.dialog.logviewer.copy50lines"));
         copy50LogButton.addActionListener(e -> {
             var copyLog = lines.stream().limit(50).toList();
             copyLog(copyLog);
