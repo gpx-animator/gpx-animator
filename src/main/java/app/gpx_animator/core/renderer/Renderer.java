@@ -39,6 +39,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 
 import java.util.Objects;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -810,7 +811,7 @@ public final class Renderer {
     private void paint(@NonNull final BufferedImage bi,
                        final int frame,
                        final long backTime,
-                       @NonNull final Color overrideColor,
+                       @Nullable final Color overrideColor,
                        final boolean isPreDrawTrack) {
         final var g2 = getGraphics(bi);
 
@@ -864,7 +865,7 @@ public final class Renderer {
                                 drawSegment = true;
                             } else {
                                 final var ratio = (backTime - time + entry.getKey()) * 1f / backTime;
-                                if (ratio > 0) {
+                                if (overrideColor != null && ratio > 0) {
                                     g2.setPaint(blendTailColor(trackConfiguration.getColor(), overrideColor, ratio));
                                     drawSegment = true;
                                 }
@@ -943,6 +944,7 @@ public final class Renderer {
         }
 
         @Override
+        @SuppressFBWarnings("NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION")
         public boolean equals(@Nullable final Object o) {
             if (this == o) {
                 return true;
