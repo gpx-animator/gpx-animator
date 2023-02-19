@@ -770,7 +770,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         add(lblApiKey, gbcLabelApiKey);
 
         tmsApiKey = new JTextField();
-        tmsApiKey.setToolTipText(Option.TMS_USER_AGENT.getHelp());
+        tmsApiKey.setToolTipText(Option.TMS_API_KEY.getHelp());
         // tmsApiKey.setPlaceholder(Constants.USER_AGENT);
         final var gbcTmsApiKey = new GridBagConstraints();
         gbcTmsApiKey.fill = GridBagConstraints.HORIZONTAL;
