@@ -117,6 +117,8 @@ public class MarkdownDialog extends EscapeDialog {
         final var scrollPane = new JScrollPane(textPane,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+        final var copyButton = new JButton(resourceBundle.getString("ui.dialog.markdown.button.copy"));
+        copyButton.addActionListener(e -> SwingUtilities.invokeLater(this::copyContent));
         final var closeButton = new JButton(resourceBundle.getString("ui.dialog.markdown.button.close"));
         closeButton.addActionListener(e -> SwingUtilities.invokeLater(this::closeDialog));
 
@@ -125,7 +127,7 @@ public class MarkdownDialog extends EscapeDialog {
                 .columns("fill:200dlu:grow") //NON-NLS
                 .rows("fill:100dlu:grow, 10dlu, p") //NON-NLS
                 .add(scrollPane).xy(1, 1)
-                .addBar(closeButton).xy(1, 3, CellConstraints.RIGHT, CellConstraints.FILL)
+                .addBar(copyButton, closeButton).xy(1, 3, CellConstraints.RIGHT, CellConstraints.FILL)
                 .build();
     }
 
@@ -138,6 +140,10 @@ public class MarkdownDialog extends EscapeDialog {
                 new ErrorDialog(MainFrame.getInstance(), e.getLocalizedMessage(), e);
             }
         }
+    }
+
+    private void copyContent() {
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(markdown), null);
     }
 
     private void closeDialog() {
