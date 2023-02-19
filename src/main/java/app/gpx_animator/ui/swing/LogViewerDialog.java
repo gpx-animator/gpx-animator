@@ -3,6 +3,7 @@ package app.gpx_animator.ui.swing;
 import app.gpx_animator.core.preferences.Preferences;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.FileAppender;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,7 @@ import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class LogViewerDialog extends EscapeDialog {
 
@@ -49,7 +51,7 @@ public class LogViewerDialog extends EscapeDialog {
         final var font = new Font(textArea.getFont().getName(), textArea.getFont().getStyle(), TEXT_SIZE);
         textArea.setFont(font);
 
-        final var lines = readLogFile();
+        final var lines = readLogFile(resourceBundle);
         final var log = String.join("\n", lines);
         textArea.setText(log);
 
@@ -75,13 +77,14 @@ public class LogViewerDialog extends EscapeDialog {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
     }
 
-    private List<String> readLogFile() {
+    private List<String> readLogFile(@NonNull final ResourceBundle resourceBundle) {
         final var loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         final var logbackLogger = loggerContext.getLogger(Logger.ROOT_LOGGER_NAME);
         final var fileAppender = (FileAppender<?>) logbackLogger.getAppender("FILE");
         final var file = fileAppender.getFile();
         try (var lines = Files.lines(Path.of(file))) {
-            return lines.toList();
+            final var protocol = lines.toList();
+            return protocol.isEmpty() ? List.of(resourceBundle.getString("ui.dialog.logviewer.empty")) : protocol;
         } catch (IOException e) {
             throw new RuntimeException("Unable to open log file %s".formatted(file));
         }
