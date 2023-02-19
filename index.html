@@ -319,10 +319,12 @@
             <dt><strong>--time-offset &lt;milliseconds&gt;</strong></dt>
             <dd>time offset for track in milliseconds; can be specified multiple times if multiple tracks are provided</dd>
             <dt><strong>--tms-url-template &lt;tms-url-template&gt;</strong></dt>
-            <dd>slippymap (TMS) URL template for background map where {x}, {y} and {zoom} placeholders will be replaced; for example use
-                http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap; default
-                https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png
+            <dd>slippymap (TMS) URL template for background map where {x}, {y}, {zoom}, and {apikey} placeholders will be replaced;
+                for example use http://tile.openstreetmap.org/{zoom}/{x}/{y}.png for OpenStreetMap;
+                default https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png
             </dd>
+            <dt><strong>--tms-api-key &lt;api-key&gt;</strong></dt>
+            <dd>optional API key, if the map provider requires one</dd>
             <dt><strong>--total-time &lt;time&gt;</strong></dt>
             <dd>total length of video in milliseconds; complementary to speedup</dd>
             <dt><strong>--speed-unit &lt;speed&gt;</strong></dt>
