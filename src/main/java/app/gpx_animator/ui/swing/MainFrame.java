@@ -315,9 +315,9 @@ public final class MainFrame extends JFrame {
         changelogMenu.addActionListener(e -> SwingUtilities.invokeLater(this::showChangelog));
         mnHelp.add(changelogMenu);
 
-        final var logViewerMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.logViewer"));
-        logViewerMenu.addActionListener(e -> new LogViewerDialog(MainFrame.this, this.getWidth() - 150, this.getHeight() - 150));
-        mnHelp.add(logViewerMenu);
+        final var protocolMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.protocol"));
+        protocolMenu.addActionListener(e -> new ProtocolDialog(MainFrame.this, this.getWidth() - 150, this.getHeight() - 150));
+        mnHelp.add(protocolMenu);
 
         final var contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

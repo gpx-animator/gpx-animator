@@ -14,20 +14,20 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LogViewerDialog extends MarkdownDialog {
+public class ProtocolDialog extends MarkdownDialog {
 
     @Serial
     private static final long serialVersionUID = 913790912666544778L;
 
     private static final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    public LogViewerDialog(final JFrame owner, final int width, final int height) {
-        super(owner, resourceBundle.getString("ui.dialog.logviewer.title"), getMarkdown(), width, height);
+    public ProtocolDialog(final JFrame owner, final int width, final int height) {
+        super(owner, resourceBundle.getString("ui.dialog.protocol.title"), getMarkdown(), width, height);
     }
 
     private static String getMarkdown() {
         final var content = readFile().collect(Collectors.joining(System.lineSeparator()));
-        return "```%n%s%n```".formatted(content.isBlank() ? resourceBundle.getString("ui.dialog.logviewer.empty") : content);
+        return "```%n%s%n```".formatted(content.isBlank() ? resourceBundle.getString("ui.dialog.protocol.empty") : content);
     }
 
     private static Stream<String> readFile() {
