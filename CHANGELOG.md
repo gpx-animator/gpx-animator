@@ -8,18 +8,18 @@
 
 * Support for Apple Silicon (M1/M2) processors
 * Support for MPEG-H Part2/HEVC (H.265) codec
+* Support for multi-track GPX files
 * Preview the rendering of the map
 * Make the content of the information box configurable
 * Show the time left when rendering the video
 * Configure the width of the pre-draw line 
+* Smooth line drawing between track points
 * Delete cached map tiles in preferences dialog
 * New configuration option to specify the user agent when downloading map data
+* Support for API keys in map template URLs
 * New speed unit (min/500m)
 * Time per distance speed units now display as m:ss
 * GPS status with timeout (OK/LOST)
-* Smooth line drawing between track points
-* Support for multi-track GPX files
-* Support for API keys in map template URLs
 * New menu entry to show the protocol (for support requests)
 
 ### Fixed bugs
