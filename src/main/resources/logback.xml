@@ -5,6 +5,7 @@
             <pattern>
                 %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
             </pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
@@ -14,6 +15,7 @@
             <pattern>
                 %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
             </pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
