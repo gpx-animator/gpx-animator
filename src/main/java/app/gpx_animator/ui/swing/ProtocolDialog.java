@@ -6,7 +6,7 @@ import ch.qos.logback.core.FileAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;

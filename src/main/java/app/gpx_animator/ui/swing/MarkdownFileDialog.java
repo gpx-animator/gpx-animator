@@ -19,7 +19,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
