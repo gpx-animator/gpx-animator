@@ -315,6 +315,8 @@ public final class MainFrame extends JFrame {
         changelogMenu.addActionListener(e -> SwingUtilities.invokeLater(this::showChangelog));
         mnHelp.add(changelogMenu);
 
+        mnHelp.addSeparator();
+
         final var protocolMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.protocol"));
         protocolMenu.addActionListener(e -> new ProtocolDialog(MainFrame.this, this.getWidth() - 150, this.getHeight() - 150));
         mnHelp.add(protocolMenu);
