@@ -20,6 +20,7 @@
 * Smooth line drawing between track points
 * Support for multi-track GPX files
 * Support for API keys in map template URLs
+* New menu entry to show the protocol (for support requests)
 
 ### Fixed bugs
 
