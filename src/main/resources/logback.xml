@@ -8,7 +8,7 @@
         </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>gpxAnimator.log</file>
+        <file>${user.home}/.gpx-animator/gpx-animator.log</file>
         <append>false</append>
         <encoder>
             <pattern>
