@@ -35,30 +35,10 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Desktop;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -269,14 +249,14 @@ public final class MainFrame extends JFrame {
             variables.put("DESCRIPTION", resourceBundle.getString("ui.dialog.about.description"));
             variables.put("LINK", String.format(resourceBundle.getString("ui.dialog.about.link"), //NON-NLS
                     "<a href=\"https://gpx-animator.app\">https://gpx-animator.app</a>")); //NON-NLS
-            SwingUtilities.invokeLater(() -> new MarkdownDialog(this,
+            SwingUtilities.invokeLater(() -> new MarkdownFileDialog(this,
                     aboutText, "ABOUT.md", variables, 550, 350));
         });
         mntmAbout.setAccelerator(getKeyStroke(VK_F1, 0));
         mnHelp.add(mntmAbout);
 
         final var mntmLicense = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.license"));
-        mntmLicense.addActionListener(e -> new MarkdownDialog(MainFrame.this, resourceBundle.getString("ui.mainframe.menu.help.license"),
+        mntmLicense.addActionListener(e -> new MarkdownFileDialog(MainFrame.this, resourceBundle.getString("ui.mainframe.menu.help.license"),
                 "LICENSE.md", 700, 500));
         mnHelp.add(mntmLicense);
 
@@ -794,7 +774,7 @@ public final class MainFrame extends JFrame {
     }
 
     private void showChangelog() {
-        SwingUtilities.invokeLater(() -> new MarkdownDialog(this,
+        SwingUtilities.invokeLater(() -> new MarkdownFileDialog(this,
                 String.format(resourceBundle.getString("ui.dialog.changelog.title"), Constants.APPNAME_VERSION),
                 "CHANGELOG.md", this.getWidth() - 150, this.getHeight() - 150));
     }

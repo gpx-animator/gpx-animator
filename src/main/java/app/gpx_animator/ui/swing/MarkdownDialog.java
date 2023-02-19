@@ -22,37 +22,25 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
-import java.awt.Desktop;
-import java.io.BufferedReader;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serial;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class MarkdownDialog extends EscapeDialog {
 
     @Serial
-    private static final long serialVersionUID = 2089322264740577286L;
+    private static final long serialVersionUID = 3880814150593572969L;
 
     private static final String TEMPLATE = """
             <html lang="en"><head>
@@ -94,21 +82,21 @@ public class MarkdownDialog extends EscapeDialog {
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final String filename;
+    private final String markdown;
     private final Map<String, String> variables;
 
     public MarkdownDialog(final JFrame owner, final String title,
-                          @NonNls final String filename,
+                          @NonNls final String markdown,
                           final int width, final int height) {
-        this(owner, title, filename, new HashMap<>(), width, height);
+        this(owner, title, markdown, new HashMap<>(), width, height);
     }
 
     public MarkdownDialog(final JFrame owner, final String title,
-                          @NonNls final String filename,
+                          @NonNls final String markdown,
                           final Map<String, String> variables,
                           final int width, final int height) {
         super(owner);
-        this.filename = filename;
+        this.markdown = markdown;
         this.variables = Map.copyOf(variables);
         setTitle(title);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -157,21 +145,6 @@ public class MarkdownDialog extends EscapeDialog {
         dispose();
     }
 
-    @SuppressFBWarnings(value = { "NP_LOAD_OF_KNOWN_NULL_VALUE", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", //NON-NLS
-            "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" }, justification = "Check for null exactly as needed") //NON-NLS
-    private String readFileAsMarkdown() throws IOException {
-        final var classLoader = ClassLoader.getSystemClassLoader();
-        try (var is = classLoader.getResourceAsStream(filename)) {
-            if (is == null) {
-                return null;
-            }
-            try (var isr = new InputStreamReader(is, StandardCharsets.UTF_8);
-                 var reader = new BufferedReader(isr)) {
-                return reader.lines().collect(Collectors.joining(System.lineSeparator()));
-            }
-        }
-    }
-
     private String parseVariables() {
         var html = readFileAsHTML();
         for (var variable : variables.entrySet()) {
@@ -181,20 +154,9 @@ public class MarkdownDialog extends EscapeDialog {
         return html;
     }
 
-    @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
     private String readFileAsHTML() {
-        try {
-            final var md = readFileAsMarkdown();
-            final var html = convertMarkdownToHTML(md);
-            return TEMPLATE.formatted(getTitle(), html);
-        } catch (final IOException | NullPointerException e) { // NOPMD -- NPE happens on missing file
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(MarkdownDialog.this,
-                    String.format(resourceBundle.getString("ui.dialog.markdown.errors.loading"), e.getMessage()),
-                    resourceBundle.getString("ui.dialog.markdown.error"), JOptionPane.ERROR_MESSAGE);
-            SwingUtilities.invokeLater(this::closeDialog);
-            return "";
-        }
+        final var html = convertMarkdownToHTML(markdown);
+        return TEMPLATE.formatted(getTitle(), html);
     }
 
     private String convertMarkdownToHTML(final String md) {
