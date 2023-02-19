@@ -19,6 +19,7 @@
 * GPS status with timeout (OK/LOST)
 * Smooth line drawing between track points
 * Support for multi-track GPX files
+* Support for API keys in map template URLs
 
 ### Fixed bugs
 
