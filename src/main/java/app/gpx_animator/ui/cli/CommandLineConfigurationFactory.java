@@ -182,6 +182,7 @@ public final class CommandLineConfigurationFactory {
                             timeOffsetList.add(s2.isEmpty() ? null : Long.valueOf(s2)); // NOPMD -- null = not set
                         }
                         case TMS_URL_TEMPLATE -> cfg.tmsUrlTemplate(args[++i]);
+                        case TMS_API_KEY -> cfg.tmsApiKey(args[++i]);
                         case TMS_USER_AGENT -> cfg.tmsUserAgent(args[++i]);
                         case TOTAL_TIME -> {
                             final var s3 = args[++i].trim();
