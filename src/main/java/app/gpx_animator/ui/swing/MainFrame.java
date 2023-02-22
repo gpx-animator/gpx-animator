@@ -270,7 +270,7 @@ public final class MainFrame extends JFrame {
             variables.put("LINK", String.format(resourceBundle.getString("ui.dialog.about.link"), //NON-NLS
                     "<a href=\"https://gpx-animator.app\">https://gpx-animator.app</a>")); //NON-NLS
             SwingUtilities.invokeLater(() -> new MarkdownFileDialog(this,
-                    aboutText, "ABOUT.md", variables, 550, 350));
+                    aboutText, "ABOUT.md", variables, 550, 400));
         });
         mntmAbout.setAccelerator(getKeyStroke(VK_F1, 0));
         mnHelp.add(mntmAbout);
