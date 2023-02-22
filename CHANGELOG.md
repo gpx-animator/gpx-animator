@@ -2,7 +2,7 @@
 
 ## Version 1.8.0
 
-**Release date: work in progress 🚧**
+**Release date: 2023-02-22**
 
 ### New features
 
