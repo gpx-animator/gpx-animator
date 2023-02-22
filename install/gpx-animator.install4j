@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="10.0.4" transformSequenceNumber="10">
-  <directoryPresets config="/Users/mcpringle/IdeaProjects/gpx-animator/build/libs/gpx-animator-1.8.0-all.jar" />
-  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.8.0" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="17" javaMaxVersion="17">
+<install4j version="10.0.5" transformSequenceNumber="10">
+  <directoryPresets config="../src/main/resources" />
+  <application name="GPX Animator" applicationId="4628-8280-7282-2798" mediaDir="media" compression="9" lzmaCompression="true" shortName="gpx-animator" publisher="Marcus Fihlon" publisherWeb="https://gpx-animator.app" version="1.8.0" allPathsRelative="true" backupOnSave="true" macVolumeId="ad5267b5253dce6a" javaMinVersion="17" javaMaxVersion="17">
     <jreBundles jdkProviderId="Zulu" release="17/17.0.6" />
   </application>
   <files keepModificationTimes="true" missingFilesStrategy="error">
@@ -9,23 +9,23 @@
       <mountPoint id="58" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="58" file="/Users/mcpringle/IdeaProjects/gpx-animator/build/libs/gpx-animator-1.8.0-all.jar" />
+      <fileEntry mountPoint="58" file="../build/libs/gpx-animator-1.8.0-all.jar" />
     </entries>
   </files>
   <launchers>
     <launcher name="${compiler:sys.shortName}" id="59" menuName="GPX Animator" checkUpdater="true">
       <executable name="${compiler:sys.shortName}" iconSet="true" executableMode="gui" changeWorkingDirectory="false" />
-      <splashScreen show="true" bitmapFile="/Users/mcpringle/IdeaProjects/gpx-animator/src/main/resources/splash.png" />
+      <splashScreen show="true" bitmapFile="../src/main/resources/splash.png" />
       <java mainClass="app.gpx_animator.Main">
         <classPath>
           <archive location="gpx-animator-1.8.0-all.jar" />
         </classPath>
       </java>
       <iconImageFiles>
-        <file path="/Users/mcpringle/IdeaProjects/gpx-animator/src/main/resources/icon_16.png" />
-        <file path="/Users/mcpringle/IdeaProjects/gpx-animator/src/main/resources/icon_32.png" />
-        <file path="/Users/mcpringle/IdeaProjects/gpx-animator/src/main/resources/icon_48.png" />
-        <file path="/Users/mcpringle/IdeaProjects/gpx-animator/src/main/resources/icon_128.png" />
+        <file path="../src/main/resources/icon_16.png" />
+        <file path="../src/main/resources/icon_32.png" />
+        <file path="../src/main/resources/icon_48.png" />
+        <file path="../src/main/resources/icon_128.png" />
       </iconImageFiles>
     </launcher>
   </launchers>
