@@ -89,9 +89,6 @@
             <li>Visually set the zoom and bounding boxes</li>
             <li>Add background music to the video file</li>
             <li>Easier photo selection</li>
-            <li>Make the content of the information box configurable</li>
-            <li>Smooth line drawing between two points</li>
-            <li>Support of H265 video codec</li>
         </ul>
 
         <p>
@@ -101,49 +98,27 @@
 
         <h2 id="downloads">Downloads</h2>
 
-        <h3>Latest Stable Version</h3>
+        <h3>GPX Animator v1.8.0</h3>
 
         <p>
-            It is recommended, to download the latest stable version. As of today, this is v1.7.0, released on August 14th, 2021.
-            These are the most important changes:
-        </p>
-
-        <ul>
-            <li>Realtime preview while rendering is in progress (can be disabled)</li>
-            <li>System notifications when rendering stops or finishes</li>
-            <li>Map data update over the air</li>
-            <li>Specify a separate font for waypoints (optional)</li>
-            <li>Read speed from GPX file (if present) for more acurate speed data</li>
-            <li>All important features in the menu are now accessible via hotkeys</li>
-            <li>Recently opened files can be accessed via hotkeys</li>
-            <li>All dialogs can be closed using the Esc key</li>
-            <li>License information can be found in the Help menu</li>
-            <li>New plugin support for extending GPX Animator easily</li>
-            <li>Delay the start of the animation (keep first frame)</li>
-            <li>Force mandatory map attributions (if needed)</li>
-            <li>Disable tail color fadeout on request</li>
-            <li>Fixed a lot of bugs</li>
-        </ul>
-
-        <p>
-            <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_7_0.exe"
-               download="gpx-animator_windows-x64_1_7_0.exe">
+            <a href="https://download.gpx-animator.app/gpx-animator_windows-x64_1_8_0.exe"
+               download="gpx-animator_windows-x64_1_8_0.exe">
                 <button><em class="fa fa-windows"></em> Windows (64 Bit)</button>
             </a>
-            <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_7_0.exe"
-               download="gpx-animator_windows-x32_1_7_0.exe">
+            <a href="https://download.gpx-animator.app/gpx-animator_windows-x32_1_8_0.exe"
+               download="gpx-animator_windows-x32_1_8_0.exe">
                 <button><em class="fa fa-windows"></em> Windows (32 Bit)</button>
             </a><br/>
-            <a href="https://download.gpx-animator.app/gpx-animator_macos_1_7_0.dmg"
-               download="gpx-animator_macos_1_7_0.dmg">
-                <button><em class="fa fa-apple"></em> macOS (Intel)</button>
+            <a href="https://download.gpx-animator.app/gpx-animator_macos_1_8_0.dmg"
+               download="gpx-animator_macos_1_8_0.dmg">
+                <button><em class="fa fa-apple"></em> macOS</button>
             </a>
-            <a href="https://download.gpx-animator.app/gpx-animator_unix_1_7_0.sh"
-               download="gpx-animator_unix_1_7_0.sh">
+            <a href="https://download.gpx-animator.app/gpx-animator_unix_1_8_0.sh"
+               download="gpx-animator_unix_1_8_0.sh">
                 <button><em class="fa fa-linux"></em> Linux</button>
             </a><br/>
-            <a href="https://download.gpx-animator.app/gpx-animator-1.7.0-all.jar"
-               download="gpx-animator-1.7.0-all.jar">
+            <a href="https://download.gpx-animator.app/gpx-animator-1.8.0-all.jar"
+               download="gpx-animator-1.8.0-all.jar">
                 <button><em class="fa fa-download"></em> Java Archive</button>
             </a>
         </p>
@@ -153,13 +128,6 @@
                 href="https://www.ej-technologies.com/products/install4j/overview.html" target="_blank"
                 title="Install4J multi-platform installer builder">Install4J</a>.
             Thank you very much for your support!
-        </p>
-
-        <p>
-            <strong>Apple Silicon (M1):</strong> The macOS Intel binary of GPX Animator runs fine on Apple Silicon (M1
-            processor) using the Rosetta 2 compatibility layer. We will hopefully support the Apple M1 processor natively
-            soon. Work on this is ongoing, but we are dependent on third party vendors. Until then, we recommend using
-            the macOS Intel binary of GPX Animator with Rosetta 2.
         </p>
 
         <h2 id="important">Important Information</h2>
@@ -199,13 +167,13 @@
         <p>GPX Animator needs at least Java 16 or newer! We suggest to use <a href="https://adoptopenjdk.net/" target="_blank" title="AdoptOpenJDK project website">AdoptOpenJDK</a> or the <a href="https://www.azul.com/downloads/?version=java-16-sts&package=jdk#download-openjdk" target="_blank" title="Download Azul Zulu Builds of OpenJDK">Azul Zulu Builds of OpenJDK</a>, but any other distribution should work, too.</p>
 
         <p>For default GUI run:</p>
-        <pre><code>java -jar gpx-animator-1.7.0-all.jar</code></pre>
+        <pre><code>java -jar gpx-animator-1.8.0-all.jar</code></pre>
 
         <p>For program help run:</p>
-        <pre><code>java -jar gpx-animator-1.7.0-all.jar --help</code></pre>
+        <pre><code>java -jar gpx-animator-1.8.0-all.jar --help</code></pre>
 
         <p>For direct rendering run:</p>
-        <pre><code>java -jar gpx-animator-1.7.0-all.jar --input track.gpx</code></pre>
+        <pre><code>java -jar gpx-animator-1.8.0-all.jar --input track.gpx</code></pre>
 
         <h4>Command line parameters</h4>
 
@@ -252,6 +220,11 @@
             <dd>trim the start of the GPX file in milliseconds</dd>
             <dt><strong>--trim-gpx-end &lt;trim-gpx-end&gt;</strong></dt>
             <dd>trim the end of the GPX file in milliseconds</dd>
+            <dt><strong>--information &lt;text&gt;</strong></dt>
+            <dd>information text with placeholder support for speed, latitude & longitude, date & time; default
+<pre>%SPEED%
+%LATLON%
+%DATETIME%</pre></dd>
             <dt><strong>--information-position &lt;information-position&gt;</strong></dt>
             <dd>sets position for the information to be placed on the animation; default bottom right</dd>
             <dt><strong>--information-margin &lt;information-margin&gt;</strong></dt>
@@ -325,6 +298,9 @@
             </dd>
             <dt><strong>--tms-api-key &lt;api-key&gt;</strong></dt>
             <dd>optional API key, if the map provider requires one</dd>
+            <dt><strong>--tms-user-agent &lt;tms-user-agent&gt;</strong></dt>
+            <dd>optional User Agent to use for requests to the TMS server; default
+<pre>GPX Animator</pre></dd>
             <dt><strong>--total-time &lt;time&gt;</strong></dt>
             <dd>total length of video in milliseconds; complementary to speedup</dd>
             <dt><strong>--speed-unit &lt;speed&gt;</strong></dt>
@@ -344,6 +320,9 @@
             <dt><strong>--zoom &lt;zoom&gt;</strong></dt>
             <dd>map zoom typically from 1 to 18; if not specified and TMS URL Template (Background Map) is specified then it is computed from width
             </dd>
+            <dt><strong>--gps-timeout &lt;milliseconds&gt;</strong></dt>
+            <dd>GPS position timeout; default
+<pre>60000</pre></dd>
             <dt><strong>--version</strong></dt>
             <dd>prints the version and exits</dd>
         </dl>
@@ -351,7 +330,7 @@
         <h2 id="faq">FAQ</h2>
         <h3>Application is crashing with java.lang.OutOfMemoryError: Java heap space</h3>
         <p>
-            Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.7.0-all.jar</code>.
+            Increase java heap memory: <code>java -Xmx1024m -jar gpx-animator-1.8.0-all.jar</code>.
             If the problem persists, try higher value or check if your GPX trace doesn't cover too big area.
             If it does then try to specify lower zoom, width and/or height.
         </p>
@@ -374,7 +353,7 @@
             support, use the following command line to set the scaling factor
             accordingly:
         </p>
-        <pre><code>GDK_SCALE=2 java -jar gpx-animator-1.7.0-all.jar</code></pre>
+        <pre><code>GDK_SCALE=2 java -jar gpx-animator-1.8.0-all.jar</code></pre>
 
         <h3>Where do I enter the API key?</h3>
         <p>
