@@ -1,5 +1,20 @@
 # Changelog
 
+## Version 1.8.1
+
+**Release date: work in progress 🚧**
+
+### New features
+
+### Fixed bugs
+
+* Portrait photos are now displayed in correct orientation
+* Portrait photos are now displayed in correct size
+
+### Maintenance
+
+---
+
 ## Version 1.8.0
 
 **Release date: 2023-02-22**
@@ -29,7 +44,8 @@
 * No more automatically selecting Cambodia map after map update
 * Command line parameter "--tail-color-fadeout" now works as expected
 
-### Notes
+### Maintenance
+
 * GPX Animator has a new home: [https://github.com/gpx-animator/gpx-animator](https://github.com/gpx-animator/gpx-animator)
 * The GitHub repository now uses the [All Contributors](https://allcontributors.org/) bot and CLI
 
