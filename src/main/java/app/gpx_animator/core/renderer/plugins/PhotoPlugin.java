@@ -239,12 +239,12 @@ public final class PhotoPlugin implements RendererPlugin {
 
     private BufferedImage readPhoto(@NonNull final Photo photo, final int width, final int height) {
         try {
-            final var image = ImageIO.read(photo.file());
+            final var originalImage = ImageIO.read(photo.file());
+            final var rotatedImage = RenderUtil.rotateImage(originalImage, photo.orientation());
             final var scaledWidth = Math.round(width * 0.8f);
             final var scaledHeight = Math.round(height * 0.8f);
-            final var scaledImage = RenderUtil.scaleImage(image, scaledWidth, scaledHeight);
-            final var rotatedImage = RenderUtil.rotateImage(scaledImage, photo.orientation());
-            final var borderedImage = addBorder(rotatedImage);
+            final var scaledImage = RenderUtil.scaleImage(rotatedImage, scaledWidth, scaledHeight);
+            final var borderedImage = addBorder(scaledImage);
             borderedImage.flush();
             return borderedImage;
         } catch (final IOException e) {
