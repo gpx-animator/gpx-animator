@@ -65,7 +65,7 @@ public final class PhotoPlugin implements RendererPlugin {
 
     static {
         final var dateTime = ZonedDateTime.now();
-        final var formatter = DateTimeFormatter.ofPattern("x"); //NON-NLS
+        final var formatter = DateTimeFormatter.ofPattern("xxx"); //NON-NLS
         SYSTEM_ZONE_OFFSET = dateTime.format(formatter);
     }
 
@@ -159,7 +159,7 @@ public final class PhotoPlugin implements RendererPlugin {
         final var dateTimeString = directory.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
                 .concat(" ").concat(zoneOffset.replace(":", ""));
         final var zonedDateTime = ZonedDateTime.parse(dateTimeString,
-                DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss x")); //NON-NLS
+                DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss xxx")); //NON-NLS
         return zonedDateTime.toEpochSecond() * 1_000;
     }
 
