@@ -22,6 +22,7 @@ import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.Metadata;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.framewriter.FrameWriter;
+import app.gpx_animator.core.util.DateUtil;
 import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
 import com.drew.imaging.ImageMetadataReader;
@@ -65,7 +66,7 @@ public final class PhotoPlugin implements RendererPlugin {
 
     static {
         final var dateTime = ZonedDateTime.now();
-        final var formatter = DateTimeFormatter.ofPattern("xxx"); //NON-NLS
+        final var formatter = DateTimeFormatter.ofPattern("x"); //NON-NLS
         SYSTEM_ZONE_OFFSET = dateTime.format(formatter);
     }
 
@@ -158,8 +159,7 @@ public final class PhotoPlugin implements RendererPlugin {
                 : SYSTEM_ZONE_OFFSET;
         final var dateTimeString = directory.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
                 .concat(" ").concat(zoneOffset.replace(":", ""));
-        final var zonedDateTime = ZonedDateTime.parse(dateTimeString,
-                DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss xxx")); //NON-NLS
+        final var zonedDateTime = DateUtil.parseZonedDateTime(dateTimeString);
         return zonedDateTime.toEpochSecond() * 1_000;
     }
 
