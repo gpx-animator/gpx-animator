@@ -10,6 +10,7 @@
 
 * Portrait photos are now displayed in correct orientation
 * Portrait photos are now displayed in correct size
+* Parsing date and time offset of photos now support missing patterns
 
 ### Maintenance
 
