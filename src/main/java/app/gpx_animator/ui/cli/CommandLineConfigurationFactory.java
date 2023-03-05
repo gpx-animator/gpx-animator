@@ -148,6 +148,7 @@ public final class CommandLineConfigurationFactory {
                         case TRACK_ICON_FILE -> inputIconList.add(args[++i]);
                         case TRACK_ICON_MIRROR -> mirrorTrackIconList.add(true);
                         case KEEP_IDLE -> cfg.skipIdle(false);
+                        case KEEP_FIRST_FRAME -> cfg.keepFirstFrame(Long.parseLong(args[++i]));
                         case KEEP_LAST_FRAME -> cfg.keepLastFrame(Long.parseLong(args[++i]));
                         case LABEL -> labelList.add(args[++i]);
                         case LINE_WIDTH -> lineWidthList.add(Float.valueOf(args[++i]));

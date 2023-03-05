@@ -11,6 +11,7 @@
 * Portrait photos are now displayed in correct orientation
 * Portrait photos are now displayed in correct size
 * Parsing date and time offset of photos now support missing patterns
+* Fix missing CLI option for `--keep-first-frame`
 
 ### Maintenance
 * Better error message for missing implementation of CLI option 
