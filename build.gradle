@@ -89,12 +89,6 @@ task deleteFiles(type: Delete) {
     delete "./src/main/resources/CHANGELOG.md", "./src/main/resources/LICENSE.md"
 }
 
-task installGitHooks(type: Copy) {
-    from new File(rootProject.rootDir, 'config/git/pre-push')
-    into { new File(rootProject.rootDir, '.git/hooks') }
-    fileMode 0755
-}
-
 test {
     useJUnitPlatform { }
     maxParallelForks = 4
@@ -143,5 +137,4 @@ task createVersionFile {
 processResources.dependsOn copyFiles
 clean.dependsOn deleteFiles
 assemble.dependsOn check
-check.dependsOn installGitHooks
 jar.dependsOn createVersionFile
