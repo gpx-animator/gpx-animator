@@ -16,7 +16,7 @@
 
 plugins {
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '8.0.0'
+    id 'com.github.johnrengelman.shadow' version '8.1.0'
     id 'com.github.spotbugs' version '5.0.13'
     id 'pmd'
     id 'checkstyle'
@@ -127,7 +127,7 @@ checkstyle {
 }
 
 pmd {
-    toolVersion = "6.54.0"
+    toolVersion = "6.55.0"
     ruleSets = []
     ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
 }
