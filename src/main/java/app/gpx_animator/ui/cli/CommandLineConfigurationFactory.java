@@ -205,7 +205,7 @@ public final class CommandLineConfigurationFactory {
                             }
                             exit();
                         }
-                        default -> throw new AssertionError();
+                        default -> throw new UserException(String.format(resourceBundle.getString("cli.error.option.implementation"), option));
                     }
 
                     // TODO --configuration : args[++i];

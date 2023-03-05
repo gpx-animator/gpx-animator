@@ -13,6 +13,7 @@
 * Parsing date and time offset of photos now support missing patterns
 
 ### Maintenance
+* Better error message for missing implementation of CLI option 
 
 ---
 
