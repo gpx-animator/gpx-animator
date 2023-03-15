@@ -52,7 +52,7 @@ dependencies {
     implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.2'
     implementation 'javax.activation:activation:1.1.1'
     implementation 'org.slf4j:slf4j-api:2.0.6'
-    implementation 'ch.qos.logback:logback-classic:1.4.5'
+    implementation 'ch.qos.logback:logback-classic:1.4.6'
     implementation 'com.drewnoakes:metadata-extractor:2.18.0'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
     implementation 'commons-io:commons-io:20030203.000550'
