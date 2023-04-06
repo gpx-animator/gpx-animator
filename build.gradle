@@ -16,8 +16,8 @@
 
 plugins {
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '8.1.0'
-    id 'com.github.spotbugs' version '5.0.13'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.github.spotbugs' version '5.0.14'
     id 'pmd'
     id 'checkstyle'
     id 'java-library'
@@ -117,7 +117,7 @@ spotbugsTest {
 
 checkstyle {
     configFile file("${projectDir}/config/checkstyle/checkstyle.xml")
-    toolVersion "10.9.2"
+    toolVersion "10.9.3"
 }
 
 pmd {
