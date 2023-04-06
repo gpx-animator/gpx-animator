@@ -21,6 +21,7 @@ import app.gpx_animator.core.data.Waypoint;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+import java.util.ArrayDeque;
 import java.util.Collections;
 
 import org.jetbrains.annotations.NonNls;
@@ -59,8 +60,10 @@ public final class GpxContentHandler extends DefaultHandler {
 
     private final List<List<LatLon>> timePointListList = new ArrayList<>();
     private final List<LatLon> waypointList = new ArrayList<>();
+
+    private final ArrayDeque<StringBuilder> characterStack = new ArrayDeque<>();
+
     private List<LatLon> timePointList;
-    private StringBuilder sb;
     private long time = Long.MIN_VALUE;
     private Double speed = null;
     private double lat;
@@ -68,34 +71,33 @@ public final class GpxContentHandler extends DefaultHandler {
     private String name;
     private String cmt;
 
+    public GpxContentHandler() {
+        characterStack.addLast(new StringBuilder());
+    }
 
     @Override
     public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) {
+        characterStack.addLast(new StringBuilder());
         if (isEqual(ELEM_TRKSEG, qName)) {
             timePointList = new ArrayList<>();
         } else if (isEqual(ELEM_TRKPT, qName) || isEqual(ELEM_WPT, qName)) {
             lat = Double.parseDouble(attributes.getValue(ATTR_LAT));
             lon = Double.parseDouble(attributes.getValue(ATTR_LON));
-        } else if (isEqual(ELEM_TIME, qName)
-                || isEqual(ELEM_SPEED, qName)
-                || isEqual(ELEM_NAME, qName)
-                || isEqual(ELEM_CMT, qName)) {
-            sb = new StringBuilder();
         }
     }
 
 
     @Override
     public void characters(final char[] ch, final int start, final int length) {
-        if (sb != null) {
-            sb.append(ch, start, length);
-        }
+        characterStack.peekLast().append(ch, start, length);
     }
 
 
     @Override
     @SuppressWarnings("PMD.NullAssignment") // XML parsing ending elements, it's okay here
     public void endElement(final String uri, final String localName, final String qName) {
+        final var sb = characterStack.removeLast();
+
         if (isEqual(ELEM_TRKSEG, qName)) {
             timePointListList.add(timePointList);
             timePointList = null;
@@ -109,17 +111,14 @@ public final class GpxContentHandler extends DefaultHandler {
         } else if (isEqual(ELEM_TIME, qName)) {
             final var dateTime = parseDateTime(sb.toString());
             time = dateTime != null ? dateTime.toInstant().toEpochMilli() : 0;
-            sb = null;
         } else if (isEqual(ELEM_SPEED, qName)) {
             if (!sb.isEmpty()) {
                 speed = Double.parseDouble(sb.toString());
             }
         } else if (isEqual(ELEM_NAME, qName)) {
             name = sb.toString();
-            sb = null;
         } else if (isEqual(ELEM_CMT, qName)) {
             cmt = sb.toString();
-            sb = null;
         }
     }
 
@@ -130,16 +129,16 @@ public final class GpxContentHandler extends DefaultHandler {
         }
 
         try {
-            return ZonedDateTime.parse(sb.toString());
+            return ZonedDateTime.parse(dateTimeString);
         } catch (final DateTimeParseException ignored) { }
 
         try {
-            return LocalDateTime.parse(sb.toString()).atZone(ZoneId.systemDefault());
+            return LocalDateTime.parse(dateTimeString).atZone(ZoneId.systemDefault());
         } catch (final DateTimeParseException ignored) { }
 
-        LOGGER.error("Unable to parse date and time from string '{}'", sb);
+        LOGGER.error("Unable to parse date and time from string '{}'", dateTimeString);
         throw new RuntimeException(
-                new UserException(resourceBundle.getString("gpxparser.error.datetimeformat").formatted(sb)));
+                new UserException(resourceBundle.getString("gpxparser.error.datetimeformat").formatted(dateTimeString)));
     }
 
 

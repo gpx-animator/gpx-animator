@@ -1,10 +1,7 @@
 package app.gpx_animator.core.data.gpx;
 
 import app.gpx_animator.core.UserException;
-import app.gpx_animator.core.data.LatLon;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
