@@ -38,6 +38,14 @@ public final class GpxParser {
     }
 
     public static void parseGpx(final File inputGpx, final GpxContentHandler dh) throws UserException {
+        try (InputStream is = new FileInputStream(inputGpx)) {
+            parseGpx(is, dh);
+        } catch (final IOException e) {
+            throw new UserException("error reading input file", e); // TODO translate all user exceptions
+        }
+    }
+
+    public static void parseGpx(final InputStream is, final GpxContentHandler dh) throws UserException {
         final SAXParser saxParser;
         try {
             final var factory = SAXParserFactory.newInstance();
@@ -49,21 +57,15 @@ public final class GpxParser {
             throw new RuntimeException("can't create XML parser", e);
         }
 
-        try {
-            try (InputStream is = new FileInputStream(inputGpx)) {
-                try (var dis = decompressStream(is)) {
-                    saxParser.parse(dis, dh);
-                } catch (final SAXException e) {
-                    throw new UserException("error parsing input GPX file", e);
-                } catch (final RuntimeException e) {
-                    if (e.getCause() != null && e.getCause() instanceof UserException userException) {
-                        throw userException;
-                    }
-                    throw new RuntimeException("internal error when parsing GPX file", e);
-                }
+        try (var dis = decompressStream(is)) {
+            saxParser.parse(dis, dh);
+        } catch (final SAXException | IOException e) {
+            throw new UserException("error parsing input GPX file", e);
+        } catch (final RuntimeException e) {
+            if (e.getCause() != null && e.getCause() instanceof UserException userException) {
+                throw userException;
             }
-        } catch (final IOException e) {
-            throw new UserException("error reading input file", e); // TODO translate all user exceptions
+            throw new RuntimeException("internal error when parsing GPX file", e);
         }
     }
 
