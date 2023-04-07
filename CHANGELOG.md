@@ -12,6 +12,7 @@
 * Portrait photos are now displayed in correct size
 * Parsing date and time offset of photos now support missing patterns
 * Fix missing CLI option for `--keep-first-frame`
+* Fix reading wrong comments from GPX files
 
 ### Maintenance
 * Better error message for missing implementation of CLI option 
