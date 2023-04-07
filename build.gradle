@@ -24,7 +24,7 @@ plugins {
     id 'org.bytedeco.gradle-javacpp-platform' version '1.5.8'
 }
 
-version = '1.8.1-SNAPSHOT'
+version = '1.8.1'
 group = 'app.gpx-animator'
 
 mainClassName = 'app.gpx_animator.Main'
