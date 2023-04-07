@@ -43,7 +43,7 @@ java -jar ./build/libs/gpx-animator-x.y.z-all.jar
 
 ## Contributors
 
-Special thanks for all these wunderful people who had helped this project so far ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Special thanks for all these wonderful people who had helped this project so far ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->

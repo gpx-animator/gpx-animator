@@ -16,8 +16,8 @@
 
 plugins {
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '8.1.0'
-    id 'com.github.spotbugs' version '5.0.13'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.github.spotbugs' version '5.0.14'
     id 'pmd'
     id 'checkstyle'
     id 'java-library'
@@ -51,15 +51,15 @@ dependencies {
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
     implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.2'
     implementation 'javax.activation:activation:1.1.1'
-    implementation 'org.slf4j:slf4j-api:2.0.6'
-    implementation 'ch.qos.logback:logback-classic:1.4.5'
+    implementation 'org.slf4j:slf4j-api:2.0.7'
+    implementation 'ch.qos.logback:logback-classic:1.4.6'
     implementation 'com.drewnoakes:metadata-extractor:2.18.0'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
     implementation 'commons-io:commons-io:20030203.000550'
     implementation 'com.jgoodies:jgoodies-forms:1.9.0'
     implementation 'com.vladsch.flexmark:flexmark-all:0.64.0'
     implementation 'org.reflections:reflections:0.10.2'
-    implementation 'org.apache.maven:maven-artifact:3.9.0'
+    implementation 'org.apache.maven:maven-artifact:3.9.1'
     testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.7.3'
     testImplementation 'com.github.romankh3:image-comparison:4.4.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
@@ -87,12 +87,6 @@ task copyFiles(type: Copy) {
 
 task deleteFiles(type: Delete) {
     delete "./src/main/resources/CHANGELOG.md", "./src/main/resources/LICENSE.md"
-}
-
-task installGitHooks(type: Copy) {
-    from new File(rootProject.rootDir, 'config/git/pre-push')
-    into { new File(rootProject.rootDir, '.git/hooks') }
-    fileMode 0755
 }
 
 test {
@@ -123,7 +117,7 @@ spotbugsTest {
 
 checkstyle {
     configFile file("${projectDir}/config/checkstyle/checkstyle.xml")
-    toolVersion "8.44"
+    toolVersion "10.9.3"
 }
 
 pmd {
@@ -143,5 +137,4 @@ task createVersionFile {
 processResources.dependsOn copyFiles
 clean.dependsOn deleteFiles
 assemble.dependsOn check
-check.dependsOn installGitHooks
 jar.dependsOn createVersionFile
