@@ -4,6 +4,12 @@
 
 **Release date: work in progress 🚧**
 
+### Features
+
+### Fixes
+
+### Other
+
 ---
 
 ## Version 1.8.1
@@ -45,6 +51,7 @@
 * Time per distance speed units now display as m:ss
 * GPS status with timeout (OK/LOST)
 * New menu entry to show the protocol (for support requests)
+* Optionally configure different icon at the end of each track
 
 ### Fixed bugs
 
