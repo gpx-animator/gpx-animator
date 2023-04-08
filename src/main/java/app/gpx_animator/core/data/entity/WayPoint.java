@@ -13,24 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package app.gpx_animator.core.data;
+package app.gpx_animator.core.data.entity;
 
-import java.io.Serial;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class Waypoint extends LatLon {
-
-    @Serial
-    private static final long serialVersionUID = -5247395863022008558L;
-
-    private final String name;
-
-    public Waypoint(final double lat, final double lon, final long time, final String name) {
-        super(lat, lon, time, null, null);
-        this.name = name;
-    }
-
-    public final String getName() {
-        return name;
-    }
-
-}
+public record WayPoint(@NotNull Double latitude, @NotNull Double longitude, @Nullable Long time,
+                       @Nullable String name, @Nullable String comment) implements MyPoint { }

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class GpxContentHandlerTest {
 
     @Test
-    void test() throws UserException {
+    void testCommentParsing() throws UserException {
         final var contentHandler = new GpxContentHandler();
         final var is = getClass().getResourceAsStream("/gpx/comment.gpx");
         GpxParser.parseGpx(is, contentHandler);
@@ -18,12 +18,12 @@ class GpxContentHandlerTest {
         assertEquals(1, trackSegmentList.size());
         final var trackSegment = trackSegmentList.get(0);
         assertEquals(6, trackSegment.size());
-        assertEquals("Track Point Comment 1", trackSegment.get(0).getCmt());
-        assertNull(trackSegment.get(1).getCmt());
-        assertEquals("Track Point Comment 2", trackSegment.get(2).getCmt());
-        assertNull(trackSegment.get(3).getCmt());
-        assertEquals("", trackSegment.get(4).getCmt());
-        assertNull(trackSegment.get(5).getCmt());
+        assertEquals("Track Point Comment 1", trackSegment.get(0).comment());
+        assertNull(trackSegment.get(1).comment());
+        assertEquals("Track Point Comment 2", trackSegment.get(2).comment());
+        assertNull(trackSegment.get(3).comment());
+        assertEquals("", trackSegment.get(4).comment());
+        assertNull(trackSegment.get(5).comment());
     }
 
 }

@@ -18,9 +18,10 @@ package app.gpx_animator.core.renderer;
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
-import app.gpx_animator.core.data.LatLon;
 import app.gpx_animator.core.data.TrackIcon;
-import app.gpx_animator.core.data.Waypoint;
+import app.gpx_animator.core.data.entity.MyPoint;
+import app.gpx_animator.core.data.entity.TrackPoint;
+import app.gpx_animator.core.data.entity.WayPoint;
 import app.gpx_animator.core.data.gpx.GpxContentHandler;
 import app.gpx_animator.core.data.gpx.GpxParser;
 import app.gpx_animator.core.data.gpx.GpxPoint;
@@ -30,15 +31,12 @@ import app.gpx_animator.core.renderer.framewriter.FrameWriter;
 import app.gpx_animator.core.renderer.framewriter.NullFrameWriter;
 import app.gpx_animator.core.renderer.framewriter.VideoFrameWriter;
 import app.gpx_animator.core.renderer.plugins.RendererPlugin;
+import app.gpx_animator.core.util.LinearInterpolation;
 import app.gpx_animator.core.util.PluginUtil;
 import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
-import app.gpx_animator.core.util.LinearInterpolation;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-
-import java.util.Objects;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
@@ -67,6 +65,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
@@ -433,9 +432,9 @@ public final class Renderer {
             if (pointLists.isEmpty() || pointLists.stream().mapToInt(List::size).sum() == 0) {
                 throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
             }
-            for (final var latLonList : pointLists) {
+            for (final var trackPoints : pointLists) {
                 final var timePointMap = new TreeMap<Long, Point2D>();
-                toTimePointMap(timePointMap, trackIndex, latLonList, Long.MIN_VALUE);
+                toTimePointMap(timePointMap, trackIndex, trackPoints, Long.MIN_VALUE);
                 trimGpxData(timePointMap, trackConfiguration);
                 timePointMapList.add(timePointMap);
                 var oldestTimeAsDefaultForWaypoints = timePointMap.keySet().stream().min(Long::compareTo).orElse(Long.MIN_VALUE);
@@ -617,7 +616,7 @@ public final class Renderer {
 
     private void toTimePointMap(@NonNull final TreeMap<Long, Point2D> timePointMap,
                                 final int trackIndex,
-                                @NonNull final List<LatLon> latLonList,
+                                @NonNull final List<? extends MyPoint> gpxPoints,
                                 final long defaultTimeIfMissing) throws UserException {
         long forcedTime = 0;
 
@@ -641,9 +640,9 @@ public final class Renderer {
             maxY = latToY(maxLat);
         }
 
-        for (final var latLon : latLonList) {
-            final var x = lonToX(latLon.getLon());
-            final var y = latToY(latLon.getLat());
+        for (final var gpxPoint : gpxPoints) {
+            final var x = lonToX(gpxPoint.longitude());
+            final var y = latToY(gpxPoint.latitude());
 
             if (minLon == null) {
                 minX = Math.min(x, minX);
@@ -664,7 +663,7 @@ public final class Renderer {
                 forcedTime += forcedPointInterval;
                 time = forcedTime;
             } else {
-                time = latLon.getTime() == Long.MIN_VALUE ? defaultTimeIfMissing : latLon.getTime();
+                time = gpxPoint.time() == Long.MIN_VALUE ? defaultTimeIfMissing : gpxPoint.time();
                 if (time == Long.MIN_VALUE) {
                     final var filename = trackConfiguration.getInputGpx().getName();
                     throw new UserException(
@@ -677,21 +676,25 @@ public final class Renderer {
             }
 
             final Point2D point;
-            if (latLon instanceof Waypoint waypoint) {
+            if (gpxPoint instanceof WayPoint wayPoint) {
                 final var namedPoint = new NamedPoint();
                 namedPoint.setLocation(x, y);
-                namedPoint.setName(waypoint.getName());
+                namedPoint.setName(wayPoint.name());
                 point = namedPoint;
+            } else if (gpxPoint instanceof TrackPoint trackPoint) {
+                point = new GpxPoint(x, y, trackPoint, time, trackPoint.speed());
             } else {
-                point = new GpxPoint(x, y, latLon, time, latLon.getSpeed());
+                point = null;
             }
 
-            // hack to prevent overwriting existing (way)point with same time
-            var freeTime = time;
-            while (timePointMap.containsKey(freeTime)) {
-                freeTime++;
+            if (point != null) {
+                // hack to prevent overwriting existing (way)point with same time
+                var freeTime = time;
+                while (timePointMap.containsKey(freeTime)) {
+                    freeTime++;
+                }
+                timePointMap.put(freeTime, point);
             }
-            timePointMap.put(freeTime, point);
         }
     }
 

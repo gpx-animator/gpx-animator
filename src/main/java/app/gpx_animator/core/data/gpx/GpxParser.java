@@ -16,11 +16,10 @@
 package app.gpx_animator.core.data.gpx;
 
 import app.gpx_animator.core.UserException;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.XMLConstants;
-
-import org.xml.sax.SAXException;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -37,7 +36,7 @@ public final class GpxParser {
         throw new InstantiationException("GpxParser is a utility class and can't be instantiated!");
     }
 
-    public static void parseGpx(final File inputGpx, final GpxContentHandler dh) throws UserException {
+    public static void parseGpx(final File inputGpx, final DefaultHandler dh) throws UserException {
         try (InputStream is = new FileInputStream(inputGpx)) {
             parseGpx(is, dh);
         } catch (final IOException e) {
@@ -45,7 +44,7 @@ public final class GpxParser {
         }
     }
 
-    public static void parseGpx(final InputStream is, final GpxContentHandler dh) throws UserException {
+    public static void parseGpx(final InputStream is, final DefaultHandler dh) throws UserException {
         final SAXParser saxParser;
         try {
             final var factory = SAXParserFactory.newInstance();

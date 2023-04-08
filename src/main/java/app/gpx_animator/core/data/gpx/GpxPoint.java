@@ -15,8 +15,7 @@
  */
 package app.gpx_animator.core.data.gpx;
 
-import app.gpx_animator.core.data.LatLon;
-
+import app.gpx_animator.core.data.entity.TrackPoint;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
 import java.awt.geom.Point2D;
@@ -28,19 +27,19 @@ public final class GpxPoint extends Point2D.Double {
     @Serial
     private static final long serialVersionUID = -1060001559230478467L;
 
-    private final LatLon latLon;
+    private final TrackPoint trackPoint;
     private final long time;
     private final java.lang.Double speed;
 
-    public GpxPoint(final double x, final double y, final LatLon latLon, final long time, @Nullable final java.lang.Double speed) {
+    public GpxPoint(final double x, final double y, final TrackPoint trackPoint, final long time, @Nullable final java.lang.Double speed) {
         super(x, y);
-        this.latLon = latLon;
+        this.trackPoint = trackPoint;
         this.time = time;
         this.speed = speed;
     }
 
-    public LatLon getLatLon() {
-        return latLon;
+    public TrackPoint getTrackPoint() {
+        return trackPoint;
     }
 
     public long getTime() {
@@ -68,7 +67,7 @@ public final class GpxPoint extends Point2D.Double {
         if (time != gpxPoint.time) {
             return false;
         }
-        if (!latLon.equals(gpxPoint.latLon)) {
+        if (!trackPoint.equals(gpxPoint.trackPoint)) {
             return false;
         }
         return Objects.equals(speed, gpxPoint.speed);
@@ -77,7 +76,7 @@ public final class GpxPoint extends Point2D.Double {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + latLon.hashCode();
+        result = 31 * result + trackPoint.hashCode();
         result = 31 * result + (int) (time ^ (time >>> 32));
         result = 31 * result + (speed != null ? speed.hashCode() : 0);
         return result;

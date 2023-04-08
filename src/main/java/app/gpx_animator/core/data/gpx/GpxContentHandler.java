@@ -16,14 +16,10 @@
 package app.gpx_animator.core.data.gpx;
 
 import app.gpx_animator.core.UserException;
-import app.gpx_animator.core.data.LatLon;
-import app.gpx_animator.core.data.Waypoint;
+import app.gpx_animator.core.data.entity.TrackPoint;
+import app.gpx_animator.core.data.entity.WayPoint;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.Nullable;
-
-import java.util.ArrayDeque;
-import java.util.Collections;
-
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +30,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -58,18 +56,18 @@ public final class GpxContentHandler extends DefaultHandler {
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final List<List<LatLon>> timePointListList = new ArrayList<>();
-    private final List<LatLon> waypointList = new ArrayList<>();
+    private final List<List<TrackPoint>> trackPointListList = new ArrayList<>();
+    private final List<WayPoint> wayPointList = new ArrayList<>();
 
     private final ArrayDeque<StringBuilder> characterStack = new ArrayDeque<>();
 
-    private List<LatLon> timePointList;
-    private long time = Long.MIN_VALUE;
+    private List<TrackPoint> trackPointList;
+    private Long time = null;
     private Double speed = null;
-    private double lat;
-    private double lon;
-    private String name;
-    private String cmt;
+    private Double latitude = null;
+    private Double longitude = null;
+    private String name = null;
+    private String comment = null;
 
     public GpxContentHandler() {
         characterStack.addLast(new StringBuilder());
@@ -79,10 +77,10 @@ public final class GpxContentHandler extends DefaultHandler {
     public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) {
         characterStack.addLast(new StringBuilder());
         if (isEqual(ELEM_TRKSEG, qName)) {
-            timePointList = new ArrayList<>();
+            trackPointList = new ArrayList<>();
         } else if (isEqual(ELEM_TRKPT, qName) || isEqual(ELEM_WPT, qName)) {
-            lat = Double.parseDouble(attributes.getValue(ATTR_LAT));
-            lon = Double.parseDouble(attributes.getValue(ATTR_LON));
+            latitude = Double.parseDouble(attributes.getValue(ATTR_LAT));
+            longitude = Double.parseDouble(attributes.getValue(ATTR_LON));
         }
     }
 
@@ -102,15 +100,22 @@ public final class GpxContentHandler extends DefaultHandler {
         final var sb = characterStack.removeLast();
 
         if (isEqual(ELEM_TRKSEG, qName)) {
-            timePointListList.add(timePointList);
-            timePointList = null;
+            trackPointListList.add(trackPointList);
+            trackPointList = null;
         } else if (isEqual(ELEM_TRKPT, qName)) {
-            timePointList.add(new LatLon(lat, lon, time, speed, cmt));
-            time = Long.MIN_VALUE;
+            trackPointList.add(new TrackPoint(latitude, longitude, time, speed, comment));
+            latitude = null;
+            longitude = null;
+            time = null;
             speed = null;
-            cmt = null;
+            comment = null;
         } else if (isEqual(ELEM_WPT, qName)) {
-            waypointList.add(new Waypoint(lat, lon, time, name));
+            wayPointList.add(new WayPoint(latitude, longitude, time, name, comment));
+            latitude = null;
+            longitude = null;
+            time = null;
+            name = null;
+            comment = null;
         } else if (isEqual(ELEM_TIME, qName)) {
             final var dateTime = parseDateTime(sb.toString());
             time = dateTime != null ? dateTime.toInstant().toEpochMilli() : 0;
@@ -121,7 +126,7 @@ public final class GpxContentHandler extends DefaultHandler {
         } else if (isEqual(ELEM_NAME, qName)) {
             name = sb.toString();
         } else if (isEqual(ELEM_CMT, qName)) {
-            cmt = sb.toString();
+            comment = sb.toString();
         }
     }
 
@@ -145,13 +150,13 @@ public final class GpxContentHandler extends DefaultHandler {
     }
 
 
-    public List<List<LatLon>> getPointLists() {
-        return Collections.unmodifiableList(timePointListList);
+    public List<List<TrackPoint>> getPointLists() {
+        return Collections.unmodifiableList(trackPointListList);
     }
 
 
-    public List<LatLon> getWaypointList() {
-        return Collections.unmodifiableList(waypointList);
+    public List<WayPoint> getWaypointList() {
+        return Collections.unmodifiableList(wayPointList);
     }
 
 }

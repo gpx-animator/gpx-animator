@@ -15,8 +15,9 @@
  */
 package app.gpx_animator.core.util;
 
-import app.gpx_animator.core.data.LatLon;
+import app.gpx_animator.core.data.entity.TrackPoint;
 import app.gpx_animator.core.data.gpx.GpxPoint;
+
 import java.awt.geom.Point2D;
 import java.util.TreeMap;
 
@@ -39,9 +40,9 @@ public final class LinearInterpolation {
             if (point1 instanceof GpxPoint gpxPoint1 && point2 instanceof GpxPoint gpxPoint2) {
                 var x = interpolate(time1, gpxPoint1.getX(), time2, gpxPoint2.getX(), time);
                 var y = interpolate(time1, gpxPoint1.getY(), time2, gpxPoint2.getY(), time);
-                var lat = interpolate(time1, gpxPoint1.getLatLon().getLat(), time2, gpxPoint2.getLatLon().getLat(), time);
-                var lon = interpolate(time1, gpxPoint1.getLatLon().getLon(), time2, gpxPoint2.getLatLon().getLon(), time);
-                point = new GpxPoint(x, y, new LatLon(lat, lon, time, null, null), time, null);
+                var lat = interpolate(time1, gpxPoint1.getTrackPoint().latitude(), time2, gpxPoint2.getTrackPoint().latitude(), time);
+                var lon = interpolate(time1, gpxPoint1.getTrackPoint().longitude(), time2, gpxPoint2.getTrackPoint().longitude(), time);
+                point = new GpxPoint(x, y, new TrackPoint(lat, lon, time, null, null), time, null);
             }
         }
         return point;
