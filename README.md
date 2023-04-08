@@ -1,6 +1,6 @@
 # GPX Animator
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-36-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-37-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -97,6 +97,7 @@ Special thanks for all these wonderful people who had helped this project so far
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://mastodon.social/@reinhapa"><img src="https://avatars.githubusercontent.com/u/4694567?v=4?s=100" width="100px;" alt="Patrick Reinhart"/><br /><sub><b>Patrick Reinhart</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=reinhapa" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/danielmischler"><img src="https://avatars.githubusercontent.com/u/23777?v=4?s=100" width="100px;" alt="Daniel Mischler"/><br /><sub><b>Daniel Mischler</b></sub></a><br /><a href="https://github.com/gpx-animator/gpx-animator/commits?author=danielmischler" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
