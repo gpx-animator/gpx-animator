@@ -12,13 +12,13 @@
   </metadata>
   <trk>
     <name>USA Day 70: From Ragged Point to Carmel</name>
-    <cmt>Track Comment</cmt>
+    <cmt>Comment for Track</cmt>
     <type>cycling</type>
     <trkseg>
       <trkpt lat="35.7804112695157527923583984375" lon="-121.329866945743560791015625">
         <ele>91.8000030517578125</ele>
         <time>2019-10-22T14:36:00.000Z</time>
-        <cmt>Track Point Comment 1</cmt>
+        <cmt>Comment for Track Point 1</cmt>
       </trkpt>
       <trkpt lat="35.78038754872977733612060546875" lon="-121.32985797710716724395751953125">
         <ele>88.1999969482421875</ele>
@@ -27,7 +27,7 @@
       <trkpt lat="35.780366174876689910888671875" lon="-121.329841129481792449951171875">
         <ele>89</ele>
         <time>2019-10-22T14:36:02.000Z</time>
-        <cmt>Track Point Comment 2</cmt>
+        <cmt>Comment for Track Point 3</cmt>
       </trkpt>
       <trkpt lat="35.78034027479588985443115234375" lon="-121.32978849112987518310546875">
         <ele>89</ele>
