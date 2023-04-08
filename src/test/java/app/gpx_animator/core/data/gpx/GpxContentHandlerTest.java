@@ -14,9 +14,10 @@ class GpxContentHandlerTest {
         final var is = getClass().getResourceAsStream("/gpx/comment.gpx");
         GpxParser.parseGpx(is, contentHandler);
 
-        final var trackSegmentList = contentHandler.getTrackSegments();
-        assertEquals(1, trackSegmentList.size());
-        final var trackSegment = trackSegmentList.get(0);
+        final var track = contentHandler.getTrack();
+        final var trackSegments = track.trackSegments();
+        assertEquals(1, trackSegments.size());
+        final var trackSegment = trackSegments.get(0);
         assertEquals(6, trackSegment.size());
         assertEquals("Track Point Comment 1", trackSegment.getTrackPoint(0).comment());
         assertNull(trackSegment.getTrackPoint(1).comment());

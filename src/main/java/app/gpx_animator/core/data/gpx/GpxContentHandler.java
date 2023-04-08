@@ -16,8 +16,10 @@
 package app.gpx_animator.core.data.gpx;
 
 import app.gpx_animator.core.UserException;
+import app.gpx_animator.core.data.entity.Track;
 import app.gpx_animator.core.data.entity.TrackPoint;
 import app.gpx_animator.core.data.entity.TrackSegment;
+import app.gpx_animator.core.data.entity.TrackType;
 import app.gpx_animator.core.data.entity.WayPoint;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -48,11 +50,13 @@ public final class GpxContentHandler extends DefaultHandler {
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final List<TrackSegment> trackSegments = new ArrayList<>();
+    private final List<TrackPoint> trackPoints = new ArrayList<>();
     private final List<WayPoint> wayPoints = new ArrayList<>();
 
     private final ArrayDeque<StringBuilder> characterStack = new ArrayDeque<>();
 
-    private List<TrackPoint> trackPoints;
+    private Track track = null;
+    private TrackType trackType = null;
     private Long time = null;
     private Double speed = null;
     private Double latitude = null;
@@ -67,9 +71,7 @@ public final class GpxContentHandler extends DefaultHandler {
     @Override
     public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) {
         characterStack.addLast(new StringBuilder());
-        if (isEqual(GPX.TRACK_SEGMENT.getName(), qName)) {
-            trackPoints = new ArrayList<>();
-        } else if (isEqual(GPX.TRACK_POINT.getName(), qName) || isEqual(GPX.WAY_POINT.getName(), qName)) {
+        if (isEqual(GPX.TRACK_POINT.getName(), qName) || isEqual(GPX.WAY_POINT.getName(), qName)) {
             latitude = Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName()));
             longitude = Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName()));
         }
@@ -88,7 +90,15 @@ public final class GpxContentHandler extends DefaultHandler {
     public void endElement(final String uri, final String localName, final String qName) {
         final var sb = characterStack.removeLast();
 
-        if (isEqual(GPX.TRACK_SEGMENT.getName(), qName)) {
+        if (isEqual(GPX.TRACK.getName(), qName)) {
+            track = new Track(name, comment, trackType, List.copyOf(trackSegments));
+            name = null;
+            comment = null;
+            trackType = null;
+            trackSegments.clear();
+        } else if (isEqual(GPX.TYPE.getName(), qName)) {
+            trackType = TrackType.getTrackType(sb.toString());
+        } else if (isEqual(GPX.TRACK_SEGMENT.getName(), qName)) {
             trackSegments.add(new TrackSegment(List.copyOf(trackPoints)));
             trackPoints.clear();
         } else if (isEqual(GPX.TRACK_POINT.getName(), qName)) {
@@ -137,8 +147,8 @@ public final class GpxContentHandler extends DefaultHandler {
                 new UserException(resourceBundle.getString("gpxparser.error.datetimeformat").formatted(dateTimeString)));
     }
 
-    public List<TrackSegment> getTrackSegments() {
-        return Collections.unmodifiableList(trackSegments);
+    public Track getTrack() {
+        return track;
     }
 
     public List<WayPoint> getWayPoints() {

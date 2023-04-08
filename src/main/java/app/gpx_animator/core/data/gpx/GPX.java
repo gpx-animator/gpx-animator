@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public enum GPX {
 
     TRACK("trk"),
+    TYPE("type"),
     TRACK_SEGMENT("trkseg"),
     TRACK_POINT("trkpt"),
     WAY_POINT("wpt"),
