@@ -21,4 +21,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"}) // the complete hierarchy is immutable
-public record TrackSegment(@NotNull List<TrackPoint> trackPoints) { }
+public record TrackSegment(@NotNull List<TrackPoint> trackPoints) {
+
+    public int size() {
+        return trackPoints().size();
+    }
+
+    public TrackPoint getTrackPoint(final int index) {
+        return trackPoints().get(index);
+    }
+}

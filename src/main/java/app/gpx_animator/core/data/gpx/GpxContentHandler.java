@@ -17,6 +17,7 @@ package app.gpx_animator.core.data.gpx;
 
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.data.entity.TrackPoint;
+import app.gpx_animator.core.data.entity.TrackSegment;
 import app.gpx_animator.core.data.entity.WayPoint;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -46,12 +47,12 @@ public final class GpxContentHandler extends DefaultHandler {
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final List<List<TrackPoint>> trackPointListList = new ArrayList<>();
-    private final List<WayPoint> wayPointList = new ArrayList<>();
+    private final List<TrackSegment> trackSegments = new ArrayList<>();
+    private final List<WayPoint> wayPoints = new ArrayList<>();
 
     private final ArrayDeque<StringBuilder> characterStack = new ArrayDeque<>();
 
-    private List<TrackPoint> trackPointList;
+    private List<TrackPoint> trackPoints;
     private Long time = null;
     private Double speed = null;
     private Double latitude = null;
@@ -67,13 +68,12 @@ public final class GpxContentHandler extends DefaultHandler {
     public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) {
         characterStack.addLast(new StringBuilder());
         if (isEqual(GPX.TRACK_SEGMENT.getName(), qName)) {
-            trackPointList = new ArrayList<>();
+            trackPoints = new ArrayList<>();
         } else if (isEqual(GPX.TRACK_POINT.getName(), qName) || isEqual(GPX.WAY_POINT.getName(), qName)) {
             latitude = Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName()));
             longitude = Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName()));
         }
     }
-
 
     @Override
     public void characters(final char[] ch, final int start, final int length) {
@@ -83,24 +83,23 @@ public final class GpxContentHandler extends DefaultHandler {
         }
     }
 
-
     @Override
     @SuppressWarnings("PMD.NullAssignment") // XML parsing ending elements, it's okay here
     public void endElement(final String uri, final String localName, final String qName) {
         final var sb = characterStack.removeLast();
 
         if (isEqual(GPX.TRACK_SEGMENT.getName(), qName)) {
-            trackPointListList.add(trackPointList);
-            trackPointList = null;
+            trackSegments.add(new TrackSegment(List.copyOf(trackPoints)));
+            trackPoints.clear();
         } else if (isEqual(GPX.TRACK_POINT.getName(), qName)) {
-            trackPointList.add(new TrackPoint(latitude, longitude, time, speed, comment));
+            trackPoints.add(new TrackPoint(latitude, longitude, time, speed, comment));
             latitude = null;
             longitude = null;
             time = null;
             speed = null;
             comment = null;
         } else if (isEqual(GPX.WAY_POINT.getName(), qName)) {
-            wayPointList.add(new WayPoint(latitude, longitude, time, name, comment));
+            wayPoints.add(new WayPoint(latitude, longitude, time, name, comment));
             latitude = null;
             longitude = null;
             time = null;
@@ -120,7 +119,6 @@ public final class GpxContentHandler extends DefaultHandler {
         }
     }
 
-
     private ZonedDateTime parseDateTime(@Nullable final String dateTimeString) {
         if (dateTimeString == null || dateTimeString.isBlank()) {
             return null;
@@ -139,14 +137,12 @@ public final class GpxContentHandler extends DefaultHandler {
                 new UserException(resourceBundle.getString("gpxparser.error.datetimeformat").formatted(dateTimeString)));
     }
 
-
-    public List<List<TrackPoint>> getPointLists() {
-        return Collections.unmodifiableList(trackPointListList);
+    public List<TrackSegment> getTrackSegments() {
+        return Collections.unmodifiableList(trackSegments);
     }
 
-
-    public List<WayPoint> getWaypointList() {
-        return Collections.unmodifiableList(wayPointList);
+    public List<WayPoint> getWayPoints() {
+        return Collections.unmodifiableList(wayPoints);
     }
 
 }

@@ -21,6 +21,7 @@ import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.data.entity.MyPoint;
 import app.gpx_animator.core.data.entity.TrackPoint;
+import app.gpx_animator.core.data.entity.TrackSegment;
 import app.gpx_animator.core.data.entity.WayPoint;
 import app.gpx_animator.core.data.gpx.GpxContentHandler;
 import app.gpx_animator.core.data.gpx.GpxParser;
@@ -428,17 +429,17 @@ public final class Renderer {
 
             final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
-            final var pointLists = gch.getPointLists();
-            if (pointLists.isEmpty() || pointLists.stream().mapToInt(List::size).sum() == 0) {
+            final var trackSegments = gch.getTrackSegments();
+            if (trackSegments.isEmpty() || trackSegments.stream().mapToInt(TrackSegment::size).sum() == 0) {
                 throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
             }
-            for (final var trackPoints : pointLists) {
+            for (final var trackSegment : trackSegments) {
                 final var timePointMap = new TreeMap<Long, Point2D>();
-                toTimePointMap(timePointMap, trackIndex, trackPoints, Long.MIN_VALUE);
+                toTimePointMap(timePointMap, trackIndex, trackSegment.trackPoints(), Long.MIN_VALUE);
                 trimGpxData(timePointMap, trackConfiguration);
                 timePointMapList.add(timePointMap);
                 var oldestTimeAsDefaultForWaypoints = timePointMap.keySet().stream().min(Long::compareTo).orElse(Long.MIN_VALUE);
-                toTimePointMap(wpMap, trackIndex, gch.getWaypointList(), oldestTimeAsDefaultForWaypoints);
+                toTimePointMap(wpMap, trackIndex, gch.getWayPoints(), oldestTimeAsDefaultForWaypoints);
                 mergeConnectedSpans(spanList, timePointMap);
             }
 
