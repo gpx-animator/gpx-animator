@@ -44,16 +44,6 @@ public final class GpxContentHandler extends DefaultHandler {
     @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(GpxContentHandler.class);
 
-    private static final String ATTR_LON = "lon"; //NON-NLS
-    private static final String ATTR_LAT = "lat"; //NON-NLS
-    private static final String ELEM_TRKSEG = "trkseg"; //NON-NLS
-    private static final String ELEM_TRKPT = "trkpt"; //NON-NLS
-    private static final String ELEM_WPT = "wpt"; //NON-NLS
-    private static final String ELEM_TIME = "time"; //NON-NLS
-    private static final String ELEM_SPEED = "speed"; //NON-NLS
-    private static final String ELEM_NAME = "name"; //NON-NLS
-    private static final String ELEM_CMT = "cmt"; //NON-NLS
-
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
     private final List<List<TrackPoint>> trackPointListList = new ArrayList<>();
@@ -76,11 +66,11 @@ public final class GpxContentHandler extends DefaultHandler {
     @Override
     public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) {
         characterStack.addLast(new StringBuilder());
-        if (isEqual(ELEM_TRKSEG, qName)) {
+        if (isEqual(GPX.TRACK_SEGMENT.getName(), qName)) {
             trackPointList = new ArrayList<>();
-        } else if (isEqual(ELEM_TRKPT, qName) || isEqual(ELEM_WPT, qName)) {
-            latitude = Double.parseDouble(attributes.getValue(ATTR_LAT));
-            longitude = Double.parseDouble(attributes.getValue(ATTR_LON));
+        } else if (isEqual(GPX.TRACK_POINT.getName(), qName) || isEqual(GPX.WAY_POINT.getName(), qName)) {
+            latitude = Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName()));
+            longitude = Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName()));
         }
     }
 
@@ -99,33 +89,33 @@ public final class GpxContentHandler extends DefaultHandler {
     public void endElement(final String uri, final String localName, final String qName) {
         final var sb = characterStack.removeLast();
 
-        if (isEqual(ELEM_TRKSEG, qName)) {
+        if (isEqual(GPX.TRACK_SEGMENT.getName(), qName)) {
             trackPointListList.add(trackPointList);
             trackPointList = null;
-        } else if (isEqual(ELEM_TRKPT, qName)) {
+        } else if (isEqual(GPX.TRACK_POINT.getName(), qName)) {
             trackPointList.add(new TrackPoint(latitude, longitude, time, speed, comment));
             latitude = null;
             longitude = null;
             time = null;
             speed = null;
             comment = null;
-        } else if (isEqual(ELEM_WPT, qName)) {
+        } else if (isEqual(GPX.WAY_POINT.getName(), qName)) {
             wayPointList.add(new WayPoint(latitude, longitude, time, name, comment));
             latitude = null;
             longitude = null;
             time = null;
             name = null;
             comment = null;
-        } else if (isEqual(ELEM_TIME, qName)) {
+        } else if (isEqual(GPX.TIME.getName(), qName)) {
             final var dateTime = parseDateTime(sb.toString());
             time = dateTime != null ? dateTime.toInstant().toEpochMilli() : 0;
-        } else if (isEqual(ELEM_SPEED, qName)) {
+        } else if (isEqual(GPX.SPEED.getName(), qName)) {
             if (!sb.isEmpty()) {
                 speed = Double.parseDouble(sb.toString());
             }
-        } else if (isEqual(ELEM_NAME, qName)) {
+        } else if (isEqual(GPX.NAME.getName(), qName)) {
             name = sb.toString();
-        } else if (isEqual(ELEM_CMT, qName)) {
+        } else if (isEqual(GPX.COMMENT.getName(), qName)) {
             comment = sb.toString();
         }
     }
