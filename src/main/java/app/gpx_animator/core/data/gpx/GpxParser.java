@@ -16,6 +16,8 @@
 package app.gpx_animator.core.data.gpx;
 
 import app.gpx_animator.core.UserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -32,12 +34,15 @@ import java.util.zip.GZIPInputStream;
 
 public final class GpxParser {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GpxParser.class);
+
     private GpxParser() throws InstantiationException {
         throw new InstantiationException("GpxParser is a utility class and can't be instantiated!");
     }
 
     public static void parseGpx(final File inputGpx, final DefaultHandler dh) throws UserException {
         try (InputStream is = new FileInputStream(inputGpx)) {
+            LOGGER.info("Parsing GPX file \"{}\"...", inputGpx.getName());
             parseGpx(is, dh);
         } catch (final IOException e) {
             throw new UserException("error reading input file", e); // TODO translate all user exceptions

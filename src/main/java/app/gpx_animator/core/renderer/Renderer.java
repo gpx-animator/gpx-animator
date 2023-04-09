@@ -134,7 +134,7 @@ public final class Renderer {
 
         final List<Long[]> spanList = new ArrayList<>();
         final var wpMap = new TreeMap<Long, Point2D>();
-        parseGPX(spanList, wpMap);
+        parseGPX(spanList, wpMap, rc);
 
         final var userSpecifiedWidth = cfg.getWidth() != null;
         final var width = userSpecifiedWidth ? cfg.getWidth() : 800;
@@ -418,12 +418,13 @@ public final class Renderer {
     }
 
     private void parseGPX(@NonNull final List<Long[]> spanList,
-                          @NonNull final TreeMap<Long, Point2D> wpMap) throws UserException {
+                          @NonNull final TreeMap<Long, Point2D> wpMap, RenderingContext rc) throws UserException {
         var trackIndex = -1;
         for (final var trackConfiguration : cfg.getTrackConfigurationList()) {
             trackIndex++;
 
             final var inputGpxFile = trackConfiguration.getInputGpx();
+            rc.setProgress1(0, "Parsing GPX file \"%s\"...".formatted(inputGpxFile.getName())); // TODO i18n
             final var gch = new GpxContentHandler();
             GpxParser.parseGpx(inputGpxFile, gch);
 
