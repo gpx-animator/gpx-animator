@@ -45,9 +45,7 @@ public final class GpxContentHandler extends DefaultHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GpxContentHandler.class);
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
-
     private final List<WayPoint> wayPoints = new ArrayList<>();
-
     private final ArrayDeque<StringBuilder> characterStack = new ArrayDeque<>();
 
     private Track track = null;

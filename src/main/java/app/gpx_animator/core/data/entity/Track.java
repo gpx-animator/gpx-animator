@@ -1,6 +1,5 @@
 package app.gpx_animator.core.data.entity;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"}) // the complete hierarchy is immutable
 public final class Track {
     private final List<TrackSegment> trackSegments = new ArrayList<>();
     private String name;
