@@ -33,7 +33,6 @@ import app.gpx_animator.core.renderer.plugins.RendererPlugin;
 import app.gpx_animator.core.util.PluginUtil;
 import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
-import app.gpx_animator.core.util.LinearInterpolation;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
@@ -102,8 +101,6 @@ public final class Renderer {
 
     private double speedup;
 
-    private ArrayList<LinearInterpolation> interpolators = new ArrayList<LinearInterpolation>();
-
     public Renderer(@NonNull final Configuration cfg) throws UserException {
         this.cfg = cfg.validate();
         this.recentMarkers = new LinkedList<>();
@@ -144,10 +141,7 @@ public final class Renderer {
         calculateMinMaxValues(userSpecifiedWidth, width, scale);
 
         timePointMapListList.forEach(timePointMapList -> timePointMapList
-                            .forEach(timePointMap -> {
-          translateCoordinatesToZeroZero(scale, timePointMap);
-          interpolators.add(new LinearInterpolation(timePointMap));
-        }));
+                .forEach(timePointMap -> translateCoordinatesToZeroZero(scale, timePointMap)));
         translateCoordinatesToZeroZero(scale, wpMap);
 
         final var frameFilePattern = cfg.getOutput().toString();
@@ -708,23 +702,17 @@ public final class Renderer {
         final var trackConfigurationList = cfg.getTrackConfigurationList();
 
         var i = 0;
-        var trackIdx = 0;
         outer:
         for (final var timePointMapList : timePointMapListList) {
             final var trackConfiguration = trackConfigurationList.get(i++);
             for (final var timePointMap : timePointMapList) {
-                final var interpolator = interpolators.get(trackIdx++);
                 final var ceilingEntry = timePointMap.ceilingEntry(t2);
-                point = interpolator.getPointAtTime(t2);
-                if (point == null) {
-                    final var floorEntry = timePointMap.floorEntry(t2);
-                    if (floorEntry == null) {
-                        continue;
-                    } else {
-                        point = floorEntry.getValue();
-                    }
+                final var floorEntry = timePointMap.floorEntry(t2);
+                if (floorEntry == null) {
+                    continue;
                 }
 
+                point = floorEntry.getValue();
                 g2.setColor(ceilingEntry == null ? Color.white : trackConfiguration.getColor());
 
                 final var trackIcon = trackConfiguration.getTrackIcon();
@@ -820,12 +808,10 @@ public final class Renderer {
         final var trackConfigurationList = cfg.getTrackConfigurationList();
 
         var i = 0;
-        var trackIdx = 0;
         for (final var timePointMapList : timePointMapListList) {
             final var trackConfiguration = trackConfigurationList.get(i++);
 
             for (final var timePointMap : timePointMapList) {
-                var interpolator = interpolators.get(trackIdx++);
                 final var lineWidth = isPreDrawTrack ? trackConfiguration.getPreDrawLineWidth() : trackConfiguration.getLineWidth();
                 g2.setStroke(new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
@@ -839,14 +825,17 @@ public final class Renderer {
 
                 if (backTime == 0) {
                     final var prevTime = getTime(frame - 1);
-
-                    var intervalMap = extractInterval(timePointMap, prevTime, time, interpolator);
-                    if (intervalMap.isEmpty()) {
+                    var fromTime = timePointMap.floorKey(prevTime);
+                    if (fromTime == null) {
+                        // try ceiling because we may be at beginning
+                        fromTime = timePointMap.ceilingKey(prevTime);
+                    }
+                    if (fromTime == null) {
                         continue;
                     }
 
                     g2.setPaint(trackConfiguration.getColor());
-                    for (final var entry : intervalMap.entrySet()) {
+                    for (final var entry : timePointMap.subMap(fromTime, true, toTime, true).entrySet()) {
                         if (prevPoint != null) {
                             g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
                         }
@@ -856,8 +845,7 @@ public final class Renderer {
                     if (!cfg.isTailColorFadeout() && toTime == maxTime) {
                         continue;
                     }
-                    var intervalMap = extractInterval(timePointMap, time - backTime, time, interpolator);
-                    for (final var entry : intervalMap.entrySet()) {
+                    for (final var entry : timePointMap.subMap(toTime - backTime, true, toTime, true).entrySet()) {
                         if (prevPoint != null) {
                             var drawSegment = false;
                             if (isPreDrawTrack) {
@@ -880,22 +868,6 @@ public final class Renderer {
                 }
             }
         }
-    }
-
-    private TreeMap<Long, Point2D> extractInterval(@NonNull final TreeMap<Long, Point2D> map,
-                                                   final long startTime,
-                                                   final long endTime,
-                                                   @NonNull final LinearInterpolation interpolator) {
-        var intervalMap = new TreeMap<Long, Point2D>(map.subMap(startTime, true, endTime, true));
-        var firstPoint = interpolator.getPointAtTime(startTime);
-        if (firstPoint != null) {
-            intervalMap.put(startTime, firstPoint);
-        }
-        var lastPoint = interpolator.getPointAtTime(endTime);
-        if (lastPoint != null) {
-            intervalMap.put(endTime, lastPoint);
-        }
-        return intervalMap;
     }
 
     private long getTime(final int frame) {

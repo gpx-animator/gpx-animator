@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 1.8.2
+
+**Release date: 2023-04-09**
+
+### Fixed bugs
+
+* Fix `NullPointerException` with moving map feature. This problem was caused by the smooth line drawing between track points, which will be temporarily unavailable.
+
+---
+
 ## Version 1.8.1
 
 **Release date: 2023-04-07**
@@ -13,7 +23,7 @@
 * Fix reading wrong comments from GPX files
 
 ### Maintenance
-* 
+
 * Better error message for missing implementation of CLI option 
 
 ---
