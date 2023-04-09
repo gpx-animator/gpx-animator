@@ -118,7 +118,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     private String getLatLonString(@NonNull final Point2D point) {
         if (point instanceof GpxPoint gpxPoint) {
             final var trackPoint = gpxPoint.getTrackPoint();
-            return String.format("%.4f, %.4f", trackPoint.latitude(), trackPoint.longitude()); //NON-NLS
+            return String.format("%.4f, %.4f", trackPoint.getLatitude(), trackPoint.getLongitude()); //NON-NLS
         } else {
             return "";
         }
@@ -186,10 +186,10 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
             return 0;
         }
 
-        final var lat1 = point1.getTrackPoint().latitude();
-        final var lon1 = point1.getTrackPoint().longitude();
-        final var lat2 = point2.getTrackPoint().latitude();
-        final var lon2 = point2.getTrackPoint().longitude();
+        final var lat1 = point1.getTrackPoint().getLatitude();
+        final var lon1 = point1.getTrackPoint().getLongitude();
+        final var lat2 = point2.getTrackPoint().getLatitude();
+        final var lon2 = point2.getTrackPoint().getLongitude();
 
         if ((lat1.equals(lat2)) && (lon1.equals(lon2))) {
             return 0;

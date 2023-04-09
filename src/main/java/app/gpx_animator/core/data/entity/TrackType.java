@@ -1,5 +1,6 @@
 package app.gpx_animator.core.data.entity;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +13,7 @@ public enum TrackType {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrackType.class);
 
-    public static TrackType getTrackType(final String value) {
+    public static @NotNull TrackType getTrackType(@NotNull final String value) {
         try {
             return valueOf(value.toUpperCase(Locale.getDefault()));
         } catch (final IllegalArgumentException e) {

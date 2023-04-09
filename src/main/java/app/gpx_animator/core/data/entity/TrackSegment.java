@@ -15,19 +15,42 @@
  */
 package app.gpx_animator.core.data.entity;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"}) // the complete hierarchy is immutable
-public record TrackSegment(@NotNull List<TrackPoint> trackPoints) {
+public final class TrackSegment {
+    private final List<TrackPoint> trackPoints = new ArrayList<>();
 
-    public int size() {
-        return trackPoints().size();
+    public void addTrackPoint(@NotNull final TrackPoint trackPoint) {
+        trackPoints.add(trackPoint);
     }
 
-    public TrackPoint getTrackPoint(final int index) {
-        return trackPoints().get(index);
+    public @NotNull List<TrackPoint> getTrackPoints() {
+        return Collections.unmodifiableList(trackPoints);
     }
+
+    @Override
+    public boolean equals(@Nullable final Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (TrackSegment) obj;
+        return Objects.equals(this.trackPoints, that.trackPoints);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(trackPoints);
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return "TrackSegment[" +
+                "trackPoints=" + trackPoints + ']';
+    }
+
 }

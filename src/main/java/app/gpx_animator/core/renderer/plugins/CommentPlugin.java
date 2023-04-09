@@ -66,7 +66,7 @@ public final class CommentPlugin extends TextRenderer implements RendererPlugin 
     private String getCommentString(@Nullable final Point2D marker) {
         if (marker instanceof GpxPoint gpxPoint) {
             final var trackPoint = gpxPoint.getTrackPoint();
-            final var comment = trackPoint.comment();
+            final var comment = trackPoint.getComment();
 
             // null = use the last comment
             if (comment != null) {

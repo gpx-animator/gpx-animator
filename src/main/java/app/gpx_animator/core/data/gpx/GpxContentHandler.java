@@ -22,8 +22,8 @@ import app.gpx_animator.core.data.entity.TrackSegment;
 import app.gpx_animator.core.data.entity.TrackType;
 import app.gpx_animator.core.data.entity.WayPoint;
 import app.gpx_animator.core.preferences.Preferences;
-import edu.umd.cs.findbugs.annotations.Nullable;
-import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
@@ -39,41 +39,48 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static app.gpx_animator.core.util.Utils.isEqual;
-
 @SuppressWarnings("PMD.BeanMembersShouldSerialize") // This class is not serializable
 public final class GpxContentHandler extends DefaultHandler {
 
-    @NonNls
     private static final Logger LOGGER = LoggerFactory.getLogger(GpxContentHandler.class);
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
-    private final List<TrackSegment> trackSegments = new ArrayList<>();
-    private final List<TrackPoint> trackPoints = new ArrayList<>();
     private final List<WayPoint> wayPoints = new ArrayList<>();
 
     private final ArrayDeque<StringBuilder> characterStack = new ArrayDeque<>();
 
     private Track track = null;
-    private TrackType trackType = null;
-    private Long time = null;
-    private Double speed = null;
-    private Double latitude = null;
-    private Double longitude = null;
-    private String name = null;
-    private String comment = null;
+    private TrackSegment trackSegment = null;
+    private TrackPoint trackPoint = null;
+    private WayPoint wayPoint = null;
 
     public GpxContentHandler() {
         characterStack.addLast(new StringBuilder());
     }
 
     @Override
-    public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) {
+    public void startElement(@Nullable final String uri, @Nullable final String localName, @NotNull final String qName,
+                             @NotNull final Attributes attributes) {
         characterStack.addLast(new StringBuilder());
-        if (isEqual(GPX.TRACK_POINT.getName(), qName) || isEqual(GPX.WAY_POINT.getName(), qName)) {
-            latitude = Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName()));
-            longitude = Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName()));
+        try {
+            final GPX gpxElement = GPX.getElement(qName);
+            switch (gpxElement) {
+                case TRACK -> track = new Track();
+                case TRACK_SEGMENT -> trackSegment = new TrackSegment();
+                case TRACK_POINT -> {
+                    trackPoint = new TrackPoint();
+                    trackPoint.setLatitude(Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())));
+                    trackPoint.setLongitude(Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
+                }
+                case WAY_POINT -> {
+                    wayPoint = new WayPoint();
+                    wayPoint.setLatitude(Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())));
+                    wayPoint.setLongitude(Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
+                }
+            }
+        } catch (final IllegalArgumentException e) {
+            LOGGER.debug("Ignoring XML start element \"{}\"", qName);
         }
     }
 
@@ -87,49 +94,61 @@ public final class GpxContentHandler extends DefaultHandler {
 
     @Override
     @SuppressWarnings("PMD.NullAssignment") // XML parsing ending elements, it's okay here
-    public void endElement(final String uri, final String localName, final String qName) {
+    public void endElement(@Nullable final String uri, @Nullable final String localName, @NotNull final String qName) {
         final var sb = characterStack.removeLast();
-
-        if (isEqual(GPX.TRACK.getName(), qName)) {
-            track = new Track(name, comment, trackType, List.copyOf(trackSegments));
-            name = null;
-            comment = null;
-            trackType = null;
-            trackSegments.clear();
-        } else if (isEqual(GPX.TYPE.getName(), qName)) {
-            trackType = TrackType.getTrackType(sb.toString());
-        } else if (isEqual(GPX.TRACK_SEGMENT.getName(), qName)) {
-            trackSegments.add(new TrackSegment(List.copyOf(trackPoints)));
-            trackPoints.clear();
-        } else if (isEqual(GPX.TRACK_POINT.getName(), qName)) {
-            trackPoints.add(new TrackPoint(latitude, longitude, time, speed, comment));
-            latitude = null;
-            longitude = null;
-            time = null;
-            speed = null;
-            comment = null;
-        } else if (isEqual(GPX.WAY_POINT.getName(), qName)) {
-            wayPoints.add(new WayPoint(latitude, longitude, time, name, comment));
-            latitude = null;
-            longitude = null;
-            time = null;
-            name = null;
-            comment = null;
-        } else if (isEqual(GPX.TIME.getName(), qName)) {
-            final var dateTime = parseDateTime(sb.toString());
-            time = dateTime != null ? dateTime.toInstant().toEpochMilli() : 0;
-        } else if (isEqual(GPX.SPEED.getName(), qName)) {
-            if (!sb.isEmpty()) {
-                speed = Double.parseDouble(sb.toString());
+        try {
+            final GPX gpxElement = GPX.getElement(qName);
+            switch (gpxElement) {
+                case TYPE -> track.setType(TrackType.getTrackType(sb.toString()));
+                case TRACK_SEGMENT -> {
+                    track.addTrackSegment(trackSegment);
+                    trackSegment = null;
+                }
+                case TRACK_POINT -> {
+                    trackSegment.addTrackPoint(trackPoint);
+                    trackPoint = null;
+                }
+                case WAY_POINT -> {
+                    wayPoints.add(wayPoint);
+                    wayPoint = null;
+                }
+                case TIME -> {
+                    final var dateTime = parseDateTime(sb.toString());
+                    if (dateTime != null) {
+                        final var time = dateTime.toInstant().toEpochMilli();
+                        if (trackPoint != null) {
+                            trackPoint.setTime(time);
+                        } else if (wayPoint != null) {
+                            wayPoint.setTime(time);
+                        }
+                    }
+                }
+                case COMMENT -> {
+                    if (trackPoint != null) {
+                        trackPoint.setComment(sb.toString());
+                    } else if (wayPoint != null) {
+                        wayPoint.setComment(sb.toString());
+                    } else if (track != null) {
+                        track.setComment(sb.toString());
+                    }
+                }
+                case SPEED -> {
+                    if (trackPoint != null && !sb.isEmpty()) {
+                        trackPoint.setSpeed(Double.parseDouble(sb.toString()));
+                    }
+                }
+                case NAME -> {
+                    if (wayPoint != null) {
+                        wayPoint.setName(sb.toString());
+                    }
+                }
             }
-        } else if (isEqual(GPX.NAME.getName(), qName)) {
-            name = sb.toString();
-        } else if (isEqual(GPX.COMMENT.getName(), qName)) {
-            comment = sb.toString();
+        } catch (final IllegalArgumentException e) {
+            LOGGER.debug("Ignoring XML end element \"{}\"", qName);
         }
     }
 
-    private ZonedDateTime parseDateTime(@Nullable final String dateTimeString) {
+    private @Nullable ZonedDateTime parseDateTime(@Nullable final String dateTimeString) {
         if (dateTimeString == null || dateTimeString.isBlank()) {
             return null;
         }
@@ -147,11 +166,11 @@ public final class GpxContentHandler extends DefaultHandler {
                 new UserException(resourceBundle.getString("gpxparser.error.datetimeformat").formatted(dateTimeString)));
     }
 
-    public Track getTrack() {
+    public @Nullable Track getTrack() {
         return track;
     }
 
-    public List<WayPoint> getWayPoints() {
+    public @NotNull List<WayPoint> getWayPoints() {
         return Collections.unmodifiableList(wayPoints);
     }
 

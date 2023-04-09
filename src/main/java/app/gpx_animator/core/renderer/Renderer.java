@@ -425,13 +425,13 @@ public final class Renderer {
             final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
             final var track = gch.getTrack();
-            final var trackSegments = track.trackSegments();
-            if (trackSegments.isEmpty() || trackSegments.stream().mapToInt(TrackSegment::size).sum() == 0) {
+            final var trackSegments = track.getTrackSegments();
+            if (trackSegments.isEmpty() || trackSegments.stream().map(TrackSegment::getTrackPoints).mapToInt(List::size).sum() == 0) {
                 throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
             }
             for (final var trackSegment : trackSegments) {
                 final var timePointMap = new TreeMap<Long, Point2D>();
-                toTimePointMap(timePointMap, trackIndex, trackSegment.trackPoints(), Long.MIN_VALUE);
+                toTimePointMap(timePointMap, trackIndex, trackSegment.getTrackPoints(), Long.MIN_VALUE);
                 trimGpxData(timePointMap, trackConfiguration);
                 timePointMapList.add(timePointMap);
                 var oldestTimeAsDefaultForWaypoints = timePointMap.keySet().stream().min(Long::compareTo).orElse(Long.MIN_VALUE);
@@ -638,8 +638,8 @@ public final class Renderer {
         }
 
         for (final var gpxPoint : gpxPoints) {
-            final var x = lonToX(gpxPoint.longitude());
-            final var y = latToY(gpxPoint.latitude());
+            final var x = lonToX(gpxPoint.getLongitude());
+            final var y = latToY(gpxPoint.getLatitude());
 
             if (minLon == null) {
                 minX = Math.min(x, minX);
@@ -660,7 +660,7 @@ public final class Renderer {
                 forcedTime += forcedPointInterval;
                 time = forcedTime;
             } else {
-                time = gpxPoint.time() == Long.MIN_VALUE ? defaultTimeIfMissing : gpxPoint.time();
+                time = gpxPoint.getTime() == Long.MIN_VALUE ? defaultTimeIfMissing : gpxPoint.getTime();
                 if (time == Long.MIN_VALUE) {
                     final var filename = trackConfiguration.getInputGpx().getName();
                     throw new UserException(
@@ -676,10 +676,10 @@ public final class Renderer {
             if (gpxPoint instanceof WayPoint wayPoint) {
                 final var namedPoint = new NamedPoint();
                 namedPoint.setLocation(x, y);
-                namedPoint.setName(wayPoint.name());
+                namedPoint.setName(wayPoint.getName());
                 point = namedPoint;
             } else if (gpxPoint instanceof TrackPoint trackPoint) {
-                point = new GpxPoint(x, y, trackPoint, time, trackPoint.speed());
+                point = new GpxPoint(x, y, trackPoint, time, trackPoint.getSpeed());
             } else {
                 point = null;
             }
