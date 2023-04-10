@@ -345,12 +345,12 @@ public final class Renderer {
     }
 
     private BufferedImage applyViewport(@NonNull final BufferedImage bi,
-                                        @NonNull final Point2D marker,
+                                        @Nullable final Point2D marker,
                                         final int realWidth,
                                         final int realHeight,
                                         final int viewportWidth,
                                         final int viewportHeight) {
-        if (viewportHeight == realHeight && viewportWidth == realWidth) {
+        if (marker == null || (viewportHeight == realHeight && viewportWidth == realWidth)) {
             return bi;
         }
 
