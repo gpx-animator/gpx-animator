@@ -29,6 +29,7 @@ import lombok.With;
 @EqualsAndHashCode
 @AllArgsConstructor
 @RequiredArgsConstructor
+@SuppressWarnings("checkstyle:VisibilityModifierCheck") // lombok
 @SuppressFBWarnings() // lombok
 public class WayPoint implements MyPoint {
     @NonNull Double latitude;

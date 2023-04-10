@@ -58,6 +58,7 @@ public final class GpxContentHandler extends DefaultHandler {
     }
 
     @Override
+    @SuppressWarnings("checkstyle:InnerAssignmentCheck") // checkstyle has problems with new switch syntax
     public void startElement(@Nullable final String uri, @Nullable final String localName, @NotNull final String qName,
                              @NotNull final Attributes attributes) {
         characterStack.addLast(new StringBuilder());
@@ -65,16 +66,12 @@ public final class GpxContentHandler extends DefaultHandler {
             final GPX gpxElement = GPX.getElement(qName);
             switch (gpxElement) {
                 case TRACK -> track = new Track();
-                case TRACK_POINT -> {
-                    trackPoint = new TrackPoint(
-                            Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
-                            Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
-                }
-                case WAY_POINT -> {
-                    wayPoint = new WayPoint(
-                            Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
-                            Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
-                }
+                case TRACK_POINT -> trackPoint = new TrackPoint(
+                        Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
+                        Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
+                case WAY_POINT -> wayPoint = new WayPoint(
+                        Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
+                        Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
                 default -> LOGGER.debug("Ignoring supported XML start element \"{}\"", qName);
             }
         } catch (final IllegalArgumentException e) {
@@ -91,7 +88,10 @@ public final class GpxContentHandler extends DefaultHandler {
     }
 
     @Override
-    @SuppressWarnings("PMD.NullAssignment") // XML parsing ending elements, it's okay here
+    @SuppressWarnings({
+            "checkstyle:InnerAssignmentCheck", // checkstyle has problems with new switch syntax
+            "PMD.NullAssignment" // XML parsing ending elements, it's okay here
+    })
     public void endElement(@Nullable final String uri, @Nullable final String localName, @NotNull final String qName) {
         final var sb = characterStack.removeLast();
         try {

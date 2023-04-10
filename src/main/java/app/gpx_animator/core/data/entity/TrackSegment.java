@@ -22,7 +22,7 @@ import java.util.List;
 
 @Value
 @SuppressFBWarnings() // lombok
-@SuppressWarnings("ClassCanBeRecord") // using lombok
+@SuppressWarnings({"ClassCanBeRecord", "checkstyle:VisibilityModifierCheck"}) // lombok
 public class TrackSegment {
     List<TrackPoint> trackPoints;
 }

@@ -16,6 +16,7 @@ import java.util.List;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressWarnings("checkstyle:VisibilityModifierCheck") // lombok
 @SuppressFBWarnings() // lombok
 public final class Track {
     String name;
