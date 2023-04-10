@@ -425,8 +425,9 @@ public final class Renderer {
             final List<TreeMap<Long, Point2D>> timePointMapList = new ArrayList<>();
 
             final var track = gch.getTrack();
-            final var trackSegments = track.getTrackSegments();
-            if (trackSegments.isEmpty() || trackSegments.stream().map(TrackSegment::getTrackPoints).mapToInt(List::size).sum() == 0) {
+            final var trackSegments = track != null ? track.getTrackSegments() : null;
+            if (trackSegments == null || trackSegments.isEmpty() ||
+                    trackSegments.stream().map(TrackSegment::getTrackPoints).mapToInt(List::size).sum() == 0) {
                 throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
             }
             for (final var trackSegment : trackSegments) {
