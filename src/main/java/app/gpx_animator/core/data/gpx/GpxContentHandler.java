@@ -45,11 +45,11 @@ public final class GpxContentHandler extends DefaultHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GpxContentHandler.class);
 
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
+    private final List<TrackPoint> trackPoints = new ArrayList<>();
     private final List<WayPoint> wayPoints = new ArrayList<>();
     private final ArrayDeque<StringBuilder> characterStack = new ArrayDeque<>();
 
     private Track track = null;
-    private TrackSegment trackSegment = null;
     private TrackPoint trackPoint = null;
     private WayPoint wayPoint = null;
 
@@ -65,20 +65,20 @@ public final class GpxContentHandler extends DefaultHandler {
             final GPX gpxElement = GPX.getElement(qName);
             switch (gpxElement) {
                 case TRACK -> track = new Track();
-                case TRACK_SEGMENT -> trackSegment = new TrackSegment();
                 case TRACK_POINT -> {
-                    trackPoint = new TrackPoint();
-                    trackPoint.setLatitude(Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())));
-                    trackPoint.setLongitude(Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
+                    trackPoint = new TrackPoint(
+                            Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
+                            Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
                 }
                 case WAY_POINT -> {
-                    wayPoint = new WayPoint();
-                    wayPoint.setLatitude(Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())));
-                    wayPoint.setLongitude(Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
+                    wayPoint = new WayPoint(
+                            Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
+                            Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
                 }
+                default -> LOGGER.debug("Ignoring supported XML start element \"{}\"", qName);
             }
         } catch (final IllegalArgumentException e) {
-            LOGGER.debug("Ignoring XML start element \"{}\"", qName);
+            LOGGER.debug("Ignoring unsupported XML start element \"{}\"", qName);
         }
     }
 
@@ -97,13 +97,15 @@ public final class GpxContentHandler extends DefaultHandler {
         try {
             final GPX gpxElement = GPX.getElement(qName);
             switch (gpxElement) {
-                case TYPE -> track.setType(TrackType.getTrackType(sb.toString()));
+                case TYPE -> track = track.withType(TrackType.getTrackType(sb.toString()));
                 case TRACK_SEGMENT -> {
-                    track.addTrackSegment(trackSegment);
-                    trackSegment = null;
+                    final var trackSegments = new ArrayList<>(track.getTrackSegments());
+                    trackSegments.add(new TrackSegment(List.copyOf(trackPoints)));
+                    track = track.withTrackSegments(trackSegments);
+                    trackPoints.clear();
                 }
                 case TRACK_POINT -> {
-                    trackSegment.addTrackPoint(trackPoint);
+                    trackPoints.add(trackPoint);
                     trackPoint = null;
                 }
                 case WAY_POINT -> {
@@ -115,34 +117,36 @@ public final class GpxContentHandler extends DefaultHandler {
                     if (dateTime != null) {
                         final var time = dateTime.toInstant().toEpochMilli();
                         if (trackPoint != null) {
-                            trackPoint.setTime(time);
+                            trackPoint = trackPoint.withTime(time);
                         } else if (wayPoint != null) {
-                            wayPoint.setTime(time);
+                            wayPoint = wayPoint.withTime(time);
                         }
                     }
                 }
                 case COMMENT -> {
                     if (trackPoint != null) {
-                        trackPoint.setComment(sb.toString());
+                        trackPoint = trackPoint.withComment(sb.toString());
                     } else if (wayPoint != null) {
-                        wayPoint.setComment(sb.toString());
+                        wayPoint = wayPoint.withComment(sb.toString());
                     } else if (track != null) {
-                        track.setComment(sb.toString());
+                        track = track.withComment(sb.toString());
                     }
                 }
                 case SPEED -> {
                     if (trackPoint != null && !sb.isEmpty()) {
-                        trackPoint.setSpeed(Double.parseDouble(sb.toString()));
+                        final var speed = Double.parseDouble(sb.toString());
+                        trackPoint = trackPoint.withSpeed(speed);
                     }
                 }
                 case NAME -> {
                     if (wayPoint != null) {
-                        wayPoint.setName(sb.toString());
+                        wayPoint = wayPoint.withName(sb.toString());
                     }
                 }
+                default -> LOGGER.debug("Ignoring supported XML end element \"{}\"", qName);
             }
         } catch (final IllegalArgumentException e) {
-            LOGGER.debug("Ignoring XML end element \"{}\"", qName);
+            LOGGER.debug("Ignoring unsupported XML end element \"{}\"", qName);
         }
     }
 

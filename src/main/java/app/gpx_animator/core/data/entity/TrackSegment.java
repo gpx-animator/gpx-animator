@@ -15,42 +15,14 @@
  */
 package app.gpx_animator.core.data.entity;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.Value;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-public final class TrackSegment {
-    private final List<TrackPoint> trackPoints = new ArrayList<>();
-
-    public void addTrackPoint(@NotNull final TrackPoint trackPoint) {
-        trackPoints.add(trackPoint);
-    }
-
-    public @NotNull List<TrackPoint> getTrackPoints() {
-        return Collections.unmodifiableList(trackPoints);
-    }
-
-    @Override
-    public boolean equals(@Nullable final Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (TrackSegment) obj;
-        return Objects.equals(this.trackPoints, that.trackPoints);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(trackPoints);
-    }
-
-    @Override
-    public @NotNull String toString() {
-        return "TrackSegment[" +
-                "trackPoints=" + trackPoints + ']';
-    }
-
+@Value
+@SuppressFBWarnings() // lombok
+@SuppressWarnings("ClassCanBeRecord") // using lombok
+public class TrackSegment {
+    List<TrackPoint> trackPoints;
 }
