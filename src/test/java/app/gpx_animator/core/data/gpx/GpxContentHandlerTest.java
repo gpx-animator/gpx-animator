@@ -4,6 +4,7 @@ import app.gpx_animator.core.UserException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class GpxContentHandlerTest {
@@ -15,6 +16,7 @@ class GpxContentHandlerTest {
         GpxParser.parseGpx(is, contentHandler);
 
         final var track = contentHandler.getTrack();
+        assertNotNull(track);
         assertEquals("Comment for Track", track.getComment());
 
         final var trackSegments = track.getTrackSegments();

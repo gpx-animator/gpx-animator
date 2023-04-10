@@ -412,7 +412,7 @@ public final class Renderer {
     }
 
     private void parseGPX(@NonNull final List<Long[]> spanList,
-                          @NonNull final TreeMap<Long, Point2D> wpMap, RenderingContext rc) throws UserException {
+                          @NonNull final TreeMap<Long, Point2D> wpMap, @NonNull final RenderingContext rc) throws UserException {
         var trackIndex = -1;
         for (final var trackConfiguration : cfg.getTrackConfigurationList()) {
             trackIndex++;
@@ -426,8 +426,8 @@ public final class Renderer {
 
             final var track = gch.getTrack();
             final var trackSegments = track != null ? track.getTrackSegments() : null;
-            if (trackSegments == null || trackSegments.isEmpty() ||
-                    trackSegments.stream().map(TrackSegment::getTrackPoints).mapToInt(List::size).sum() == 0) {
+            if (trackSegments == null || trackSegments.isEmpty()
+                    || trackSegments.stream().map(TrackSegment::getTrackPoints).mapToInt(List::size).sum() == 0) {
                 throw new UserException(resourceBundle.getString("renderer.error.notrack").formatted(inputGpxFile));
             }
             for (final var trackSegment : trackSegments) {
