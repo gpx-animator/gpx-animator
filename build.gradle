@@ -50,7 +50,7 @@ dependencies {
     implementation 'org.bytedeco:javacv:1.5.9'
     implementation 'org.bytedeco:ffmpeg-platform-gpl:5.1.2-1.5.8'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
-    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.2'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.3'
     implementation 'javax.activation:activation:1.1.1'
     implementation 'org.slf4j:slf4j-api:2.0.7'
     implementation 'ch.qos.logback:logback-classic:1.4.7'
