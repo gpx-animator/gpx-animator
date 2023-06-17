@@ -24,6 +24,9 @@ import app.gpx_animator.core.data.entity.WayPoint;
 import app.gpx_animator.core.preferences.Preferences;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.util.ArrayDeque;
+import java.util.Collections;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
@@ -33,9 +36,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -47,33 +48,46 @@ public final class GpxContentHandler extends DefaultHandler {
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
     private final List<TrackPoint> trackPoints = new ArrayList<>();
     private final List<WayPoint> wayPoints = new ArrayList<>();
-    private final ArrayDeque<StringBuilder> characterStack = new ArrayDeque<>();
+    private final ArrayDeque<CharacterConsumer> characterStack = new ArrayDeque<>();
 
     private Track track = null;
     private TrackPoint trackPoint = null;
     private WayPoint wayPoint = null;
 
     public GpxContentHandler() {
-        characterStack.addLast(new StringBuilder());
+        characterStack.addLast(NoOpConsumer.INSTANCE);
     }
 
     @Override
     @SuppressWarnings("checkstyle:InnerAssignmentCheck") // checkstyle has problems with new switch syntax
     public void startElement(@Nullable final String uri, @Nullable final String localName, @NotNull final String qName,
                              @NotNull final Attributes attributes) {
-        characterStack.addLast(new StringBuilder());
         try {
             final GPX gpxElement = GPX.getElement(qName);
-            switch (gpxElement) {
-                case TRACK -> track = new Track();
-                case TRACK_POINT -> trackPoint = new TrackPoint(
-                        Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
-                        Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
-                case WAY_POINT -> wayPoint = new WayPoint(
-                        Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
-                        Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
-                default -> LOGGER.debug("Ignoring supported XML start element \"{}\"", qName);
-            }
+            final CharacterConsumer consumer = switch (gpxElement) {
+                case TRACK -> {
+                    track = new Track();
+                    yield NoOpConsumer.INSTANCE;
+                }
+                case TRACK_POINT -> {
+                    trackPoint = new TrackPoint(
+                            Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
+                            Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
+                    yield NoOpConsumer.INSTANCE;
+                }
+                case WAY_POINT -> {
+                    wayPoint = new WayPoint(
+                            Double.parseDouble(attributes.getValue(GPX.LATITUDE.getName())),
+                            Double.parseDouble(attributes.getValue(GPX.LONGITUDE.getName())));
+                    yield new StringCharacterConsumer();
+                }
+                case COMMENT, NAME, SPEED, TIME, TYPE -> new StringCharacterConsumer();
+                default -> {
+                    LOGGER.debug("Ignoring supported XML start element \"{}\"", qName);
+                    yield NoOpConsumer.INSTANCE;
+                }
+            };
+            characterStack.addLast(consumer);
         } catch (final IllegalArgumentException e) {
             LOGGER.debug("Ignoring unsupported XML start element \"{}\"", qName);
         }
@@ -81,10 +95,7 @@ public final class GpxContentHandler extends DefaultHandler {
 
     @Override
     public void characters(final char[] ch, final int start, final int length) {
-        final var sb = characterStack.peekLast();
-        if (sb != null) {
-            sb.append(ch, start, length);
-        }
+        characterStack.peekLast().accept(ch, start, length);
     }
 
     @Override
@@ -93,11 +104,11 @@ public final class GpxContentHandler extends DefaultHandler {
             "PMD.NullAssignment" // XML parsing ending elements, it's okay here
     })
     public void endElement(@Nullable final String uri, @Nullable final String localName, @NotNull final String qName) {
-        final var sb = characterStack.removeLast();
         try {
             final GPX gpxElement = GPX.getElement(qName);
+            final var characterConsumer = characterStack.removeLast();
             switch (gpxElement) {
-                case TYPE -> track = track.withType(TrackType.getTrackType(sb.toString()));
+                case TYPE -> track = track.withType(TrackType.getTrackType(characterConsumer.getValue()));
                 case TRACK_SEGMENT -> {
                     final var trackSegments = new ArrayList<>(track.getTrackSegments());
                     trackSegments.add(new TrackSegment(List.copyOf(trackPoints)));
@@ -113,7 +124,7 @@ public final class GpxContentHandler extends DefaultHandler {
                     wayPoint = null;
                 }
                 case TIME -> {
-                    final var dateTime = parseDateTime(sb.toString());
+                    final var dateTime = parseDateTime(characterConsumer.getValue());
                     if (dateTime != null) {
                         final var time = dateTime.toInstant().toEpochMilli();
                         if (trackPoint != null) {
@@ -125,22 +136,22 @@ public final class GpxContentHandler extends DefaultHandler {
                 }
                 case COMMENT -> {
                     if (trackPoint != null) {
-                        trackPoint = trackPoint.withComment(sb.toString());
+                        trackPoint = trackPoint.withComment(characterConsumer.getValue());
                     } else if (wayPoint != null) {
-                        wayPoint = wayPoint.withComment(sb.toString());
+                        wayPoint = wayPoint.withComment(characterConsumer.getValue());
                     } else if (track != null) {
-                        track = track.withComment(sb.toString());
+                        track = track.withComment(characterConsumer.getValue());
                     }
                 }
                 case SPEED -> {
-                    if (trackPoint != null && !sb.isEmpty()) {
-                        final var speed = Double.parseDouble(sb.toString());
+                    if (trackPoint != null && !characterConsumer.isEmpty()) {
+                        final var speed = Double.parseDouble(characterConsumer.getValue());
                         trackPoint = trackPoint.withSpeed(speed);
                     }
                 }
                 case NAME -> {
                     if (wayPoint != null) {
-                        wayPoint = wayPoint.withName(sb.toString());
+                        wayPoint = wayPoint.withName(characterConsumer.getValue());
                     }
                 }
                 default -> LOGGER.debug("Ignoring supported XML end element \"{}\"", qName);
@@ -176,4 +187,46 @@ public final class GpxContentHandler extends DefaultHandler {
         return Collections.unmodifiableList(wayPoints);
     }
 
+    sealed interface CharacterConsumer {
+        void accept(char[] ch, int start, int length);
+        String getValue();
+        boolean isEmpty();
+    }
+
+    static final class StringCharacterConsumer implements CharacterConsumer {
+        private final StringBuilder buffer = new StringBuilder();
+
+        @Override
+        public void accept(final char[] ch, final int start, final int length) {
+            buffer.append(ch, start, length);
+        }
+
+        @Override
+        public String getValue() {
+            return buffer.toString();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return buffer.isEmpty();
+        }
+    }
+    enum NoOpConsumer implements CharacterConsumer {
+        INSTANCE;
+
+        @Override
+        public void accept(final char[] ch, final int start, final int length) {
+            // no action
+        }
+
+        @Override
+        public String getValue() {
+            return null;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return true;
+        }
+    }
 }
