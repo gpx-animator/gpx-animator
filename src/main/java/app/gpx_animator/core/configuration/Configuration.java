@@ -24,6 +24,8 @@ import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -35,6 +37,8 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -819,6 +823,76 @@ public final class Configuration {
             this.gpsTimeout = gpsTimeout;
             return this;
         }
+
+        public Builder loadConfigXML(final String fileName) {
+            try {
+                Path filePath = Paths.get(fileName);
+                File fileToOpen = filePath.toFile().getAbsoluteFile();
+                final var jaxbContext = JAXBContext.newInstance(Configuration.class);
+                final var unmarshaller = jaxbContext.createUnmarshaller();
+                unmarshaller.setAdapter(new FileXmlAdapter(fileToOpen.getParentFile()));
+                Configuration c = (Configuration) unmarshaller.unmarshal(fileToOpen);
+                this.margin(c.getMargin());
+                this.height(c.getHeight());
+                this.width(c.getWidth());
+                this.viewportHeight(c.getViewportHeight());
+                this.viewportWidth(c.getViewportWidth());
+                this.viewportInertia(c.getViewportInertia());
+                this.zoom(c.getZoom());
+                this.speedup(c.getSpeedup());
+                this.tailDuration(c.getTailDuration());
+                this.tailColor(c.getTailColor());
+                this.tailColorFadeout(c.isTailColorFadeout());
+                this.fps(c.getFps());
+                this.totalTime(c.getTotalTime());
+                this.backgroundMapVisibility(c.getBackgroundMapVisibility());
+                this.tmsUrlTemplate(c.getTmsUrlTemplate());
+                this.tmsApiKey(c.getTmsApiKey());
+                this.tmsUserAgent(c.getTmsUserAgent());
+                this.skipIdle(c.isSkipIdle());
+                this.backgroundColor(c.getBackgroundColor());
+                this.backgroundImage(c.getBackgroundImage());
+                this.preDrawTrack(c.isPreDrawTrack());
+                this.flashbackColor(c.getFlashbackColor());
+                this.flashbackDuration(c.getFlashbackDuration());
+                this.keepFirstFrame(c.getKeepFirstFrame());
+                this.keepLastFrame(c.getKeepLastFrame());
+                this.output(c.getOutput());
+                this.videoCodec(c.getVideoCodec());
+                this.attribution(c.getAttribution());
+                this.information(c.getInformation());
+                this.font(c.getFont());
+                this.markerSize(c.getMarkerSize());
+                this.waypointFont(c.getWaypointFont());
+                this.waypointSize(c.getWaypointSize());
+                this.minLat(c.getMinLat());
+                this.maxLat(c.getMaxLat());
+                this.minLon(c.getMinLon());
+                this.maxLon(c.getMaxLon());
+                this.logo(c.getLogo());
+                this.logoPosition(c.getLogoPosition());
+                this.logoMargin(c.getLogoMargin());
+                this.attributionPosition(c.getAttributionPosition());
+                this.attributionMargin(c.getAttributionMargin());
+                this.informationPosition(c.getInformationPosition());
+                this.informationMargin(c.getInformationMargin());
+                this.commentPosition(c.getCommentPosition());
+                this.commentMargin(c.getCommentMargin());
+                this.photoDirectory(c.getPhotoDirectory());
+                this.photoTime(c.getPhotoTime());
+                this.photoAnimationDuration(c.getPhotoAnimationDuration());
+                List<TrackConfiguration> trackConfigurations = c.getTrackConfigurationList();
+                trackConfigurations.forEach(this::addTrackConfiguration);
+                this.speedUnit(c.getSpeedUnit());
+                this.preview(c.isPreview());
+                this.previewLength(c.getPreviewLength());
+                this.gpsTimeout(c.getGpsTimeout());
+            } catch (final JAXBException e1) {
+                e1.printStackTrace();
+            }
+            return this;
+        }
+
     }
 
 }
