@@ -29,6 +29,9 @@ version = '1.9.0-SNAPSHOT'
 group = 'app.gpx-animator'
 
 mainClassName = 'app.gpx_animator.Main'
+
+// Before updating Java, check Lombok Grade Plugin compatibility:
+// https://github.com/freefair/gradle-plugins#compatibility-matrix
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
