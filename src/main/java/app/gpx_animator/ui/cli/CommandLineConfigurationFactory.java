@@ -43,7 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -373,7 +373,7 @@ public final class CommandLineConfigurationFactory {
             dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
             dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             final var db = dbf.newDocumentBuilder();
-            final var doc = db.parse(new URL(Constants.UPDATES_URL).openStream());
+            final var doc = db.parse(URI.create(Constants.UPDATES_URL).toURL().openStream());
             doc.getDocumentElement().normalize();
 
             final var elem = (Element) doc.getElementsByTagName("entry").item(0);

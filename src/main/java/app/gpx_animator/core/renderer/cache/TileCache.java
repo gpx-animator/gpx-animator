@@ -29,7 +29,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -132,7 +132,7 @@ public final class TileCache {
             System.setProperty("http.agent", Constants.USER_AGENT);
         }
         try {
-            mapTile = ImageIO.read(new URL(url));
+            mapTile = ImageIO.read(URI.create(url).toURL());
         } catch (final IOException e) {
             throw new UserException(String.format("error getting tile %s: %s", url, e.getCause()), e);
         }
