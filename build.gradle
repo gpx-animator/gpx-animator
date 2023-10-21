@@ -105,6 +105,10 @@ shadowJar {
     mergeServiceFiles()
 }
 
+spotbugs {
+    excludeFilter = file("${projectDir}/config/spotbugs/exclude.xml")
+}
+
 spotbugsMain {
     reports {
         xml.enabled = false
