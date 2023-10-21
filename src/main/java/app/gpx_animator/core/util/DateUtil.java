@@ -45,6 +45,7 @@ public final class DateUtil {
                 lastException = e;
             }
         }
-        throw lastException;
+        throw lastException != null ? lastException
+                : new DateTimeParseException("Can't parse ZonedDateTime object!", text, -1, null);
     }
 }
