@@ -8,6 +8,8 @@
 
 ### Fixes
 
+* Fix format error when reading date and time from GPX file
+
 ### Other
 
 ---
