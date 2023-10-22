@@ -145,7 +145,6 @@ public final class Configuration {
 
 
     // for JAXB
-    @SuppressWarnings("unused")
     private Configuration() {
     }
 

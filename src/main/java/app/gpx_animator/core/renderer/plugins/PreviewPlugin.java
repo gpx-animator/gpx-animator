@@ -30,7 +30,7 @@ import java.awt.image.BufferedImage;
 
 import static javax.management.timer.Timer.ONE_SECOND;
 
-@SuppressWarnings("unused") // Plugins are loaded using reflection
+// Plugins are loaded using reflection
 public final class PreviewPlugin implements RendererPlugin {
 
     private final Configuration configuration;

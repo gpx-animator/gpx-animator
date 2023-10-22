@@ -27,7 +27,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-@SuppressWarnings("unused") // Plugins are loaded using reflection
+// Plugins are loaded using reflection
 public final class LogoPlugin extends ImageRenderer implements RendererPlugin {
 
     private final BufferedImage logo;

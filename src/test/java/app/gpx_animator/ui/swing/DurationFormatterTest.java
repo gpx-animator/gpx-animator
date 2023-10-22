@@ -15,7 +15,7 @@ class DurationFormatterTest {
     @NonNls
     private static final String TEST_DATA_GENERATOR = "generateTestData";
 
-    @SuppressWarnings("unused") // used via reflection to generate test data
+    // used via reflection to generate test data
     private static Stream<Arguments> generateTestData() {
         return Stream.of(
             Arguments.of(Long.MIN_VALUE, "-106751991167d -7h -12m -55s -808ms"), //NON-NLS

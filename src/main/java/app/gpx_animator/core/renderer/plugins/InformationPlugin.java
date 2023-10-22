@@ -32,7 +32,7 @@ import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("unused") // Plugins are loaded using reflection
+// Plugins are loaded using reflection
 public final class InformationPlugin extends TextRenderer implements RendererPlugin {
 
     private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);

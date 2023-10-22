@@ -26,7 +26,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-@SuppressWarnings("unused") // Plugins are loaded using reflection
+// Plugins are loaded using reflection
 public final class AttributionPlugin extends TextRenderer implements RendererPlugin {
 
     private final String attribution;

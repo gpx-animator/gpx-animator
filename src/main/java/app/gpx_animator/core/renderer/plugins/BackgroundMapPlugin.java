@@ -31,7 +31,7 @@ import java.awt.image.RescaleOp;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("unused") // Plugins are loaded using reflection
+// Plugins are loaded using reflection
 public final class BackgroundMapPlugin implements RendererPlugin {
 
     @SuppressWarnings({"RegExpAnonymousGroup", "RegExpRedundantEscape"})

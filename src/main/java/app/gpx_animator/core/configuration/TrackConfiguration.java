@@ -64,7 +64,7 @@ public final class TrackConfiguration {
     private TrackIcon trackEndIcon;
 
 
-    @SuppressWarnings("unused") // Needed for JAXB deserialization from saved XML files
+    // for JAXB
     private TrackConfiguration() {
     }
 
