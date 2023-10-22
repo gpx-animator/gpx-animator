@@ -167,11 +167,11 @@ public final class GpxContentHandler extends DefaultHandler {
         }
 
         try {
-            return ZonedDateTime.parse(dateTimeString);
+            return ZonedDateTime.parse(dateTimeString.trim());
         } catch (final DateTimeParseException ignored) { }
 
         try {
-            return LocalDateTime.parse(dateTimeString).atZone(ZoneId.systemDefault());
+            return LocalDateTime.parse(dateTimeString.trim()).atZone(ZoneId.systemDefault());
         } catch (final DateTimeParseException ignored) { }
 
         LOGGER.error("Unable to parse date and time from string '{}'", dateTimeString);
