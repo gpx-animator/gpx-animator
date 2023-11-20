@@ -15,24 +15,9 @@
  */
 package app.gpx_animator.ui;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 public enum UIMode {
 
     CLI,
-    EXPERT;
-
-    private static UIMode mode = EXPERT;
-
-    @SuppressFBWarnings(value = "EI_EXPOSE_STATIC_REP2", justification = "the UIMode is public anyway")
-    public static void setMode(@NonNull final UIMode mode) {
-        UIMode.mode = mode;
-    }
-
-    @SuppressFBWarnings(value = "MS_EXPOSE_REP", justification = "the UIMode is public anyway")
-    public static UIMode getMode() {
-        return mode;
-    }
+    EXPERT
 
 }

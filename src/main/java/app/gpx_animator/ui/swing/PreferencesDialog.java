@@ -93,7 +93,7 @@ public class PreferencesDialog extends EscapeDialog {
         trackColorPanel.add(trackColorSelector, BorderLayout.CENTER);
 
         final var enablePreview = new JCheckBox();
-        enablePreview.setSelected(Preferences.isPreviewEnabled());
+        enablePreview.setSelected(Preferences.isPreviewEnabled(true));
 
         final var cancelButton = new JButton(resourceBundle.getString("ui.dialog.preferences.button.cancel"));
         cancelButton.addActionListener(e -> SwingUtilities.invokeLater(() -> {
