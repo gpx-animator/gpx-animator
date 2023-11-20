@@ -26,6 +26,7 @@ import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.preferences.Preferences;
+import app.gpx_animator.ui.UIMode;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import javax.xml.XMLConstants;
@@ -247,6 +248,12 @@ public final class CommandLineConfigurationFactory {
         }
 
         gui = args.length == 0 || forceGui;
+
+        if (isGui() && !GraphicsEnvironment.isHeadless()) {
+            cfg.mode(UIMode.EXPERT);
+        } else {
+            cfg.mode(UIMode.CLI);
+        }
 
         configuration = cfg.build();
     }

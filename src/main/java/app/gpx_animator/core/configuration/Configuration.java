@@ -24,6 +24,7 @@ import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
+import app.gpx_animator.ui.UIMode;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -143,6 +144,8 @@ public final class Configuration {
     @XmlElement(name = "trackConfiguration") //NON-NLS
     private List<TrackConfiguration> trackConfigurationList;
 
+    private UIMode mode;
+
 
     // for JAXB
     private Configuration() {
@@ -165,7 +168,8 @@ public final class Configuration {
             final File photoDirectory, final Long photoTime, final Long photoAnimationDuration,
             final boolean preview, final Long previewLength,
             final long gpsTimeout,
-            final List<TrackConfiguration> trackConfigurationList) {
+            final List<TrackConfiguration> trackConfigurationList,
+            final UIMode mode) {
 
         this.margin = margin;
         this.width = width;
@@ -221,6 +225,7 @@ public final class Configuration {
         this.preview = preview;
         this.previewLength = previewLength;
         this.gpsTimeout = gpsTimeout;
+        this.mode = mode;
     }
 
     public static Builder createBuilder() {
@@ -468,6 +473,10 @@ public final class Configuration {
         return this;
     }
 
+    public boolean isExpertMode() {
+        return mode.equals(UIMode.EXPERT);
+    }
+
     @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "checkstyle:HiddenField", "UnusedReturnValue"}) // This is okay for the builder pattern
     public static final class Builder {
         private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
@@ -525,6 +534,7 @@ public final class Configuration {
         private boolean preview = false;
         private Long previewLength;
         private long gpsTimeout = DEFAULT_GPS_TIMEOUT;
+        private UIMode mode;
 
 
         public Configuration build() {
@@ -544,7 +554,8 @@ public final class Configuration {
                     photoDirectory, photoTime, photoAnimationDuration,
                     preview, previewLength,
                     gpsTimeout,
-                    Collections.unmodifiableList(trackConfigurationList)
+                    Collections.unmodifiableList(trackConfigurationList),
+                    mode
             );
         }
 
@@ -816,6 +827,11 @@ public final class Configuration {
 
         public Builder gpsTimeout(final long gpsTimeout) {
             this.gpsTimeout = gpsTimeout;
+            return this;
+        }
+
+        public Builder mode(final UIMode mode) {
+            this.mode = mode;
             return this;
         }
     }

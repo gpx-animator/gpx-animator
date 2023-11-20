@@ -16,7 +16,6 @@
 package app.gpx_animator.core.preferences;
 
 import app.gpx_animator.core.configuration.adapter.ColorXmlAdapter;
-import app.gpx_animator.ui.UIMode;
 
 import java.awt.Color;
 import java.io.File;
@@ -79,8 +78,8 @@ public final class Preferences {
         PREFS.put(PREVIEW_ENABLED, previewEnabled.toString());
     }
 
-    public static boolean isPreviewEnabled() {
-        return PREFS.getBoolean(PREVIEW_ENABLED, UIMode.getMode() != UIMode.CLI);
+    public static boolean isPreviewEnabled(final boolean isExpertMode) {
+        return PREFS.getBoolean(PREVIEW_ENABLED, isExpertMode);
     }
 
     public static List<File> getRecentFiles() {

@@ -18,7 +18,6 @@ package app.gpx_animator.core.renderer.plugins;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.util.RenderUtil;
-import app.gpx_animator.ui.UIMode;
 import app.gpx_animator.ui.swing.PreviewDialog;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jetbrains.annotations.NotNull;
@@ -40,12 +39,13 @@ public final class PreviewPlugin implements RendererPlugin {
     private int width;
     private int height;
 
-    private boolean enabled = UIMode.getMode() != UIMode.CLI && Preferences.isPreviewEnabled();
+    private boolean enabled;
     private long lastUpdate = 0;
 
     // all renderer plugins need this constructor
     public PreviewPlugin(@NonNull final Configuration configuration) {
         this.configuration = configuration;
+        this.enabled = configuration.isExpertMode() && Preferences.isPreviewEnabled(true);
     }
 
     @Override

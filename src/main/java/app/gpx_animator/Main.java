@@ -19,7 +19,6 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.renderer.Renderer;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.cache.TileCache;
-import app.gpx_animator.ui.UIMode;
 import app.gpx_animator.ui.cli.CommandLineConfigurationFactory;
 import app.gpx_animator.ui.swing.MainFrame;
 import org.jetbrains.annotations.NonNls;
@@ -27,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.EventQueue;
-import java.awt.GraphicsEnvironment;
 
 
 public final class Main {
@@ -57,8 +55,7 @@ public final class Main {
 
         new Thread(TileCache::ageCache).start();
 
-        if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
-            UIMode.setMode(UIMode.EXPERT);
+        if (configuration.isExpertMode()) {
             EventQueue.invokeLater(() -> {
                 try {
                     final var frame = MainFrame.getInstance();
@@ -69,7 +66,6 @@ public final class Main {
                 }
             });
         } else {
-            UIMode.setMode(UIMode.CLI);
             new Renderer(configuration).render(new RenderingContext() {
                 @Override
                 public void setProgress1(final int pct, final String message) {
