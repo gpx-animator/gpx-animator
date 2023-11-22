@@ -97,6 +97,7 @@ public final class CommandLineConfigurationFactory {
                         case ATTRIBUTION -> cfg.attribution(args[++i]);
                         case ATTRIBUTION_POSITION -> cfg.attributionPosition(Position.parse(args[++i]));
                         case ATTRIBUTION_MARGIN -> cfg.attributionMargin(Integer.parseInt(args[++i]));
+                        case INFORMATION -> cfg.information(String.valueOf(args[++i]));
                         case INFORMATION_POSITION -> cfg.informationPosition(Position.parse(args[++i]));
                         case INFORMATION_MARGIN -> cfg.informationMargin(Integer.parseInt(args[++i]));
                         case COMMENT_POSITION -> cfg.commentPosition(Position.parse(args[++i]));

@@ -56,7 +56,7 @@ public final class Help {
         w.writeOptionHelp(Option.INPUT, "input", true, tc.getInputGpx()); //NON-NLS
         w.writeOptionHelp(Option.TRIM_GPX_START, "trim-gpx-start", true, tc.getTrimGpxStart()); //NON-NLS
         w.writeOptionHelp(Option.TRIM_GPX_END, "trim-gpx-end", true, tc.getTrimGpxEnd()); //NON-NLS
-        w.writeOptionHelp(Option.INFORMATION, "text", false, cfg.getInformation()); //NON-NLS
+        w.writeOptionHelp(Option.INFORMATION, "text", false, cfg.getInformation().replace("\n", "\\n")); //NON-NLS
         w.writeOptionHelp(Option.INFORMATION_POSITION, "information-position", false, cfg.getInformationPosition());
         w.writeOptionHelp(Option.INFORMATION_MARGIN, "information-margin", false, cfg.getInformationMargin()); //NON-NLS
         w.writeOptionHelp(Option.COMMENT_POSITION, "comment-position", false, cfg.getCommentPosition());
