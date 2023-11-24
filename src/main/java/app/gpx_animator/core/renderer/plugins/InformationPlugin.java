@@ -21,6 +21,7 @@ import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.gpx.GpxPoint;
 import app.gpx_animator.core.renderer.Metadata;
 import app.gpx_animator.core.renderer.TextRenderer;
+import app.gpx_animator.core.util.PointUtil;
 import app.gpx_animator.core.util.RenderUtil;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -154,8 +155,8 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
 
         final var speed = point.getSpeed() != null
                 ? point.getSpeed() * 3.6 // mps to kmh
-                : calculateSpeed(lastSpeedPoint, point, time);
-        lastSpeedPoint = point;
+                : calculateSpeed(point, time);
+
         speedValues.put(frame, speed);
 
         final var deleteBefore = frame - (Math.round(fps)); // 1 second
@@ -165,44 +166,13 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     }
 
 
-    private double calculateSpeed(@Nullable GpxPoint lastPoint, final GpxPoint point, final long time) {
-        final var timeout = time - 1_000 * 60; // 1 minute // TODO use speedup and fps
-        if(lastPoint == null) {
-            return 0;
-        }
-        final var distance = calculateDistance(lastPoint, point);
-        final double timeDiff = point.getTime() - lastPoint.getTime();
-
-        final double speed;
-        if (distance > 0 && point.getTime() > timeout) {
-            speed = timeDiff > 0 ? Math.round((3_600 * distance) / timeDiff) : 0;
-        } else {
-            speed = 0;
-        }
-
+    private double calculateSpeed(@Nullable final GpxPoint point, final long time) {
+        final var speed = PointUtil.calculateSpeed(lastSpeedPoint, point, time);
+        lastSpeedPoint = point;
         return speed;
     }
 
 
-    private long calculateDistance(final GpxPoint point1, final GpxPoint point2) {
-        final var lat1 = point1.getTrackPoint().getLatitude();
-        final var lon1 = point1.getTrackPoint().getLongitude();
-        final var lat2 = point2.getTrackPoint().getLatitude();
-        final var lon2 = point2.getTrackPoint().getLongitude();
 
-        if ((lat1.equals(lat2)) && (lon1.equals(lon2))) {
-            return 0;
-        } else {
-            final var theta = lon1 - lon2;
-            final var dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
-                    + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
-            final var arcCosine = Math.acos(dist);
-            final var degrees = Math.toDegrees(arcCosine);
-            final var mi = degrees * 60 * 1.1515; // to miles
-            final var km = mi * 1.609344; // to kilometers
-            final var m = km * 1_000; // to meters
-            return Math.round(m); // round to full meters
-        }
-    }
 
 }
