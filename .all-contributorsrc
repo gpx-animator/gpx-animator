@@ -352,6 +352,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "onixred",
+      "name": "Andrey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26665874?v=4",
+      "profile": "https://bitbucket.org/onixred",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

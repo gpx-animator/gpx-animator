@@ -9,6 +9,7 @@
 ### Fixes
 
 * Fix format error when reading date and time from GPX file
+* Fix missing command-line option to customize information text
 
 ### Other
 
