@@ -154,7 +154,8 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
 
         final var speed = point.getSpeed() != null
                 ? point.getSpeed() * 3.6 // mps to kmh
-                : calculateSpeed(point, time);
+                : calculateSpeed(lastSpeedPoint, point, time);
+        lastSpeedPoint = point;
         speedValues.put(frame, speed);
 
         final var deleteBefore = frame - (Math.round(fps)); // 1 second
@@ -164,10 +165,13 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     }
 
 
-    private double calculateSpeed(final GpxPoint point, final long time) {
+    private double calculateSpeed(@Nullable GpxPoint lastPoint, final GpxPoint point, final long time) {
         final var timeout = time - 1_000 * 60; // 1 minute // TODO use speedup and fps
-        final var distance = calculateDistance(lastSpeedPoint, point);
-        final double timeDiff = lastSpeedPoint == null ? 0 : point.getTime() - lastSpeedPoint.getTime();
+        if(lastPoint == null) {
+            return 0;
+        }
+        final var distance = calculateDistance(lastPoint, point);
+        final double timeDiff = point.getTime() - lastPoint.getTime();
 
         final double speed;
         if (distance > 0 && point.getTime() > timeout) {
@@ -176,16 +180,11 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
             speed = 0;
         }
 
-        lastSpeedPoint = point;
         return speed;
     }
 
 
     private long calculateDistance(final GpxPoint point1, final GpxPoint point2) {
-        if (point1 == null) {
-            return 0;
-        }
-
         final var lat1 = point1.getTrackPoint().getLatitude();
         final var lon1 = point1.getTrackPoint().getLongitude();
         final var lat2 = point2.getTrackPoint().getLatitude();
