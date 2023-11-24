@@ -1,8 +1,3 @@
-package app.gpx_animator.core.util;
-
-import app.gpx_animator.core.data.gpx.GpxPoint;
-import org.jetbrains.annotations.Nullable;
-
 /*
  *  Copyright Contributors to the GPX Animator project.
  *
@@ -18,6 +13,11 @@ import org.jetbrains.annotations.Nullable;
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package app.gpx_animator.core.util;
+
+import app.gpx_animator.core.data.gpx.GpxPoint;
+import org.jetbrains.annotations.Nullable;
+
 public final class PointUtil {
 
     private PointUtil() throws InstantiationException {
