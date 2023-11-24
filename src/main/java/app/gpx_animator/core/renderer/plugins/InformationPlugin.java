@@ -166,7 +166,7 @@ public final class InformationPlugin extends TextRenderer implements RendererPlu
     }
 
 
-    private double calculateSpeed(@Nullable final GpxPoint point, final long time) {
+    private double calculateSpeed(final GpxPoint point, final long time) {
         final var speed = PointUtil.calculateSpeed(lastSpeedPoint, point, time);
         lastSpeedPoint = point;
         return speed;
