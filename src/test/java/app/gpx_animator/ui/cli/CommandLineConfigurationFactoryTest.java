@@ -45,7 +45,7 @@ class CommandLineConfigurationFactoryTest {
             args.add("--".concat(OptionParam.INPUT.getOption().getName()));
             OptionParam.INPUT.getSupplierParam().get().ifPresent(args::add);
         }
-
+        System.setProperty("java.awt.headless", "false");
         CommandLineConfigurationFactory factory = new CommandLineConfigurationFactory(args.toArray(String[]::new));
         assertTrue(op.getCheckResult().apply(factory));
 
