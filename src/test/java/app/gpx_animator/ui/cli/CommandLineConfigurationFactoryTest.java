@@ -27,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CommandLineConfigurationFactoryTest {
 
+    public static final String TEST_COLOR_FF_0096 = "#FF0096";
+    public static final String TEST_FONT_MONOSPACED_8 = "Monospaced 8";
+
     @ParameterizedTest
     @EnumSource(Option.class)
     void checkInputParamsByOptionParams(final Option option) throws UserException {

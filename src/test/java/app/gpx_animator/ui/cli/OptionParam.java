@@ -27,6 +27,10 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static app.gpx_animator.ui.cli.CommandLineConfigurationFactoryTest.TEST_COLOR_FF_0096;
+import static app.gpx_animator.ui.cli.CommandLineConfigurationFactoryTest.TEST_FONT_MONOSPACED_8;
+
+
 @Getter
 public enum OptionParam {
 
@@ -44,7 +48,7 @@ public enum OptionParam {
                          (factory) -> factory.getConfiguration().getAttributionPosition().equals(Position.BOTTOM_LEFT)),
     BACKGROUND_COLOR(Option.BACKGROUND_COLOR,
                      false,
-                     () -> Optional.of("#FF0096"),
+                     () -> Optional.of(TEST_COLOR_FF_0096),
                      (factory) -> factory.getConfiguration().getBackgroundColor().equals(new Color(16711830,
                                                                                                    true))),
     BACKGROUND_IMAGE(Option.BACKGROUND_IMAGE,
@@ -57,8 +61,8 @@ public enum OptionParam {
                               (factory) -> factory.getConfiguration().getBackgroundMapVisibility() == 2233.56F),
     COLOR(Option.COLOR,
           true,
-          () -> Optional.of("#FF0096"),
-          (factory) -> getFirstTrackConfiguration(factory).getColor().equals(Color.decode("#FF0096"))),
+          () -> Optional.of(TEST_COLOR_FF_0096),
+          (factory) -> getFirstTrackConfiguration(factory).getColor().equals(Color.decode(TEST_COLOR_FF_0096))),
     COMMENT_MARGIN(Option.COMMENT_MARGIN,
                    false,
                    () -> Optional.of("88888"),
@@ -78,8 +82,8 @@ public enum OptionParam {
                        (factory) -> factory.getConfiguration().getFlashbackDuration().equals(435353535L)),
     FONT(Option.FONT,
          false,
-         () -> Optional.of("Monospaced 8"),
-         (factory) -> factory.getConfiguration().getFont().equals(Font.decode("Monospaced 8"))),
+         () -> Optional.of(TEST_FONT_MONOSPACED_8),
+         (factory) -> factory.getConfiguration().getFont().equals(Font.decode(TEST_FONT_MONOSPACED_8))),
     FORCED_POINT_TIME_INTERVAL(Option.FORCED_POINT_TIME_INTERVAL,
                                true,
                                () -> Optional.of("244"),
@@ -206,9 +210,9 @@ public enum OptionParam {
                    (factory) -> factory.getConfiguration().isPreDrawTrack()),
     PRE_DRAW_TRACK_COLOR(Option.PRE_DRAW_TRACK_COLOR,
                          true,
-                         () -> Optional.of("#FF0096"),
+                         () -> Optional.of(TEST_COLOR_FF_0096),
                          (factory) -> getFirstTrackConfiguration(factory).getPreDrawTrackColor()
-                                 .equals(Color.decode("#FF0096"))),
+                                 .equals(Color.decode(TEST_COLOR_FF_0096))),
     SKIP_IDLE(Option.SKIP_IDLE,
               false,
               () -> Optional.of("true"),
@@ -297,8 +301,8 @@ public enum OptionParam {
                    (factory) -> factory.getConfiguration().getViewportWidth().equals(840)),
     WAYPOINT_FONT(Option.WAYPOINT_FONT,
                   false,
-                  () -> Optional.of("Monospaced 8"),
-                  (factory) -> factory.getConfiguration().getWaypointFont().equals(Font.decode("Monospaced 8"))),
+                  () -> Optional.of(TEST_FONT_MONOSPACED_8),
+                  (factory) -> factory.getConfiguration().getWaypointFont().equals(Font.decode(TEST_FONT_MONOSPACED_8))),
     WAYPOINT_SIZE(Option.WAYPOINT_SIZE,
                   false,
                   () -> Optional.of("944.6"),
@@ -311,7 +315,6 @@ public enum OptionParam {
          false,
          () -> Optional.of("80"),
          (factory) -> factory.getConfiguration().getZoom().equals(80));
-
 
     private final Option option;
     private final boolean isNeedTrackConfiguration;
