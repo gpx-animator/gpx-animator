@@ -25,6 +25,7 @@ import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.TrackIcon;
+import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -59,6 +60,7 @@ public final class CommandLineConfigurationFactory {
     private final List<String> inputGpxList = new ArrayList<>();
     private final List<Long> trimGpxStartList = new ArrayList<>();
     private final List<Long> trimGpxEndList = new ArrayList<>();
+    private final List<Float> preDrawLineWidthList = new ArrayList<>();
     private final List<String> inputIconList = new ArrayList<>();
 
     private final List<Color> colorList = new ArrayList<>();
@@ -120,6 +122,7 @@ public final class CommandLineConfigurationFactory {
                         case FONT -> cfg.font(new FontXmlAdapter().unmarshal(args[++i]));
                         case TRIM_GPX_START -> trimGpxStartList.add(Long.parseLong(args[++i]));
                         case TRIM_GPX_END -> trimGpxEndList.add(Long.parseLong(args[++i]));
+                        case PRE_DRAW_LINE_WIDTH -> preDrawLineWidthList.add(Float.parseFloat(args[++i]));
                         case FORCED_POINT_TIME_INTERVAL -> {
                             final var s1 = args[++i].trim();
                             forcedPointIntervalList.add(s1.isEmpty() ? null : Long.valueOf(s1)); // NOPMD -- null = not set
@@ -160,6 +163,7 @@ public final class CommandLineConfigurationFactory {
                         case MIN_LAT -> cfg.minLat(Double.parseDouble(args[++i]));
                         case MIN_LON -> cfg.minLon(Double.parseDouble(args[++i]));
                         case OUTPUT -> cfg.output(new File(args[++i]));
+                        case VIDEO_CODEC -> cfg.videoCodec(VideoCodec.parse(args[++i], VideoCodec.H264));
                         case LOGO -> cfg.logo(new File(args[++i]));
                         case LOGO_POSITION -> cfg.logoPosition(Position.parse(args[++i]));
                         case LOGO_MARGIN -> cfg.logoMargin(Integer.parseInt(args[++i]));
@@ -222,6 +226,7 @@ public final class CommandLineConfigurationFactory {
         normalizeColors();
         normalizePreDrawTrackColors();
         normalizeLineWidths();
+        normalizePreDrawLineWidths();
         normalizeTrackIcons();
         normalizeInputIcons();
         normalizeMirrorTrackIcons();
@@ -244,6 +249,7 @@ public final class CommandLineConfigurationFactory {
             tcb.mirrorTrackIcon(mirrorTrackIconList.get(i));
             tcb.trimGpxStart(trimGpxStartList.get(i));
             tcb.trimGpxEnd(trimGpxEndList.get(i));
+            tcb.preDrawLineWidth(preDrawLineWidthList.get(i));
             cfg.addTrackConfiguration(tcb.build());
         }
 
@@ -287,6 +293,15 @@ public final class CommandLineConfigurationFactory {
     }
 
     private void normalizeLineWidths() {
+        normalizeLineWidths(inputGpxList, lineWidthList);
+    }
+
+    private void normalizePreDrawLineWidths() {
+        normalizeLineWidths(inputGpxList, preDrawLineWidthList);
+    }
+
+    private static void normalizeLineWidths(@NotNull final List<String> inputGpxList,
+                                                  @NotNull final List<Float> lineWidthList) {
         final var size = inputGpxList.size();
         final var size2 = lineWidthList.size();
         if (size2 == 0) {
