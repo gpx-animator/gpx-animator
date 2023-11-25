@@ -98,7 +98,10 @@ public enum OptionParam {
                 (factory) -> factory.getConfiguration().getGpsTimeout() == 899999),
     GUI(Option.GUI,
         false,
-        Optional::empty,
+        () -> {
+            System.setProperty("java.awt.headless", "false");
+            return Optional.empty();
+        },
         CommandLineConfigurationFactory::isGui),
     HEIGHT(Option.HEIGHT,
            false,
