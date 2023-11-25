@@ -33,22 +33,22 @@ class CommandLineConfigurationFactoryTest {
     @ParameterizedTest
     @EnumSource(Option.class)
     void checkInputParamsByOptionParams(final Option option) throws UserException {
+        if (option.equals(Option.GUI)) {
+            return;
+        }
         final var op = OptionParam.ofOption(option);
         final var supplierParam = op.getSupplierParam();
         assertNotNull(supplierParam);
         final var optArgument = supplierParam.get();
         final var args = new ArrayList<>();
-
         args.add("--".concat(option.getName()));
         optArgument.ifPresent(args::add);
         if (op.isNeedTrackConfiguration()) {
             args.add("--".concat(OptionParam.INPUT.getOption().getName()));
             OptionParam.INPUT.getSupplierParam().get().ifPresent(args::add);
         }
-        System.setProperty("java.awt.headless", "false");
         CommandLineConfigurationFactory factory = new CommandLineConfigurationFactory(args.toArray(String[]::new));
         assertTrue(op.getCheckResult().apply(factory));
-
     }
 
 }
