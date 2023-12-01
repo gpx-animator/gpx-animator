@@ -82,6 +82,7 @@ public enum Option {
     COMMENT_POSITION("comment-position"),
     COMMENT_MARGIN("comment-margin"),
     PHOTO_DIR("photo-dir"),
+    PHOTO_FREEZE_FRAME_TIME("photo-freeze-frame-time"),
     PHOTO_TIME("photo-time"),
     PHOTO_ANIMATION_DURATION("photo-animation-duration"),
     HELP("help"),

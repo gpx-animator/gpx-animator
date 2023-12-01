@@ -131,6 +131,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     private final JSpinner totalTimeSpinner;
     private final FileSelector logoFileSelector;
     private final FileSelector photosDirectorySelector;
+    private final JSpinner photoFreezeFrameTimeSpinner;
     private final JSpinner photoTimeSpinner;
     private final JSpinner photoAnimationDurationSpinner;
     private final JTextArea attributionTextArea;
@@ -146,7 +147,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     @SuppressWarnings("checkstyle:MethodLength") // TODO Refactor when doing the redesign task https://github.com/gpx-animator/gpx-animator/issues/60
     GeneralSettingsPanel() {
         var rowCounter = 0;
-        final var maxRows = 46;
+        final var maxRows = 47;
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final var gridBagLayout = new GridBagLayout();
@@ -1005,6 +1006,25 @@ abstract class GeneralSettingsPanel extends JPanel {
 
         photosDirectorySelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
 
+        final var lblPhotoFreezeFrameTime = new JLabel(resourceBundle.getString("ui.panel.generalsettings.photofreezeframetime.label"));
+        final var gbcLabelPhotoFreezeFrameTime = new GridBagConstraints();
+        gbcLabelPhotoFreezeFrameTime.anchor = GridBagConstraints.LINE_END;
+        gbcLabelPhotoFreezeFrameTime.insets = new Insets(0, 0, 0, 5);
+        gbcLabelPhotoFreezeFrameTime.gridx = 0;
+        gbcLabelPhotoFreezeFrameTime.gridy = ++rowCounter;
+        add(lblPhotoFreezeFrameTime, gbcLabelPhotoFreezeFrameTime);
+
+        photoFreezeFrameTimeSpinner = new JSpinner();
+        photoFreezeFrameTimeSpinner.setToolTipText(Option.PHOTO_FREEZE_FRAME_TIME.getHelp());
+        photoFreezeFrameTimeSpinner.setModel(new DurationSpinnerModel());
+        photoFreezeFrameTimeSpinner.setEditor(new DurationEditor(photoFreezeFrameTimeSpinner));
+        final var gbcPhotoFreezeFrameTimeSpinner = new GridBagConstraints();
+        gbcPhotoFreezeFrameTimeSpinner.fill = GridBagConstraints.HORIZONTAL;
+        gbcPhotoFreezeFrameTimeSpinner.gridx = 1;
+        gbcPhotoFreezeFrameTimeSpinner.gridy = rowCounter;
+        add(photoFreezeFrameTimeSpinner, gbcPhotoFreezeFrameTimeSpinner);
+        photoFreezeFrameTimeSpinner.addChangeListener(changeListener);
+
         final var lblPhotoTime = new JLabel(resourceBundle.getString("ui.panel.generalsettings.phototime.label"));
         final var gbcLabelPhotoTime = new GridBagConstraints();
         gbcLabelPhotoTime.anchor = GridBagConstraints.LINE_END;
@@ -1479,6 +1499,7 @@ abstract class GeneralSettingsPanel extends JPanel {
         keepLastFrameSpinner.setValue(c.getKeepLastFrame());
         backgroundMapVisibilitySlider.setValue((int) (c.getBackgroundMapVisibility() * 100));
         photosDirectorySelector.setFilename(c.getPhotoDirectory() != null ? c.getPhotoDirectory().toString() : "");
+        photoFreezeFrameTimeSpinner.setValue(c.getPhotoFreezeFrameTime());
         photoTimeSpinner.setValue(c.getPhotoTime());
         photoAnimationDurationSpinner.setValue(c.getPhotoAnimationDuration());
 
@@ -1586,6 +1607,7 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .waypointSize((Double) waypointSizeSpinner.getValue())
                 .logo(logoFileSelector.getFile())
                 .photoDirectory(photosDirectorySelector.getFile())
+                .photoFreezeFrameTime((Long) photoFreezeFrameTimeSpinner.getValue())
                 .photoTime((Long) photoTimeSpinner.getValue())
                 .photoAnimationDuration((Long) photoAnimationDurationSpinner.getValue())
                 .information(informationTextArea.getText())

@@ -128,6 +128,7 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File photoDirectory;
+    private Long photoFreezeFrameTime;
     private Long photoTime;
     private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
 
@@ -162,7 +163,7 @@ public final class Configuration {
             final Position attributionPosition, final int attributionMargin,
             final Position informationPosition, final int informationMargin,
             final Position commentPosition, final int commentMargin,
-            final File photoDirectory, final Long photoTime, final Long photoAnimationDuration,
+            final File photoDirectory, final long photoFreezeFrameTime, final Long photoTime, final Long photoAnimationDuration,
             final boolean preview, final Long previewLength,
             final long gpsTimeout,
             final List<TrackConfiguration> trackConfigurationList) {
@@ -215,6 +216,7 @@ public final class Configuration {
         this.commentPosition = commentPosition;
         this.commentMargin = commentMargin;
         this.photoDirectory = photoDirectory;
+        this.photoFreezeFrameTime = photoFreezeFrameTime;
         this.photoTime = photoTime;
         this.photoAnimationDuration = photoAnimationDuration;
         this.speedUnit = speedUnit;
@@ -419,6 +421,10 @@ public final class Configuration {
         return photoDirectory;
     }
 
+    public Long getPhotoFreezeFrameTime() {
+        return photoFreezeFrameTime;
+    }
+
     public Long getPhotoTime() {
         return photoTime;
     }
@@ -519,6 +525,7 @@ public final class Configuration {
         private Position commentPosition = Position.BOTTOM_CENTER;
         private int commentMargin = DEFAULT_MARGIN;
         private File photoDirectory;
+        private Long photoFreezeFrameTime = 0L;
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
         private SpeedUnit speedUnit = DEFAULT_SPEED_UNIT;
@@ -541,7 +548,7 @@ public final class Configuration {
                     attributionPosition, attributionMargin,
                     informationPosition, informationMargin,
                     commentPosition, commentMargin,
-                    photoDirectory, photoTime, photoAnimationDuration,
+                    photoDirectory, photoFreezeFrameTime, photoTime, photoAnimationDuration,
                     preview, previewLength,
                     gpsTimeout,
                     Collections.unmodifiableList(trackConfigurationList)
@@ -781,6 +788,11 @@ public final class Configuration {
 
         public Builder photoDirectory(final File photoDirectory) {
             this.photoDirectory = photoDirectory;
+            return this;
+        }
+
+        public Builder photoFreezeFrameTime(final Long photoFreezeFrameTime) {
+            this.photoFreezeFrameTime = photoFreezeFrameTime;
             return this;
         }
 
