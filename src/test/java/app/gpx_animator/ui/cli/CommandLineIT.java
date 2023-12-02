@@ -14,8 +14,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class CommandLineIT {
@@ -41,18 +43,21 @@ final class CommandLineIT {
 
     @BeforeEach
     public void beforeEachTest() {
-        final var logger = (Logger) LoggerFactory.getLogger(Renderer.class);
+        final var rendererLogger = (Logger) LoggerFactory.getLogger(Renderer.class);
+        final var frameLogger = (Logger) LoggerFactory.getLogger(Main.class);
         memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
-        logger.setLevel(Level.DEBUG);
-        logger.addAppender(memoryAppender);
+        rendererLogger.setLevel(Level.DEBUG);
+        rendererLogger.addAppender(memoryAppender);
+        frameLogger.setLevel(Level.DEBUG);
+        frameLogger.addAppender(memoryAppender);
         memoryAppender.start();
     }
 
     @Test
     void testBasicCommandLine() throws Exception {
         final var outputFile = getTemporaryOutputFile();
-        final var args = new String[] {
+        final var args = new String[]{
                 "--input", checkFileSeparator("./src/test/resources/gpx/bikeride.gpx"),
                 "--output", outputFile
         };
@@ -63,6 +68,41 @@ final class CommandLineIT {
         final var fileSize = new File(outputFile).length();
         assertTrue(fileSize > 150_000, "Output file size (%s bytes) too small, check content".formatted(fileSize));
         assertTrue(fileSize < 350_000, "Output file size (%s bytes) too big, check content".formatted(fileSize));
+    }
+
+    @Test
+    void testPhotoPluginThroughCommandLine() throws Exception {
+        // given
+        final var outputFile = getTemporaryOutputFile();
+        final var args = new String[]{
+                "--input", checkFileSeparator("./src/test/resources/gpx/bikeride.gpx"),
+                "--output", outputFile,
+                "--photo-dir", checkFileSeparator("./src/test/resources/photo"),
+                "--photo-freeze-frame-time", "1000",
+                "--photo-time", "3000",
+                "--photo-animation-duration", "700"
+        };
+
+        // when
+        Main.start(args);
+
+        // then
+        assertDone();
+
+        final var photoName = "Canon_PowerShot_S40.jpg";
+        final var renderPhotoLoggingEvents = memoryAppender.searchFormattedMessages("Rendering photo '%s'".formatted(photoName), Level.INFO);
+        var previousProgressPercentage = 0;
+        assertEquals(193, renderPhotoLoggingEvents.size());
+        for (final var loggingEvent : renderPhotoLoggingEvents) {
+            var message = loggingEvent.getFormattedMessage();
+            int progressPercentage = new Scanner(message).useDelimiter("\\D+").nextInt();
+            assertTrue(progressPercentage >= previousProgressPercentage, "Progress percentage should not be shrinking");
+            previousProgressPercentage = progressPercentage;
+        }
+
+        final var fileSize = new File(outputFile).length();
+        assertTrue(fileSize > 350_000, "Output file size (%s bytes) too small, check content".formatted(fileSize));
+        assertTrue(fileSize < 450_000, "Output file size (%s bytes) too big, check content".formatted(fileSize));
     }
 
     @AfterEach

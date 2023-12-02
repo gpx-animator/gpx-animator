@@ -74,6 +74,7 @@ public final class PhotoPlugin implements RendererPlugin {
 
     private final double fps;
     private final long photoTime;
+    private final long photoFreezeFrameTime;
     private final long photoAnimationDuration;
 
     private final Map<Long, List<Photo>> remainingPhotos;
@@ -85,6 +86,7 @@ public final class PhotoPlugin implements RendererPlugin {
     public PhotoPlugin(@NonNull final Configuration configuration) {
         this.fps = configuration.getFps();
         this.photoTime = configuration.getPhotoTime() == null ? 0 : configuration.getPhotoTime();
+        this.photoFreezeFrameTime = configuration.getPhotoFreezeFrameTime() == null ? 0 : configuration.getPhotoFreezeFrameTime();
         this.photoAnimationDuration = configuration.getPhotoAnimationDuration() == null ? 0 : configuration.getPhotoAnimationDuration();
         this.remainingPhotos = loadPhotos(configuration.getPhotoDirectory());
     }
@@ -185,8 +187,9 @@ public final class PhotoPlugin implements RendererPlugin {
     public int getAdditionalFrameCount() {
         final var numberOfPhotos = remainingPhotos.size();
         final var displayPhotoTime = photoTime * numberOfPhotos;
+        final var photoFreezeTime = photoFreezeFrameTime * numberOfPhotos * 2;
         final var photoAnimationTime = photoAnimationDuration * numberOfPhotos * 2;
-        final var milliseconds = displayPhotoTime + photoAnimationTime;
+        final var milliseconds = displayPhotoTime + photoAnimationTime + photoFreezeTime;
         return (int) Math.round(fps * milliseconds / 1_000);
     }
 
@@ -219,18 +222,21 @@ public final class PhotoPlugin implements RendererPlugin {
             g2d.drawImage(photoImage, posX, posY, null);
             g2d.dispose();
 
+            final var freezeFrames = (int) Math.round(photoFreezeFrameTime * fps / 1_000);
             final var frames = (int) Math.round(photoTime * fps / 1_000);
             final var inOutFrames = (int) Math.round(photoAnimationDuration * fps / 1_000);
-            final var allFrames = frames + (2 * inOutFrames);
+            final var allFrames = frames + (2 * inOutFrames) + (2 * freezeFrames);
 
             try {
-                renderAnimationIn(frameImage, photoImage, inOutFrames, allFrames, filename);
+                renderFreezeFramesBefore(frameImage, freezeFrames, allFrames, filename);
+                renderAnimationIn(frameImage, photoImage, inOutFrames, freezeFrames, allFrames, filename);
                 for (long frame = 0; frame < frames; frame++) {
-                    final var pct = (int) (100.0 * (inOutFrames + frame) / allFrames);
+                    final var pct = (int) (100.0 * (freezeFrames + inOutFrames + frame) / allFrames);
                     context.setProgress1(pct, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
                     frameWriter.addFrame(bi2);
                 }
-                renderAnimationOut(frameImage, photoImage, inOutFrames, allFrames, filename);
+                renderAnimationOut(frameImage, photoImage, inOutFrames, freezeFrames + inOutFrames + frames, allFrames, filename);
+                renderFreezeFramesAfter(frameImage, freezeFrames, freezeFrames + inOutFrames * 2 + frames, allFrames, filename);
             } catch (final UserException e) {
                 LOGGER.error("Problems rendering photo '{}'!", photo, e);
             }
@@ -254,23 +260,40 @@ public final class PhotoPlugin implements RendererPlugin {
         return null;
     }
 
-    private void renderAnimationIn(@NonNull final BufferedImage frameImage, @NonNull final BufferedImage photoImage, final int frames,
-                                   final int allFrames, @NonNull final String filename) throws UserException {
+    private void renderFreezeFramesBefore(@NonNull final BufferedImage frameImage, final int frames, final int allFrames,
+                                          @NonNull final String filename) throws UserException {
         for (long frame = 1; frame <= frames; frame++) {
             final var pct = (int) (100.0 * frame / allFrames);
+            context.setProgress1(pct, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
+            frameWriter.addFrame(frameImage);
+        }
+    }
+
+    private void renderAnimationIn(@NonNull final BufferedImage frameImage, @NonNull final BufferedImage photoImage, final int frames,
+                                   final int frameStart, final int allFrames, @NonNull final String filename) throws UserException {
+        for (long frame = 1; frame <= frames; frame++) {
+            final var pct = (int) (100.0 * (frameStart + frame) / allFrames);
             context.setProgress1(pct, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
             renderAnimation(frameImage, photoImage, frames, frame);
         }
     }
 
     private void renderAnimationOut(@NonNull final BufferedImage frameImage, @NonNull final BufferedImage photoImage, final long frames,
-                                    final int allFrames, @NonNull final String filename) throws UserException {
+                                    final int frameStart, final int allFrames, @NonNull final String filename) throws UserException {
         for (var frame = frames; frame >= 1; frame--) {
-            final var pct = (int) (100.0 * (allFrames - frame) / allFrames);
+            final var pct = (int) (100.0 * (frameStart + (frames - frame)) / allFrames);
             context.setProgress1(pct, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
             renderAnimation(frameImage, photoImage, frames, frame);
         }
-        context.setProgress1(100, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
+    }
+
+    private void renderFreezeFramesAfter(@NonNull final BufferedImage frameImage, final int frames, final int frameStart, final int allFrames,
+                                         @NonNull final String filename) throws UserException {
+        for (long frame = 1; frame <= frames; frame++) {
+            final var pct = (int) (100.0 * (frameStart + frame) / allFrames);
+            context.setProgress1(pct, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
+            frameWriter.addFrame(frameImage);
+        }
     }
 
     private void renderAnimation(@NonNull final BufferedImage frameImage, @NonNull final BufferedImage photoImage, final long frames,

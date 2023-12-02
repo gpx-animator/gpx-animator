@@ -78,6 +78,7 @@ public final class Help {
         w.writeOptionHelp(Option.MIN_LON, "longitude", false, cfg.getMinLon()); //NON-NLS
         w.writeOptionHelp(Option.OUTPUT, "output", false, cfg.getOutput()); //NON-NLS
         w.writeOptionHelp(Option.PHOTO_TIME, "milliseconds", false, cfg.getPhotoTime()); //NON-NLS
+        w.writeOptionHelp(Option.PHOTO_FREEZE_FRAME_TIME, "milliseconds", false, cfg.getPhotoFreezeFrameTime()); //NON-NLS
         w.writeOptionHelp(Option.PHOTO_DIR, "directory", false, cfg.getPhotoDirectory()); //NON-NLS
         w.writeOptionHelp(Option.PRE_DRAW_TRACK, "predraw-track", false, cfg.isPreDrawTrack()); // NON-NLS
         w.writeOptionHelp(Option.PRE_DRAW_TRACK_COLOR, "predraw-track-color", true, tc.getPreDrawTrackColor()); // NON-NLS
