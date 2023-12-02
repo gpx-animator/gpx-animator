@@ -23,6 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("DuplicateStringLiteralInspection")
 public enum Option {
 
+    RUN("run"),
     GUI("gui"),
     INPUT("input"),
     OUTPUT("output"),

@@ -167,6 +167,7 @@ public final class CommandLineConfigurationFactory {
                         case PHOTO_TIME -> cfg.photoTime(Long.parseLong(args[++i]));
                         case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
                         case PREVIEW_LENGTH -> cfg.previewLength(Long.parseLong(args[++i]));
+                        case RUN -> cfg.loadConfigXML(args[++i]);
                         case SKIP_IDLE -> cfg.skipIdle(Boolean.parseBoolean(args[++i]));
                         case PRE_DRAW_TRACK -> cfg.preDrawTrack(true);
                         case PRE_DRAW_TRACK_COLOR -> preDrawTrackColorList.add((Color.decode(args[++i])));
