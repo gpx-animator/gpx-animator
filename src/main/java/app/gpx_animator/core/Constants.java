@@ -37,6 +37,8 @@ public enum Constants {
 
     public static final String OS_ARCH = System.getProperty("os.arch");
 
+    public static final String JAVA_VERSION = Runtime.version().toString();
+
     public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 
     public static final String UPDATES_URL = "https://download.gpx-animator.app/updates.xml";

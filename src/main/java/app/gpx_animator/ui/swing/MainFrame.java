@@ -300,11 +300,11 @@ public final class MainFrame extends JFrame {
                 } else if (os.contains("win")) { //NON-NLS
 
                     // this doesn't support showing urls in the form of "page.html#nameLink"
-                    rt.exec(new String[] {"rundll32", "url.dll,FileProtocolHandler", url}); //NON-NLS
+                    rt.exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", url}); //NON-NLS
 
                 } else if (os.contains("mac")) { //NON-NLS
 
-                    rt.exec(new String[] {"open", url}); //NON-NLS
+                    rt.exec(new String[]{"open", url}); //NON-NLS
 
                 } else if (os.contains("nix") || os.contains("nux")) { //NON-NLS
 
@@ -340,6 +340,12 @@ public final class MainFrame extends JFrame {
         final var protocolMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.protocol"));
         protocolMenu.addActionListener(e -> new ProtocolDialog(MainFrame.this, this.getWidth() - 150, this.getHeight() - 150));
         mnHelp.add(protocolMenu);
+
+        final var supportData = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.supportData"));
+        supportData.addActionListener(e -> {
+            SupportDataCreator.createSupportData();
+        });
+        mnHelp.add(supportData);
 
         final var contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
