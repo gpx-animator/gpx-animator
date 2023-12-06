@@ -102,8 +102,6 @@ public final class MainFrame extends JFrame {
     private final String warningTitle = resourceBundle.getString("ui.mainframe.dialog.title.warning");
     private final String errorTitle = resourceBundle.getString("ui.mainframe.dialog.title.error");
 
-    private final File defaultConfigFile = new File(Preferences.getConfigurationDir()
-            + Preferences.FILE_SEPARATOR + "defaultConfig.ga.xml");
     private final JTabbedPane tabbedPane;
     private final JButton previewButton;
     private final JButton renderButton;
@@ -752,7 +750,7 @@ public final class MainFrame extends JFrame {
                 final var jaxbContext = JAXBContext.newInstance(Configuration.class);
                 final var marshaller = jaxbContext.createMarshaller();
                 marshaller.setAdapter(new FileXmlAdapter(null));
-                marshaller.marshal(createConfiguration(false, false, false), defaultConfigFile);
+                marshaller.marshal(createConfiguration(false, false, false), Constants.DEFAULT_CONFIGURATION_FILE);
             } catch (final JAXBException e) {
                 throw new UserException(e.getMessage(), e);
             }
@@ -768,7 +766,7 @@ public final class MainFrame extends JFrame {
         file = null; // NOPMD -- Loading defaults = resetting everything means unsetting the filename, too
         setChanged(false);
 
-        if (defaultConfigFile == null || !defaultConfigFile.exists()) {
+        if (!Constants.DEFAULT_CONFIGURATION_FILE.exists()) {
             setConfiguration(Configuration.createBuilder().build());
             return;
         }
@@ -777,7 +775,7 @@ public final class MainFrame extends JFrame {
             final var jaxbContext = JAXBContext.newInstance(Configuration.class);
             final var unmarshaller = jaxbContext.createUnmarshaller();
             unmarshaller.setAdapter(new FileXmlAdapter(null));
-            setConfiguration((Configuration) unmarshaller.unmarshal(defaultConfigFile));
+            setConfiguration((Configuration) unmarshaller.unmarshal(Constants.DEFAULT_CONFIGURATION_FILE));
         } catch (final JAXBException e1) {
             e1.printStackTrace();
             JOptionPane.showMessageDialog(MainFrame.this,
@@ -787,14 +785,12 @@ public final class MainFrame extends JFrame {
     }
 
     private void resetDefaults() {
-        if (defaultConfigFile != null) {
-            if (defaultConfigFile.delete()) {
-                loadDefaults();
-            } else {
-                JOptionPane.showMessageDialog(MainFrame.this,
-                        resourceBundle.getString("ui.mainframe.dialog.message.resetdefault.error"),
-                        errorTitle, JOptionPane.ERROR_MESSAGE);
-            }
+        if (Constants.DEFAULT_CONFIGURATION_FILE.delete()) {
+            loadDefaults();
+        } else {
+            JOptionPane.showMessageDialog(MainFrame.this,
+                    resourceBundle.getString("ui.mainframe.dialog.message.resetdefault.error"),
+                    errorTitle, JOptionPane.ERROR_MESSAGE);
         }
     }
 
