@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -38,16 +38,38 @@ public final class SupportDataCreator {
 
         files.add(collectRuntimeInformation());
         files.add(getLogbackFileName());
-        files.addAll(getConfigurationFiles());
+        files.add(getPreference());
+        files.addAll(getRecentConfigurationFiles());
         files.addAll(getGpxFiles());
-        files.forEach(System.out::println);
 
         var pathSavedZip = zipFiles(files);
         openSuccessDialog(pathSavedZip);
     }
 
-    private static List<Path> getConfigurationFiles() {
+    private static List<Path> getRecentConfigurationFiles() {
         return Preferences.getRecentFiles().stream().map(File::toPath).toList();
+    }
+
+    private static Path getPreference() {
+        var preferenceMap = new LinkedHashMap<String, String>();
+        preferenceMap.put("last working dir", Preferences.getLastWorkingDir());
+        preferenceMap.put("changelog version", Preferences.getChangelogVersion());
+        preferenceMap.put("preview enabled", String.valueOf(Preferences.isPreviewEnabled()));
+        preferenceMap.put("recent files", Preferences.getRecentFiles().stream().map(File::toString)
+                .collect(Collectors.joining(", ")));
+        preferenceMap.put("tile cache dir", Preferences.getTileCacheDir());
+        preferenceMap.put("tile cache time limit", String.valueOf(Preferences.getTileCacheTimeLimit()));
+        preferenceMap.put("track color random", String.valueOf(Preferences.getTrackColorRandom()));
+        preferenceMap.put("track color default", Preferences.getTrackColorDefault().toString());
+
+        final var lines = preferenceMap.entrySet().stream()
+                .map(entry -> entry.getKey() + ": " + entry.getValue())
+                .toList();
+
+        final var path = Paths.get("preferences.txt");
+        writeToFile(path, lines);
+
+        return path;
     }
 
     private static List<Path> getGpxFiles() {
@@ -63,17 +85,17 @@ public final class SupportDataCreator {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private static String zipFiles(final List<Path> files) {
+    private static String zipFiles(final List<Path> paths) {
         var homeDirectory = Paths.get(Preferences.getConfigurationDir() + System.getProperty("file.separator")
                 + "support_data.zip");
         try (var fileOutputStream = new FileOutputStream(homeDirectory.toAbsolutePath().toString());
              var zipOutputStream = new ZipOutputStream(fileOutputStream)) {
-            for (Path file : files) {
-                final var fileBytes = Files.readAllBytes(file);
-                final var fileName = file.getFileName();
-                if (fileName == null) {
+            for (Path path : paths) {
+                final var fileName = path.getFileName();
+                if (fileName == null || !path.toFile().exists()) {
                     continue;
                 }
+                final var fileBytes = Files.readAllBytes(path);
                 zipOutputStream.putNextEntry(new ZipEntry(fileName.toString()));
                 zipOutputStream.write(fileBytes);
                 zipOutputStream.closeEntry();
@@ -85,11 +107,13 @@ public final class SupportDataCreator {
             LOGGER.error(errMsg);
             throw new RuntimeException(errMsg, e);
         }
-        files.forEach(file -> {
+        paths.forEach(path -> {
             try {
-                Files.delete(file);
+                if (path.toFile().exists()) {
+                    Files.delete(path);
+                }
             } catch (final IOException e) {
-                var errMsg = "Could not delete file %s used to collect the data".formatted(file.getFileName());
+                var errMsg = "Could not delete file %s used to collect the data".formatted(path.getFileName());
                 LOGGER.error(errMsg);
                 throw new RuntimeException(errMsg, e);
             }
@@ -98,7 +122,7 @@ public final class SupportDataCreator {
     }
 
     private static Path collectRuntimeInformation() {
-        Map<String, String> runtimeInfos = new LinkedHashMap<>();
+        var runtimeInfos = new LinkedHashMap<String, String>();
 
         runtimeInfos.put("os name", Constants.OS_NAME);
         runtimeInfos.put("os version", Constants.OS_VERSION);
