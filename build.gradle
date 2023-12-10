@@ -74,6 +74,11 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
     testImplementation 'org.junit.platform:junit-platform-engine:1.10.1'
+    modules {
+        module("com.google.collections:google-collections") {
+            replacedBy("com.google.guava:guava", "Google Collections is part of Guava")
+        }
+    }
 }
 
 test.classpath += configurations.developmentOnly
@@ -130,7 +135,7 @@ spotbugsTest {
 
 checkstyle {
     configFile file("${projectDir}/config/checkstyle/checkstyle.xml")
-    toolVersion "10.12.5"
+    toolVersion "10.12.6"
 }
 
 pmd {
