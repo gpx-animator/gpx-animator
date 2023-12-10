@@ -23,17 +23,22 @@ plugins {
     id 'java-library'
     id 'org.bytedeco.gradle-javacpp-platform' version '1.5.9'
     id 'io.freefair.lombok' version '8.4'
+    id 'maven-publish'
 }
 
 version = '1.9.0-SNAPSHOT'
 group = 'app.gpx-animator'
 
-mainClassName = 'app.gpx_animator.Main'
+application {
+    mainClass.set('app.gpx_animator.Main')
+}
 
+java {
 // Before updating Java, check Lombok Grade Plugin compatibility:
 // https://github.com/freefair/gradle-plugins#compatibility-matrix
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
@@ -139,6 +144,15 @@ task createVersionFile {
         def version = project.version.toString()
         def file = new File("$buildDir/resources/main/version.txt")
         file.write(version)
+    }
+}
+
+publishing {
+    publications {
+        myPublicationName(MavenPublication) {
+            // Configure the publication here
+            from components.java
+        }
     }
 }
 
