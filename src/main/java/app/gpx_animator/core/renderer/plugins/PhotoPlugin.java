@@ -57,6 +57,7 @@ import java.util.ResourceBundle;
 import static java.util.stream.Collectors.groupingBy;
 
 // Plugins are loaded using reflection
+@SuppressWarnings("unused")
 public final class PhotoPlugin implements RendererPlugin {
 
     @NonNls

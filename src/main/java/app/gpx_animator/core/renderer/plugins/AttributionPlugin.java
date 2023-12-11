@@ -27,6 +27,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 // Plugins are loaded using reflection
+@SuppressWarnings("unused")
 public final class AttributionPlugin extends TextRenderer implements RendererPlugin {
 
     private final String attribution;

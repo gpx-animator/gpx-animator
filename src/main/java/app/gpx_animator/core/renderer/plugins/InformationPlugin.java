@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Plugins are loaded using reflection
+@SuppressWarnings("unused")
 public final class InformationPlugin extends TextRenderer implements RendererPlugin {
 
     private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);

@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 // Plugins are loaded using reflection
+@SuppressWarnings("unused")
 public final class LogoPlugin extends ImageRenderer implements RendererPlugin {
 
     private final BufferedImage logo;

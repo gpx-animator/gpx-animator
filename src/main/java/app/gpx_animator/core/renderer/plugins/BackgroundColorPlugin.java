@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
 import static app.gpx_animator.core.util.RenderUtil.getGraphics;
 
 // Plugins are loaded using reflection
+@SuppressWarnings("unused")
 public final class BackgroundColorPlugin implements RendererPlugin {
 
     private final Color backgroundColor;

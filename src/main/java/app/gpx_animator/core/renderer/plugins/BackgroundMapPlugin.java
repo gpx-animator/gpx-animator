@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 // Plugins are loaded using reflection
+@SuppressWarnings("unused")
 public final class BackgroundMapPlugin implements RendererPlugin {
 
     @SuppressWarnings({"RegExpAnonymousGroup", "RegExpRedundantEscape"})
