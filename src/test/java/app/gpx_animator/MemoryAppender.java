@@ -20,4 +20,11 @@ public final class MemoryAppender extends ListAppender<ILoggingEvent> {
           .collect(Collectors.toList());
     }
 
+    public List<ILoggingEvent> searchFormattedMessages(final String string, final Level level) {
+        return this.list.stream()
+          .filter(event -> event.getFormattedMessage().contains(string)
+            && event.getLevel().equals(level))
+          .collect(Collectors.toList());
+    }
+
 }
