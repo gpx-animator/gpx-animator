@@ -82,6 +82,7 @@ public final class Help {
         w.writeOptionHelp(Option.PHOTO_DIR, "directory", false, cfg.getPhotoDirectory()); //NON-NLS
         w.writeOptionHelp(Option.PRE_DRAW_TRACK, "predraw-track", false, cfg.isPreDrawTrack()); // NON-NLS
         w.writeOptionHelp(Option.PRE_DRAW_TRACK_COLOR, "predraw-track-color", true, tc.getPreDrawTrackColor()); // NON-NLS
+        w.writeOptionHelp(Option.PREVIEW_LENGTH, "preview-length", false, cfg.getPreviewLength()); // NON-NLS
         w.writeOptionHelp(Option.SKIP_IDLE, "skip-idle", false, cfg.isSkipIdle());
         w.writeOptionHelp(Option.SPEEDUP, "speedup", false, cfg.getSpeedup()); //NON-NLS
         w.writeOptionHelp(Option.TAIL_DURATION, "time", false, cfg.getTailDuration()); //NON-NLS
