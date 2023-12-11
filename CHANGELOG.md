@@ -6,10 +6,15 @@
 
 ### Features
 
+* Add option to freeze map before/after showing photos
+
 ### Fixes
 
 * Fix format error when reading date and time from GPX file
 * Fix missing command-line option to customize information text
+* Fix missing command-line option for pre draw line width
+* Fix missing command-line option to select the video codec
+* Fix missing command-line option to show/hide the preview
 
 ### Other
 
