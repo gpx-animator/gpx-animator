@@ -2,6 +2,7 @@ package app.gpx_animator.ui.cli;
 
 import app.gpx_animator.Main;
 import app.gpx_animator.MemoryAppender;
+import app.gpx_animator.core.preferences.Preferences;
 import app.gpx_animator.core.renderer.Renderer;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class CommandLineIT {
 
+    private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
     private MemoryAppender memoryAppender = null;
 
     private String checkFileSeparator(@SuppressWarnings("SameParameterValue") final String path) {
@@ -90,7 +93,8 @@ final class CommandLineIT {
         assertDone();
 
         final var photoName = "Canon_PowerShot_S40.jpg";
-        final var renderPhotoLoggingEvents = memoryAppender.searchFormattedMessages("Rendering photo '%s'".formatted(photoName), Level.INFO);
+        final var localizedMessage = resourceBundle.getString("photos.progress.rendering");
+        final var renderPhotoLoggingEvents = memoryAppender.searchFormattedMessages(localizedMessage.formatted(photoName), Level.INFO);
         var previousProgressPercentage = 0;
         assertEquals(193, renderPhotoLoggingEvents.size());
         for (final var loggingEvent : renderPhotoLoggingEvents) {
