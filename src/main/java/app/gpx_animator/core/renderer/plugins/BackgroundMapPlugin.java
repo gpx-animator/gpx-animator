@@ -121,7 +121,8 @@ public final class BackgroundMapPlugin implements RendererPlugin {
                         .replace("{zoom}", Integer.toString(zoom)) //NON-NLS
                         .replace("{x}", Integer.toString(x)) //NON-NLS
                         .replace("{y}", Integer.toString(y)) //NON-NLS
-                        .replace("{apikey}", tmsApiKey); //NON-NLS
+                        .replace("{apikey}", tmsApiKey) //NON-NLS
+                        .replace("{access_token}", tmsApiKey); //NON-NLS
 
                 if (options != null) {
                     final var sb = new StringBuilder();
