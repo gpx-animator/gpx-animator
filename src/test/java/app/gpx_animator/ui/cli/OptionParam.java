@@ -342,7 +342,7 @@ public enum OptionParam {
                 return op;
             }
         }
-        throw new RuntimeException("No fount mapping option to optionParam. Please add new param");
+        throw new RuntimeException("Not fount mapping option to optionParam. Please add new param.");
     }
 
     private static TrackConfiguration getFirstTrackConfiguration(final CommandLineConfigurationFactory factory) {
