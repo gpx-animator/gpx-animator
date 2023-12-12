@@ -23,6 +23,7 @@ plugins {
     id 'java-library'
     id 'org.bytedeco.gradle-javacpp-platform' version '1.5.9'
     id 'io.freefair.lombok' version '8.4'
+    id 'maven-publish'
 }
 
 version = '1.9.0-SNAPSHOT'
@@ -140,6 +141,15 @@ task createVersionFile {
         def version = project.version.toString()
         def file = new File("$buildDir/resources/main/version.txt")
         file.write(version)
+    }
+}
+
+publishing {
+    publications {
+        myPublicationName(MavenPublication) {
+            // Configure the publication here
+            from components.java
+        }
     }
 }
 
