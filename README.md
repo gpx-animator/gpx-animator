@@ -193,6 +193,10 @@ Sounds included in application and their source:
 * Success sound made by [nckn](https://freesound.org/people/nckn/sounds/256113/) from [freesound](https://freesound.org/)
 * Error sound made by [lluiset7](https://freesound.org/people/lluiset7/sounds/141334/) from [freesound](https://freesound.org/)
 
+Test files (GPX files and images) and their source:
+
+* Bike ride provided by [McPringle](https://github.com/McPringle/) via [Komoot](https://www.komoot.de/tour/100558986)
+
 To create the installers, we use a free license of [Install4J](https://www.ej-technologies.com/products/install4j/overview.html) for open-source projects.
 
 [![Install4J multi-platform installer builder](https://www.ej-technologies.com/images/product_banners/install4j_large.png)](https://www.ej-technologies.com/products/install4j/overview.html)
