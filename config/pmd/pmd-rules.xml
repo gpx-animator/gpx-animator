@@ -10,4 +10,52 @@
         <exclude name="DataflowAnomalyAnalysis" />
         <exclude name="NonSerializableClass" />
     </rule>
+    <rule name="Prohibited non-null annotations"
+          language="java"
+          message="Avoid using these non-null annotations, use 'org.jetbrains.annotations.NotNull' instead."
+          class="net.sourceforge.pmd.lang.rule.XPathRule" >
+        <description>
+            Avoid using these non-null annotations, use 'org.jetbrains.annotations.NotNull' or 'lombok.NonNull' instead.
+        </description>
+        <priority>3</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+//Name[pmd-java:typeIs('javax.annotation.Nonnull')] |
+//Name[pmd-java:typeIs('org.springframework.lang.NonNull')] |
+//Name[pmd-java:typeIs('org.jspecify.annotations.NonNull')] |
+//Name[pmd-java:typeIs('org.eclipse.jdt.annotation.NonNull')] |
+//Name[pmd-java:typeIs('org.checkerframework.checker.nullness.qual.NonNull')] |
+//Name[pmd-java:typeIs('com.drew.lang.annotations.NotNull')] |
+//Name[pmd-java:typeIs('com.sun.istack.NotNull')]
+]]>
+                </value>
+            </property>
+        </properties>
+    </rule>
+    <rule name="Prohibited nullable annotations"
+          language="java"
+          message="Avoid using these nullable annotations, use 'org.jetbrains.annotations.Nullable' instead."
+          class="net.sourceforge.pmd.lang.rule.XPathRule" >
+        <description>
+            Avoid using these nullable annotations, use 'org.jetbrains.annotations.Nullable' instead.
+        </description>
+        <priority>3</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+//Name[pmd-java:typeIs('javax.annotation.Nullable')] |
+//Name[pmd-java:typeIs('org.springframework.lang.Nullable')] |
+//Name[pmd-java:typeIs('org.jspecify.annotations.Nullable')] |
+//Name[pmd-java:typeIs('org.eclipse.jdt.annotation.Nullable')] |
+//Name[pmd-java:typeIs('org.checkerframework.checker.nullness.qual.Nullable')] |
+//Name[pmd-java:typeIs('com.drew.lang.annotations.Nullable')] |
+//Name[pmd-java:typeIs('com.sun.istack.Nullable')]
+]]>
+                </value>
+            </property>
+        </properties>
+    </rule>
 </ruleset>
