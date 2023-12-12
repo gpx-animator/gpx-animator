@@ -10,7 +10,7 @@
         <exclude name="DataflowAnomalyAnalysis" />
         <exclude name="NonSerializableClass" />
     </rule>
-    <rule name="Prohibited non-null annotations"
+    <rule name="ProhibitedNonNullAnnotations"
           language="java"
           message="Avoid using these non-null annotations, use 'org.jetbrains.annotations.NotNull' instead."
           class="net.sourceforge.pmd.lang.rule.XPathRule" >
@@ -34,7 +34,7 @@
             </property>
         </properties>
     </rule>
-    <rule name="Prohibited nullable annotations"
+    <rule name="ProhibitedNullableAnnotations"
           language="java"
           message="Avoid using these nullable annotations, use 'org.jetbrains.annotations.Nullable' instead."
           class="net.sourceforge.pmd.lang.rule.XPathRule" >
