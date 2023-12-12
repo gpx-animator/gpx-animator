@@ -92,7 +92,7 @@ final class CommandLineIT {
         // then
         assertDone();
 
-        final var photoName = "Canon_PowerShot_S40.jpg";
+        final var photoName = "bikeride.jpg";
         final var localizedMessage = resourceBundle.getString("photos.progress.rendering");
         final var renderPhotoLoggingEvents = memoryAppender.searchFormattedMessages(localizedMessage.formatted(photoName), Level.INFO);
         var previousProgressPercentage = 0;
