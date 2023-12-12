@@ -79,25 +79,6 @@ dependencies {
 test.classpath += configurations.developmentOnly
 run.classpath += configurations.developmentOnly
 
-tasks.named('wrapper') {
-    distributionType = Wrapper.DistributionType.ALL
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
-}
-
-task copyFiles(type: Copy) {
-    from "."
-    include "CHANGELOG.md", "LICENSE.md"
-    into "./src/main/resources"
-}
-
-task deleteFiles(type: Delete) {
-    delete "./src/main/resources/CHANGELOG.md", "./src/main/resources/LICENSE.md"
-}
-
 test {
     useJUnitPlatform { }
     maxParallelForks = 4
@@ -116,15 +97,15 @@ spotbugs {
 
 spotbugsMain {
     reports {
-        xml.enabled = false
-        html.enabled = true
+        xml.enabled(false)
+        html.enabled(true)
     }
 }
 
 spotbugsTest {
     reports {
-        xml.enabled = false
-        html.enabled = true
+        xml.enabled(false)
+        html.enabled(true)
     }
 }
 
@@ -139,10 +120,30 @@ pmd {
     ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
 }
 
-task createVersionFile {
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
+}
+
+tasks.register('copyFiles', Copy) {
+    from(".")
+    include("CHANGELOG.md", "LICENSE.md")
+    into("./src/main/resources")
+}
+
+tasks.register('deleteFiles', Delete) {
+    delete("./src/main/resources/CHANGELOG.md", "./src/main/resources/LICENSE.md")
+}
+
+tasks.register('createVersionFile') {
     doLast {
         def version = project.version.toString()
-        def file = new File("$buildDir/resources/main/version.txt")
+        def directory = getLayout().getBuildDirectory().get().toString()
+        def file = new File("$directory/resources/main/version.txt")
         file.write(version)
     }
 }
