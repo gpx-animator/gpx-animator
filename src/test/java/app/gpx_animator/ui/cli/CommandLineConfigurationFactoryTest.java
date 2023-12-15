@@ -17,11 +17,13 @@ package app.gpx_animator.ui.cli;
 
 import app.gpx_animator.core.Option;
 import app.gpx_animator.core.UserException;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -51,4 +53,15 @@ class CommandLineConfigurationFactoryTest {
         assertTrue(op.getCheckResult().apply(factory));
     }
 
+    @Test
+    void testOutputWhenInputIsSet() throws UserException {
+        final var args = new String[] {
+                "--input", "journey.gpx",
+                "--input", "anotherJourney.gpx",
+        };
+
+        CommandLineConfigurationFactory factory = new CommandLineConfigurationFactory(args);
+        assertNotNull(factory.getConfiguration().getOutput());
+        assertEquals(factory.getConfiguration().getOutput().getName(), "journey.mp4");
+    }
 }
