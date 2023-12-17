@@ -60,7 +60,7 @@ final class CommandLineIT {
     @Test
     void testBasicCommandLine() throws Exception {
         final var outputFile = getTemporaryOutputFile();
-        final var args = new String[]{
+        final var args = new String[] {
                 "--input", checkFileSeparator("./src/test/resources/gpx/bikeride.gpx"),
                 "--output", outputFile
         };
@@ -77,10 +77,10 @@ final class CommandLineIT {
     void testPhotoPluginThroughCommandLine() throws Exception {
         // given
         final var outputFile = getTemporaryOutputFile();
-        final var args = new String[]{
+        final var args = new String[] {
                 "--input", checkFileSeparator("./src/test/resources/gpx/bikeride.gpx"),
                 "--output", outputFile,
-                "--photo-dir", checkFileSeparator("./src/test/resources/photo"),
+                "--photo-dir", checkFileSeparator("./src/test/resources/photo/directoryWithSinglePhoto"),
                 "--photo-freeze-frame-time", "1000",
                 "--photo-time", "3000",
                 "--photo-animation-duration", "700"
