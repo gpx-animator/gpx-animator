@@ -334,6 +334,14 @@ public final class Configuration {
     }
 
     public File getOutput() {
+        if (output == null) {
+            if (getTrackConfigurationList().isEmpty()) {
+                return new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
+            }
+            final var inputFile = getTrackConfigurationList().get(0).getInputGpx().getName();
+            output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR
+                    + inputFile.substring(0, inputFile.lastIndexOf(".")) + ".mp4");
+        }
         return output;
     }
 
@@ -503,7 +511,7 @@ public final class Configuration {
         private Long flashbackDuration = 250L;
         private Long keepFirstFrame;
         private Long keepLastFrame;
-        private File output = new File(Preferences.getLastWorkingDir() + Preferences.FILE_SEPARATOR + "GPX-Animation.mp4");
+        private File output = null;
         private VideoCodec videoCodec = DEFAULT_VIDEO_CODEC;
         private Font font;
         private Double markerSize = 8.0;
