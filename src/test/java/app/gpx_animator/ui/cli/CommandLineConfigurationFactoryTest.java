@@ -64,4 +64,19 @@ class CommandLineConfigurationFactoryTest {
         assertNotNull(factory.getConfiguration().getOutput());
         assertEquals(factory.getConfiguration().getOutput().getName(), "journey.mp4");
     }
+
+    @Test
+    void testMultipleInputParams() throws UserException {
+        // given --input with multiple input files
+        final var args = new String[]{"--input", "input1.gpx", "input2.gpx", "input3.gpx", "--output", "dummyOutput.mp4"};
+
+        // when creating the configuration
+        var factory = new CommandLineConfigurationFactory(args);
+
+        // then the configuration contains all input files
+        assertEquals(3, factory.getConfiguration().getTrackConfigurationList().size());
+        assertEquals("input1.gpx", factory.getConfiguration().getTrackConfigurationList().get(0).getInputGpx().getName());
+        assertEquals("input2.gpx", factory.getConfiguration().getTrackConfigurationList().get(1).getInputGpx().getName());
+        assertEquals("input3.gpx", factory.getConfiguration().getTrackConfigurationList().get(2).getInputGpx().getName());
+    }
 }

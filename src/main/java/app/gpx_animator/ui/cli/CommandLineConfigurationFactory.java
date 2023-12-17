@@ -28,14 +28,12 @@ import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import javax.xml.XMLConstants;
-
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.Color;
@@ -147,7 +145,12 @@ public final class CommandLineConfigurationFactory {
                             }
                             exit();
                         }
-                        case INPUT -> inputGpxList.add(args[++i]);
+                        case INPUT -> {
+                            inputGpxList.add(args[++i]);
+                            while (i + 1 < args.length && !args[i + 1].startsWith("--")) {
+                                inputGpxList.add(args[++i]);
+                            }
+                        }
                         case TRACK_ICON -> trackIconList.add(new TrackIcon(args[++i]));
                         case TRACK_ICON_FILE -> inputIconList.add(args[++i]);
                         case TRACK_ICON_MIRROR -> mirrorTrackIconList.add(true);
