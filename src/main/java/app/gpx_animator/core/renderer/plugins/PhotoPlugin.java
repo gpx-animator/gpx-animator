@@ -205,12 +205,12 @@ public final class PhotoPlugin implements RendererPlugin {
                     .map(remainingPhotos::get)
                     .flatMap(List::stream)
                     .toList()
-                    .forEach(photo -> renderPhoto(photo, bi));
+                    .forEach(photo -> renderPhoto(photo, bi, marker));
             keys.forEach(remainingPhotos::remove);
         }
     }
 
-    private void renderPhoto(@NonNull final Photo photo, @NonNull final BufferedImage frameImage) {
+    private void renderPhoto(@NonNull final Photo photo, @NonNull final BufferedImage frameImage, final Point2D marker) {
         final var filename = photo.file().getName();
         context.setProgress1(0, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
 
@@ -220,6 +220,7 @@ public final class PhotoPlugin implements RendererPlugin {
             final var g2d = bi2.createGraphics();
             final var posX = (frameImage.getWidth() - photoImage.getWidth()) / 2;
             final var posY = (frameImage.getHeight() - photoImage.getHeight()) / 2;
+
             g2d.drawImage(photoImage, posX, posY, null);
             g2d.dispose();
 
@@ -230,13 +231,13 @@ public final class PhotoPlugin implements RendererPlugin {
 
             try {
                 renderFreezeFramesBefore(frameImage, freezeFrames, allFrames, filename);
-                renderAnimationIn(frameImage, photoImage, inOutFrames, freezeFrames, allFrames, filename);
+                renderAnimationIn(frameImage, photoImage, inOutFrames, freezeFrames, allFrames, filename, marker);
                 for (long frame = 0; frame < frames; frame++) {
                     final var pct = (int) (100.0 * (freezeFrames + inOutFrames + frame) / allFrames);
                     context.setProgress1(pct, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
                     frameWriter.addFrame(bi2);
                 }
-                renderAnimationOut(frameImage, photoImage, inOutFrames, freezeFrames + inOutFrames + frames, allFrames, filename);
+                renderAnimationOut(frameImage, photoImage, inOutFrames, freezeFrames + inOutFrames + frames, allFrames, filename, marker);
                 renderFreezeFramesAfter(frameImage, freezeFrames, freezeFrames + inOutFrames * 2 + frames, allFrames, filename);
             } catch (final UserException e) {
                 LOGGER.error("Problems rendering photo '{}'!", photo, e);
@@ -271,20 +272,22 @@ public final class PhotoPlugin implements RendererPlugin {
     }
 
     private void renderAnimationIn(@NonNull final BufferedImage frameImage, @NonNull final BufferedImage photoImage, final int frames,
-                                   final int frameStart, final int allFrames, @NonNull final String filename) throws UserException {
+                                   final int frameStart, final int allFrames, @NonNull final String filename,
+                                   final Point2D marker) throws UserException {
         for (long frame = 1; frame <= frames; frame++) {
             final var pct = (int) (100.0 * (frameStart + frame) / allFrames);
             context.setProgress1(pct, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
-            renderAnimation(frameImage, photoImage, frames, frame);
+            renderAnimation(frameImage, photoImage, frames, frame, marker);
         }
     }
 
     private void renderAnimationOut(@NonNull final BufferedImage frameImage, @NonNull final BufferedImage photoImage, final long frames,
-                                    final int frameStart, final int allFrames, @NonNull final String filename) throws UserException {
+                                    final int frameStart, final int allFrames, @NonNull final String filename,
+                                    final Point2D marker) throws UserException {
         for (var frame = frames; frame >= 1; frame--) {
             final var pct = (int) (100.0 * (frameStart + (frames - frame)) / allFrames);
             context.setProgress1(pct, String.format(resourceBundle.getString(PHOTOS_PROGRESS_RENDERING), filename));
-            renderAnimation(frameImage, photoImage, frames, frame);
+            renderAnimation(frameImage, photoImage, frames, frame, marker);
         }
     }
 
@@ -298,18 +301,22 @@ public final class PhotoPlugin implements RendererPlugin {
     }
 
     private void renderAnimation(@NonNull final BufferedImage frameImage, @NonNull final BufferedImage photoImage, final long frames,
-                                 final long frame) throws UserException {
-        final var width = (int) (photoImage.getWidth() * frame / frames);
-        final var height = (int) (photoImage.getHeight() * frame / frames);
-        final var scaledImage = RenderUtil.scaleImage(photoImage, width, height);
+                                 final long frame, final Point2D marker) throws UserException {
+        final var scaledImageWidth = (int) (photoImage.getWidth() * frame / frames);
+        final var scaledImageHeight = (int) (photoImage.getHeight() * frame / frames);
+        final var scaledImage = RenderUtil.scaleImage(photoImage, scaledImageWidth, scaledImageHeight);
 
-        final var posX = (frameImage.getWidth() - scaledImage.getWidth()) / 2;
-        final var posY = (frameImage.getHeight() - scaledImage.getHeight()) / 2;
+        final var upperLeftImageX = (frameImage.getWidth() - scaledImage.getWidth()) / 2;
+        final var upperLeftImageY = (frameImage.getHeight() - scaledImage.getHeight()) / 2;
+        final var distanceUpperLeftToMarkerX = (int) (Math.abs(upperLeftImageX - marker.getX()) * (frames - frame) / frames);
+        final var distanceUpperLeftToMarkerY = (int) (Math.abs(upperLeftImageY - marker.getY()) * (frames - frame) / frames);
+        final var upperLeftX = Math.abs(upperLeftImageX - distanceUpperLeftToMarkerX);
+        final var upperLeftY = Math.abs(upperLeftImageY - distanceUpperLeftToMarkerY);
 
         final var bi2 = Utils.deepCopy(frameImage);
         final var g2d = bi2.createGraphics();
 
-        g2d.drawImage(scaledImage, posX, posY, null);
+        g2d.drawImage(scaledImage, upperLeftX, upperLeftY, null);
         g2d.dispose();
 
         frameWriter.addFrame(bi2);
