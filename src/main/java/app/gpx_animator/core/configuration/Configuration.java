@@ -128,7 +128,7 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File photoDirectory;
-    private Long photoFreezeFrameTime;
+    private Long photoFreezeFrameTime = 0L;
     private Long photoTime;
     private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
 
