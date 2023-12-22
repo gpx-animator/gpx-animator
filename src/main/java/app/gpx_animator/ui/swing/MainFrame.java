@@ -362,6 +362,7 @@ public final class MainFrame extends JFrame {
         tabbedPane.addChangeListener(e -> mntmRemoveTrack.setEnabled(tabbedPane.getSelectedIndex() > 0));
 
         final var generalScrollPane = new JScrollPane();
+        generalScrollPane.getVerticalScrollBar().setUnitIncrement(5);
         tabbedPane.addTab(resourceBundle.getString("ui.mainframe.tab.general"), generalScrollPane);
 
         generalSettingsPanel = new GeneralSettingsPanel() {
@@ -868,8 +869,8 @@ public final class MainFrame extends JFrame {
         private final ResourceBundle resourceBundle;
 
         MapLoader(@NotNull final MainFrame mainFrame,
-                         @NotNull final GeneralSettingsPanel generalSettingsPanel,
-                         @NotNull final ResourceBundle resourceBundle) {
+                  @NotNull final GeneralSettingsPanel generalSettingsPanel,
+                  @NotNull final ResourceBundle resourceBundle) {
             this.mainFrame = mainFrame;
             this.generalSettingsPanel = generalSettingsPanel;
             this.resourceBundle = resourceBundle;
