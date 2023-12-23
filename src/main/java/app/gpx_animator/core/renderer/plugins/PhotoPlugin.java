@@ -308,10 +308,10 @@ public final class PhotoPlugin implements RendererPlugin {
 
         final var upperLeftImageX = (frameImage.getWidth() - scaledImage.getWidth()) / 2;
         final var upperLeftImageY = (frameImage.getHeight() - scaledImage.getHeight()) / 2;
-        final var distanceUpperLeftToMarkerX = (int) (Math.abs(upperLeftImageX - marker.getX()) * (frames - frame) / frames);
-        final var distanceUpperLeftToMarkerY = (int) (Math.abs(upperLeftImageY - marker.getY()) * (frames - frame) / frames);
-        final var upperLeftX = Math.abs(upperLeftImageX - distanceUpperLeftToMarkerX);
-        final var upperLeftY = Math.abs(upperLeftImageY - distanceUpperLeftToMarkerY);
+        final var distanceUpperLeftToMarkerX = (int) ((upperLeftImageX - marker.getX()) * (frames - frame) / frames);
+        final var distanceUpperLeftToMarkerY = (int) ((upperLeftImageY - marker.getY()) * (frames - frame) / frames);
+        final var upperLeftX = upperLeftImageX - distanceUpperLeftToMarkerX;
+        final var upperLeftY = upperLeftImageY - distanceUpperLeftToMarkerY;
 
         final var bi2 = Utils.deepCopy(frameImage);
         final var g2d = bi2.createGraphics();
