@@ -200,3 +200,6 @@ Test files (GPX files and images) and their source:
 To create the installers, we use a free license of [Install4J](https://www.ej-technologies.com/products/install4j/overview.html) for open-source projects.
 
 [![Install4J multi-platform installer builder](https://www.ej-technologies.com/images/product_banners/install4j_large.png)](https://www.ej-technologies.com/products/install4j/overview.html)
+
+## GPX Animator as Lib
+ [see details manual](LIB.md)
