@@ -61,7 +61,7 @@ dependencies {
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.1'
     implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.4'
     implementation 'javax.activation:activation:1.1.1'
-    implementation 'org.slf4j:slf4j-api:2.0.10'
+    implementation 'org.slf4j:slf4j-api:2.0.11'
     implementation 'ch.qos.logback:logback-classic:1.4.14'
     implementation 'com.drewnoakes:metadata-extractor:2.19.0'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
