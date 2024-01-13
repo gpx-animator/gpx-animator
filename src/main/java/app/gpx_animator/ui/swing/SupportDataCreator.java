@@ -1,12 +1,14 @@
 package app.gpx_animator.ui.swing;
 
 import app.gpx_animator.core.Constants;
+import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.preferences.Preferences;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.FileAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -33,21 +36,25 @@ public final class SupportDataCreator {
     private SupportDataCreator() {
     }
 
-    static void createSupportData() {
+    static void createSupportData(final List<TrackConfiguration> gpxFiles) {
         List<Path> files = new ArrayList<>();
 
         files.add(collectRuntimeInformation());
         files.add(getLogbackFileName());
         files.add(getPreference());
-        files.addAll(getRecentConfigurationFiles());
-        files.addAll(getGpxFiles());
+        files.add(getMostRecentConfigurationFile());
+        files.addAll(getGpxFilePaths(gpxFiles));
 
         var pathSavedZip = zipFiles(files);
-        openSuccessDialog(pathSavedZip);
+        if (pathSavedZip.isBlank()) {
+            openErrorDialog();
+        } else {
+            openSuccessDialog(pathSavedZip);
+        }
     }
 
-    private static List<Path> getRecentConfigurationFiles() {
-        return Preferences.getRecentFiles().stream().map(File::toPath).toList();
+    private static Path getMostRecentConfigurationFile() {
+        return Preferences.getRecentFiles().isEmpty() ? null : Preferences.getRecentFiles().get(0).toPath();
     }
 
     private static Path getPreference() {
@@ -72,9 +79,10 @@ public final class SupportDataCreator {
         return path;
     }
 
-    private static List<Path> getGpxFiles() {
-        // TODO how to get the recently used gpx files?
-        return new ArrayList<>();
+    private static List<Path> getGpxFilePaths(final List<TrackConfiguration> gpxFiles) {
+        return gpxFiles.stream()
+                .map(track -> track.getInputGpx().toPath().toAbsolutePath())
+                .collect(Collectors.toList());
     }
 
     private static void openSuccessDialog(final String pathToZip) {
@@ -85,12 +93,30 @@ public final class SupportDataCreator {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
+    private static void openErrorDialog() {
+        JOptionPane.showMessageDialog(MainFrame.getInstance(),
+                Preferences.getResourceBundle().getString("ui.mainframe.dialog.message.supportdata.error"),
+                Preferences.getResourceBundle().getString("ui.mainframe.dialog.title.error"),
+                JOptionPane.ERROR_MESSAGE);
+    }
+
     private static String zipFiles(final List<Path> paths) {
-        var homeDirectory = Paths.get(Preferences.getConfigurationDir() + System.getProperty("file.separator")
-                + "support_data.zip");
-        try (var fileOutputStream = new FileOutputStream(homeDirectory.toAbsolutePath().toString());
+
+        var fileLocation = chooseFileLocation();
+        if (fileLocation == null) {
+            return "";
+        }
+        final var fileLocationName = fileLocation.getName();
+        if (!fileLocationName.endsWith(".zip")) {
+            fileLocation = new File(fileLocation.getAbsolutePath() + ".zip");
+        }
+        try (var fileOutputStream = new FileOutputStream(fileLocation);
              var zipOutputStream = new ZipOutputStream(fileOutputStream)) {
             for (Path path : paths) {
+                if (path == null) {
+                    continue;
+                }
+
                 final var fileName = path.getFileName();
                 if (fileName == null || !path.toFile().exists()) {
                     continue;
@@ -101,13 +127,20 @@ public final class SupportDataCreator {
                 zipOutputStream.closeEntry();
                 LOGGER.info("Added {} to zip file", fileName);
             }
-            LOGGER.info("saved zip file at location {}", homeDirectory.toAbsolutePath());
+            LOGGER.info("saved zip file at location {}", fileLocation.toPath().toAbsolutePath());
         } catch (IOException e) {
             var errMsg = "Could not zip collected information files";
             LOGGER.error(errMsg);
             throw new RuntimeException(errMsg, e);
         }
-        paths.forEach(path -> {
+        deleteFiles(paths);
+        return fileLocation.getAbsolutePath();
+    }
+
+    private static void deleteFiles(final List<Path> paths) {
+        Predicate<Path> deleteCondition = path -> path != null && (path.getFileName().toString().equals("preferences.txt")
+                || path.getFileName().toString().equals("runtime_information.txt"));
+        paths.stream().filter(deleteCondition).forEach(path -> {
             try {
                 if (path.toFile().exists()) {
                     Files.delete(path);
@@ -118,7 +151,18 @@ public final class SupportDataCreator {
                 throw new RuntimeException(errMsg, e);
             }
         });
-        return homeDirectory.toAbsolutePath().toString();
+    }
+
+    private static File chooseFileLocation() {
+        var fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        var returnCode = fileChooser.showSaveDialog(MainFrame.getInstance());
+        if (returnCode == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile();
+        } else {
+            return null;
+        }
     }
 
     private static Path collectRuntimeInformation() {
@@ -132,9 +176,9 @@ public final class SupportDataCreator {
         runtimeInfos.put("user agent", Constants.USER_AGENT);
 
         final var byteToGigaByte = Math.pow(1024, 3);
-        try {
-            final var fileStores = FileSystems.getDefault().getFileStores();
-            for (final var fileStore : fileStores) {
+        final var fileStores = FileSystems.getDefault().getFileStores();
+        for (final var fileStore : fileStores) {
+            try {
                 runtimeInfos.put("file store", fileStore.name());
                 runtimeInfos.put("total space", round(fileStore.getTotalSpace() / byteToGigaByte) + GB_MEASURE_UNIT);
                 runtimeInfos.put("used space",
@@ -142,9 +186,9 @@ public final class SupportDataCreator {
                                 + GB_MEASURE_UNIT);
                 runtimeInfos.put("available space",
                         round(fileStore.getUsableSpace() / byteToGigaByte) + GB_MEASURE_UNIT);
+            } catch (final IOException e) {
+                runtimeInfos.put(fileStore.name(), " error " + e);
             }
-        } catch (final IOException e) {
-            throw new RuntimeException("Could not get file stores", e);
         }
 
         final var runtime = Runtime.getRuntime();

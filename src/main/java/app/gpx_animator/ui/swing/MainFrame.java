@@ -165,7 +165,6 @@ public final class MainFrame extends JFrame {
         });
         mntmNew.setAccelerator(getKeyStroke('N', CTRL_DOWN_MASK));
         mnFile.add(mntmNew);
-
         final var mntmOpen = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.open"));
         mntmOpen.addActionListener(e -> {
             if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,
@@ -341,7 +340,8 @@ public final class MainFrame extends JFrame {
 
         final var supportData = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.supportData"));
         supportData.addActionListener(e -> {
-            SupportDataCreator.createSupportData();
+            final var config = createConfiguration(true, false, false);
+            SupportDataCreator.createSupportData(config.getTrackConfigurationList());
         });
         mnHelp.add(supportData);
 
