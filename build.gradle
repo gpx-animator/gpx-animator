@@ -21,7 +21,7 @@ plugins {
     id 'pmd'
     id 'checkstyle'
     id 'java-library'
-    id 'org.bytedeco.gradle-javacpp-platform' version '1.5.9'
+    id 'org.bytedeco.gradle-javacpp-platform' version '1.5.10'
     id 'io.freefair.lombok' version '8.4'
     id 'maven-publish'
 }
