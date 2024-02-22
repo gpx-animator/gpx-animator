@@ -17,12 +17,12 @@
 plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id 'com.github.spotbugs' version '6.0.4'
+    id 'com.github.spotbugs' version '6.0.7'
     id 'pmd'
     id 'checkstyle'
     id 'java-library'
-    id 'org.bytedeco.gradle-javacpp-platform' version '1.5.9'
-    id 'io.freefair.lombok' version '8.4'
+    id 'org.bytedeco.gradle-javacpp-platform' version '1.5.10'
+    id 'io.freefair.lombok' version '8.6'
     id 'maven-publish'
 }
 
@@ -56,13 +56,13 @@ ext {
 dependencies {
     compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.3'
     implementation 'org.jetbrains:annotations:24.1.0'
-    implementation 'org.bytedeco:javacv:1.5.9'
-    implementation 'org.bytedeco:ffmpeg-platform-gpl:6.0-1.5.9'
+    implementation 'org.bytedeco:javacv:1.5.10'
+    implementation 'org.bytedeco:ffmpeg-platform-gpl:6.1.1-1.5.10'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.1'
     implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.4'
     implementation 'javax.activation:activation:1.1.1'
-    implementation 'org.slf4j:slf4j-api:2.0.9'
-    implementation 'ch.qos.logback:logback-classic:1.4.14'
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+    implementation 'ch.qos.logback:logback-classic:1.5.0'
     implementation 'com.drewnoakes:metadata-extractor:2.19.0'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
     implementation 'commons-io:commons-io:20030203.000550'
@@ -72,9 +72,9 @@ dependencies {
     implementation 'org.apache.maven:maven-artifact:3.9.6'
     testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.3'
     testImplementation 'com.github.romankh3:image-comparison:4.4.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
-    testImplementation 'org.junit.platform:junit-platform-engine:1.10.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'
+    testImplementation 'org.junit.platform:junit-platform-engine:1.10.2'
 }
 
 test.classpath += configurations.developmentOnly
@@ -156,8 +156,7 @@ publishing {
         }
     }
     publications {
-        myPublicationName(MavenPublication) {
-            // Configure the publication here
+        release(MavenPublication) {
             from components.java
         }
     }
