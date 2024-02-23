@@ -167,6 +167,9 @@ To run tests in `src/test/`:
 ./gradlew test
 ```
 
+## GPX Animator as Lib
+[see details manual](LIB.md)
+
 ## Related projects
 
 - [gopro-map-sync](https://github.com/thomergil/gopro-map-sync): uses GPX Animator to synchronize a moving map video with GoPro footage.
@@ -200,6 +203,3 @@ Test files (GPX files and images) and their source:
 To create the installers, we use a free license of [Install4J](https://www.ej-technologies.com/products/install4j/overview.html) for open-source projects.
 
 [![Install4J multi-platform installer builder](https://www.ej-technologies.com/images/product_banners/install4j_large.png)](https://www.ej-technologies.com/products/install4j/overview.html)
-
-## GPX Animator as Lib
- [see details manual](LIB.md)
