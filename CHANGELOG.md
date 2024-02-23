@@ -1,5 +1,10 @@
 # Changelog
 
+Please report any bugs and feature requests via our
+[GitHub Issue Tracker](https://github.com/gpx-animator/gpx-animator/issues).
+For questions and support requests, please use
+[GitHub Discussions](https://github.com/gpx-animator/gpx-animator/discussions).
+
 ## Version 1.9.0
 
 **Release date: work in progress 🚧**

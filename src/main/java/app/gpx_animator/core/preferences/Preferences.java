@@ -112,7 +112,7 @@ public final class Preferences {
 
     public static long getTileCacheTimeLimit() {
         return PREFS.getLong(TILE_CACHE_TIME_LIMIT,
-                (long) 24 * 60 * 60 * 1_000); // 24 hours
+                (long) 24 * 60 * 60 * 1_000 * 7); // 7 days
     }
 
     public static void setTileCacheTimeLimit(final long tileCacheTimeLimit) {

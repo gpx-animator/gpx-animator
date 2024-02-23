@@ -2,6 +2,6 @@
 <FindBugsFilter>
   <Match>
     <!-- Check is broken and does not clearly report where the fault is. -->
-    <Bug pattern="PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_CLASS_NAMES" />
+    <Bug pattern="CT_CONSTRUCTOR_THROW, PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_CLASS_NAMES" />
   </Match>
 </FindBugsFilter>
