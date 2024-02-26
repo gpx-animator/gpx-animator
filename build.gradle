@@ -112,7 +112,17 @@ spotbugsTest {
 
 checkstyle {
     configFile file("${projectDir}/config/checkstyle/checkstyle.xml")
-    toolVersion "10.12.5"
+    toolVersion "10.13.0"
+}
+
+/*
+ * Temporary fix for checkstyle dependency problems:
+ * https://github.com/checkstyle/checkstyle/issues/14211
+ */
+configurations.checkstyle {
+    resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
+        select("com.google.guava:guava:0")
+    }
 }
 
 pmd {
