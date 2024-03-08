@@ -58,7 +58,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:24.1.0'
     implementation 'org.bytedeco:javacv:1.5.10'
     implementation 'org.bytedeco:ffmpeg-platform-gpl:6.1.1-1.5.10'
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.1'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
     implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
     implementation 'javax.activation:activation:1.1.1'
     implementation 'org.slf4j:slf4j-api:2.0.12'
