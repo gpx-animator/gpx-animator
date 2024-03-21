@@ -102,8 +102,6 @@ public final class MainFrame extends JFrame {
     private final String warningTitle = resourceBundle.getString("ui.mainframe.dialog.title.warning");
     private final String errorTitle = resourceBundle.getString("ui.mainframe.dialog.title.error");
 
-    private final File defaultConfigFile = new File(Preferences.getConfigurationDir()
-            + Preferences.FILE_SEPARATOR + "defaultConfig.ga.xml");
     private final JTabbedPane tabbedPane;
     private final JButton previewButton;
     private final JButton renderButton;
@@ -167,7 +165,6 @@ public final class MainFrame extends JFrame {
         });
         mntmNew.setAccelerator(getKeyStroke('N', CTRL_DOWN_MASK));
         mnFile.add(mntmNew);
-
         final var mntmOpen = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.file.open"));
         mntmOpen.addActionListener(e -> {
             if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,
@@ -300,11 +297,11 @@ public final class MainFrame extends JFrame {
                 } else if (os.contains("win")) { //NON-NLS
 
                     // this doesn't support showing urls in the form of "page.html#nameLink"
-                    rt.exec(new String[] {"rundll32", "url.dll,FileProtocolHandler", url}); //NON-NLS
+                    rt.exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", url}); //NON-NLS
 
                 } else if (os.contains("mac")) { //NON-NLS
 
-                    rt.exec(new String[] {"open", url}); //NON-NLS
+                    rt.exec(new String[]{"open", url}); //NON-NLS
 
                 } else if (os.contains("nix") || os.contains("nux")) { //NON-NLS
 
@@ -340,6 +337,13 @@ public final class MainFrame extends JFrame {
         final var protocolMenu = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.protocol"));
         protocolMenu.addActionListener(e -> new ProtocolDialog(MainFrame.this, this.getWidth() - 150, this.getHeight() - 150));
         mnHelp.add(protocolMenu);
+
+        final var supportData = new JMenuItem(resourceBundle.getString("ui.mainframe.menu.help.supportData"));
+        supportData.addActionListener(e -> {
+            final var config = createConfiguration(true, false, false);
+            SupportDataCreator.createSupportData(config.getTrackConfigurationList());
+        });
+        mnHelp.add(supportData);
 
         final var contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -746,7 +750,7 @@ public final class MainFrame extends JFrame {
                 final var jaxbContext = JAXBContext.newInstance(Configuration.class);
                 final var marshaller = jaxbContext.createMarshaller();
                 marshaller.setAdapter(new FileXmlAdapter(null));
-                marshaller.marshal(createConfiguration(false, false, false), defaultConfigFile);
+                marshaller.marshal(createConfiguration(false, false, false), Constants.DEFAULT_CONFIGURATION_FILE);
             } catch (final JAXBException e) {
                 throw new UserException(e.getMessage(), e);
             }
@@ -762,7 +766,7 @@ public final class MainFrame extends JFrame {
         file = null; // NOPMD -- Loading defaults = resetting everything means unsetting the filename, too
         setChanged(false);
 
-        if (defaultConfigFile == null || !defaultConfigFile.exists()) {
+        if (!Constants.DEFAULT_CONFIGURATION_FILE.exists()) {
             setConfiguration(Configuration.createBuilder().build());
             return;
         }
@@ -771,7 +775,7 @@ public final class MainFrame extends JFrame {
             final var jaxbContext = JAXBContext.newInstance(Configuration.class);
             final var unmarshaller = jaxbContext.createUnmarshaller();
             unmarshaller.setAdapter(new FileXmlAdapter(null));
-            setConfiguration((Configuration) unmarshaller.unmarshal(defaultConfigFile));
+            setConfiguration((Configuration) unmarshaller.unmarshal(Constants.DEFAULT_CONFIGURATION_FILE));
         } catch (final JAXBException e1) {
             e1.printStackTrace();
             JOptionPane.showMessageDialog(MainFrame.this,
@@ -781,14 +785,12 @@ public final class MainFrame extends JFrame {
     }
 
     private void resetDefaults() {
-        if (defaultConfigFile != null) {
-            if (defaultConfigFile.delete()) {
-                loadDefaults();
-            } else {
-                JOptionPane.showMessageDialog(MainFrame.this,
-                        resourceBundle.getString("ui.mainframe.dialog.message.resetdefault.error"),
-                        errorTitle, JOptionPane.ERROR_MESSAGE);
-            }
+        if (Constants.DEFAULT_CONFIGURATION_FILE.delete()) {
+            loadDefaults();
+        } else {
+            JOptionPane.showMessageDialog(MainFrame.this,
+                    resourceBundle.getString("ui.mainframe.dialog.message.resetdefault.error"),
+                    errorTitle, JOptionPane.ERROR_MESSAGE);
         }
     }
 
