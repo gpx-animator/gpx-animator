@@ -17,7 +17,7 @@
 plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id 'com.github.spotbugs' version '6.0.11'
+    id 'com.github.spotbugs' version '6.0.12'
     id 'pmd'
     id 'checkstyle'
     id 'java-library'
