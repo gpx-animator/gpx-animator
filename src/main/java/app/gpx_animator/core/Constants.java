@@ -15,7 +15,10 @@
  */
 package app.gpx_animator.core;
 
+import app.gpx_animator.core.preferences.Preferences;
+
 import java.awt.Font;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -37,12 +40,17 @@ public enum Constants {
 
     public static final String OS_ARCH = System.getProperty("os.arch");
 
+    public static final String JAVA_VERSION = Runtime.version().toString();
+
     public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 
     public static final String UPDATES_URL = "https://download.gpx-animator.app/updates.xml";
 
     public static final String USER_AGENT = String.format("%s %s on %s %s (%s)", //NON-NLS
             Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH);
+
+    public static final File DEFAULT_CONFIGURATION_FILE = new File(Preferences.getConfigurationDir()
+            + Preferences.FILE_SEPARATOR + "defaultConfig.ga.xml");
 
     private static String loadVersionString() {
         final var stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("version.txt");
