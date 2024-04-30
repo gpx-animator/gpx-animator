@@ -52,6 +52,7 @@ public class ErrorDialog extends JDialog {
     private final String message;
     private final String stackTrace;
 
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public ErrorDialog(final JFrame owner, final String message, final Exception exception) {
         super(owner, true);
         this.message = message;

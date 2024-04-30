@@ -65,8 +65,8 @@ public enum Notification {
             systemTray.add(trayIcon);
             thisPlatformSupportsNotifications = true;
         } catch (final Exception e) {
+            LOGGER.warn("Notifications not supported on this platform: {}", e.getMessage());
             thisPlatformSupportsNotifications = false;
-            LOGGER.warn("Notifications not supported on this platform!", e);
         }
     }
 

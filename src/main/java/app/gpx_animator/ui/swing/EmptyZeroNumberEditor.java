@@ -29,6 +29,7 @@ public class EmptyZeroNumberEditor extends DefaultEditor {
     @Serial
     private static final long serialVersionUID = -3860212824757198990L;
 
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public EmptyZeroNumberEditor(final JSpinner spinner, final Class<? extends Number> clazz) {
         super(spinner);
 

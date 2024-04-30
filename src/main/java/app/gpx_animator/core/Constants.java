@@ -16,6 +16,8 @@
 package app.gpx_animator.core;
 
 import java.awt.Font;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -45,11 +47,12 @@ public enum Constants {
             Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH);
 
     private static String loadVersionString() {
-        final var stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("version.txt");
-        assert stream != null : "Version file is missing!";
-        try (Scanner scanner = new Scanner(stream, StandardCharsets.UTF_8)) {
-            return scanner.nextLine();
-        } catch (final Exception e) {
+        try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("version.txt")) {
+            assert stream != null : "Version file is missing!";
+            try (Scanner scanner = new Scanner(stream, StandardCharsets.UTF_8)) {
+                return scanner.nextLine();
+            }
+        } catch (final IOException e) {
             return "<UNKNOWN VERSION>";
         }
     }

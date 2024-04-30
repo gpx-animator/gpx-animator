@@ -40,6 +40,7 @@ public class UsageDialog extends EscapeDialog {
     /**
      * Create the dialog.
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public UsageDialog(final JFrame owner) {
         super(owner);
 

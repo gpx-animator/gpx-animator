@@ -30,7 +30,7 @@ public class DurationEditor extends DefaultEditor {
     @Serial
     private static final long serialVersionUID = -3860212824757198990L;
 
-
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public DurationEditor(final JSpinner spinner) {
         super(spinner);
 

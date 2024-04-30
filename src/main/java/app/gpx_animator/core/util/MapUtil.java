@@ -60,6 +60,7 @@ public final class MapUtil {
         return !getMapPath().toFile().exists();
     }
 
+    @SuppressWarnings("PMD.CloseResource") // false positive
     public static List<MapTemplate> updateMaps() {
         try {
             final var client = HttpClient.newHttpClient();
@@ -151,7 +152,7 @@ public final class MapUtil {
                             case "max-zoom" -> maxZoom = Integer.parseInt(sb.toString().trim());
                             case "country-code" -> countryCode = sb.toString().trim();
                             case "entry" -> {
-                                if ("tms".equalsIgnoreCase(type)) {
+                                if (type.equalsIgnoreCase("tms")) {
                                     labeledItems.add(new MapTemplate(id, name, type, url, attributionText, attributionTextMandatory, maxZoom,
                                             countryCode));
                                 }

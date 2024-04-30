@@ -99,6 +99,7 @@ public class MarkdownDialog extends EscapeDialog {
         this(owner, title, markdown, new HashMap<>(), width, height);
     }
 
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public MarkdownDialog(final JFrame owner, final String title,
                           @NonNls final String markdown,
                           final Map<String, String> variables,

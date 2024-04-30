@@ -47,6 +47,7 @@ public abstract class FileSelector extends JPanel {
     /**
      * Create the panel.
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     protected FileSelector(final int fileSelectionMode) {
         final var resourceBundle = Preferences.getResourceBundle();
 

@@ -25,6 +25,7 @@ public final class FileXmlAdapter extends XmlAdapter<String, File> {
 
     private final Path base;
 
+    @SuppressWarnings("PMD.NullAssignment")
     public FileXmlAdapter(final File base) {
         this.base = base == null ? null : base.toPath();
     }

@@ -63,6 +63,7 @@ public final class VideoFrameWriter implements FrameWriter {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // frame will be closed later automatically
     public void addFrame(@NonNull final BufferedImage image) {
         final var frame = frameConverter.convert(image);
         try {

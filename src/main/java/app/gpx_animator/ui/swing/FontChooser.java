@@ -535,6 +535,7 @@ public final class FontChooser extends JComponent {
         private static final long serialVersionUID = 2309978224812073950L;
         private final JDialog dialog;
 
+        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         protected DialogOKAction(final JDialog dialog) {
             this.dialog = dialog;
             putValue(Action.DEFAULT, ACTION_NAME);
@@ -556,6 +557,7 @@ public final class FontChooser extends JComponent {
         private static final long serialVersionUID = -5080686015935861376L;
         private final JDialog dialog;
 
+        @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
         protected DialogCancelAction(final JDialog dialog) {
             this.dialog = dialog;
             putValue(Action.DEFAULT, ACTION_NAME);
