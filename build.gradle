@@ -115,16 +115,6 @@ checkstyle {
     toolVersion "10.16.0"
 }
 
-/*
- * Temporary fix for checkstyle dependency problems:
- * https://github.com/checkstyle/checkstyle/issues/14211
- */
-configurations.checkstyle {
-    resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
-        select("com.google.guava:guava:33.1.0-jre")
-    }
-}
-
 pmd {
     toolVersion = "6.55.0"
     ruleSets = []
