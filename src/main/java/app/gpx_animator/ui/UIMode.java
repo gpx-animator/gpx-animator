@@ -25,12 +25,16 @@ public enum UIMode {
 
     private static UIMode mode = EXPERT;
 
+    @SuppressWarnings("java:S3066")
     @SuppressFBWarnings(value = "EI_EXPOSE_STATIC_REP2", justification = "the UIMode is public anyway")
     public static void setMode(@NonNull final UIMode mode) {
         UIMode.mode = mode;
     }
 
-    @SuppressFBWarnings(value = "MS_EXPOSE_REP", justification = "the UIMode is public anyway")
+    @SuppressFBWarnings({
+            "SING_SINGLETON_GETTER_NOT_SYNCHRONIZED", // false positive
+            "MS_EXPOSE_REP" // the UIMode is public anyway
+    })
     public static UIMode getMode() {
         return mode;
     }

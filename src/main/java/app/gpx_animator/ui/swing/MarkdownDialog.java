@@ -86,7 +86,7 @@ public class MarkdownDialog extends EscapeDialog {
                 </style>
             </head><body>
                 %s
-            </body>""";
+            </body>""".replace("\n", "%n");
 
     private final transient ResourceBundle resourceBundle = Preferences.getResourceBundle();
 
