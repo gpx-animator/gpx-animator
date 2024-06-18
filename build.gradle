@@ -54,7 +54,7 @@ ext {
 }
 
 dependencies {
-    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.5'
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.6'
     implementation 'org.jetbrains:annotations:24.1.0'
     implementation 'org.bytedeco:javacv:1.5.10'
     implementation 'org.bytedeco:ffmpeg-platform-gpl:6.1.1-1.5.10'
@@ -70,7 +70,7 @@ dependencies {
     implementation 'com.vladsch.flexmark:flexmark-all:0.64.8'
     implementation 'org.reflections:reflections:0.10.2'
     implementation 'org.apache.maven:maven-artifact:3.9.8'
-    testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.5'
+    testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.6'
     testImplementation 'com.github.romankh3:image-comparison:4.4.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'
