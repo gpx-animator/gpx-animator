@@ -55,7 +55,7 @@ ext {
 
 dependencies {
     compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.6'
-    implementation 'org.jetbrains:annotations:25.0.0'
+    implementation 'org.jetbrains:annotations:26.0.0'
     implementation 'org.bytedeco:javacv:1.5.10'
     implementation 'org.bytedeco:ffmpeg-platform-gpl:6.1.1-1.5.10'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
