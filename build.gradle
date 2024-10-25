@@ -117,7 +117,7 @@ checkstyle {
 }
 
 pmd {
-    toolVersion = "7.6.0"
+    toolVersion = "7.7.0"
     ruleSets = []
     ruleSetFiles = files("${projectDir}/config/pmd/pmd-rules.xml")
 }
