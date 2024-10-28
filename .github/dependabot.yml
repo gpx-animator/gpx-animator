@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "Gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "01:00"
+    commit-message:
+      prefix: "⬆️ "
