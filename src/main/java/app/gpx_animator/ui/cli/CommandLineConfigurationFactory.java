@@ -153,8 +153,7 @@ public final class CommandLineConfigurationFactory {
                         }
                         case TRACK_ICON -> trackIconList.add(new TrackIcon(args[++i]));
                         case TRACK_ICON_FILE -> inputIconList.add(args[++i]);
-                        case TRACK_ICON_MIRROR -> mirrorTrackIconList.add(true);
-                        case KEEP_IDLE -> cfg.skipIdle(false);
+                        case TRACK_ICON_MIRROR -> mirrorTrackIconList.add(Boolean.parseBoolean(args[++i]));
                         case KEEP_FIRST_FRAME -> cfg.keepFirstFrame(Long.parseLong(args[++i]));
                         case KEEP_LAST_FRAME -> cfg.keepLastFrame(Long.parseLong(args[++i]));
                         case LABEL -> labelList.add(args[++i]);
@@ -176,7 +175,7 @@ public final class CommandLineConfigurationFactory {
                         case PHOTO_ANIMATION_DURATION -> cfg.photoAnimationDuration(Long.parseLong(args[++i]));
                         case PREVIEW_LENGTH -> cfg.previewLength(Long.parseLong(args[++i]));
                         case SKIP_IDLE -> cfg.skipIdle(Boolean.parseBoolean(args[++i]));
-                        case PRE_DRAW_TRACK -> cfg.preDrawTrack(true);
+                        case PRE_DRAW_TRACK -> cfg.preDrawTrack(Boolean.parseBoolean(args[++i]));
                         case PRE_DRAW_TRACK_COLOR -> preDrawTrackColorList.add((Color.decode(args[++i])));
                         case SPEEDUP -> cfg.speedup(Double.parseDouble(args[++i]));
                         case SPEED_UNIT -> cfg.speedUnit(SpeedUnit.parse(args[++i], SpeedUnit.KMH));

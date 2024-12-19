@@ -33,7 +33,8 @@ java -jar ./build/libs/gpx-animator-x.y.z-all.jar
 	  --viewport-height 640 --viewport-width 640
 	  --total-time 120000
 	  --tail-duration 10000
-	  --pre-draw-track --pre-draw-track-color '#808080'
+	  --pre-draw-track true
+	  --pre-draw-track-color '#808080'
 	  --attribution-position hidden
 	  --information-position 'bottom left'
 	  --input input.gpx
