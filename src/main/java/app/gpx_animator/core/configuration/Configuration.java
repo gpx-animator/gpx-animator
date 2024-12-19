@@ -472,6 +472,19 @@ public final class Configuration {
             errors.add(resourceBundle.getString("configuration.validation.longitude"));
         }
 
+        if (getWidth() != null && getWidth() % 2 != 0) {
+            errors.add(resourceBundle.getString("configuration.validation.width"));
+        }
+        if (getHeight() != null && getHeight() % 2 != 0) {
+            errors.add(resourceBundle.getString("configuration.validation.height"));
+        }
+        if (getViewportWidth() != null && getViewportWidth() % 2 != 0) {
+            errors.add(resourceBundle.getString("configuration.validation.viewport.width"));
+        }
+        if (getViewportHeight() != null && getViewportHeight() % 2 != 0) {
+            errors.add(resourceBundle.getString("configuration.validation.viewport.height"));
+        }
+
         if (!errors.isEmpty()) {
             var message = errors.stream()
                     .map("- %s"::formatted)

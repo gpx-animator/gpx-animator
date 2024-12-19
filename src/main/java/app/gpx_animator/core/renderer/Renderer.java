@@ -164,10 +164,6 @@ public final class Renderer {
 
         LOGGER.info("{} x {}; {} x {}; {}", realWidth, realHeight, viewportWidth, viewportHeight, scale);
 
-        if (viewportWidth % 2 != 0 || viewportHeight % 2 != 0) {
-            throw new UserException(resourceBundle.getString("renderer.error.viewportsize"));
-        }
-
         final var frameWriter = cfg.isPreview() ? new NullFrameWriter() : toImages
                 ? new FileFrameWriter(frameFilePattern, ext, cfg.getFps())
                 : new VideoFrameWriter(cfg.getOutput(), cfg.getVideoCodec(), cfg.getFps(), viewportWidth, viewportHeight);
