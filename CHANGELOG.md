@@ -20,6 +20,7 @@ For questions and support requests, please use
 * Fix missing command-line option for pre draw line width
 * Fix missing command-line option to select the video codec
 * Fix missing help text for preview length
+* Fix error message when using invalid video resolution
 
 ### Other
 
