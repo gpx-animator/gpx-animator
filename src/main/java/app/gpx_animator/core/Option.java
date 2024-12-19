@@ -60,7 +60,6 @@ public enum Option {
     TMS_USER_AGENT("tms-user-agent"),
     BACKGROUND_MAP_VISIBILITY("background-map-visibility"),
     TOTAL_TIME("total-time"),
-    KEEP_IDLE("keep-idle"),
     BACKGROUND_COLOR("background-color"),
     BACKGROUND_IMAGE("background-image"),
     FLASHBACK_COLOR("flashback-color"),

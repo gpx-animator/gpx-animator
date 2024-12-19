@@ -21,6 +21,12 @@ For questions and support requests, please use
 * Fix missing command-line option to select the video codec
 * Fix missing help text for preview length
 * Fix error message when using invalid video resolution
+* Fix boolean CLI options to accept true/false  
+  Attention: You might need to modify your scripts if you make use of one of the following options:
+  - `--keep-idle`: removed, use `--skip-idle false` instead
+  - `--skip-idle`: needs `true` or `false` as an argument
+  - `--track-icon-mirror`: needs `true` or `false` as an argument
+  - `--pre-draw-track`: needs `true` or `false` as an argument
 
 ### Other
 
