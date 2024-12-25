@@ -16,10 +16,13 @@
 package app.gpx_animator.core.renderer.framewriter;
 
 import app.gpx_animator.core.UserException;
+import app.gpx_animator.core.data.MusicCodec;
 import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
+import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.FrameRecorder;
 import org.bytedeco.javacv.Java2DFrameConverter;
 
@@ -36,9 +39,10 @@ public final class VideoFrameWriter implements FrameWriter {
     private final ResourceBundle resourceBundle = Preferences.getResourceBundle();
     private final Java2DFrameConverter frameConverter;
     private final FrameRecorder recorder;
+    private FFmpegFrameGrabber frameGrabber;
 
-    public VideoFrameWriter(@NonNull final File file, @NonNull final VideoCodec videoCodec,
-                            final double fps, final int width, final int height) throws UserException {
+    public VideoFrameWriter(@NonNull final File file, @NonNull final VideoCodec videoCodec, final File fileMusic,
+                            @NonNull final MusicCodec musicCodec, final double fps, final int width, final int height) throws UserException {
         frameConverter = new Java2DFrameConverter();
 
         try {
@@ -48,12 +52,25 @@ public final class VideoFrameWriter implements FrameWriter {
         }
 
         recorder.setFormat("matroska"); // mp4 doesn't support streaming
-        recorder.setAudioCodec(AV_CODEC_ID_NONE);
         recorder.setVideoCodec(videoCodec.getCodecId());
         recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
         recorder.setFormat("mp4");
         recorder.setVideoOption("crf", "24"); // recorder.setVideoQuality(24); -> crashes on systems with comma as decimal separator
         recorder.setFrameRate(fps);
+        if (fileMusic != null && fileMusic.exists()) {
+            frameGrabber = new FFmpegFrameGrabber(fileMusic);
+            try {
+                frameGrabber.start();
+            } catch (FFmpegFrameGrabber.Exception e) {
+                throw new UserException(resourceBundle.getString("framewriter.error.startrecorder").formatted(e.getMessage()), e);
+            }
+            recorder.setAudioCodec(musicCodec.getCodecId());
+            recorder.setAudioBitrate(frameGrabber.getAudioBitrate());
+            recorder.setSampleRate(frameGrabber.getSampleRate());
+            recorder.setAudioChannels(frameGrabber.getAudioChannels());
+        } else {
+            recorder.setAudioCodec(AV_CODEC_ID_NONE);
+        }
 
         try {
             recorder.start();
@@ -71,6 +88,14 @@ public final class VideoFrameWriter implements FrameWriter {
         } catch (final FrameRecorder.Exception e) {
             throw new RuntimeException(new UserException(resourceBundle.getString("framewriter.error.record").formatted(e.getMessage()), e));
         }
+        if (frameGrabber != null) {
+            try {
+                var frameMusic = frameGrabber.grabFrame();
+                recorder.record(frameMusic);
+            } catch (final FrameGrabber.Exception | FrameRecorder.Exception e) {
+                throw new RuntimeException(new UserException(resourceBundle.getString("framewriter.error.record").formatted(e.getMessage()), e));
+            }
+        }
     }
 
     @Override
@@ -79,6 +104,14 @@ public final class VideoFrameWriter implements FrameWriter {
             recorder.close();
         } catch (final FrameRecorder.Exception e) {
             throw new RuntimeException(new UserException(resourceBundle.getString("framewriter.error.closerecorder").formatted(e.getMessage()), e));
+        }
+        if (frameGrabber != null) {
+            try {
+                frameGrabber.close();
+            } catch (final FrameGrabber.Exception e) {
+                throw new RuntimeException(new UserException(resourceBundle.getString("framewriter.error.closerecorder")
+                        .formatted(e.getMessage()), e));
+            }
         }
     }
 }

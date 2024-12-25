@@ -19,6 +19,7 @@ import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.Option;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.data.MapTemplate;
+import app.gpx_animator.core.data.MusicCodec;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.VideoCodec;
@@ -91,6 +92,9 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     private final FileSelector outputFileSelector;
     private final JComboBox<VideoCodec> videoCodecComboBox;
+
+    private final FileSelector inputMusicFileSelector;
+    private final JComboBox<MusicCodec> musicCodecComboBox;
     private final JSpinner widthSpinner;
     private final JSpinner heightSpinner;
     private final JSpinner viewportWidthSpinner;
@@ -150,7 +154,7 @@ abstract class GeneralSettingsPanel extends JPanel {
     })
     GeneralSettingsPanel() {
         var rowCounter = 0;
-        final var maxRows = 47;
+        final var maxRows = 49;
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
         final var gridBagLayout = new GridBagLayout();
@@ -229,6 +233,42 @@ abstract class GeneralSettingsPanel extends JPanel {
         gbcVideoCodec.gridx = 1;
         gbcVideoCodec.gridy = rowCounter;
         add(videoCodecComboBox, gbcVideoCodec);
+
+
+        final var lblInputMusic = new JLabel(resourceBundle.getString("ui.panel.generalsettings.inputmusic.label"));
+        final var gbcLabelInputMusic = new GridBagConstraints();
+        gbcLabelInputMusic.anchor = GridBagConstraints.LINE_END;
+        gbcLabelInputMusic.insets = new Insets(0, 0, 5, 5);
+        gbcLabelInputMusic.gridx = 0;
+        gbcLabelInputMusic.gridy = ++rowCounter;
+        add(lblInputMusic, gbcLabelInputMusic);
+
+        inputMusicFileSelector = createInputMusicSelector();
+        inputMusicFileSelector.setToolTipText(Option.INPUT_MUSIC.getHelp());
+        final var gbcInputMusicFileSelector = new GridBagConstraints();
+        gbcInputMusicFileSelector.fill = GridBagConstraints.BOTH;
+        gbcInputMusicFileSelector.insets = new Insets(0, 0, 5, 0);
+        gbcInputMusicFileSelector.gridx = 1;
+        gbcInputMusicFileSelector.gridy = rowCounter;
+        add(inputMusicFileSelector, gbcInputMusicFileSelector);
+        inputMusicFileSelector.addPropertyChangeListener(FileSelector.PROPERTY_FILENAME, propertyChangeListener);
+
+        final var lblMusicCodec = new JLabel(resourceBundle.getString("ui.panel.generalsettings.musicodec.label"));
+        final var gbcLabelMusicCodec = new GridBagConstraints();
+        gbcLabelMusicCodec.anchor = GridBagConstraints.LINE_END;
+        gbcLabelMusicCodec.insets = new Insets(0, 0, 5, 5);
+        gbcLabelMusicCodec.gridx = 0;
+        gbcLabelMusicCodec.gridy = ++rowCounter;
+        add(lblMusicCodec, gbcLabelMusicCodec);
+
+        musicCodecComboBox = new JComboBox<>();
+        musicCodecComboBox.setToolTipText(Option.MUSIC_CODEC.getHelp());
+        MusicCodec.fillComboBox(musicCodecComboBox);
+        final var gbcMusicCodec = new GridBagConstraints();
+        gbcMusicCodec.fill = GridBagConstraints.HORIZONTAL;
+        gbcMusicCodec.gridx = 1;
+        gbcMusicCodec.gridy = rowCounter;
+        add(musicCodecComboBox, gbcMusicCodec);
 
         final var lblWidthHeight = new JLabel(resourceBundle.getString("ui.panel.generalsettings.widthheight.label"));
         final var gbcLabelWidthHeight = new GridBagConstraints();
@@ -1468,6 +1508,22 @@ abstract class GeneralSettingsPanel extends JPanel {
 
     }
 
+    private FileSelector createInputMusicSelector() {
+        return new FileSelector(FILES_ONLY) {
+            @Serial
+            private static final long serialVersionUID = -7085193817022374996L;
+
+            @Override
+            protected Type configure(final JFileChooser inputMusicChooser) {
+                inputMusicChooser.setAcceptAllFileFilterUsed(false);
+                inputMusicChooser.addChoosableFileFilter(new FileNameExtensionFilter(
+                        resourceBundle.getString("ui.panel.generalsettings.inputmusic.format.mp3"), "mp3")); //NON-NLS
+                return Type.OPEN;
+            }
+
+        };
+    }
+
     private void setVideoSize(final Integer width, final Integer height) {
         widthSpinner.setValue(width);
         heightSpinner.setValue(height);
@@ -1540,6 +1596,8 @@ abstract class GeneralSettingsPanel extends JPanel {
         }
         tailColorFadeoutCheckBox.setSelected(c.isTailColorFadeout());
         outputFileSelector.setFilename(c.getOutput().toString());
+        inputMusicFileSelector.setFilename(c.getInputMusic() != null ? c.getInputMusic().toString() : "");
+        musicCodecComboBox.setSelectedItem(c.getMusicCodec() != null ? c.getMusicCodec() : MusicCodec.AAC);
         videoCodecComboBox.setSelectedItem(c.getVideoCodec() != null ? c.getVideoCodec() : VideoCodec.H264);
         logoFileSelector.setFilename(c.getLogo() != null ? c.getLogo().toString() : "");
         fontSelector.setSelectedFont(c.getFont());
@@ -1603,7 +1661,9 @@ abstract class GeneralSettingsPanel extends JPanel {
                 .flashbackColor(flashbackColorSelector.getColor())
                 .flashbackDuration((Long) flashbackDurationSpinner.getValue())
                 .output(outputFileSelector.getFile())
+                .inputMusic(inputMusicFileSelector.getFile())
                 .videoCodec((VideoCodec) videoCodecComboBox.getSelectedItem())
+                .musicCodec((MusicCodec) musicCodecComboBox.getSelectedItem())
                 .font(fontSelector.getSelectedFont())
                 .markerSize((Double) markerSizeSpinner.getValue())
                 .waypointFont(waypointFontSelector.getSelectedFont())

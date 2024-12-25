@@ -20,6 +20,7 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.adapter.ColorXmlAdapter;
 import app.gpx_animator.core.configuration.adapter.FileXmlAdapter;
 import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
+import app.gpx_animator.core.data.MusicCodec;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.VideoCodec;
@@ -47,6 +48,7 @@ import java.util.stream.Collectors;
 public final class Configuration {
 
     private static final VideoCodec DEFAULT_VIDEO_CODEC = VideoCodec.H264;
+    private static final MusicCodec DEFAULT_MUSIC_CODEC = MusicCodec.AAC;
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.white;
     private static final int DEFAULT_MARGIN = 20;
     private static final int DEFAULT_VIEWPORT_INERTIA = 50;
@@ -97,6 +99,7 @@ public final class Configuration {
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File output;
     private VideoCodec videoCodec;
+    private MusicCodec musicCodec;
 
     private String attribution;
     private Position attributionPosition = DEFAULT_ATTRIBUTION_POSITION;
@@ -128,6 +131,8 @@ public final class Configuration {
 
     @XmlJavaTypeAdapter(FileXmlAdapter.class)
     private File photoDirectory;
+    @XmlJavaTypeAdapter(FileXmlAdapter.class)
+    private File inputMusic;
     private Long photoFreezeFrameTime = 0L;
     private Long photoTime;
     private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
@@ -157,14 +162,14 @@ public final class Configuration {
             final Long totalTime, final float backgroundMapVisibility, final String tmsUrlTemplate, final String tmsApiKey, final String tmsUserAgent,
             final boolean skipIdle, final Color backgroundColor, final File backgroundImage, final Color flashbackColor,
             final Long flashbackDuration, final boolean preDrawTrack, final Long keepFirstFrame, final Long keepLastFrame, final File output,
-            final VideoCodec videoCodec, final String attribution, final String information, final SpeedUnit speedUnit, final Font font,
-            final Double markerSize, final Font waypointFont, final Double waypointSize, final Double minLon, final Double maxLon,
+            final VideoCodec videoCodec, final MusicCodec musicCodec, final String attribution, final String information, final SpeedUnit speedUnit,
+            final Font font, final Double markerSize, final Font waypointFont, final Double waypointSize, final Double minLon, final Double maxLon,
             final Double minLat, final Double maxLat, final File logo, final Position logoPosition, final int logoMargin,
             final Position attributionPosition, final int attributionMargin,
             final Position informationPosition, final int informationMargin,
             final Position commentPosition, final int commentMargin,
-            final File photoDirectory, final long photoFreezeFrameTime, final Long photoTime, final Long photoAnimationDuration,
-            final boolean preview, final Long previewLength,
+            final File photoDirectory, final File inputMusic, final long photoFreezeFrameTime, final Long photoTime,
+            final Long photoAnimationDuration, final boolean preview, final Long previewLength,
             final long gpsTimeout,
             final List<TrackConfiguration> trackConfigurationList) {
 
@@ -195,6 +200,7 @@ public final class Configuration {
         this.keepLastFrame = keepLastFrame;
         this.output = output;
         this.videoCodec = videoCodec;
+        this.musicCodec = musicCodec;
         this.attribution = attribution;
         this.information = information;
         this.font = font;
@@ -206,7 +212,7 @@ public final class Configuration {
         this.maxLon = maxLon;
         this.minLat = minLat;
         this.maxLat = maxLat;
-        this.logo = validateLogo(logo);
+        this.logo = validateFile(logo);
         this.logoPosition = logoPosition;
         this.logoMargin = logoMargin;
         this.attributionPosition = attributionPosition;
@@ -216,6 +222,7 @@ public final class Configuration {
         this.commentPosition = commentPosition;
         this.commentMargin = commentMargin;
         this.photoDirectory = photoDirectory;
+        this.inputMusic = validateFile(inputMusic);
         this.photoFreezeFrameTime = photoFreezeFrameTime;
         this.photoTime = photoTime;
         this.photoAnimationDuration = photoAnimationDuration;
@@ -349,6 +356,10 @@ public final class Configuration {
         return videoCodec;
     }
 
+    public MusicCodec getMusicCodec() {
+        return musicCodec;
+    }
+
     public String getAttribution() {
         return attribution;
     }
@@ -390,7 +401,7 @@ public final class Configuration {
     }
 
     public File getLogo() {
-        return validateLogo(logo);
+        return validateFile(logo);
     }
 
     public Position getLogoPosition() {
@@ -453,12 +464,16 @@ public final class Configuration {
         return gpsTimeout;
     }
 
+    public File getInputMusic() {
+        return  validateFile(inputMusic);
+    }
+
     public List<TrackConfiguration> getTrackConfigurationList() {
         return Collections.unmodifiableList(trackConfigurationList);
     }
 
-    private static File validateLogo(final File logo) {
-        return logo != null && logo.isFile() ? logo : null;
+    private static File validateFile(final File file) {
+        return file != null && file.isFile() ? file : null;
     }
 
     public Configuration validate() throws UserException {
@@ -526,6 +541,7 @@ public final class Configuration {
         private Long keepLastFrame;
         private File output = null;
         private VideoCodec videoCodec = DEFAULT_VIDEO_CODEC;
+        private MusicCodec musicCodec = DEFAULT_MUSIC_CODEC;
         private Font font;
         private Double markerSize = 8.0;
         private Font waypointFont;
@@ -546,6 +562,7 @@ public final class Configuration {
         private Position commentPosition = Position.BOTTOM_CENTER;
         private int commentMargin = DEFAULT_MARGIN;
         private File photoDirectory;
+        private File inputMusic;
         private Long photoFreezeFrameTime = 0L;
         private Long photoTime = 3_000L;
         private Long photoAnimationDuration = DEFAULT_PHOTO_ANIMATION_DURATION;
@@ -562,14 +579,14 @@ public final class Configuration {
                     speedup, tailDuration, tailColor, tailColorFadeout, fps, totalTime,
                     backgroundMapVisibility, tmsUrlTemplate, tmsApiKey, tmsUserAgent,
                     skipIdle, backgroundColor, backgroundImage, flashbackColor, flashbackDuration,
-                    preDrawTrack, keepFirstFrame, keepLastFrame, output, videoCodec, attribution, information,
+                    preDrawTrack, keepFirstFrame, keepLastFrame, output, videoCodec, musicCodec, attribution, information,
                     speedUnit, font, markerSize, waypointFont, waypointSize,
                     minLon, maxLon, minLat, maxLat,
                     logo, logoPosition, logoMargin,
                     attributionPosition, attributionMargin,
                     informationPosition, informationMargin,
                     commentPosition, commentMargin,
-                    photoDirectory, photoFreezeFrameTime, photoTime, photoAnimationDuration,
+                    photoDirectory, inputMusic, photoFreezeFrameTime, photoTime, photoAnimationDuration,
                     preview, previewLength,
                     gpsTimeout,
                     Collections.unmodifiableList(trackConfigurationList)
@@ -712,6 +729,11 @@ public final class Configuration {
             return this;
         }
 
+        public Builder musicCodec(final MusicCodec musicCodec) {
+            this.musicCodec = musicCodec;
+            return this;
+        }
+
         public Builder attribution(final String attribution) {
             this.attribution = attribution;
             return this;
@@ -763,7 +785,7 @@ public final class Configuration {
         }
 
         public Builder logo(final File logo) {
-            this.logo = validateLogo(logo);
+            this.logo = validateFile(logo);
             return this;
         }
 
@@ -849,6 +871,11 @@ public final class Configuration {
 
         public Builder gpsTimeout(final long gpsTimeout) {
             this.gpsTimeout = gpsTimeout;
+            return this;
+        }
+
+        public Builder inputMusic(final File inputMusic) {
+            this.inputMusic = validateFile(inputMusic);
             return this;
         }
     }

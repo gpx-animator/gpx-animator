@@ -17,6 +17,7 @@ package app.gpx_animator.ui.cli;
 
 import app.gpx_animator.core.Option;
 import app.gpx_animator.core.configuration.TrackConfiguration;
+import app.gpx_animator.core.data.MusicCodec;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.VideoCodec;
@@ -124,6 +125,10 @@ public enum OptionParam {
           false,
           () -> Optional.of("input"),
           (factory) -> getFirstTrackConfiguration(factory).getInputGpx().getName().equals("input")),
+    INPUT_MUSIC(Option.INPUT_MUSIC,
+            false,
+            () -> Optional.of("./src/test/resources/music/sample-3s.mp3"),
+            (factory) -> factory.getConfiguration().getInputMusic().getName().equals("sample-3s.mp3")),
     KEEP_FIRST_FRAME(Option.KEEP_FIRST_FRAME,
                      false,
                      () -> Optional.of("353535"),
@@ -291,6 +296,10 @@ public enum OptionParam {
                 false,
                 () -> Optional.of("H.264"),
                 (factory) -> factory.getConfiguration().getVideoCodec().equals(VideoCodec.H264)),
+    MUSIC_CODEC(Option.MUSIC_CODEC,
+            false,
+            () -> Optional.of("AAC"),
+            (factory) -> factory.getConfiguration().getMusicCodec().equals(MusicCodec.AAC)),
     VIEWPORT_HEIGHT(Option.VIEWPORT_HEIGHT,
                     false,
                     () -> Optional.of("640"),

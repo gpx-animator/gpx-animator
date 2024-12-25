@@ -16,17 +16,21 @@
 package app.gpx_animator.core;
 
 import app.gpx_animator.core.preferences.Preferences;
+import lombok.Getter;
 import org.jetbrains.annotations.NonNls;
 
 import java.util.HashMap;
 
+@Getter
 @SuppressWarnings("DuplicateStringLiteralInspection")
 public enum Option {
 
     GUI("gui"),
     INPUT("input"),
+    INPUT_MUSIC("input-music"),
     OUTPUT("output"),
     VIDEO_CODEC("video-codec"),
+    MUSIC_CODEC("music-codec"),
     LABEL("label"),
     COLOR("color"),
     MARGIN("margin"),
@@ -114,14 +118,6 @@ public enum Option {
 
     public static Option fromName(final String name) {
         return OPTION_MAP.get(name);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getHelp() {
-        return help;
     }
 
 }
