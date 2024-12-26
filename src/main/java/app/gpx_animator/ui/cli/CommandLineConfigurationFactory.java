@@ -27,7 +27,9 @@ import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
+import app.gpx_animator.ui.UIMode;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.Getter;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Element;
@@ -66,14 +68,14 @@ public final class CommandLineConfigurationFactory {
 
     private final List<Float> lineWidthList = new ArrayList<>();
 
-    private final boolean gui;
-
-
+    @Getter
     private final Configuration configuration;
+    @Getter
+    private final boolean isGui;
 
 
     @SuppressWarnings({"checkstyle:MethodLength"}) // Is it worth investing time refactoring this class?
-    public CommandLineConfigurationFactory(final String... args) throws UserException {
+    public CommandLineConfigurationFactory(final boolean supportedGraphics, final String... args) throws UserException {
         final var resourceBundle = Preferences.getResourceBundle();
 
         final var cfg = Configuration.createBuilder();
@@ -256,8 +258,8 @@ public final class CommandLineConfigurationFactory {
             cfg.addTrackConfiguration(tcb.build());
         }
 
-        gui = args.length == 0 || forceGui;
-
+        isGui = args.length == 0 || forceGui && supportedGraphics;
+        cfg.uiMode(isGui ? UIMode.EXPERT : UIMode.CLI);
         configuration = cfg.build();
     }
 
@@ -411,13 +413,5 @@ public final class CommandLineConfigurationFactory {
         }
     }
 
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
-
-    public boolean isGui() {
-        return gui;
-    }
 
 }

@@ -19,7 +19,6 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.renderer.Renderer;
 import app.gpx_animator.core.renderer.RenderingContext;
 import app.gpx_animator.core.renderer.cache.TileCache;
-import app.gpx_animator.ui.UIMode;
 import app.gpx_animator.ui.cli.CommandLineConfigurationFactory;
 import app.gpx_animator.ui.swing.MainFrame;
 import org.jetbrains.annotations.NonNls;
@@ -52,13 +51,12 @@ public final class Main {
     }
 
     public static void start(final String... args) throws Exception { // NOSONAR - Catching all uncatched exceptions in main method.
-        final var cf = new CommandLineConfigurationFactory(args);
+        final var cf = new CommandLineConfigurationFactory(!GraphicsEnvironment.isHeadless(), args);
         final var configuration = cf.getConfiguration().validate();
 
         new Thread(TileCache::ageCache).start();
 
-        if (cf.isGui() && !GraphicsEnvironment.isHeadless()) {
-            UIMode.setMode(UIMode.EXPERT);
+        if (cf.isGui()) {
             EventQueue.invokeLater(() -> {
                 try {
                     final var frame = MainFrame.getInstance();
@@ -69,7 +67,6 @@ public final class Main {
                 }
             });
         } else {
-            UIMode.setMode(UIMode.CLI);
             new Renderer(configuration).render(new RenderingContext() {
                 @Override
                 public void setProgress1(final int pct, final String message) {
