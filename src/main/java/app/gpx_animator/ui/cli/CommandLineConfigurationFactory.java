@@ -22,6 +22,7 @@ import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.configuration.Configuration;
 import app.gpx_animator.core.configuration.TrackConfiguration;
 import app.gpx_animator.core.configuration.adapter.FontXmlAdapter;
+import app.gpx_animator.core.data.MusicCodec;
 import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.TrackIcon;
@@ -151,6 +152,7 @@ public final class CommandLineConfigurationFactory {
                                 inputGpxList.add(args[++i]);
                             }
                         }
+                        case INPUT_MUSIC -> cfg.inputMusic(new File(args[++i]));
                         case TRACK_ICON -> trackIconList.add(new TrackIcon(args[++i]));
                         case TRACK_ICON_FILE -> inputIconList.add(args[++i]);
                         case TRACK_ICON_MIRROR -> mirrorTrackIconList.add(Boolean.parseBoolean(args[++i]));
@@ -166,6 +168,7 @@ public final class CommandLineConfigurationFactory {
                         case MIN_LON -> cfg.minLon(Double.parseDouble(args[++i]));
                         case OUTPUT -> cfg.output(new File(args[++i]));
                         case VIDEO_CODEC -> cfg.videoCodec(VideoCodec.parse(args[++i], VideoCodec.H264));
+                        case MUSIC_CODEC -> cfg.musicCodec(MusicCodec.parse(args[++i], MusicCodec.AAC));
                         case LOGO -> cfg.logo(new File(args[++i]));
                         case LOGO_POSITION -> cfg.logoPosition(Position.parse(args[++i]));
                         case LOGO_MARGIN -> cfg.logoMargin(Integer.parseInt(args[++i]));
