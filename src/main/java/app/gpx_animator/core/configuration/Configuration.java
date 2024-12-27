@@ -176,7 +176,6 @@ public final class Configuration {
             final File photoDirectory, final long photoFreezeFrameTime, final Long photoTime, final Long photoAnimationDuration,
             final boolean preview, final Long previewLength, final long gpsTimeout,
             final List<TrackConfiguration> trackConfigurationList, final UIMode uiMode) {
-            final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
         this.width = width;
