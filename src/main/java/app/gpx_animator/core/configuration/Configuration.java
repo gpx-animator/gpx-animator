@@ -162,15 +162,14 @@ public final class Configuration {
             final boolean skipIdle, final Color backgroundColor, final File backgroundImage, final Color flashbackColor,
             final Long flashbackDuration, final boolean preDrawTrack, final Long keepFirstFrame, final Long keepLastFrame, final File output,
             final VideoCodec videoCodec, final MusicCodec musicCodec, final File inputMusic, final String attribution, final String information,
-            final SpeedUnit speedUnit,
-            final Font font, final Double markerSize, final Font waypointFont, final Double waypointSize, final Double minLon, final Double maxLon,
-            final Double minLat, final Double maxLat, final File logo, final Position logoPosition, final int logoMargin,
+            final SpeedUnit speedUnit, final Font font, final Double markerSize, final Font waypointFont, final Double waypointSize,
+            final Double minLon, final Double maxLon, final Double minLat, final Double maxLat,
+            final File logo, final Position logoPosition, final int logoMargin,
             final Position attributionPosition, final int attributionMargin,
             final Position informationPosition, final int informationMargin,
             final Position commentPosition, final int commentMargin,
-            final File photoDirectory, final long photoFreezeFrameTime, final Long photoTime,
-            final Long photoAnimationDuration, final boolean preview, final Long previewLength,
-            final long gpsTimeout,
+            final File photoDirectory, final long photoFreezeFrameTime, final Long photoTime, final Long photoAnimationDuration,
+            final boolean preview, final Long previewLength, final long gpsTimeout,
             final List<TrackConfiguration> trackConfigurationList) {
 
         this.margin = margin;
