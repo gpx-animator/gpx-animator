@@ -54,6 +54,7 @@ public final class Help {
         w.writeOptionHelp(Option.HEIGHT, "height", false, cfg.getHeight()); //NON-NLS
         w.writeOptionHelp(Option.HELP, "help", false, null); //TODO --help-info-vars
         w.writeOptionHelp(Option.INPUT, "input", true, tc.getInputGpx()); //NON-NLS
+        w.writeOptionHelp(Option.INPUT_MUSIC, "input-music", false, cfg.getInputMusic()); //NON-NLS
         w.writeOptionHelp(Option.TRIM_GPX_START, "trim-gpx-start", true, tc.getTrimGpxStart()); //NON-NLS
         w.writeOptionHelp(Option.TRIM_GPX_END, "trim-gpx-end", true, tc.getTrimGpxEnd()); //NON-NLS
         w.writeOptionHelp(Option.INFORMATION, "text", false, cfg.getInformation().replace("\n", "\\n")); //NON-NLS
