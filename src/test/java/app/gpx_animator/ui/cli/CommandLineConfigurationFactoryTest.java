@@ -49,7 +49,7 @@ class CommandLineConfigurationFactoryTest {
             args.add("--".concat(OptionParam.INPUT.getOption().getName()));
             OptionParam.INPUT.getSupplierParam().get().ifPresent(args::add);
         }
-        CommandLineConfigurationFactory factory = new CommandLineConfigurationFactory(args.toArray(String[]::new));
+        CommandLineConfigurationFactory factory = new CommandLineConfigurationFactory(false, args.toArray(String[]::new));
         assertTrue(op.getCheckResult().apply(factory));
     }
 
@@ -60,7 +60,7 @@ class CommandLineConfigurationFactoryTest {
                 "--input", "anotherJourney.gpx",
         };
 
-        CommandLineConfigurationFactory factory = new CommandLineConfigurationFactory(args);
+        CommandLineConfigurationFactory factory = new CommandLineConfigurationFactory(false, args);
         assertNotNull(factory.getConfiguration().getOutput());
         assertEquals(factory.getConfiguration().getOutput().getName(), "journey.mp4");
     }
@@ -71,7 +71,7 @@ class CommandLineConfigurationFactoryTest {
         final var args = new String[]{"--input", "input1.gpx", "input2.gpx", "input3.gpx", "--output", "dummyOutput.mp4"};
 
         // when creating the configuration
-        var factory = new CommandLineConfigurationFactory(args);
+        var factory = new CommandLineConfigurationFactory(false, args);
 
         // then the configuration contains all input files
         assertEquals(3, factory.getConfiguration().getTrackConfigurationList().size());

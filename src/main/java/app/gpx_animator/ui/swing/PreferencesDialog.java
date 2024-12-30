@@ -20,7 +20,6 @@ import app.gpx_animator.core.renderer.cache.TileCache;
 import app.gpx_animator.core.util.FormatUtil;
 import com.jgoodies.forms.builder.FormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -94,7 +93,7 @@ public class PreferencesDialog extends EscapeDialog {
         trackColorPanel.add(trackColorSelector, BorderLayout.CENTER);
 
         final var enablePreview = new JCheckBox();
-        enablePreview.setSelected(Preferences.isPreviewEnabled());
+        enablePreview.setSelected(Preferences.isPreviewEnabled(true));
 
         final var cancelButton = new JButton(resourceBundle.getString("ui.dialog.preferences.button.cancel"));
         cancelButton.addActionListener(e -> SwingUtilities.invokeLater(() -> {

@@ -41,12 +41,13 @@ public final class PreviewPlugin implements RendererPlugin {
     private int width;
     private int height;
 
-    private boolean enabled = UIMode.getMode() != UIMode.CLI && Preferences.isPreviewEnabled();
+    private boolean enabled;
     private long lastUpdate = 0;
 
     // all renderer plugins need this constructor
     public PreviewPlugin(@NonNull final Configuration configuration) {
         this.configuration = configuration;
+        this.enabled = configuration.getUiMode() != UIMode.CLI && Preferences.isPreviewEnabled(true);
     }
 
     @Override

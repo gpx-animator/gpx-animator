@@ -25,6 +25,7 @@ import app.gpx_animator.core.data.Position;
 import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
+import app.gpx_animator.ui.UIMode;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -32,6 +33,7 @@ import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import lombok.Getter;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -57,6 +59,9 @@ public final class Configuration {
     public static final long DEFAULT_PHOTO_ANIMATION_DURATION = 700L;
     public static final Position DEFAULT_ATTRIBUTION_POSITION = Position.BOTTOM_LEFT;
     public static final long DEFAULT_GPS_TIMEOUT = 60000L;
+
+    @Getter
+    private UIMode uiMode;
 
     private int margin = DEFAULT_MARGIN;
     private Integer width;
@@ -170,7 +175,7 @@ public final class Configuration {
             final Position commentPosition, final int commentMargin,
             final File photoDirectory, final long photoFreezeFrameTime, final Long photoTime, final Long photoAnimationDuration,
             final boolean preview, final Long previewLength, final long gpsTimeout,
-            final List<TrackConfiguration> trackConfigurationList) {
+            final List<TrackConfiguration> trackConfigurationList, final UIMode uiMode) {
 
         this.margin = margin;
         this.width = width;
@@ -229,6 +234,7 @@ public final class Configuration {
         this.preview = preview;
         this.previewLength = previewLength;
         this.gpsTimeout = gpsTimeout;
+        this.uiMode = uiMode;
     }
 
     public static Builder createBuilder() {
@@ -571,6 +577,7 @@ public final class Configuration {
         private boolean preview = false;
         private Long previewLength;
         private long gpsTimeout = DEFAULT_GPS_TIMEOUT;
+        private UIMode uiMode;
 
 
         public Configuration build() {
@@ -590,7 +597,7 @@ public final class Configuration {
                     photoDirectory, photoFreezeFrameTime, photoTime, photoAnimationDuration,
                     preview, previewLength,
                     gpsTimeout,
-                    Collections.unmodifiableList(trackConfigurationList)
+                    Collections.unmodifiableList(trackConfigurationList), uiMode
             );
         }
 
@@ -877,6 +884,11 @@ public final class Configuration {
 
         public Builder gpsTimeout(final long gpsTimeout) {
             this.gpsTimeout = gpsTimeout;
+            return this;
+        }
+
+        public Builder uiMode(final UIMode uiMode) {
+            this.uiMode = uiMode;
             return this;
         }
 
