@@ -81,4 +81,9 @@ public final class GpxPoint extends Point2D.Double {
         result = 31 * result + (speed != null ? speed.hashCode() : 0);
         return result;
     }
+
+	public void setComment(String cmt) {
+		this.trackPoint.setComment(cmt);
+		
+	}
 }

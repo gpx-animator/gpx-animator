@@ -37,4 +37,7 @@ public final class TrackPoint implements MyPoint {
     @With Long time;
     @With Double speed;
     @With String comment;
+	public void setComment(String cmt) {
+		this.comment = cmt;
+	}
 }
