@@ -82,8 +82,7 @@ public final class GpxPoint extends Point2D.Double {
         return result;
     }
 
-	public void setComment(String cmt) {
-		this.trackPoint.setComment(cmt);
-		
-	}
+    public void setComment(final String cmt) {
+        this.trackPoint.setComment(cmt);
+    }
 }

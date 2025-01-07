@@ -10,7 +10,7 @@
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the Li1Gcense for the specific language governing permissions and
+ *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
 package app.gpx_animator.core.renderer;
@@ -248,7 +248,7 @@ public final class Renderer {
                 : cfg.getPreviewLength() * cfg.getFps() / 1_000;
         BufferedImage lastRenderedFrame = null;
         String useCmt = null;
-        
+
         var skip = -1f;
         for (var frame = 1; frame <= frames; frame++) {
             if (rc.isCancelled1()) {
@@ -280,11 +280,11 @@ public final class Renderer {
             String tmpCmt = null;
             tmpCmt = paint(bi, frame, 0, null, false);
             final var bi2 = Utils.deepCopy(bi);
-            
+
             paint(bi2, frame, cfg.getTailDuration(), cfg.getTailColor(), false);
             //Issue 627 - use latest comment from paint time frame, if no new comment continue to use from previous time frame
             if (tmpCmt != null) {
-            	useCmt = tmpCmt;
+                useCmt = tmpCmt;
             }
             drawWaypoints(bi2, frame, wpMap);
 
@@ -825,11 +825,11 @@ public final class Renderer {
         final var trackConfigurationList = cfg.getTrackConfigurationList();
 
         var i = 0;
-        
-        //issue #627 - find latest comment between fromTime and toTime to display - must search every TrackPoint in this range 
+
+        //issue #627 - find latest comment between fromTime and toTime to display - must search every Trackpoint
         long oldTime = 0;
         String useCmt = null;
-        
+
         for (final var timePointMapList : timePointMapListList) {
             final var trackConfiguration = trackConfigurationList.get(i++);
 
@@ -858,15 +858,15 @@ public final class Renderer {
 
                     g2.setPaint(trackConfiguration.getColor());
                     for (final var entry : timePointMap.subMap(fromTime, true, toTime, true).entrySet()) {
-                        //Issue 627 - logic to capture latest comment from all TrackPoints in time range 
-                    	TrackPoint trackPoint = ((GpxPoint) entry.getValue()).getTrackPoint();
+                        //Issue 627 - logic to capture latest comment from all TrackPoints in time range
+                        TrackPoint trackPoint = ((GpxPoint) entry.getValue()).getTrackPoint();
                         long tpTime = trackPoint.getTime();
                         String cmt = trackPoint.getComment();
                         if ((cmt != null) && (tpTime > oldTime)) {  //save the latest comment
                                 oldTime = tpTime;
                                 useCmt = cmt;
                         }
-                    	if (prevPoint != null) {
+                        if (prevPoint != null) {
                             g2.draw(new Line2D.Double(prevPoint, entry.getValue()));
                         }
                         prevPoint = entry.getValue();
