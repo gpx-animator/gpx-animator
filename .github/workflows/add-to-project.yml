@@ -1,0 +1,20 @@
+name: Adds all issues to project board
+
+on:
+  issues:
+    types:
+      - opened
+  pull_request_target:
+    types:
+      - opened
+
+jobs:
+  add-to-project:
+    if: github.repository_owner == 'gpx-animator'
+    name: Add issue to project board
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/orgs/gpx-animator/projects/2
+          github-token: ${{ secrets.ADD_TO_PROJECT_TOKEN }}
