@@ -22,7 +22,7 @@ plugins {
     id 'checkstyle'
     id 'java-library'
     id 'org.bytedeco.gradle-javacpp-platform' version '1.5.10'
-    id 'io.freefair.lombok' version '8.13.1'
+    id 'io.freefair.lombok' version '8.14'
     id 'maven-publish'
 }
 
