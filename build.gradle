@@ -74,7 +74,7 @@ dependencies {
     testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.9.3'
     testImplementation 'com.github.romankh3:image-comparison:4.4.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.13.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.13.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.13.2'
     testImplementation 'org.junit.platform:junit-platform-engine:1.13.1'
 }
 
