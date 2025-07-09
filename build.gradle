@@ -70,7 +70,7 @@ dependencies {
     implementation 'com.vladsch.flexmark:flexmark-all:0.64.8'
     implementation 'org.reflections:reflections:0.10.2'
     implementation 'org.apache.maven:maven-artifact:3.9.10'
-    implementation 'org.apache.commons:commons-lang3:3.17.0'
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
     testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.9.3'
     testImplementation 'com.github.romankh3:image-comparison:4.4.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.13.3'
