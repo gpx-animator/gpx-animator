@@ -33,13 +33,15 @@ public final class GpxPoint extends Point2D.Double {
 
     public GpxPoint(final double x, final double y, final TrackPoint trackPoint, final long time, @Nullable final java.lang.Double speed) {
         super(x, y);
-        this.trackPoint = trackPoint;
+        this.trackPoint = new TrackPoint(trackPoint.getLatitude(), trackPoint.getLongitude(), trackPoint.getTime(), trackPoint.getSpeed(),
+                                         trackPoint.getComment());
         this.time = time;
         this.speed = speed;
     }
 
     public TrackPoint getTrackPoint() {
-        return trackPoint;
+        return new TrackPoint(trackPoint.getLatitude(), trackPoint.getLongitude(), trackPoint.getTime(), trackPoint.getSpeed(),
+                              trackPoint.getComment());
     }
 
     public long getTime() {
@@ -80,5 +82,9 @@ public final class GpxPoint extends Point2D.Double {
         result = 31 * result + (int) (time ^ (time >>> 32));
         result = 31 * result + (speed != null ? speed.hashCode() : 0);
         return result;
+    }
+
+    public void setComment(final String cmt) {
+        this.trackPoint.setComment(cmt);
     }
 }
