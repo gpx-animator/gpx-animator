@@ -572,7 +572,6 @@ public final class MainFrame extends JFrame {
     }
 
     @SuppressWarnings({"PMD.DoNotTerminateVM", "DuplicateStringLiteralInspection"}) // Exit the application on user request
-    @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit the application on user request") //NON-NLS
     private void exitApplication(final ActionEvent e) {
         if (!changed || JOptionPane.showConfirmDialog(MainFrame.this, unsavedMessage, warningTitle,
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -651,7 +650,7 @@ public final class MainFrame extends JFrame {
     }
 
 
-    private void setChanged(final boolean changed) {
+    private synchronized void setChanged(final boolean changed) {
         this.changed = changed;
         updateTitle();
     }

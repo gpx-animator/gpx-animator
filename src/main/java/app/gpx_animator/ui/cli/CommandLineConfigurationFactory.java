@@ -28,7 +28,6 @@ import app.gpx_animator.core.data.SpeedUnit;
 import app.gpx_animator.core.data.TrackIcon;
 import app.gpx_animator.core.data.VideoCodec;
 import app.gpx_animator.core.preferences.Preferences;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Element;
@@ -265,7 +264,6 @@ public final class CommandLineConfigurationFactory {
     }
 
     @SuppressWarnings({"PMD.DoNotTerminateVM", "DuplicateStringLiteralInspection"}) // Exit after printing command line help message
-    @SuppressFBWarnings(value = "DM_EXIT", justification = "Exit after printing command line help message") //NON-NLS
     private void exit() {
         System.exit(0);
     }

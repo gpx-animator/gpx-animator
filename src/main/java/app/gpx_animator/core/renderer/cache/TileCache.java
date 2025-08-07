@@ -18,9 +18,6 @@ package app.gpx_animator.core.renderer.cache;
 import app.gpx_animator.core.Constants;
 import app.gpx_animator.core.UserException;
 import app.gpx_animator.core.preferences.Preferences;
-
-import java.nio.file.Files;
-
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +28,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
+import java.time.Duration;
+import java.time.Instant;
 
 public final class TileCache {
 
@@ -199,7 +198,7 @@ public final class TileCache {
     // If the cache path does not exist, then we will create it.
     //
     private static boolean cachingEnabled(final String tileCachePath) {
-        var result = ((tileCachePath != null) && (tileCachePath.trim().length() > 0));
+        var result = (tileCachePath != null && !tileCachePath.isBlank());
 
         if (result) {
             // Create the cache directory if it doesn't exist
@@ -220,9 +219,10 @@ public final class TileCache {
     // Check age on a file and remove it if it is too old.
     //
     private static void ageCacheFile(final File cacheFile, final Long tileCacheTimeLimit) {
-        final var fileDate = new Date(cacheFile.lastModified());
-        var msBetweenDates = new Date().getTime() - fileDate.getTime();
-        if ((msBetweenDates) > tileCacheTimeLimit) {
+        final Instant lastModified = Instant.ofEpochMilli(cacheFile.lastModified());
+        final Instant now = Instant.now();
+
+        if (Duration.between(lastModified, now).toMillis() > tileCacheTimeLimit) {
             try {
                 Files.deleteIfExists(cacheFile.toPath());
             } catch (final IOException e) {

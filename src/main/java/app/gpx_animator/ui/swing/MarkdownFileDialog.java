@@ -16,7 +16,6 @@
 package app.gpx_animator.ui.swing;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NonNls;
 
 import javax.swing.JFrame;
@@ -47,8 +46,6 @@ public class MarkdownFileDialog extends MarkdownDialog {
         super(owner, title, readFileAsMarkdown(filename), variables, width, height);
     }
 
-    @SuppressFBWarnings(value = { "NP_LOAD_OF_KNOWN_NULL_VALUE", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", //NON-NLS
-            "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" }, justification = "Check for null exactly as needed") //NON-NLS
     private static String readFileAsMarkdown(@NonNull final String filename) {
         final var classLoader = ClassLoader.getSystemClassLoader();
         try (var is = classLoader.getResourceAsStream(filename)) {

@@ -17,14 +17,11 @@ package app.gpx_animator.core.data;
 
 import app.gpx_animator.core.preferences.Preferences;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jetbrains.annotations.NonNls;
 
 import java.text.Collator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -42,7 +39,6 @@ public final class TrackIcon {
 
     private static volatile List<TrackIcon> trackIcons = null;
 
-    @SuppressFBWarnings(value = "DC_DOUBLECHECK", justification = "Before and after synchronization") //NON-NLS
     public static Vector<TrackIcon> getAllTrackIcons() {
         if (trackIcons == null) {
             synchronized (TrackIcon.class) {

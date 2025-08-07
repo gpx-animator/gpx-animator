@@ -2,8 +2,6 @@ package app.gpx_animator.core.util;
 
 import org.junit.jupiter.api.Test;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
@@ -26,7 +24,6 @@ class DateUtilTest {
     }
 
     @Test
-    @SuppressFBWarnings(value = "RV_EXCEPTION_NOT_THROWN", justification = "false positive")
     void parseZonedDateTimeException() {
         assertThrows(DateTimeParseException.class, () -> DateUtil.parseZonedDateTime("2020-12-03 12:20:59"));
     }
