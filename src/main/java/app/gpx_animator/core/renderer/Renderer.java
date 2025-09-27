@@ -37,7 +37,8 @@ import app.gpx_animator.core.util.RenderUtil;
 import app.gpx_animator.core.util.Utils;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +66,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
@@ -541,13 +541,13 @@ public final class Renderer {
                              @NonNull final TrackConfiguration trackConfiguration) {
 
         final var trimGpxStart = trackConfiguration.getTrimGpxStart();
-        if (trimGpxStart != null && trimGpxStart > 0 && timePointMap.size() > 0) {
+        if (trimGpxStart != null && trimGpxStart > 0 && !timePointMap.isEmpty()) {
             final Long skipToTime = timePointMap.firstKey() + trimGpxStart;
             timePointMap.entrySet().removeIf(e -> e.getKey() < skipToTime);
         }
 
         final var trimGpxEnd = trackConfiguration.getTrimGpxEnd();
-        if (trimGpxEnd != null && trimGpxEnd > 0 && timePointMap.size() > 0) {
+        if (trimGpxEnd != null && trimGpxEnd > 0 && !timePointMap.isEmpty()) {
             final Long skipAfterTime = timePointMap.lastKey() - trimGpxEnd;
             timePointMap.entrySet().removeIf(e -> e.getKey() > skipAfterTime);
         }
@@ -911,43 +911,12 @@ public final class Renderer {
         }
     }
 
+    @Data
+    @EqualsAndHashCode(callSuper = true)
     private static final class NamedPoint extends Point2D.Double {
         @Serial
         private static final long serialVersionUID = 4011941819652468006L;
-
         private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(final String name) {
-            this.name = name;
-        }
-
-        @Override
-        @SuppressFBWarnings("NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION")
-        public boolean equals(@Nullable final Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            if (!super.equals(o)) {
-                return false;
-            }
-
-            final var that = (NamedPoint) o;
-            return Objects.equals(name, that.name);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = super.hashCode();
-            result = 31 * result + (name != null ? name.hashCode() : 0);
-            return result;
-        }
     }
 
     private static class RemainingTimeCalculator {
