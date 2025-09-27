@@ -146,10 +146,9 @@ public final class CommandLineConfigurationFactory {
                             exit();
                         }
                         case INPUT -> {
-                            inputGpxList.add(args[++i]);
-                            while (i + 1 < args.length && !args[i + 1].startsWith("--")) {
+                            do {
                                 inputGpxList.add(args[++i]);
-                            }
+                            } while (i + 1 < args.length && !args[i + 1].startsWith("--"));
                         }
                         case INPUT_MUSIC -> cfg.inputMusic(new File(args[++i]));
                         case TRACK_ICON -> trackIconList.add(new TrackIcon(args[++i]));
