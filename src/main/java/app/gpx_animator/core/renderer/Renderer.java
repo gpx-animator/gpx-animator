@@ -697,6 +697,7 @@ public final class Renderer {
         }
     }
 
+    @SuppressWarnings("PMD.AssignmentInOperand") // assignment in operand is intentional
     private Point2D drawMarker(@NonNull final BufferedImage bi,
                                final int frame) throws UserException {
         if (cfg.getMarkerSize() == null || cfg.getMarkerSize() == 0.0) {
@@ -804,6 +805,7 @@ public final class Renderer {
         g2.drawImage(image, at, null);
     }
 
+    @SuppressWarnings("PMD.AssignmentInOperand") // assignment in operand is intentional
     private void paint(@NonNull final BufferedImage bi,
                        final int frame,
                        final long backTime,

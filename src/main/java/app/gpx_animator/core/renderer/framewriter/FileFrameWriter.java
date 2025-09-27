@@ -51,6 +51,7 @@ public final class FileFrameWriter implements FrameWriter {
     }
 
     @Override
+    @SuppressWarnings("PMD.AssignmentInOperand") // assignment in operand is intentional
     public void addFrame(final BufferedImage bi) throws UserException {
         final var outputfile = new File(String.format(frameFilePattern, ++frame));
         try {

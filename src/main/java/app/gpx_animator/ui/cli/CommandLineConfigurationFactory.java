@@ -72,7 +72,9 @@ public final class CommandLineConfigurationFactory {
     private final Configuration configuration;
 
 
-    @SuppressWarnings({"checkstyle:MethodLength"}) // Is it worth investing time refactoring this class?
+    @SuppressWarnings({
+            "checkstyle:MethodLength", // Is it worth investing time refactoring this class?
+            "PMD.AssignmentInOperand"}) // assignment in operand is intentional
     public CommandLineConfigurationFactory(final String... args) throws UserException {
         final var resourceBundle = Preferences.getResourceBundle();
 

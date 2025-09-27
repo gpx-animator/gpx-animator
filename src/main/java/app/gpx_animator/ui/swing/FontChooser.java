@@ -732,6 +732,7 @@ public final class FontChooser extends JComponent {
         return fontFamilyNames;
     }
 
+    @SuppressWarnings("PMD.AssignmentInOperand") // assignment in operand is intentional
     private String[] getFontStyleNames() {
         if (fontStyleNames == null) {
             var i = 0;

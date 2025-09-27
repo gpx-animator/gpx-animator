@@ -137,6 +137,7 @@ public final class MapUtil {
                     @SuppressWarnings({
                             "checkstyle:MissingSwitchDefault", // Every other case can be ignored!
                             "checkstyle:InnerAssignment",      // Checkstyle 8.37 can't handle the enhanced switch properly
+                            "PMD.AssignmentInOperand",         // assignment in operand is intentional
                             "PMD.NullAssignment"               // inside the parser element handling this is acceptable
                     })
                     @SuppressFBWarnings(value = "SF_SWITCH_NO_DEFAULT", justification = "Every other case can be ignored!") //NON-NLS NON-NLS

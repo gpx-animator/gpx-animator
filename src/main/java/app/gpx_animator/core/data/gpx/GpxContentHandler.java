@@ -104,6 +104,7 @@ public final class GpxContentHandler extends DefaultHandler {
     @Override
     @SuppressWarnings({
             "checkstyle:InnerAssignmentCheck", // checkstyle has problems with new switch syntax
+            "PMD.AssignmentInOperand", // assignment in operand is intentional
             "PMD.NullAssignment" // XML parsing ending elements, it's okay here
     })
     public void endElement(@Nullable final String uri, @Nullable final String localName, @NotNull final String qName) {

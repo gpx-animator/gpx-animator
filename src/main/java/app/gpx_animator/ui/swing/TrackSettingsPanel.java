@@ -75,6 +75,7 @@ abstract class TrackSettingsPanel extends JPanel {
 
     @SuppressWarnings({
             "checkstyle:MethodLength", // TODO Refactor when doing the redesign task https://github.com/gpx-animator/gpx-animator/issues/60
+            "PMD.AssignmentInOperand", // assignment in operand is intentional
             "PMD.ConstructorCallsOverridableMethod"
     })
     TrackSettingsPanel() {
