@@ -95,7 +95,10 @@ public final class GpxContentHandler extends DefaultHandler {
 
     @Override
     public void characters(final char[] ch, final int start, final int length) {
-        characterStack.peekLast().accept(ch, start, length);
+        final var characterConsumer = characterStack.peekLast();
+        if (characterConsumer != null) {
+            characterConsumer.accept(ch, start, length);
+        }
     }
 
     @Override
