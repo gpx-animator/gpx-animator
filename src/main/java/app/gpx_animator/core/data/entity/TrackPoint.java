@@ -16,7 +16,6 @@
 package app.gpx_animator.core.data.entity;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -27,7 +26,7 @@ import lombok.With;
 @Getter
 @ToString
 @EqualsAndHashCode
-@AllArgsConstructor
+
 @RequiredArgsConstructor
 @SuppressWarnings("checkstyle:VisibilityModifierCheck") // lombok
 @SuppressFBWarnings() // lombok
@@ -37,4 +36,16 @@ public final class TrackPoint implements MyPoint {
     @With Long time;
     @With Double speed;
     @With String comment;
+
+    public TrackPoint(final Double latitude, final Double longitude, final Long time, final Double speed, final String comment) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.time = time;
+        this.speed = speed;
+        this.comment = comment;
+    }
+
+    public void setComment(final String cmt) {
+        this.comment = cmt;
+    }
 }
