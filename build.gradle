@@ -88,7 +88,6 @@ test {
     maxParallelForks = 4
     minHeapSize = "1G"
     maxHeapSize = "2G"
-    dependsOn 'createVersionFile'
 }
 
 shadowJar {
@@ -99,23 +98,27 @@ spotbugs {
     excludeFilter = file("${projectDir}/config/spotbugs/exclude.xml")
 }
 
-spotbugsMain {
-    reports {
-        xml.enabled(false)
-        html.enabled(true)
+tasks.spotbugsMain {
+    reports.create("html") {
+        required = true
+    }
+    reports.create("xml") {
+        required = true
     }
 }
 
-spotbugsTest {
-    reports {
-        xml.enabled(false)
-        html.enabled(true)
+tasks.spotbugsTest {
+    reports.create("html") {
+        required = true
+    }
+    reports.create("xml") {
+        required = true
     }
 }
 
 checkstyle {
-    configFile file("${projectDir}/config/checkstyle/checkstyle.xml")
-    toolVersion "11.0.1"
+    configFile = file("${projectDir}/config/checkstyle/checkstyle.xml")
+    toolVersion = "11.0.1"
 }
 
 pmd {
@@ -143,13 +146,14 @@ tasks.register('deleteFiles', Delete) {
     delete("./src/main/resources/CHANGELOG.md", "./src/main/resources/LICENSE.md")
 }
 
-tasks.register('createVersionFile') {
-    doLast {
-        def version = project.version.toString()
-        def directory = getLayout().getBuildDirectory().get().toString()
-        def file = new File("$directory/resources/main/version.txt")
-        file.write(version)
-    }
+tasks.register('writeBuildInfo', WriteProperties) {
+    destinationFile = layout.buildDirectory.file('generated-resources/build-info.properties')
+    property('version', project.version.toString())
+}
+sourceSets.main.resources.srcDir(layout.buildDirectory.dir('generated-resources'))
+tasks.processResources { dependsOn 'writeBuildInfo' }
+tasks.named('processResources') {
+    dependsOn(writeBuildInfo)
 }
 
 publishing {
@@ -168,4 +172,3 @@ publishing {
 processResources.dependsOn copyFiles
 clean.dependsOn deleteFiles
 assemble.dependsOn check
-jar.dependsOn createVersionFile

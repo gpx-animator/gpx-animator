@@ -15,11 +15,11 @@
  */
 package app.gpx_animator.core;
 
+import org.slf4j.LoggerFactory;
+
 import java.awt.Font;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
+import java.util.Properties;
 
 @SuppressWarnings("checkstyle:NoWhitespaceBefore") // For the ";" after the class declaration which is needed to use an enum for constants only
 public enum Constants {
@@ -47,13 +47,15 @@ public enum Constants {
             Constants.APPNAME, Constants.VERSION, Constants.OS_NAME, Constants.OS_VERSION, Constants.OS_ARCH);
 
     private static String loadVersionString() {
-        try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("version.txt")) {
-            assert stream != null : "Version file is missing!";
-            try (Scanner scanner = new Scanner(stream, StandardCharsets.UTF_8)) {
-                return scanner.nextLine();
+
+        final var properties = new Properties();
+        try (var inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("build-info.properties")) {
+            if (inputStream != null) {
+                properties.load(inputStream);
             }
-        } catch (final IOException e) {
-            return "<UNKNOWN VERSION>";
+        } catch (IOException e) {
+            LoggerFactory.getLogger(Constants.class).warn("Could not load build-info.properties", e);
         }
+        return properties.getProperty("version", "<UNKNOWN VERSION>");
     }
 }
