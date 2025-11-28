@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-java@v5
       with:
         java-version: '25'
-        distribution: 'tem'
+        distribution: 'temurin'
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
