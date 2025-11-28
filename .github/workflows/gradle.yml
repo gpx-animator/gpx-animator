@@ -16,8 +16,8 @@ jobs:
     - name: Set up JDK 17
       uses: actions/setup-java@v5
       with:
-        java-version: '17'
-        distribution: 'adopt'
+        java-version: '25.0.1'
+        distribution: 'tem'
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
