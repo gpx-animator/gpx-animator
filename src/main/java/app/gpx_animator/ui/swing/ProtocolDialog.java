@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.JFrame;
+import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,7 +39,7 @@ public class ProtocolDialog extends MarkdownDialog {
 
         try {
             return Files.lines(Path.of(file));
-        } catch (final Exception e) {
+        } catch (final IOException e) {
             throw new RuntimeException("Unable to open log file '%s': %s".formatted(file, e.getMessage()), e);
         }
     }

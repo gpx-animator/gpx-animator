@@ -786,21 +786,16 @@ public final class Renderer {
     private void drawImageOnGraphics2D(@NonNull final Point2D point,
                                        @NonNull final Graphics2D g2,
                                        @NonNull final BufferedImage trackIconImage,
-                                       final boolean mirrorTrackIcon)
-            throws IOException {
+                                       final boolean mirrorTrackIcon) {
         var image = trackIconImage;
         final var at = new AffineTransform();
         at.translate((int) point.getX() + 8f, (int) point.getY() + 4f);
-        try {
-            at.translate(-trackIconImage.getWidth() / 2d, -trackIconImage.getHeight() / 2d);
-            if (mirrorTrackIcon) {
-                final var tx = AffineTransform.getScaleInstance(-1, 1);
-                tx.translate(-trackIconImage.getWidth(null), 0);
-                final var op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-                image = op.filter(trackIconImage, null);
-            }
-        } catch (final Exception e) {
-            throw new IOException(e.getMessage());
+        at.translate(-trackIconImage.getWidth() / 2d, -trackIconImage.getHeight() / 2d);
+        if (mirrorTrackIcon) {
+            final var tx = AffineTransform.getScaleInstance(-1, 1);
+            tx.translate(-trackIconImage.getWidth(null), 0);
+            final var op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            image = op.filter(trackIconImage, null);
         }
         g2.drawImage(image, at, null);
     }

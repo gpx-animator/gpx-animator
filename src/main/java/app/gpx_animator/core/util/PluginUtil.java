@@ -26,6 +26,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -61,7 +62,7 @@ public final class PluginUtil {
                         instance.setRenderingContext(renderingContext);
                         plugins.add(instance);
                     }
-                } catch (final Exception e) {
+                } catch (final InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     LOGGER.error("Unable to initialize renderer plugin '{}'", aClass.getName(), e);
                 }
             }

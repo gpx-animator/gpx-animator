@@ -49,6 +49,7 @@ public final class GpxParser {
         }
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException") // Need to catch possible wraps of UserException
     public static void parseGpx(final InputStream is, final DefaultHandler dh) throws UserException {
         final SAXParser saxParser;
         try {

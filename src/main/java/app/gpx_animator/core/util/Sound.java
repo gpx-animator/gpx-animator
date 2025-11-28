@@ -20,6 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.Locale;
 
 public enum Sound {
@@ -41,7 +44,7 @@ public enum Sound {
                     final var clip = AudioSystem.getClip();
                     clip.open(audioInputStream);
                     clip.start();
-                } catch (final Exception e) {
+                } catch (final IOException | UnsupportedAudioFileException | LineUnavailableException e) {
                     LOGGER.error("Unable to play sound: {}", filename, e);
                 }
             } else {

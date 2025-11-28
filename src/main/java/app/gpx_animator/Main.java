@@ -39,18 +39,20 @@ public final class Main {
         throw new InstantiationException("This is the main class and can't be instantiated!");
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public static void main(final String... args) {
         try {
             start(args);
         } catch (final UserException e) {
             LOGGER.error(e.getMessage());
-            System.exit(1); // NOPMD -- We can't recover here
+            System.exit(1);
         } catch (final Exception e) {
             LOGGER.error("Very bad, exception caught in main method!", e);
-            System.exit(2); // NOPMD -- We can't recover here
+            System.exit(2);
         }
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public static void start(final String... args) throws Exception { // NOSONAR - Catching all uncatched exceptions in main method.
         final var cf = new CommandLineConfigurationFactory(args);
         final var configuration = cf.getConfiguration().validate();
@@ -65,7 +67,7 @@ public final class Main {
                     frame.setVisible(true);
                     frame.setConfiguration(configuration);
                 } catch (final Exception e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage(), e);
                 }
             });
         } else {

@@ -489,7 +489,7 @@ public final class MainFrame extends JFrame {
             @Override
             protected void process(final List<String> chunks) {
                 if (!chunks.isEmpty()) {
-                    progressBar.setString(chunks.get(chunks.size() - 1));
+                    progressBar.setString(chunks.getLast());
                 }
             }
 
@@ -636,7 +636,7 @@ public final class MainFrame extends JFrame {
             addRecentFile(fileToOpen);
             setChanged(false);
         } catch (final JAXBException e1) {
-            e1.printStackTrace();
+            LOGGER.error(e1.getMessage(), e1);
             JOptionPane.showMessageDialog(MainFrame.this,
                     String.format(resourceBundle.getString("ui.mainframe.dialog.message.openconfig.error"), e1.getMessage()),
                     errorTitle, JOptionPane.ERROR_MESSAGE);
@@ -732,7 +732,7 @@ public final class MainFrame extends JFrame {
                 throw new UserException(e.getMessage(), e);
             }
         } catch (final UserException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
             new ErrorDialog(this,
                     String.format(resourceBundle.getString("ui.mainframe.dialog.message.saveconfig.error"),
                             e.getMessage()), e);
@@ -750,7 +750,7 @@ public final class MainFrame extends JFrame {
                 throw new UserException(e.getMessage(), e);
             }
         } catch (final UserException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
             new ErrorDialog(this,
                     String.format(resourceBundle.getString("ui.mainframe.dialog.message.savedefault.error"),
                             e.getMessage()), e);
@@ -772,7 +772,7 @@ public final class MainFrame extends JFrame {
             unmarshaller.setAdapter(new FileXmlAdapter(null));
             setConfiguration((Configuration) unmarshaller.unmarshal(defaultConfigFile));
         } catch (final JAXBException e1) {
-            e1.printStackTrace();
+            LOGGER.error(e1.getMessage(), e1);
             JOptionPane.showMessageDialog(MainFrame.this,
                     String.format(resourceBundle.getString("ui.mainframe.dialog.message.loaddefault.error"), e1.getMessage()),
                     errorTitle, JOptionPane.ERROR_MESSAGE);
@@ -891,7 +891,7 @@ public final class MainFrame extends JFrame {
                         String.format(resourceBundle.getString("ui.mainframe.dialog.message.mapupdate.success"), mapTemplateList.size()),
                         resourceBundle.getString("ui.mainframe.dialog.title.success"),
                         JOptionPane.INFORMATION_MESSAGE);
-            } catch (final Exception e) {
+            } catch (final InterruptedException | ExecutionException e) {
                 new ErrorDialog(mainFrame,
                         String.format(resourceBundle.getString("ui.mainframe.dialog.message.mapupdate.error"),
                                 e.getMessage()), e);
