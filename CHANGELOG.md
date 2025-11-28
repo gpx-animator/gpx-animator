@@ -9,6 +9,8 @@ For questions and support requests, please use
 
 **Release date: work in progress 🚧**
 
+* Upgrade to Java 25 LTS
+
 ### Features
 
 * Add option to freeze map before/after showing photos

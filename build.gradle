@@ -34,10 +34,10 @@ application {
 }
 
 java {
-// Before updating Java, check Lombok Grade Plugin compatibility:
+// Before updating Java, check Lombok Gradle Plugin compatibility:
 // https://github.com/freefair/gradle-plugins#compatibility-matrix
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 repositories {
