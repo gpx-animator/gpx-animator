@@ -118,7 +118,7 @@ tasks.spotbugsTest {
 
 checkstyle {
     configFile = file("${projectDir}/config/checkstyle/checkstyle.xml")
-    toolVersion = "12.3.0"
+    toolVersion = "12.3.1"
 }
 
 pmd {
