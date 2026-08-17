@@ -57,7 +57,7 @@ dependencies {
     compileOnly 'com.github.spotbugs:spotbugs-annotations:4.10.3'
     implementation 'org.jetbrains:annotations:26.1.0'
     implementation 'org.bytedeco:javacv:1.5.14'
-    implementation 'org.bytedeco:ffmpeg-platform-gpl:8.0.1-1.5.13'
+    implementation 'org.bytedeco:ffmpeg-platform-gpl:8.1.2-1.5.14'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.5'
     implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.9'
     implementation 'javax.activation:activation:1.1.1'
