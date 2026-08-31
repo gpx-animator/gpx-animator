@@ -31,7 +31,7 @@ import java.io.Serial;
 /**
  * Don't set the content pane directly, use
  * <code>getContentPane().add(...)</code>
- * instead!
+ * instead.
  */
 abstract class EscapeDialog extends JDialog {
 

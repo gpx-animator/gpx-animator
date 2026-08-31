@@ -28,18 +28,17 @@ import java.awt.image.BufferedImage;
 /**
  * <p>To extend the rendering process, just implement this interface. At the
  * initialization of the rendering process, all classes implementing this
- * interface will be found and a constrcutor with the
+ * interface will be found and a constructor with the
  * <code>Configuration</code> as parameter will be called to create an
  * instance object.</p>
  *
  * <p>Therefore, all implementations <em>must</em> provide a constructor with
  * the <code>Configuration</code> as the one and only parameter:</p>
  *
- * <pre>
- * {@code
- * public MyPlugin(@NonNull final Configuration configuration) {
- * }
- * </pre>
+ * <pre><code>
+ * public MyPlugin(&#64;NonNull final Configuration configuration) &#123;
+ * &#125;
+ * </code></pre>
  */
 public interface RendererPlugin {
 

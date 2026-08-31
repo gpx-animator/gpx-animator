@@ -62,7 +62,7 @@ class CommandLineConfigurationFactoryTest {
 
         CommandLineConfigurationFactory factory = new CommandLineConfigurationFactory(args);
         assertNotNull(factory.getConfiguration().getOutput());
-        assertEquals(factory.getConfiguration().getOutput().getName(), "journey.mp4");
+        assertEquals("journey.mp4", factory.getConfiguration().getOutput().getName());
     }
 
     @Test
