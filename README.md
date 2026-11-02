@@ -121,6 +121,10 @@ You can open this project in a preconfigured Gitpod online IDE based on Theia (V
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/gpx-animator/gpx-animator)
 
+### Code of Conduct
+
+This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold it.
+
 ### Slack Channel
 
 There is a public Slack channel for GPX Animator available, which is hosted by the [Java User Group Switzerland](https://www.jug.ch/). If you are not already a member of this workspace, you can request a free invitation link with your email address (and nothing more) here: [Join Slack Workspace.](http://slack.jug.ch/)
