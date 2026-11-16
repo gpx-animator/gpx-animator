@@ -147,9 +147,9 @@
   integrity sha512-/IA8q2nyjgyl0NGSjqiRXB8gh3We7Pzx9C0c+6Zoolu905jFc79anerrUG7+n65+qs310DRK43yi2WDI8nY59A==
 
 all-contributors-cli@^7.0.0:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/all-contributors-cli/-/all-contributors-cli-7.0.2.tgz#c2f2a034236d215ceec1fcdb1d28523507a2d910"
-  integrity sha512-dgZfjqyQ5mWo/InlyxtBNG58Ks4n7eGMot19euaXN5to4O3UdV5D352Aqqzw7qMnd3u3gWN9j4n7TFaj96Ia5Q==
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/all-contributors-cli/-/all-contributors-cli-7.0.3.tgz#c44f64fa60d4c3520e9a4eee93c35322e864c0f7"
+  integrity sha512-zsKuzp+F5JUjy9IThlwYyQJuwFiReo0RRIlGVU7mdZfU/ZwsQHuov8PZGFOFfenitA7+qWoItARKp4CUu5NnVw==
   dependencies:
     eta "^4.5.1"
     inquirer "^14.0.2"
